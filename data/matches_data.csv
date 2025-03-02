@@ -1,0 +1,381 @@
+match_id,home_team,away_team,competition,match_date,status,home_score,away_score,half_time_home,half_time_away,result,half_full_result
+435943,Burnley FC,Manchester City FC,Premier League,2023-08-11 19:00:00+00:00,FINISHED,0,3,0,2,A,A/A
+435944,Arsenal FC,Nottingham Forest FC,Premier League,2023-08-12 12:00:00+00:00,FINISHED,2,1,2,0,H,H/H
+435945,AFC Bournemouth,West Ham United FC,Premier League,2023-08-12 14:00:00+00:00,FINISHED,1,1,0,0,D,D/D
+435946,Brighton & Hove Albion FC,Luton Town FC,Premier League,2023-08-12 14:00:00+00:00,FINISHED,4,1,1,0,H,H/H
+435947,Everton FC,Fulham FC,Premier League,2023-08-12 14:00:00+00:00,FINISHED,0,1,0,0,A,D/A
+435948,Sheffield United FC,Crystal Palace FC,Premier League,2023-08-12 14:00:00+00:00,FINISHED,0,1,0,0,A,D/A
+435949,Newcastle United FC,Aston Villa FC,Premier League,2023-08-12 16:30:00+00:00,FINISHED,5,1,2,1,H,H/H
+435950,Brentford FC,Tottenham Hotspur FC,Premier League,2023-08-13 13:00:00+00:00,FINISHED,2,2,2,2,D,D/D
+435951,Chelsea FC,Liverpool FC,Premier League,2023-08-13 15:30:00+00:00,FINISHED,1,1,1,1,D,D/D
+435952,Manchester United FC,Wolverhampton Wanderers FC,Premier League,2023-08-14 19:00:00+00:00,FINISHED,1,0,0,0,H,D/H
+435959,Nottingham Forest FC,Sheffield United FC,Premier League,2023-08-18 18:45:00+00:00,FINISHED,2,1,1,0,H,H/H
+435955,Fulham FC,Brentford FC,Premier League,2023-08-19 14:00:00+00:00,FINISHED,0,3,0,1,A,A/A
+435956,Liverpool FC,AFC Bournemouth,Premier League,2023-08-19 14:00:00+00:00,FINISHED,3,1,2,1,H,H/H
+435962,Wolverhampton Wanderers FC,Brighton & Hove Albion FC,Premier League,2023-08-19 14:00:00+00:00,FINISHED,1,4,0,1,A,A/A
+435960,Tottenham Hotspur FC,Manchester United FC,Premier League,2023-08-19 16:30:00+00:00,FINISHED,2,0,0,0,H,D/H
+435958,Manchester City FC,Newcastle United FC,Premier League,2023-08-19 19:00:00+00:00,FINISHED,1,0,1,0,H,H/H
+435953,Aston Villa FC,Everton FC,Premier League,2023-08-20 13:00:00+00:00,FINISHED,4,0,2,0,H,H/H
+435961,West Ham United FC,Chelsea FC,Premier League,2023-08-20 15:30:00+00:00,FINISHED,3,1,1,1,H,D/H
+435954,Crystal Palace FC,Arsenal FC,Premier League,2023-08-21 19:00:00+00:00,FINISHED,0,1,0,0,A,D/A
+435968,Chelsea FC,Luton Town FC,Premier League,2023-08-25 19:00:00+00:00,FINISHED,3,0,1,0,H,H/H
+435963,AFC Bournemouth,Tottenham Hotspur FC,Premier League,2023-08-26 11:30:00+00:00,FINISHED,0,2,0,1,A,A/A
+435969,Everton FC,Wolverhampton Wanderers FC,Premier League,2023-08-26 14:00:00+00:00,FINISHED,0,1,0,0,A,D/A
+435970,Manchester United FC,Nottingham Forest FC,Premier League,2023-08-26 14:00:00+00:00,FINISHED,3,2,1,2,H,A/H
+435964,Arsenal FC,Fulham FC,Premier League,2023-08-26 14:00:00+00:00,FINISHED,2,2,0,1,D,A/D
+435965,Brentford FC,Crystal Palace FC,Premier League,2023-08-26 14:00:00+00:00,FINISHED,1,1,1,0,D,H/D
+435966,Brighton & Hove Albion FC,West Ham United FC,Premier League,2023-08-26 16:30:00+00:00,FINISHED,1,3,0,1,A,A/A
+435972,Sheffield United FC,Manchester City FC,Premier League,2023-08-27 13:00:00+00:00,FINISHED,1,2,0,0,A,D/A
+435967,Burnley FC,Aston Villa FC,Premier League,2023-08-27 13:00:00+00:00,FINISHED,1,3,0,2,A,A/A
+435971,Newcastle United FC,Liverpool FC,Premier League,2023-08-27 15:30:00+00:00,FINISHED,1,2,1,0,A,H/A
+435980,Luton Town FC,West Ham United FC,Premier League,2023-09-01 19:00:00+00:00,FINISHED,1,2,0,1,A,A/A
+435982,Sheffield United FC,Everton FC,Premier League,2023-09-02 11:30:00+00:00,FINISHED,2,2,2,1,D,H/D
+435974,Brentford FC,AFC Bournemouth,Premier League,2023-09-02 14:00:00+00:00,FINISHED,2,2,1,1,D,D/D
+435976,Burnley FC,Tottenham Hotspur FC,Premier League,2023-09-02 14:00:00+00:00,FINISHED,2,5,1,2,A,A/A
+435977,Chelsea FC,Nottingham Forest FC,Premier League,2023-09-02 14:00:00+00:00,FINISHED,0,1,0,0,A,D/A
+435981,Manchester City FC,Fulham FC,Premier League,2023-09-02 14:00:00+00:00,FINISHED,5,1,2,1,H,H/H
+435975,Brighton & Hove Albion FC,Newcastle United FC,Premier League,2023-09-02 16:30:00+00:00,FINISHED,3,1,1,0,H,H/H
+435978,Crystal Palace FC,Wolverhampton Wanderers FC,Premier League,2023-09-03 13:00:00+00:00,FINISHED,3,2,0,0,H,D/H
+435979,Liverpool FC,Aston Villa FC,Premier League,2023-09-03 13:00:00+00:00,FINISHED,3,0,2,0,H,H/H
+435973,Arsenal FC,Manchester United FC,Premier League,2023-09-03 15:30:00+00:00,FINISHED,3,1,1,1,H,D/H
+435992,Wolverhampton Wanderers FC,Liverpool FC,Premier League,2023-09-16 11:30:00+00:00,FINISHED,1,3,1,0,A,H/A
+435984,Aston Villa FC,Crystal Palace FC,Premier League,2023-09-16 14:00:00+00:00,FINISHED,3,1,0,0,H,D/H
+435986,Fulham FC,Luton Town FC,Premier League,2023-09-16 14:00:00+00:00,FINISHED,1,0,0,0,H,D/H
+435987,Manchester United FC,Brighton & Hove Albion FC,Premier League,2023-09-16 14:00:00+00:00,FINISHED,1,3,0,1,A,A/A
+435990,Tottenham Hotspur FC,Sheffield United FC,Premier League,2023-09-16 14:00:00+00:00,FINISHED,2,1,0,0,H,D/H
+435991,West Ham United FC,Manchester City FC,Premier League,2023-09-16 14:00:00+00:00,FINISHED,1,3,1,0,A,H/A
+435988,Newcastle United FC,Brentford FC,Premier League,2023-09-16 16:30:00+00:00,FINISHED,1,0,0,0,H,D/H
+435983,AFC Bournemouth,Chelsea FC,Premier League,2023-09-17 13:00:00+00:00,FINISHED,0,0,0,0,D,D/D
+435985,Everton FC,Arsenal FC,Premier League,2023-09-17 15:30:00+00:00,FINISHED,0,1,0,0,A,D/A
+435989,Nottingham Forest FC,Burnley FC,Premier League,2023-09-18 18:45:00+00:00,FINISHED,1,1,0,1,D,A/D
+435998,Crystal Palace FC,Fulham FC,Premier League,2023-09-23 14:00:00+00:00,FINISHED,0,0,0,0,D,D/D
+436000,Luton Town FC,Wolverhampton Wanderers FC,Premier League,2023-09-23 14:00:00+00:00,FINISHED,1,1,0,0,D,D/D
+436001,Manchester City FC,Nottingham Forest FC,Premier League,2023-09-23 14:00:00+00:00,FINISHED,2,0,2,0,H,H/H
+435994,Brentford FC,Everton FC,Premier League,2023-09-23 16:30:00+00:00,FINISHED,1,3,1,1,A,D/A
+435996,Burnley FC,Manchester United FC,Premier League,2023-09-23 19:00:00+00:00,FINISHED,0,1,0,1,A,A/A
+435993,Arsenal FC,Tottenham Hotspur FC,Premier League,2023-09-24 13:00:00+00:00,FINISHED,2,2,1,1,D,D/D
+435995,Brighton & Hove Albion FC,AFC Bournemouth,Premier League,2023-09-24 13:00:00+00:00,FINISHED,3,1,1,1,H,D/H
+435997,Chelsea FC,Aston Villa FC,Premier League,2023-09-24 13:00:00+00:00,FINISHED,0,1,0,0,A,D/A
+435999,Liverpool FC,West Ham United FC,Premier League,2023-09-24 13:00:00+00:00,FINISHED,3,1,1,1,H,D/H
+436002,Sheffield United FC,Newcastle United FC,Premier League,2023-09-24 15:30:00+00:00,FINISHED,0,8,0,3,A,A/A
+436004,Aston Villa FC,Brighton & Hove Albion FC,Premier League,2023-09-30 11:30:00+00:00,FINISHED,6,1,3,0,H,H/H
+436003,AFC Bournemouth,Arsenal FC,Premier League,2023-09-30 14:00:00+00:00,FINISHED,0,4,0,2,A,A/A
+436005,Everton FC,Luton Town FC,Premier League,2023-09-30 14:00:00+00:00,FINISHED,1,2,1,2,A,A/A
+436007,Manchester United FC,Crystal Palace FC,Premier League,2023-09-30 14:00:00+00:00,FINISHED,0,1,0,1,A,A/A
+436008,Newcastle United FC,Burnley FC,Premier League,2023-09-30 14:00:00+00:00,FINISHED,2,0,1,0,H,H/H
+436011,West Ham United FC,Sheffield United FC,Premier League,2023-09-30 14:00:00+00:00,FINISHED,2,0,2,0,H,H/H
+436012,Wolverhampton Wanderers FC,Manchester City FC,Premier League,2023-09-30 14:00:00+00:00,FINISHED,2,1,1,0,H,H/H
+436010,Tottenham Hotspur FC,Liverpool FC,Premier League,2023-09-30 16:30:00+00:00,FINISHED,2,1,1,1,H,D/H
+436009,Nottingham Forest FC,Brentford FC,Premier League,2023-10-01 13:00:00+00:00,FINISHED,1,1,0,0,D,D/D
+436006,Fulham FC,Chelsea FC,Premier League,2023-10-02 19:00:00+00:00,FINISHED,0,2,0,2,A,A/A
+435957,Luton Town FC,Burnley FC,Premier League,2023-10-03 18:30:00+00:00,FINISHED,1,2,0,1,A,A/A
+436019,Luton Town FC,Tottenham Hotspur FC,Premier League,2023-10-07 11:30:00+00:00,FINISHED,0,1,0,0,A,D/A
+436015,Burnley FC,Chelsea FC,Premier League,2023-10-07 14:00:00+00:00,FINISHED,1,4,1,1,A,D/A
+436017,Everton FC,AFC Bournemouth,Premier League,2023-10-07 14:00:00+00:00,FINISHED,3,0,2,0,H,H/H
+436018,Fulham FC,Sheffield United FC,Premier League,2023-10-07 14:00:00+00:00,FINISHED,3,1,0,0,H,D/H
+436020,Manchester United FC,Brentford FC,Premier League,2023-10-07 14:00:00+00:00,FINISHED,2,1,0,1,H,A/H
+436016,Crystal Palace FC,Nottingham Forest FC,Premier League,2023-10-07 16:30:00+00:00,FINISHED,0,0,0,0,D,D/D
+436014,Brighton & Hove Albion FC,Liverpool FC,Premier League,2023-10-08 13:00:00+00:00,FINISHED,2,2,1,2,D,A/D
+436021,West Ham United FC,Newcastle United FC,Premier League,2023-10-08 13:00:00+00:00,FINISHED,2,2,1,0,D,H/D
+436022,Wolverhampton Wanderers FC,Aston Villa FC,Premier League,2023-10-08 13:00:00+00:00,FINISHED,1,1,0,0,D,D/D
+436013,Arsenal FC,Manchester City FC,Premier League,2023-10-08 15:30:00+00:00,FINISHED,1,0,0,0,H,D/H
+436027,Liverpool FC,Everton FC,Premier League,2023-10-21 11:30:00+00:00,FINISHED,2,0,0,0,H,D/H
+436023,AFC Bournemouth,Wolverhampton Wanderers FC,Premier League,2023-10-21 14:00:00+00:00,FINISHED,1,2,1,0,A,H/A
+436025,Brentford FC,Burnley FC,Premier League,2023-10-21 14:00:00+00:00,FINISHED,3,0,1,0,H,H/H
+436028,Manchester City FC,Brighton & Hove Albion FC,Premier League,2023-10-21 14:00:00+00:00,FINISHED,2,1,2,0,H,H/H
+436029,Newcastle United FC,Crystal Palace FC,Premier League,2023-10-21 14:00:00+00:00,FINISHED,4,0,3,0,H,H/H
+436030,Nottingham Forest FC,Luton Town FC,Premier League,2023-10-21 14:00:00+00:00,FINISHED,2,2,0,0,D,D/D
+436026,Chelsea FC,Arsenal FC,Premier League,2023-10-21 16:30:00+00:00,FINISHED,2,2,1,0,D,H/D
+436031,Sheffield United FC,Manchester United FC,Premier League,2023-10-21 19:00:00+00:00,FINISHED,1,2,1,1,A,D/A
+436024,Aston Villa FC,West Ham United FC,Premier League,2023-10-22 15:30:00+00:00,FINISHED,4,1,1,0,H,H/H
+436032,Tottenham Hotspur FC,Fulham FC,Premier League,2023-10-23 19:00:00+00:00,FINISHED,2,0,1,0,H,H/H
+436038,Crystal Palace FC,Tottenham Hotspur FC,Premier League,2023-10-27 19:00:00+00:00,FINISHED,1,2,0,0,A,D/A
+436037,Chelsea FC,Brentford FC,Premier League,2023-10-28 11:30:00+00:00,FINISHED,0,2,0,0,A,D/A
+436033,AFC Bournemouth,Burnley FC,Premier League,2023-10-28 14:00:00+00:00,FINISHED,2,1,1,1,H,D/H
+436034,Arsenal FC,Sheffield United FC,Premier League,2023-10-28 14:00:00+00:00,FINISHED,5,0,1,0,H,H/H
+436042,Wolverhampton Wanderers FC,Newcastle United FC,Premier League,2023-10-28 16:30:00+00:00,FINISHED,2,2,1,2,D,A/D
+436041,West Ham United FC,Everton FC,Premier League,2023-10-29 13:00:00+00:00,FINISHED,0,1,0,0,A,D/A
+436035,Aston Villa FC,Luton Town FC,Premier League,2023-10-29 14:00:00+00:00,FINISHED,3,1,1,0,H,H/H
+436036,Brighton & Hove Albion FC,Fulham FC,Premier League,2023-10-29 14:00:00+00:00,FINISHED,1,1,1,0,D,H/D
+436039,Liverpool FC,Nottingham Forest FC,Premier League,2023-10-29 14:00:00+00:00,FINISHED,3,0,2,0,H,H/H
+436040,Manchester United FC,Manchester City FC,Premier League,2023-10-29 15:30:00+00:00,FINISHED,0,3,0,1,A,A/A
+436046,Fulham FC,Manchester United FC,Premier League,2023-11-04 12:30:00+00:00,FINISHED,0,1,0,0,A,D/A
+436043,Brentford FC,West Ham United FC,Premier League,2023-11-04 15:00:00+00:00,FINISHED,3,2,1,2,H,A/H
+436044,Burnley FC,Crystal Palace FC,Premier League,2023-11-04 15:00:00+00:00,FINISHED,0,2,0,1,A,A/A
+436045,Everton FC,Brighton & Hove Albion FC,Premier League,2023-11-04 15:00:00+00:00,FINISHED,1,1,1,0,D,H/D
+436048,Manchester City FC,AFC Bournemouth,Premier League,2023-11-04 15:00:00+00:00,FINISHED,6,1,3,0,H,H/H
+436051,Sheffield United FC,Wolverhampton Wanderers FC,Premier League,2023-11-04 15:00:00+00:00,FINISHED,2,1,0,0,H,D/H
+436049,Newcastle United FC,Arsenal FC,Premier League,2023-11-04 17:30:00+00:00,FINISHED,1,0,0,0,H,D/H
+436050,Nottingham Forest FC,Aston Villa FC,Premier League,2023-11-05 14:00:00+00:00,FINISHED,2,0,1,0,H,H/H
+436047,Luton Town FC,Liverpool FC,Premier League,2023-11-05 16:30:00+00:00,FINISHED,1,1,0,0,D,D/D
+436052,Tottenham Hotspur FC,Chelsea FC,Premier League,2023-11-06 20:00:00+00:00,FINISHED,1,4,1,1,A,D/A
+436062,Wolverhampton Wanderers FC,Tottenham Hotspur FC,Premier League,2023-11-11 12:30:00+00:00,FINISHED,2,1,0,1,H,A/H
+436054,Arsenal FC,Burnley FC,Premier League,2023-11-11 15:00:00+00:00,FINISHED,3,1,1,0,H,H/H
+436058,Crystal Palace FC,Everton FC,Premier League,2023-11-11 15:00:00+00:00,FINISHED,2,3,1,1,A,D/A
+436060,Manchester United FC,Luton Town FC,Premier League,2023-11-11 15:00:00+00:00,FINISHED,1,0,0,0,H,D/H
+436053,AFC Bournemouth,Newcastle United FC,Premier League,2023-11-11 17:30:00+00:00,FINISHED,2,0,0,0,H,D/H
+436055,Aston Villa FC,Fulham FC,Premier League,2023-11-12 14:00:00+00:00,FINISHED,3,1,2,0,H,H/H
+436056,Brighton & Hove Albion FC,Sheffield United FC,Premier League,2023-11-12 14:00:00+00:00,FINISHED,1,1,1,0,D,H/D
+436059,Liverpool FC,Brentford FC,Premier League,2023-11-12 14:00:00+00:00,FINISHED,3,0,1,0,H,H/H
+436061,West Ham United FC,Nottingham Forest FC,Premier League,2023-11-12 14:00:00+00:00,FINISHED,3,2,1,1,H,D/H
+436057,Chelsea FC,Manchester City FC,Premier League,2023-11-12 16:30:00+00:00,FINISHED,4,4,2,2,D,D/D
+436068,Manchester City FC,Liverpool FC,Premier League,2023-11-25 12:30:00+00:00,FINISHED,1,1,1,0,D,H/D
+436064,Burnley FC,West Ham United FC,Premier League,2023-11-25 15:00:00+00:00,FINISHED,1,2,0,0,A,D/A
+436067,Luton Town FC,Crystal Palace FC,Premier League,2023-11-25 15:00:00+00:00,FINISHED,2,1,0,0,H,D/H
+436069,Newcastle United FC,Chelsea FC,Premier League,2023-11-25 15:00:00+00:00,FINISHED,4,1,1,1,H,D/H
+436070,Nottingham Forest FC,Brighton & Hove Albion FC,Premier League,2023-11-25 15:00:00+00:00,FINISHED,2,3,1,2,A,A/A
+436071,Sheffield United FC,AFC Bournemouth,Premier League,2023-11-25 15:00:00+00:00,FINISHED,1,3,0,2,A,A/A
+436063,Brentford FC,Arsenal FC,Premier League,2023-11-25 17:30:00+00:00,FINISHED,0,1,0,0,A,D/A
+436072,Tottenham Hotspur FC,Aston Villa FC,Premier League,2023-11-26 14:00:00+00:00,FINISHED,1,2,1,1,A,D/A
+436065,Everton FC,Manchester United FC,Premier League,2023-11-26 16:30:00+00:00,FINISHED,0,3,0,1,A,A/A
+436066,Fulham FC,Wolverhampton Wanderers FC,Premier League,2023-11-27 20:00:00+00:00,FINISHED,3,2,1,1,H,D/H
+436074,Arsenal FC,Wolverhampton Wanderers FC,Premier League,2023-12-02 15:00:00+00:00,FINISHED,2,1,2,0,H,H/H
+436075,Brentford FC,Luton Town FC,Premier League,2023-12-02 15:00:00+00:00,FINISHED,3,1,0,0,H,D/H
+436076,Burnley FC,Sheffield United FC,Premier League,2023-12-02 15:00:00+00:00,FINISHED,5,0,2,0,H,H/H
+436081,Nottingham Forest FC,Everton FC,Premier League,2023-12-02 17:30:00+00:00,FINISHED,0,1,0,0,A,D/A
+436080,Newcastle United FC,Manchester United FC,Premier League,2023-12-02 20:00:00+00:00,FINISHED,1,0,0,0,H,D/H
+436073,AFC Bournemouth,Aston Villa FC,Premier League,2023-12-03 14:00:00+00:00,FINISHED,2,2,1,1,D,D/D
+436077,Chelsea FC,Brighton & Hove Albion FC,Premier League,2023-12-03 14:00:00+00:00,FINISHED,3,2,2,1,H,H/H
+436078,Liverpool FC,Fulham FC,Premier League,2023-12-03 14:00:00+00:00,FINISHED,4,3,2,2,H,D/H
+436082,West Ham United FC,Crystal Palace FC,Premier League,2023-12-03 14:00:00+00:00,FINISHED,1,1,1,0,D,H/D
+436079,Manchester City FC,Tottenham Hotspur FC,Premier League,2023-12-03 16:30:00+00:00,FINISHED,3,3,2,1,D,H/D
+436090,Wolverhampton Wanderers FC,Burnley FC,Premier League,2023-12-05 19:30:00+00:00,FINISHED,1,0,1,0,H,H/H
+436087,Luton Town FC,Arsenal FC,Premier League,2023-12-05 20:15:00+00:00,FINISHED,3,4,1,2,A,A/A
+436084,Brighton & Hove Albion FC,Brentford FC,Premier League,2023-12-06 19:30:00+00:00,FINISHED,2,1,1,1,H,D/H
+436086,Fulham FC,Nottingham Forest FC,Premier League,2023-12-06 19:30:00+00:00,FINISHED,5,0,2,0,H,H/H
+436088,Sheffield United FC,Liverpool FC,Premier League,2023-12-06 19:30:00+00:00,FINISHED,0,2,0,1,A,A/A
+436091,Crystal Palace FC,AFC Bournemouth,Premier League,2023-12-06 19:30:00+00:00,FINISHED,0,2,0,1,A,A/A
+436083,Aston Villa FC,Manchester City FC,Premier League,2023-12-06 20:15:00+00:00,FINISHED,1,0,0,0,H,D/H
+436092,Manchester United FC,Chelsea FC,Premier League,2023-12-06 20:15:00+00:00,FINISHED,2,1,1,1,H,D/H
+436085,Everton FC,Newcastle United FC,Premier League,2023-12-07 19:30:00+00:00,FINISHED,3,0,0,0,H,D/H
+436089,Tottenham Hotspur FC,West Ham United FC,Premier League,2023-12-07 20:15:00+00:00,FINISHED,1,2,1,0,A,H/A
+436095,Crystal Palace FC,Liverpool FC,Premier League,2023-12-09 12:30:00+00:00,FINISHED,1,2,0,0,A,D/A
+436094,Brighton & Hove Albion FC,Burnley FC,Premier League,2023-12-09 15:00:00+00:00,FINISHED,1,1,0,1,D,A/D
+436099,Manchester United FC,AFC Bournemouth,Premier League,2023-12-09 15:00:00+00:00,FINISHED,0,3,0,1,A,A/A
+436100,Sheffield United FC,Brentford FC,Premier League,2023-12-09 15:00:00+00:00,FINISHED,1,0,1,0,H,H/H
+436102,Wolverhampton Wanderers FC,Nottingham Forest FC,Premier League,2023-12-09 15:00:00+00:00,FINISHED,1,1,1,1,D,D/D
+436093,Aston Villa FC,Arsenal FC,Premier League,2023-12-09 17:30:00+00:00,FINISHED,1,0,1,0,H,H/H
+436096,Everton FC,Chelsea FC,Premier League,2023-12-10 14:00:00+00:00,FINISHED,2,0,0,0,H,D/H
+436097,Fulham FC,West Ham United FC,Premier League,2023-12-10 14:00:00+00:00,FINISHED,5,0,3,0,H,H/H
+436098,Luton Town FC,Manchester City FC,Premier League,2023-12-10 14:00:00+00:00,FINISHED,1,2,1,0,A,H/A
+436101,Tottenham Hotspur FC,Newcastle United FC,Premier League,2023-12-10 16:30:00+00:00,FINISHED,4,1,2,0,H,H/H
+436111,Nottingham Forest FC,Tottenham Hotspur FC,Premier League,2023-12-15 20:00:00+00:00,FINISHED,0,2,0,1,A,A/A
+436107,Chelsea FC,Sheffield United FC,Premier League,2023-12-16 15:00:00+00:00,FINISHED,2,0,0,0,H,D/H
+436109,Manchester City FC,Crystal Palace FC,Premier League,2023-12-16 15:00:00+00:00,FINISHED,2,2,1,0,D,H/D
+436110,Newcastle United FC,Fulham FC,Premier League,2023-12-16 15:00:00+00:00,FINISHED,3,0,0,0,H,D/H
+436106,Burnley FC,Everton FC,Premier League,2023-12-16 17:30:00+00:00,FINISHED,0,2,0,2,A,A/A
+436104,Arsenal FC,Brighton & Hove Albion FC,Premier League,2023-12-17 14:00:00+00:00,FINISHED,2,0,0,0,H,D/H
+436105,Brentford FC,Aston Villa FC,Premier League,2023-12-17 14:00:00+00:00,FINISHED,1,2,1,0,A,H/A
+436112,West Ham United FC,Wolverhampton Wanderers FC,Premier League,2023-12-17 14:00:00+00:00,FINISHED,3,0,2,0,H,H/H
+436108,Liverpool FC,Manchester United FC,Premier League,2023-12-17 16:30:00+00:00,FINISHED,0,0,0,0,D,D/D
+436114,Crystal Palace FC,Brighton & Hove Albion FC,Premier League,2023-12-21 20:00:00+00:00,FINISHED,1,1,1,0,D,H/D
+436113,Aston Villa FC,Sheffield United FC,Premier League,2023-12-22 20:00:00+00:00,FINISHED,1,1,0,0,D,D/D
+436121,West Ham United FC,Manchester United FC,Premier League,2023-12-23 12:30:00+00:00,FINISHED,2,0,0,0,H,D/H
+436115,Fulham FC,Burnley FC,Premier League,2023-12-23 15:00:00+00:00,FINISHED,0,2,0,0,A,D/A
+436117,Luton Town FC,Newcastle United FC,Premier League,2023-12-23 15:00:00+00:00,FINISHED,1,0,1,0,H,H/H
+436119,Nottingham Forest FC,AFC Bournemouth,Premier League,2023-12-23 15:00:00+00:00,FINISHED,2,3,0,0,A,D/A
+436120,Tottenham Hotspur FC,Everton FC,Premier League,2023-12-23 15:00:00+00:00,FINISHED,2,1,2,0,H,H/H
+436116,Liverpool FC,Arsenal FC,Premier League,2023-12-23 17:30:00+00:00,FINISHED,1,1,1,1,D,D/D
+436122,Wolverhampton Wanderers FC,Chelsea FC,Premier League,2023-12-24 13:00:00+00:00,FINISHED,2,1,0,0,H,D/H
+436131,Newcastle United FC,Nottingham Forest FC,Premier League,2023-12-26 12:30:00+00:00,FINISHED,1,3,1,1,A,D/A
+436123,AFC Bournemouth,Fulham FC,Premier League,2023-12-26 15:00:00+00:00,FINISHED,3,0,1,0,H,H/H
+436132,Sheffield United FC,Luton Town FC,Premier League,2023-12-26 15:00:00+00:00,FINISHED,2,3,0,1,A,A/A
+436127,Burnley FC,Liverpool FC,Premier League,2023-12-26 17:30:00+00:00,FINISHED,0,2,0,1,A,A/A
+436130,Manchester United FC,Aston Villa FC,Premier League,2023-12-26 20:00:00+00:00,FINISHED,3,2,0,2,H,A/H
+436125,Brentford FC,Wolverhampton Wanderers FC,Premier League,2023-12-27 19:30:00+00:00,FINISHED,1,4,1,3,A,A/A
+436128,Chelsea FC,Crystal Palace FC,Premier League,2023-12-27 19:30:00+00:00,FINISHED,2,1,1,1,H,D/H
+436129,Everton FC,Manchester City FC,Premier League,2023-12-27 20:15:00+00:00,FINISHED,1,3,1,0,A,H/A
+436126,Brighton & Hove Albion FC,Tottenham Hotspur FC,Premier League,2023-12-28 19:30:00+00:00,FINISHED,4,2,2,0,H,H/H
+436124,Arsenal FC,West Ham United FC,Premier League,2023-12-28 20:15:00+00:00,FINISHED,0,2,0,1,A,A/A
+436137,Luton Town FC,Chelsea FC,Premier League,2023-12-30 12:30:00+00:00,FINISHED,2,3,0,2,A,A/A
+436133,Aston Villa FC,Burnley FC,Premier League,2023-12-30 15:00:00+00:00,FINISHED,3,2,2,1,H,H/H
+436134,Crystal Palace FC,Brentford FC,Premier League,2023-12-30 15:00:00+00:00,FINISHED,3,1,2,1,H,H/H
+436138,Manchester City FC,Sheffield United FC,Premier League,2023-12-30 15:00:00+00:00,FINISHED,2,0,1,0,H,H/H
+436142,Wolverhampton Wanderers FC,Everton FC,Premier League,2023-12-30 15:00:00+00:00,FINISHED,3,0,1,0,H,H/H
+436139,Nottingham Forest FC,Manchester United FC,Premier League,2023-12-30 17:30:00+00:00,FINISHED,2,1,0,0,H,D/H
+436135,Fulham FC,Arsenal FC,Premier League,2023-12-31 14:00:00+00:00,FINISHED,2,1,1,1,H,D/H
+436140,Tottenham Hotspur FC,AFC Bournemouth,Premier League,2023-12-31 14:00:00+00:00,FINISHED,3,1,1,0,H,H/H
+436136,Liverpool FC,Newcastle United FC,Premier League,2024-01-01 20:00:00+00:00,FINISHED,4,2,0,0,H,D/H
+436141,West Ham United FC,Brighton & Hove Albion FC,Premier League,2024-01-02 19:30:00+00:00,FINISHED,0,0,0,0,D,D/D
+436147,Burnley FC,Luton Town FC,Premier League,2024-01-12 19:45:00+00:00,FINISHED,1,1,1,0,D,H/D
+436148,Chelsea FC,Fulham FC,Premier League,2024-01-13 12:30:00+00:00,FINISHED,1,0,1,0,H,H/H
+436151,Newcastle United FC,Manchester City FC,Premier League,2024-01-13 17:30:00+00:00,FINISHED,2,3,2,1,A,H/A
+436149,Everton FC,Aston Villa FC,Premier League,2024-01-14 14:00:00+00:00,FINISHED,0,0,0,0,D,D/D
+436150,Manchester United FC,Tottenham Hotspur FC,Premier League,2024-01-14 16:30:00+00:00,FINISHED,2,2,2,1,D,H/D
+436144,Arsenal FC,Crystal Palace FC,Premier League,2024-01-20 12:30:00+00:00,FINISHED,5,0,2,0,H,H/H
+436145,Brentford FC,Nottingham Forest FC,Premier League,2024-01-20 17:30:00+00:00,FINISHED,3,2,1,1,H,D/H
+436152,Sheffield United FC,West Ham United FC,Premier League,2024-01-21 14:00:00+00:00,FINISHED,2,2,1,1,D,D/D
+436143,AFC Bournemouth,Liverpool FC,Premier League,2024-01-21 16:30:00+00:00,FINISHED,0,4,0,0,A,D/A
+436146,Brighton & Hove Albion FC,Wolverhampton Wanderers FC,Premier League,2024-01-22 19:45:00+00:00,FINISHED,0,0,0,0,D,D/D
+436153,Nottingham Forest FC,Arsenal FC,Premier League,2024-01-30 19:30:00+00:00,FINISHED,1,2,0,0,A,D/A
+436155,Luton Town FC,Brighton & Hove Albion FC,Premier League,2024-01-30 19:45:00+00:00,FINISHED,4,0,3,0,H,H/H
+436156,Fulham FC,Everton FC,Premier League,2024-01-30 19:45:00+00:00,FINISHED,0,0,0,0,D,D/D
+436157,Crystal Palace FC,Sheffield United FC,Premier League,2024-01-30 20:00:00+00:00,FINISHED,3,2,2,2,H,D/H
+436158,Aston Villa FC,Newcastle United FC,Premier League,2024-01-30 20:15:00+00:00,FINISHED,1,3,0,2,A,A/A
+436159,Tottenham Hotspur FC,Brentford FC,Premier League,2024-01-31 19:30:00+00:00,FINISHED,3,2,0,1,H,A/H
+436161,Manchester City FC,Burnley FC,Premier League,2024-01-31 19:30:00+00:00,FINISHED,3,1,2,0,H,H/H
+436162,Liverpool FC,Chelsea FC,Premier League,2024-01-31 20:15:00+00:00,FINISHED,4,1,2,0,H,H/H
+436154,West Ham United FC,AFC Bournemouth,Premier League,2024-02-01 19:30:00+00:00,FINISHED,1,1,0,1,D,A/D
+436160,Wolverhampton Wanderers FC,Manchester United FC,Premier League,2024-02-01 20:15:00+00:00,FINISHED,3,4,0,2,A,A/A
+436169,Everton FC,Tottenham Hotspur FC,Premier League,2024-02-03 12:30:00+00:00,FINISHED,2,2,1,2,D,A/D
+436166,Brighton & Hove Albion FC,Crystal Palace FC,Premier League,2024-02-03 15:00:00+00:00,FINISHED,4,1,3,0,H,H/H
+436167,Burnley FC,Fulham FC,Premier League,2024-02-03 15:00:00+00:00,FINISHED,2,2,0,2,D,A/D
+436171,Newcastle United FC,Luton Town FC,Premier League,2024-02-03 15:00:00+00:00,FINISHED,4,4,2,2,D,D/D
+436172,Sheffield United FC,Aston Villa FC,Premier League,2024-02-03 17:30:00+00:00,FINISHED,0,5,0,4,A,A/A
+436163,AFC Bournemouth,Nottingham Forest FC,Premier League,2024-02-04 14:00:00+00:00,FINISHED,1,1,1,1,D,D/D
+436168,Chelsea FC,Wolverhampton Wanderers FC,Premier League,2024-02-04 14:00:00+00:00,FINISHED,2,4,1,2,A,A/A
+436170,Manchester United FC,West Ham United FC,Premier League,2024-02-04 14:00:00+00:00,FINISHED,3,0,1,0,H,H/H
+436164,Arsenal FC,Liverpool FC,Premier League,2024-02-04 16:30:00+00:00,FINISHED,3,1,1,1,H,D/H
+436165,Brentford FC,Manchester City FC,Premier League,2024-02-05 20:00:00+00:00,FINISHED,1,3,1,1,A,D/A
+436178,Manchester City FC,Everton FC,Premier League,2024-02-10 12:30:00+00:00,FINISHED,2,0,0,0,H,D/H
+436175,Fulham FC,AFC Bournemouth,Premier League,2024-02-10 15:00:00+00:00,FINISHED,3,1,2,0,H,H/H
+436176,Liverpool FC,Burnley FC,Premier League,2024-02-10 15:00:00+00:00,FINISHED,3,1,1,1,H,D/H
+436177,Luton Town FC,Sheffield United FC,Premier League,2024-02-10 15:00:00+00:00,FINISHED,1,3,0,2,A,A/A
+436180,Tottenham Hotspur FC,Brighton & Hove Albion FC,Premier League,2024-02-10 15:00:00+00:00,FINISHED,2,1,0,1,H,A/H
+436182,Wolverhampton Wanderers FC,Brentford FC,Premier League,2024-02-10 15:00:00+00:00,FINISHED,0,2,0,1,A,A/A
+436179,Nottingham Forest FC,Newcastle United FC,Premier League,2024-02-10 17:30:00+00:00,FINISHED,2,3,2,2,A,D/A
+436181,West Ham United FC,Arsenal FC,Premier League,2024-02-11 14:00:00+00:00,FINISHED,0,6,0,4,A,A/A
+436173,Aston Villa FC,Manchester United FC,Premier League,2024-02-11 16:30:00+00:00,FINISHED,1,2,0,1,A,A/A
+436174,Crystal Palace FC,Chelsea FC,Premier League,2024-02-12 20:00:00+00:00,FINISHED,1,3,1,0,A,H/A
+436183,Brentford FC,Liverpool FC,Premier League,2024-02-17 12:30:00+00:00,FINISHED,1,4,0,1,A,A/A
+436184,Burnley FC,Arsenal FC,Premier League,2024-02-17 15:00:00+00:00,FINISHED,0,5,0,2,A,A/A
+436186,Fulham FC,Aston Villa FC,Premier League,2024-02-17 15:00:00+00:00,FINISHED,1,2,0,1,A,A/A
+436189,Newcastle United FC,AFC Bournemouth,Premier League,2024-02-17 15:00:00+00:00,FINISHED,2,2,0,0,D,D/D
+436190,Nottingham Forest FC,West Ham United FC,Premier League,2024-02-17 15:00:00+00:00,FINISHED,2,0,1,0,H,H/H
+436192,Tottenham Hotspur FC,Wolverhampton Wanderers FC,Premier League,2024-02-17 15:00:00+00:00,FINISHED,1,2,0,1,A,A/A
+436188,Manchester City FC,Chelsea FC,Premier League,2024-02-17 17:30:00+00:00,FINISHED,1,1,0,1,D,A/D
+436191,Sheffield United FC,Brighton & Hove Albion FC,Premier League,2024-02-18 14:00:00+00:00,FINISHED,0,5,0,2,A,A/A
+436187,Luton Town FC,Manchester United FC,Premier League,2024-02-18 16:30:00+00:00,FINISHED,1,2,1,2,A,A/A
+436185,Everton FC,Crystal Palace FC,Premier League,2024-02-19 20:00:00+00:00,FINISHED,1,1,0,0,D,D/D
+436118,Manchester City FC,Brentford FC,Premier League,2024-02-20 19:30:00+00:00,FINISHED,1,0,0,0,H,D/H
+436199,Liverpool FC,Luton Town FC,Premier League,2024-02-21 19:30:00+00:00,FINISHED,4,1,0,1,H,A/H
+436195,Aston Villa FC,Nottingham Forest FC,Premier League,2024-02-24 15:00:00+00:00,FINISHED,4,2,3,1,H,H/H
+436196,Brighton & Hove Albion FC,Everton FC,Premier League,2024-02-24 15:00:00+00:00,FINISHED,1,1,0,0,D,D/D
+436198,Crystal Palace FC,Burnley FC,Premier League,2024-02-24 15:00:00+00:00,FINISHED,3,0,0,0,H,D/H
+436200,Manchester United FC,Fulham FC,Premier League,2024-02-24 15:00:00+00:00,FINISHED,1,2,0,0,A,D/A
+436193,AFC Bournemouth,Manchester City FC,Premier League,2024-02-24 17:30:00+00:00,FINISHED,0,1,0,1,A,A/A
+436194,Arsenal FC,Newcastle United FC,Premier League,2024-02-24 20:00:00+00:00,FINISHED,4,1,2,0,H,H/H
+436202,Wolverhampton Wanderers FC,Sheffield United FC,Premier League,2024-02-25 13:30:00+00:00,FINISHED,1,0,1,0,H,H/H
+436201,West Ham United FC,Brentford FC,Premier League,2024-02-26 20:00:00+00:00,FINISHED,4,2,2,1,H,H/H
+436203,Brentford FC,Chelsea FC,Premier League,2024-03-02 15:00:00+00:00,FINISHED,2,2,0,1,D,A/D
+436205,Everton FC,West Ham United FC,Premier League,2024-03-02 15:00:00+00:00,FINISHED,1,3,0,0,A,D/A
+436206,Fulham FC,Brighton & Hove Albion FC,Premier League,2024-03-02 15:00:00+00:00,FINISHED,3,0,2,0,H,H/H
+436209,Newcastle United FC,Wolverhampton Wanderers FC,Premier League,2024-03-02 15:00:00+00:00,FINISHED,3,0,2,0,H,H/H
+436210,Nottingham Forest FC,Liverpool FC,Premier League,2024-03-02 15:00:00+00:00,FINISHED,0,1,0,0,A,D/A
+436212,Tottenham Hotspur FC,Crystal Palace FC,Premier League,2024-03-02 15:00:00+00:00,FINISHED,3,1,0,0,H,D/H
+436207,Luton Town FC,Aston Villa FC,Premier League,2024-03-02 17:30:00+00:00,FINISHED,2,3,0,2,A,A/A
+436204,Burnley FC,AFC Bournemouth,Premier League,2024-03-03 13:00:00+00:00,FINISHED,0,2,0,1,A,A/A
+436208,Manchester City FC,Manchester United FC,Premier League,2024-03-03 15:30:00+00:00,FINISHED,3,1,0,1,H,A/H
+436211,Sheffield United FC,Arsenal FC,Premier League,2024-03-04 20:00:00+00:00,FINISHED,0,6,0,5,A,A/A
+436220,Manchester United FC,Everton FC,Premier League,2024-03-09 12:30:00+00:00,FINISHED,2,0,2,0,H,H/H
+436213,AFC Bournemouth,Sheffield United FC,Premier League,2024-03-09 15:00:00+00:00,FINISHED,2,2,0,1,D,A/D
+436218,Crystal Palace FC,Luton Town FC,Premier League,2024-03-09 15:00:00+00:00,FINISHED,1,1,1,0,D,H/D
+436222,Wolverhampton Wanderers FC,Fulham FC,Premier League,2024-03-09 15:00:00+00:00,FINISHED,2,1,0,0,H,D/H
+436214,Arsenal FC,Brentford FC,Premier League,2024-03-09 17:30:00+00:00,FINISHED,2,1,1,1,H,D/H
+436215,Aston Villa FC,Tottenham Hotspur FC,Premier League,2024-03-10 13:00:00+00:00,FINISHED,0,4,0,0,A,D/A
+436216,Brighton & Hove Albion FC,Nottingham Forest FC,Premier League,2024-03-10 14:00:00+00:00,FINISHED,1,0,1,0,H,H/H
+436221,West Ham United FC,Burnley FC,Premier League,2024-03-10 14:00:00+00:00,FINISHED,2,2,0,2,D,A/D
+436219,Liverpool FC,Manchester City FC,Premier League,2024-03-10 15:45:00+00:00,FINISHED,1,1,0,1,D,A/D
+436217,Chelsea FC,Newcastle United FC,Premier League,2024-03-11 20:00:00+00:00,FINISHED,3,2,1,1,H,D/H
+436103,AFC Bournemouth,Luton Town FC,Premier League,2024-03-13 19:30:00+00:00,FINISHED,4,3,0,3,H,A/H
+436225,Burnley FC,Brentford FC,Premier League,2024-03-16 15:00:00+00:00,FINISHED,2,1,1,0,H,H/H
+436229,Luton Town FC,Nottingham Forest FC,Premier League,2024-03-16 15:00:00+00:00,FINISHED,1,1,0,1,D,A/D
+436228,Fulham FC,Tottenham Hotspur FC,Premier League,2024-03-16 17:30:00+00:00,FINISHED,3,0,1,0,H,H/H
+436231,West Ham United FC,Aston Villa FC,Premier League,2024-03-17 14:00:00+00:00,FINISHED,1,1,1,0,D,H/D
+436239,Newcastle United FC,West Ham United FC,Premier League,2024-03-30 12:30:00+00:00,FINISHED,4,3,1,2,H,A/H
+436233,AFC Bournemouth,Everton FC,Premier League,2024-03-30 15:00:00+00:00,FINISHED,2,1,0,0,H,D/H
+436236,Chelsea FC,Burnley FC,Premier League,2024-03-30 15:00:00+00:00,FINISHED,2,2,1,0,D,H/D
+436240,Nottingham Forest FC,Crystal Palace FC,Premier League,2024-03-30 15:00:00+00:00,FINISHED,1,1,0,1,D,A/D
+436241,Sheffield United FC,Fulham FC,Premier League,2024-03-30 15:00:00+00:00,FINISHED,3,3,0,0,D,D/D
+436242,Tottenham Hotspur FC,Luton Town FC,Premier League,2024-03-30 15:00:00+00:00,FINISHED,2,1,0,1,H,A/H
+436234,Aston Villa FC,Wolverhampton Wanderers FC,Premier League,2024-03-30 17:30:00+00:00,FINISHED,2,0,1,0,H,H/H
+436235,Brentford FC,Manchester United FC,Premier League,2024-03-30 20:00:00+00:00,FINISHED,1,1,0,0,D,D/D
+436237,Liverpool FC,Brighton & Hove Albion FC,Premier League,2024-03-31 13:00:00+00:00,FINISHED,2,1,1,1,H,D/H
+436238,Manchester City FC,Arsenal FC,Premier League,2024-03-31 15:30:00+00:00,FINISHED,0,0,0,0,D,D/D
+436247,Nottingham Forest FC,Fulham FC,Premier League,2024-04-02 18:30:00+00:00,FINISHED,3,1,3,0,H,H/H
+436250,Newcastle United FC,Everton FC,Premier League,2024-04-02 18:30:00+00:00,FINISHED,1,1,1,0,D,H/D
+436243,AFC Bournemouth,Crystal Palace FC,Premier League,2024-04-02 18:45:00+00:00,FINISHED,1,0,0,0,H,D/H
+436246,Burnley FC,Wolverhampton Wanderers FC,Premier League,2024-04-02 18:45:00+00:00,FINISHED,1,1,1,1,D,D/D
+436248,West Ham United FC,Tottenham Hotspur FC,Premier League,2024-04-02 19:15:00+00:00,FINISHED,1,1,1,1,D,D/D
+436244,Arsenal FC,Luton Town FC,Premier League,2024-04-03 18:30:00+00:00,FINISHED,2,0,2,0,H,H/H
+436245,Brentford FC,Brighton & Hove Albion FC,Premier League,2024-04-03 18:30:00+00:00,FINISHED,0,0,0,0,D,D/D
+436252,Manchester City FC,Aston Villa FC,Premier League,2024-04-03 19:15:00+00:00,FINISHED,4,1,2,1,H,H/H
+436251,Liverpool FC,Sheffield United FC,Premier League,2024-04-04 18:30:00+00:00,FINISHED,3,1,1,0,H,H/H
+436249,Chelsea FC,Manchester United FC,Premier League,2024-04-04 19:15:00+00:00,FINISHED,4,3,2,2,H,D/H
+436255,Crystal Palace FC,Manchester City FC,Premier League,2024-04-06 11:30:00+00:00,FINISHED,2,4,1,1,A,D/A
+436253,Aston Villa FC,Brentford FC,Premier League,2024-04-06 14:00:00+00:00,FINISHED,3,3,1,0,D,H/D
+436256,Everton FC,Burnley FC,Premier League,2024-04-06 14:00:00+00:00,FINISHED,1,0,1,0,H,H/H
+436257,Fulham FC,Newcastle United FC,Premier League,2024-04-06 14:00:00+00:00,FINISHED,0,1,0,0,A,D/A
+436258,Luton Town FC,AFC Bournemouth,Premier League,2024-04-06 14:00:00+00:00,FINISHED,2,1,0,0,H,D/H
+436262,Wolverhampton Wanderers FC,West Ham United FC,Premier League,2024-04-06 14:00:00+00:00,FINISHED,1,2,1,0,A,H/A
+436254,Brighton & Hove Albion FC,Arsenal FC,Premier League,2024-04-06 16:30:00+00:00,FINISHED,0,3,0,1,A,A/A
+436259,Manchester United FC,Liverpool FC,Premier League,2024-04-07 14:30:00+00:00,FINISHED,2,2,0,1,D,A/D
+436260,Sheffield United FC,Chelsea FC,Premier League,2024-04-07 16:30:00+00:00,FINISHED,2,2,1,1,D,D/D
+436261,Tottenham Hotspur FC,Nottingham Forest FC,Premier League,2024-04-07 17:00:00+00:00,FINISHED,3,1,1,1,H,D/H
+436270,Newcastle United FC,Tottenham Hotspur FC,Premier League,2024-04-13 11:30:00+00:00,FINISHED,4,0,2,0,H,H/H
+436265,Brentford FC,Sheffield United FC,Premier League,2024-04-13 14:00:00+00:00,FINISHED,2,0,0,0,H,D/H
+436266,Burnley FC,Brighton & Hove Albion FC,Premier League,2024-04-13 14:00:00+00:00,FINISHED,1,1,0,0,D,D/D
+436269,Manchester City FC,Luton Town FC,Premier League,2024-04-13 14:00:00+00:00,FINISHED,5,1,1,0,H,H/H
+436271,Nottingham Forest FC,Wolverhampton Wanderers FC,Premier League,2024-04-13 14:00:00+00:00,FINISHED,2,2,1,1,D,D/D
+436263,AFC Bournemouth,Manchester United FC,Premier League,2024-04-13 16:30:00+00:00,FINISHED,2,2,2,1,D,H/D
+436268,Liverpool FC,Crystal Palace FC,Premier League,2024-04-14 13:00:00+00:00,FINISHED,0,1,0,1,A,A/A
+436272,West Ham United FC,Fulham FC,Premier League,2024-04-14 13:00:00+00:00,FINISHED,0,2,0,1,A,A/A
+436264,Arsenal FC,Aston Villa FC,Premier League,2024-04-14 15:30:00+00:00,FINISHED,0,2,0,0,A,D/A
+436267,Chelsea FC,Everton FC,Premier League,2024-04-15 19:00:00+00:00,FINISHED,6,0,4,0,H,H/H
+436278,Luton Town FC,Brentford FC,Premier League,2024-04-20 14:00:00+00:00,FINISHED,1,5,0,2,A,A/A
+436280,Sheffield United FC,Burnley FC,Premier League,2024-04-20 14:00:00+00:00,FINISHED,1,4,0,2,A,A/A
+436282,Wolverhampton Wanderers FC,Arsenal FC,Premier League,2024-04-20 18:30:00+00:00,FINISHED,0,2,0,1,A,A/A
+436276,Everton FC,Nottingham Forest FC,Premier League,2024-04-21 12:30:00+00:00,FINISHED,2,0,1,0,H,H/H
+436273,Aston Villa FC,AFC Bournemouth,Premier League,2024-04-21 14:00:00+00:00,FINISHED,3,1,1,1,H,D/H
+436275,Crystal Palace FC,West Ham United FC,Premier League,2024-04-21 14:00:00+00:00,FINISHED,5,2,4,1,H,H/H
+436277,Fulham FC,Liverpool FC,Premier League,2024-04-21 15:30:00+00:00,FINISHED,1,3,1,1,A,D/A
+436223,Arsenal FC,Chelsea FC,Premier League,2024-04-23 19:00:00+00:00,FINISHED,5,0,1,0,H,H/H
+436232,Wolverhampton Wanderers FC,AFC Bournemouth,Premier League,2024-04-24 18:45:00+00:00,FINISHED,0,1,0,1,A,A/A
+436226,Crystal Palace FC,Newcastle United FC,Premier League,2024-04-24 19:00:00+00:00,FINISHED,2,0,0,0,H,D/H
+436227,Everton FC,Liverpool FC,Premier League,2024-04-24 19:00:00+00:00,FINISHED,2,0,1,0,H,H/H
+436230,Manchester United FC,Sheffield United FC,Premier League,2024-04-24 19:00:00+00:00,FINISHED,4,2,1,1,H,D/H
+436224,Brighton & Hove Albion FC,Manchester City FC,Premier League,2024-04-25 19:00:00+00:00,FINISHED,0,4,0,3,A,A/A
+436291,West Ham United FC,Liverpool FC,Premier League,2024-04-27 11:30:00+00:00,FINISHED,2,2,1,0,D,H/D
+436286,Fulham FC,Crystal Palace FC,Premier League,2024-04-27 14:00:00+00:00,FINISHED,1,1,0,0,D,D/D
+436287,Manchester United FC,Burnley FC,Premier League,2024-04-27 14:00:00+00:00,FINISHED,1,1,0,0,D,D/D
+436288,Newcastle United FC,Sheffield United FC,Premier League,2024-04-27 14:00:00+00:00,FINISHED,5,1,1,1,H,D/H
+436292,Wolverhampton Wanderers FC,Luton Town FC,Premier League,2024-04-27 14:00:00+00:00,FINISHED,2,1,1,0,H,H/H
+436285,Everton FC,Brentford FC,Premier League,2024-04-27 16:30:00+00:00,FINISHED,1,0,0,0,H,D/H
+436284,Aston Villa FC,Chelsea FC,Premier League,2024-04-27 19:00:00+00:00,FINISHED,2,2,2,0,D,H/D
+436283,AFC Bournemouth,Brighton & Hove Albion FC,Premier League,2024-04-28 13:00:00+00:00,FINISHED,3,0,1,0,H,H/H
+436290,Tottenham Hotspur FC,Arsenal FC,Premier League,2024-04-28 13:00:00+00:00,FINISHED,2,3,0,3,A,A/A
+436289,Nottingham Forest FC,Manchester City FC,Premier League,2024-04-28 15:30:00+00:00,FINISHED,0,2,0,1,A,A/A
+436197,Chelsea FC,Tottenham Hotspur FC,Premier League,2024-05-02 18:30:00+00:00,FINISHED,2,0,1,0,H,H/H
+436300,Luton Town FC,Everton FC,Premier League,2024-05-03 19:00:00+00:00,FINISHED,1,1,1,1,D,D/D
+436293,Arsenal FC,AFC Bournemouth,Premier League,2024-05-04 11:30:00+00:00,FINISHED,3,0,1,0,H,H/H
+436294,Brentford FC,Fulham FC,Premier League,2024-05-04 14:00:00+00:00,FINISHED,0,0,0,0,D,D/D
+436296,Burnley FC,Newcastle United FC,Premier League,2024-05-04 14:00:00+00:00,FINISHED,1,4,0,3,A,A/A
+436302,Sheffield United FC,Nottingham Forest FC,Premier League,2024-05-04 14:00:00+00:00,FINISHED,1,3,1,1,A,D/A
+436301,Manchester City FC,Wolverhampton Wanderers FC,Premier League,2024-05-04 16:30:00+00:00,FINISHED,5,1,3,0,H,H/H
+436295,Brighton & Hove Albion FC,Aston Villa FC,Premier League,2024-05-05 13:00:00+00:00,FINISHED,1,0,0,0,H,D/H
+436297,Chelsea FC,West Ham United FC,Premier League,2024-05-05 13:00:00+00:00,FINISHED,5,0,3,0,H,H/H
+436299,Liverpool FC,Tottenham Hotspur FC,Premier League,2024-05-05 15:30:00+00:00,FINISHED,4,2,2,0,H,H/H
+436298,Crystal Palace FC,Manchester United FC,Premier League,2024-05-06 19:00:00+00:00,FINISHED,4,0,2,0,H,H/H
+436306,Fulham FC,Manchester City FC,Premier League,2024-05-11 11:30:00+00:00,FINISHED,0,4,0,1,A,A/A
+436303,AFC Bournemouth,Brentford FC,Premier League,2024-05-11 14:00:00+00:00,FINISHED,1,2,0,0,A,D/A
+436305,Everton FC,Sheffield United FC,Premier League,2024-05-11 14:00:00+00:00,FINISHED,1,0,1,0,H,H/H
+436308,Newcastle United FC,Brighton & Hove Albion FC,Premier League,2024-05-11 14:00:00+00:00,FINISHED,1,1,1,1,D,D/D
+436310,Tottenham Hotspur FC,Burnley FC,Premier League,2024-05-11 14:00:00+00:00,FINISHED,2,1,1,1,H,D/H
+436311,West Ham United FC,Luton Town FC,Premier League,2024-05-11 14:00:00+00:00,FINISHED,3,1,0,1,H,A/H
+436312,Wolverhampton Wanderers FC,Crystal Palace FC,Premier League,2024-05-11 14:00:00+00:00,FINISHED,1,3,0,2,A,A/A
+436309,Nottingham Forest FC,Chelsea FC,Premier League,2024-05-11 16:30:00+00:00,FINISHED,2,3,1,1,A,D/A
+436307,Manchester United FC,Arsenal FC,Premier League,2024-05-12 15:30:00+00:00,FINISHED,0,1,0,1,A,A/A
+436304,Aston Villa FC,Liverpool FC,Premier League,2024-05-13 19:00:00+00:00,FINISHED,3,3,1,2,D,A/D
+436281,Tottenham Hotspur FC,Manchester City FC,Premier League,2024-05-14 19:00:00+00:00,FINISHED,0,2,0,0,A,D/A
+436274,Brighton & Hove Albion FC,Chelsea FC,Premier League,2024-05-15 18:45:00+00:00,FINISHED,1,2,0,1,A,A/A
+436279,Manchester United FC,Newcastle United FC,Premier League,2024-05-15 19:00:00+00:00,FINISHED,3,2,1,0,H,H/H
+436313,Arsenal FC,Everton FC,Premier League,2024-05-19 15:00:00+00:00,FINISHED,2,1,1,1,H,D/H
+436314,Brentford FC,Newcastle United FC,Premier League,2024-05-19 15:00:00+00:00,FINISHED,2,4,0,3,A,A/A
+436315,Brighton & Hove Albion FC,Manchester United FC,Premier League,2024-05-19 15:00:00+00:00,FINISHED,0,2,0,0,A,D/A
+436316,Burnley FC,Nottingham Forest FC,Premier League,2024-05-19 15:00:00+00:00,FINISHED,1,2,0,2,A,A/A
+436317,Chelsea FC,AFC Bournemouth,Premier League,2024-05-19 15:00:00+00:00,FINISHED,2,1,1,0,H,H/H
+436318,Crystal Palace FC,Aston Villa FC,Premier League,2024-05-19 15:00:00+00:00,FINISHED,5,0,2,0,H,H/H
+436319,Liverpool FC,Wolverhampton Wanderers FC,Premier League,2024-05-19 15:00:00+00:00,FINISHED,2,0,2,0,H,H/H
+436320,Luton Town FC,Fulham FC,Premier League,2024-05-19 15:00:00+00:00,FINISHED,2,4,1,2,A,A/A
+436321,Manchester City FC,West Ham United FC,Premier League,2024-05-19 15:00:00+00:00,FINISHED,3,1,2,1,H,H/H
+436322,Sheffield United FC,Tottenham Hotspur FC,Premier League,2024-05-19 15:00:00+00:00,FINISHED,0,3,0,1,A,A/A

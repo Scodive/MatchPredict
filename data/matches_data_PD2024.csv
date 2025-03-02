@@ -1,0 +1,381 @@
+match_id,home_team,away_team,competition,match_date,status,home_score,away_score,half_time_home,half_time_away,result,half_full_result
+498613,Athletic Club,Getafe CF,Primera Division,2024-08-15 17:00:00+00:00,FINISHED,1.0,1.0,1.0,0.0,D,H/D
+498614,Real Betis Balompié,Girona FC,Primera Division,2024-08-15 19:30:00+00:00,FINISHED,1.0,1.0,1.0,0.0,D,H/D
+498616,RC Celta de Vigo,Deportivo Alavés,Primera Division,2024-08-16 17:00:00+00:00,FINISHED,2.0,1.0,0.0,1.0,H,A/H
+498621,UD Las Palmas,Sevilla FC,Primera Division,2024-08-16 19:30:00+00:00,FINISHED,2.0,2.0,1.0,1.0,D,D/D
+498615,CA Osasuna,CD Leganés,Primera Division,2024-08-17 17:00:00+00:00,FINISHED,1.0,1.0,0.0,1.0,D,A/D
+498617,Valencia CF,FC Barcelona,Primera Division,2024-08-17 19:30:00+00:00,FINISHED,1.0,2.0,1.0,1.0,A,D/A
+498620,Real Sociedad de Fútbol,Rayo Vallecano de Madrid,Primera Division,2024-08-18 17:00:00+00:00,FINISHED,1.0,2.0,0.0,0.0,A,D/A
+498619,RCD Mallorca,Real Madrid CF,Primera Division,2024-08-18 19:30:00+00:00,FINISHED,1.0,1.0,0.0,1.0,D,A/D
+498622,Real Valladolid CF,RCD Espanyol de Barcelona,Primera Division,2024-08-19 17:00:00+00:00,FINISHED,1.0,0.0,1.0,0.0,H,H/H
+498618,Villarreal CF,Club Atlético de Madrid,Primera Division,2024-08-19 19:30:00+00:00,FINISHED,2.0,2.0,2.0,2.0,D,D/D
+498626,RC Celta de Vigo,Valencia CF,Primera Division,2024-08-23 17:00:00+00:00,FINISHED,3.0,1.0,2.0,1.0,H,H/H
+498630,Sevilla FC,Villarreal CF,Primera Division,2024-08-23 19:30:00+00:00,FINISHED,1.0,2.0,1.0,1.0,A,D/A
+498624,CA Osasuna,RCD Mallorca,Primera Division,2024-08-24 15:00:00+00:00,FINISHED,1.0,0.0,0.0,0.0,H,D/H
+498628,FC Barcelona,Athletic Club,Primera Division,2024-08-24 17:00:00+00:00,FINISHED,2.0,1.0,1.0,1.0,H,D/H
+498629,Getafe CF,Rayo Vallecano de Madrid,Primera Division,2024-08-24 19:30:00+00:00,FINISHED,0.0,0.0,0.0,0.0,D,D/D
+498632,RCD Espanyol de Barcelona,Real Sociedad de Fútbol,Primera Division,2024-08-24 19:30:00+00:00,FINISHED,0.0,1.0,0.0,0.0,A,D/A
+498631,Real Madrid CF,Real Valladolid CF,Primera Division,2024-08-25 15:00:00+00:00,FINISHED,3.0,0.0,0.0,0.0,H,D/H
+498625,CD Leganés,UD Las Palmas,Primera Division,2024-08-25 17:00:00+00:00,FINISHED,2.0,1.0,0.0,0.0,H,D/H
+498627,Deportivo Alavés,Real Betis Balompié,Primera Division,2024-08-25 17:15:00+00:00,FINISHED,0.0,0.0,0.0,0.0,D,D/D
+498623,Club Atlético de Madrid,Girona FC,Primera Division,2024-08-25 19:30:00+00:00,FINISHED,3.0,0.0,1.0,0.0,H,H/H
+498636,Villarreal CF,RC Celta de Vigo,Primera Division,2024-08-26 19:30:00+00:00,FINISHED,4.0,3.0,1.0,2.0,H,A/H
+498638,RCD Mallorca,Sevilla FC,Primera Division,2024-08-27 17:00:00+00:00,FINISHED,0.0,0.0,0.0,0.0,D,D/D
+498637,Rayo Vallecano de Madrid,FC Barcelona,Primera Division,2024-08-27 19:30:00+00:00,FINISHED,1.0,2.0,1.0,0.0,A,H/A
+498633,Athletic Club,Valencia CF,Primera Division,2024-08-28 17:00:00+00:00,FINISHED,1.0,0.0,1.0,0.0,H,H/H
+498640,Real Valladolid CF,CD Leganés,Primera Division,2024-08-28 17:00:00+00:00,FINISHED,0.0,0.0,0.0,0.0,D,D/D
+498639,Real Sociedad de Fútbol,Deportivo Alavés,Primera Division,2024-08-28 19:30:00+00:00,FINISHED,1.0,2.0,1.0,1.0,A,D/A
+498642,Club Atlético de Madrid,RCD Espanyol de Barcelona,Primera Division,2024-08-28 19:30:00+00:00,FINISHED,0.0,0.0,0.0,0.0,D,D/D
+498635,Girona FC,CA Osasuna,Primera Division,2024-08-29 17:00:00+00:00,FINISHED,4.0,0.0,1.0,0.0,H,H/H
+498641,UD Las Palmas,Real Madrid CF,Primera Division,2024-08-29 19:30:00+00:00,FINISHED,1.0,1.0,1.0,0.0,D,H/D
+498647,FC Barcelona,Real Valladolid CF,Primera Division,2024-08-31 15:00:00+00:00,FINISHED,7.0,0.0,3.0,0.0,H,H/H
+498643,Athletic Club,Club Atlético de Madrid,Primera Division,2024-08-31 17:00:00+00:00,FINISHED,0.0,1.0,0.0,0.0,A,D/A
+498652,RCD Espanyol de Barcelona,Rayo Vallecano de Madrid,Primera Division,2024-08-31 17:15:00+00:00,FINISHED,2.0,1.0,1.0,1.0,H,D/H
+498645,CD Leganés,RCD Mallorca,Primera Division,2024-08-31 19:30:00+00:00,FINISHED,0.0,1.0,0.0,1.0,A,A/A
+498650,Valencia CF,Villarreal CF,Primera Division,2024-08-31 19:30:00+00:00,FINISHED,1.0,1.0,1.0,1.0,D,D/D
+498644,CA Osasuna,RC Celta de Vigo,Primera Division,2024-09-01 15:00:00+00:00,FINISHED,3.0,2.0,2.0,1.0,H,H/H
+498646,Deportivo Alavés,UD Las Palmas,Primera Division,2024-09-01 15:00:00+00:00,FINISHED,2.0,0.0,1.0,0.0,H,H/H
+498649,Sevilla FC,Girona FC,Primera Division,2024-09-01 17:00:00+00:00,FINISHED,0.0,2.0,0.0,1.0,A,A/A
+498648,Getafe CF,Real Sociedad de Fútbol,Primera Division,2024-09-01 17:15:00+00:00,FINISHED,0.0,0.0,0.0,0.0,D,D/D
+498651,Real Madrid CF,Real Betis Balompié,Primera Division,2024-09-01 19:30:00+00:00,FINISHED,2.0,0.0,0.0,0.0,H,D/H
+498654,Real Betis Balompié,CD Leganés,Primera Division,2024-09-13 19:00:00+00:00,FINISHED,2.0,0.0,0.0,0.0,H,D/H
+498659,RCD Mallorca,Villarreal CF,Primera Division,2024-09-14 12:00:00+00:00,FINISHED,1.0,2.0,0.0,1.0,A,A/A
+498662,RCD Espanyol de Barcelona,Deportivo Alavés,Primera Division,2024-09-14 14:15:00+00:00,FINISHED,3.0,2.0,1.0,1.0,H,D/H
+498657,Sevilla FC,Getafe CF,Primera Division,2024-09-14 16:30:00+00:00,FINISHED,1.0,0.0,1.0,0.0,H,H/H
+498660,Real Sociedad de Fútbol,Real Madrid CF,Primera Division,2024-09-14 19:00:00+00:00,FINISHED,0.0,2.0,0.0,0.0,A,D/A
+498655,RC Celta de Vigo,Real Valladolid CF,Primera Division,2024-09-15 12:00:00+00:00,FINISHED,3.0,1.0,2.0,0.0,H,H/H
+498656,Girona FC,FC Barcelona,Primera Division,2024-09-15 14:15:00+00:00,FINISHED,1.0,4.0,0.0,2.0,A,A/A
+498661,UD Las Palmas,Athletic Club,Primera Division,2024-09-15 16:30:00+00:00,FINISHED,2.0,3.0,0.0,2.0,A,A/A
+498653,Club Atlético de Madrid,Valencia CF,Primera Division,2024-09-15 19:00:00+00:00,FINISHED,3.0,0.0,1.0,0.0,H,H/H
+498658,Rayo Vallecano de Madrid,CA Osasuna,Primera Division,2024-09-16 19:00:00+00:00,FINISHED,3.0,1.0,0.0,1.0,H,A/H
+498679,RCD Mallorca,Real Sociedad de Fútbol,Primera Division,2024-09-17 17:00:00+00:00,FINISHED,1.0,0.0,1.0,0.0,H,H/H
+498634,Real Betis Balompié,Getafe CF,Primera Division,2024-09-18 17:00:00+00:00,FINISHED,2.0,1.0,0.0,0.0,H,D/H
+498673,CD Leganés,Athletic Club,Primera Division,2024-09-19 17:00:00+00:00,FINISHED,0.0,2.0,0.0,0.0,A,D/A
+498666,Deportivo Alavés,Sevilla FC,Primera Division,2024-09-20 19:00:00+00:00,FINISHED,2.0,1.0,1.0,0.0,H,H/H
+498671,Real Valladolid CF,Real Sociedad de Fútbol,Primera Division,2024-09-21 12:00:00+00:00,FINISHED,0.0,0.0,0.0,0.0,D,D/D
+498665,CA Osasuna,UD Las Palmas,Primera Division,2024-09-21 14:15:00+00:00,FINISHED,2.0,1.0,1.0,1.0,H,D/H
+498668,Valencia CF,Girona FC,Primera Division,2024-09-21 16:30:00+00:00,FINISHED,2.0,0.0,0.0,0.0,H,D/H
+498672,Real Madrid CF,RCD Espanyol de Barcelona,Primera Division,2024-09-21 19:00:00+00:00,FINISHED,4.0,1.0,0.0,0.0,H,D/H
+498667,Getafe CF,CD Leganés,Primera Division,2024-09-22 12:00:00+00:00,FINISHED,1.0,1.0,0.0,0.0,D,D/D
+498663,Athletic Club,RC Celta de Vigo,Primera Division,2024-09-22 14:15:00+00:00,FINISHED,3.0,1.0,2.0,1.0,H,H/H
+498669,Villarreal CF,FC Barcelona,Primera Division,2024-09-22 16:30:00+00:00,FINISHED,1.0,5.0,1.0,2.0,A,A/A
+498670,Rayo Vallecano de Madrid,Club Atlético de Madrid,Primera Division,2024-09-22 19:00:00+00:00,FINISHED,1.0,1.0,1.0,0.0,D,H/D
+498664,Real Betis Balompié,RCD Mallorca,Primera Division,2024-09-23 19:00:00+00:00,FINISHED,1.0,2.0,1.0,1.0,A,D/A
+498677,Sevilla FC,Real Valladolid CF,Primera Division,2024-09-24 17:00:00+00:00,FINISHED,2.0,1.0,1.0,0.0,H,H/H
+498678,Valencia CF,CA Osasuna,Primera Division,2024-09-24 17:00:00+00:00,FINISHED,0.0,0.0,0.0,0.0,D,D/D
+498680,Real Madrid CF,Deportivo Alavés,Primera Division,2024-09-24 19:00:00+00:00,FINISHED,3.0,2.0,2.0,0.0,H,H/H
+498676,Girona FC,Rayo Vallecano de Madrid,Primera Division,2024-09-25 17:00:00+00:00,FINISHED,0.0,0.0,0.0,0.0,D,D/D
+498675,FC Barcelona,Getafe CF,Primera Division,2024-09-25 19:00:00+00:00,FINISHED,1.0,0.0,1.0,0.0,H,H/H
+498681,UD Las Palmas,Real Betis Balompié,Primera Division,2024-09-26 17:00:00+00:00,FINISHED,1.0,1.0,1.0,1.0,D,D/D
+498682,RCD Espanyol de Barcelona,Villarreal CF,Primera Division,2024-09-26 17:00:00+00:00,FINISHED,1.0,2.0,1.0,1.0,A,D/A
+498674,RC Celta de Vigo,Club Atlético de Madrid,Primera Division,2024-09-26 19:00:00+00:00,FINISHED,0.0,1.0,0.0,0.0,A,D/A
+498691,Real Valladolid CF,RCD Mallorca,Primera Division,2024-09-27 19:00:00+00:00,FINISHED,1.0,2.0,0.0,0.0,A,D/A
+498687,Getafe CF,Deportivo Alavés,Primera Division,2024-09-28 12:00:00+00:00,FINISHED,2.0,0.0,1.0,0.0,H,H/H
+498689,Rayo Vallecano de Madrid,CD Leganés,Primera Division,2024-09-28 14:15:00+00:00,FINISHED,1.0,1.0,1.0,0.0,D,H/D
+498690,Real Sociedad de Fútbol,Valencia CF,Primera Division,2024-09-28 16:30:00+00:00,FINISHED,3.0,0.0,1.0,0.0,H,H/H
+498685,CA Osasuna,FC Barcelona,Primera Division,2024-09-28 19:00:00+00:00,FINISHED,4.0,2.0,2.0,0.0,H,H/H
+498686,RC Celta de Vigo,Girona FC,Primera Division,2024-09-29 12:00:00+00:00,FINISHED,1.0,1.0,0.0,1.0,D,A/D
+498683,Athletic Club,Sevilla FC,Primera Division,2024-09-29 14:15:00+00:00,FINISHED,1.0,1.0,1.0,0.0,D,H/D
+498692,Real Betis Balompié,RCD Espanyol de Barcelona,Primera Division,2024-09-29 16:30:00+00:00,FINISHED,1.0,0.0,0.0,0.0,H,D/H
+498684,Club Atlético de Madrid,Real Madrid CF,Primera Division,2024-09-29 19:00:00+00:00,FINISHED,1.0,1.0,0.0,0.0,D,D/D
+498688,Villarreal CF,UD Las Palmas,Primera Division,2024-09-30 19:00:00+00:00,FINISHED,3.0,1.0,1.0,0.0,H,H/H
+498693,CD Leganés,Valencia CF,Primera Division,2024-10-04 19:00:00+00:00,FINISHED,0.0,0.0,0.0,0.0,D,D/D
+498702,RCD Espanyol de Barcelona,RCD Mallorca,Primera Division,2024-10-05 12:00:00+00:00,FINISHED,2.0,1.0,1.0,0.0,H,H/H
+498695,Getafe CF,CA Osasuna,Primera Division,2024-10-05 14:15:00+00:00,FINISHED,1.0,1.0,1.0,0.0,D,H/D
+498700,Real Valladolid CF,Rayo Vallecano de Madrid,Primera Division,2024-10-05 16:30:00+00:00,FINISHED,1.0,2.0,0.0,0.0,A,D/A
+498701,UD Las Palmas,RC Celta de Vigo,Primera Division,2024-10-05 16:30:00+00:00,FINISHED,0.0,1.0,0.0,1.0,A,A/A
+498698,Real Madrid CF,Villarreal CF,Primera Division,2024-10-05 19:00:00+00:00,FINISHED,2.0,0.0,1.0,0.0,H,H/H
+498696,Girona FC,Athletic Club,Primera Division,2024-10-06 12:00:00+00:00,FINISHED,2.0,1.0,1.0,1.0,H,D/H
+498694,Deportivo Alavés,FC Barcelona,Primera Division,2024-10-06 14:15:00+00:00,FINISHED,0.0,3.0,0.0,3.0,A,A/A
+498697,Sevilla FC,Real Betis Balompié,Primera Division,2024-10-06 16:30:00+00:00,FINISHED,1.0,0.0,0.0,0.0,H,D/H
+498699,Real Sociedad de Fútbol,Club Atlético de Madrid,Primera Division,2024-10-06 19:00:00+00:00,FINISHED,1.0,1.0,0.0,1.0,D,A/D
+498706,Deportivo Alavés,Real Valladolid CF,Primera Division,2024-10-18 19:00:00+00:00,FINISHED,2.0,3.0,1.0,1.0,A,D/A
+498712,Athletic Club,RCD Espanyol de Barcelona,Primera Division,2024-10-19 12:00:00+00:00,FINISHED,4.0,1.0,3.0,0.0,H,H/H
+498704,CA Osasuna,Real Betis Balompié,Primera Division,2024-10-19 14:15:00+00:00,FINISHED,1.0,2.0,0.0,1.0,A,A/A
+498708,Girona FC,Real Sociedad de Fútbol,Primera Division,2024-10-19 16:30:00+00:00,FINISHED,0.0,1.0,0.0,1.0,A,A/A
+498705,RC Celta de Vigo,Real Madrid CF,Primera Division,2024-10-19 19:00:00+00:00,FINISHED,1.0,2.0,0.0,1.0,A,A/A
+498711,RCD Mallorca,Rayo Vallecano de Madrid,Primera Division,2024-10-20 12:00:00+00:00,FINISHED,1.0,0.0,0.0,0.0,H,D/H
+498703,Club Atlético de Madrid,CD Leganés,Primera Division,2024-10-20 14:15:00+00:00,FINISHED,3.0,1.0,0.0,1.0,H,A/H
+498710,Villarreal CF,Getafe CF,Primera Division,2024-10-20 16:30:00+00:00,FINISHED,1.0,1.0,1.0,0.0,D,H/D
+498707,FC Barcelona,Sevilla FC,Primera Division,2024-10-20 19:00:00+00:00,FINISHED,5.0,1.0,3.0,0.0,H,H/H
+498709,Valencia CF,UD Las Palmas,Primera Division,2024-10-21 19:00:00+00:00,FINISHED,2.0,3.0,1.0,1.0,A,D/A
+498722,RCD Espanyol de Barcelona,Sevilla FC,Primera Division,2024-10-25 19:00:00+00:00,FINISHED,0.0,2.0,0.0,2.0,A,A/A
+498720,Real Valladolid CF,Villarreal CF,Primera Division,2024-10-26 12:00:00+00:00,FINISHED,1.0,2.0,0.0,1.0,A,A/A
+498716,Rayo Vallecano de Madrid,Deportivo Alavés,Primera Division,2024-10-26 14:15:00+00:00,FINISHED,1.0,0.0,0.0,0.0,H,D/H
+498721,UD Las Palmas,Girona FC,Primera Division,2024-10-26 16:30:00+00:00,FINISHED,1.0,0.0,1.0,0.0,H,H/H
+498718,Real Madrid CF,FC Barcelona,Primera Division,2024-10-26 19:00:00+00:00,FINISHED,0.0,4.0,0.0,0.0,A,D/A
+498714,CD Leganés,RC Celta de Vigo,Primera Division,2024-10-27 13:00:00+00:00,FINISHED,3.0,0.0,0.0,0.0,H,D/H
+498715,Getafe CF,Valencia CF,Primera Division,2024-10-27 15:15:00+00:00,FINISHED,1.0,1.0,0.0,1.0,D,A/D
+498713,Real Betis Balompié,Club Atlético de Madrid,Primera Division,2024-10-27 17:30:00+00:00,FINISHED,1.0,0.0,1.0,0.0,H,H/H
+498719,Real Sociedad de Fútbol,CA Osasuna,Primera Division,2024-10-27 20:00:00+00:00,FINISHED,0.0,2.0,0.0,2.0,A,A/A
+498717,RCD Mallorca,Athletic Club,Primera Division,2024-10-28 20:00:00+00:00,FINISHED,0.0,0.0,0.0,0.0,D,D/D
+498727,Deportivo Alavés,RCD Mallorca,Primera Division,2024-11-01 20:00:00+00:00,FINISHED,1.0,0.0,0.0,0.0,H,D/H
+498725,CA Osasuna,Real Valladolid CF,Primera Division,2024-11-02 13:00:00+00:00,FINISHED,1.0,0.0,1.0,0.0,H,H/H
+498728,Girona FC,CD Leganés,Primera Division,2024-11-02 15:15:00+00:00,FINISHED,4.0,3.0,2.0,2.0,H,D/H
+498724,Club Atlético de Madrid,UD Las Palmas,Primera Division,2024-11-03 13:00:00+00:00,FINISHED,2.0,0.0,1.0,0.0,H,H/H
+498732,FC Barcelona,RCD Espanyol de Barcelona,Primera Division,2024-11-03 15:15:00+00:00,FINISHED,3.0,1.0,3.0,0.0,H,H/H
+498729,Sevilla FC,Real Sociedad de Fútbol,Primera Division,2024-11-03 17:30:00+00:00,FINISHED,0.0,2.0,0.0,1.0,A,A/A
+498723,Athletic Club,Real Betis Balompié,Primera Division,2024-11-03 20:00:00+00:00,FINISHED,1.0,1.0,0.0,0.0,D,D/D
+498726,RC Celta de Vigo,Getafe CF,Primera Division,2024-11-04 20:00:00+00:00,FINISHED,1.0,0.0,1.0,0.0,H,H/H
+498737,Rayo Vallecano de Madrid,UD Las Palmas,Primera Division,2024-11-08 20:00:00+00:00,FINISHED,1.0,3.0,0.0,1.0,A,A/A
+498739,Real Madrid CF,CA Osasuna,Primera Division,2024-11-09 13:00:00+00:00,FINISHED,4.0,0.0,2.0,0.0,H,H/H
+498736,Villarreal CF,Deportivo Alavés,Primera Division,2024-11-09 15:15:00+00:00,FINISHED,3.0,0.0,1.0,0.0,H,H/H
+498734,CD Leganés,Sevilla FC,Primera Division,2024-11-09 20:00:00+00:00,FINISHED,1.0,0.0,0.0,0.0,H,D/H
+498733,Real Betis Balompié,RC Celta de Vigo,Primera Division,2024-11-10 13:00:00+00:00,FINISHED,2.0,2.0,1.0,1.0,D,D/D
+498738,RCD Mallorca,Club Atlético de Madrid,Primera Division,2024-11-10 15:15:00+00:00,FINISHED,0.0,1.0,0.0,0.0,A,D/A
+498735,Getafe CF,Girona FC,Primera Division,2024-11-10 17:30:00+00:00,FINISHED,0.0,1.0,0.0,1.0,A,A/A
+498741,Real Valladolid CF,Athletic Club,Primera Division,2024-11-10 17:30:00+00:00,FINISHED,1.0,1.0,0.0,0.0,D,D/D
+498740,Real Sociedad de Fútbol,FC Barcelona,Primera Division,2024-11-10 20:00:00+00:00,FINISHED,1.0,0.0,1.0,0.0,H,H/H
+498748,Getafe CF,Real Valladolid CF,Primera Division,2024-11-22 20:00:00+00:00,FINISHED,2.0,0.0,0.0,0.0,H,D/H
+498750,Valencia CF,Real Betis Balompié,Primera Division,2024-11-23 13:00:00+00:00,FINISHED,4.0,2.0,1.0,1.0,H,D/H
+498744,Club Atlético de Madrid,Deportivo Alavés,Primera Division,2024-11-23 15:15:00+00:00,FINISHED,2.0,1.0,0.0,1.0,H,A/H
+498751,UD Las Palmas,RCD Mallorca,Primera Division,2024-11-23 17:30:00+00:00,FINISHED,2.0,3.0,0.0,0.0,A,D/A
+498752,Girona FC,RCD Espanyol de Barcelona,Primera Division,2024-11-23 17:30:00+00:00,FINISHED,4.0,1.0,4.0,0.0,H,H/H
+498747,RC Celta de Vigo,FC Barcelona,Primera Division,2024-11-23 20:00:00+00:00,FINISHED,2.0,2.0,0.0,1.0,D,A/D
+498745,CA Osasuna,Villarreal CF,Primera Division,2024-11-24 13:00:00+00:00,FINISHED,2.0,2.0,2.0,0.0,D,H/D
+498749,Sevilla FC,Rayo Vallecano de Madrid,Primera Division,2024-11-24 15:15:00+00:00,FINISHED,1.0,0.0,1.0,0.0,H,H/H
+498746,CD Leganés,Real Madrid CF,Primera Division,2024-11-24 17:30:00+00:00,FINISHED,0.0,3.0,0.0,1.0,A,A/A
+498743,Athletic Club,Real Sociedad de Fútbol,Primera Division,2024-11-24 20:00:00+00:00,FINISHED,1.0,0.0,1.0,0.0,H,H/H
+498758,RCD Mallorca,Valencia CF,Primera Division,2024-11-29 20:00:00+00:00,FINISHED,2.0,1.0,1.0,1.0,H,D/H
+498754,FC Barcelona,UD Las Palmas,Primera Division,2024-11-30 13:00:00+00:00,FINISHED,1.0,2.0,0.0,0.0,A,D/A
+498753,Deportivo Alavés,CD Leganés,Primera Division,2024-11-30 15:15:00+00:00,FINISHED,1.0,1.0,0.0,0.0,D,D/D
+498762,RCD Espanyol de Barcelona,RC Celta de Vigo,Primera Division,2024-11-30 17:30:00+00:00,FINISHED,3.0,1.0,1.0,0.0,H,H/H
+498761,Real Valladolid CF,Club Atlético de Madrid,Primera Division,2024-11-30 20:00:00+00:00,FINISHED,0.0,5.0,0.0,3.0,A,A/A
+498756,Villarreal CF,Girona FC,Primera Division,2024-12-01 13:00:00+00:00,FINISHED,2.0,2.0,1.0,0.0,D,H/D
+498759,Real Madrid CF,Getafe CF,Primera Division,2024-12-01 15:15:00+00:00,FINISHED,2.0,0.0,2.0,0.0,H,H/H
+498757,Rayo Vallecano de Madrid,Athletic Club,Primera Division,2024-12-01 17:30:00+00:00,FINISHED,1.0,2.0,1.0,0.0,A,H/A
+498760,Real Sociedad de Fútbol,Real Betis Balompié,Primera Division,2024-12-01 20:00:00+00:00,FINISHED,2.0,0.0,2.0,0.0,H,H/H
+498755,Sevilla FC,CA Osasuna,Primera Division,2024-12-02 20:00:00+00:00,FINISHED,1.0,1.0,0.0,0.0,D,D/D
+498798,RCD Mallorca,FC Barcelona,Primera Division,2024-12-03 18:00:00+00:00,FINISHED,1.0,5.0,1.0,1.0,A,D/A
+498793,Athletic Club,Real Madrid CF,Primera Division,2024-12-04 20:00:00+00:00,FINISHED,2.0,1.0,0.0,0.0,H,D/H
+498768,RC Celta de Vigo,RCD Mallorca,Primera Division,2024-12-06 20:00:00+00:00,FINISHED,2.0,0.0,1.0,0.0,H,H/H
+498771,UD Las Palmas,Real Valladolid CF,Primera Division,2024-12-07 13:00:00+00:00,FINISHED,2.0,1.0,1.0,1.0,H,D/H
+498765,Real Betis Balompié,FC Barcelona,Primera Division,2024-12-07 15:15:00+00:00,FINISHED,2.0,2.0,0.0,1.0,D,A/D
+498770,Valencia CF,Rayo Vallecano de Madrid,Primera Division,2024-12-07 17:30:00+00:00,FINISHED,0.0,1.0,0.0,1.0,A,A/A
+498769,Girona FC,Real Madrid CF,Primera Division,2024-12-07 20:00:00+00:00,FINISHED,0.0,3.0,0.0,1.0,A,A/A
+498767,CD Leganés,Real Sociedad de Fútbol,Primera Division,2024-12-08 13:00:00+00:00,FINISHED,0.0,3.0,0.0,1.0,A,A/A
+498763,Athletic Club,Villarreal CF,Primera Division,2024-12-08 15:15:00+00:00,FINISHED,2.0,0.0,1.0,0.0,H,H/H
+498766,CA Osasuna,Deportivo Alavés,Primera Division,2024-12-08 17:30:00+00:00,FINISHED,2.0,2.0,0.0,1.0,D,A/D
+498764,Club Atlético de Madrid,Sevilla FC,Primera Division,2024-12-08 20:00:00+00:00,FINISHED,4.0,3.0,1.0,2.0,H,A/H
+498772,Getafe CF,RCD Espanyol de Barcelona,Primera Division,2024-12-09 20:00:00+00:00,FINISHED,1.0,0.0,1.0,0.0,H,H/H
+498781,Real Valladolid CF,Valencia CF,Primera Division,2024-12-13 20:00:00+00:00,FINISHED,1.0,0.0,1.0,0.0,H,H/H
+498782,RCD Espanyol de Barcelona,CA Osasuna,Primera Division,2024-12-14 13:00:00+00:00,FINISHED,0.0,0.0,0.0,0.0,D,D/D
+498779,RCD Mallorca,Girona FC,Primera Division,2024-12-14 15:15:00+00:00,FINISHED,2.0,1.0,1.0,1.0,H,D/H
+498776,Sevilla FC,RC Celta de Vigo,Primera Division,2024-12-14 17:30:00+00:00,FINISHED,1.0,0.0,0.0,0.0,H,D/H
+498778,Rayo Vallecano de Madrid,Real Madrid CF,Primera Division,2024-12-14 20:00:00+00:00,FINISHED,3.0,3.0,2.0,2.0,D,D/D
+498773,Club Atlético de Madrid,Getafe CF,Primera Division,2024-12-15 13:00:00+00:00,FINISHED,1.0,0.0,0.0,0.0,H,D/H
+498774,Deportivo Alavés,Athletic Club,Primera Division,2024-12-15 15:15:00+00:00,FINISHED,1.0,1.0,0.0,1.0,D,A/D
+498777,Villarreal CF,Real Betis Balompié,Primera Division,2024-12-15 17:30:00+00:00,FINISHED,1.0,2.0,0.0,1.0,A,A/A
+498780,Real Sociedad de Fútbol,UD Las Palmas,Primera Division,2024-12-15 17:30:00+00:00,FINISHED,0.0,0.0,0.0,0.0,D,D/D
+498775,FC Barcelona,CD Leganés,Primera Division,2024-12-15 20:00:00+00:00,FINISHED,0.0,1.0,0.0,1.0,A,A/A
+498731,Villarreal CF,Rayo Vallecano de Madrid,Primera Division,2024-12-18 20:30:00+00:00,FINISHED,1.0,1.0,1.0,1.0,D,D/D
+498742,RCD Espanyol de Barcelona,Valencia CF,Primera Division,2024-12-18 20:30:00+00:00,FINISHED,1.0,1.0,1.0,0.0,D,H/D
+498789,Girona FC,Real Valladolid CF,Primera Division,2024-12-20 20:00:00+00:00,FINISHED,3.0,0.0,2.0,0.0,H,H/H
+498788,Getafe CF,RCD Mallorca,Primera Division,2024-12-21 13:00:00+00:00,FINISHED,0.0,1.0,0.0,0.0,A,D/A
+498786,RC Celta de Vigo,Real Sociedad de Fútbol,Primera Division,2024-12-21 15:15:00+00:00,FINISHED,2.0,0.0,2.0,0.0,H,H/H
+498784,CA Osasuna,Athletic Club,Primera Division,2024-12-21 17:30:00+00:00,FINISHED,1.0,2.0,1.0,1.0,A,D/A
+498787,FC Barcelona,Club Atlético de Madrid,Primera Division,2024-12-21 20:00:00+00:00,FINISHED,1.0,2.0,1.0,0.0,A,H/A
+498790,Valencia CF,Deportivo Alavés,Primera Division,2024-12-22 13:00:00+00:00,FINISHED,2.0,2.0,0.0,1.0,D,A/D
+498791,Real Madrid CF,Sevilla FC,Primera Division,2024-12-22 15:15:00+00:00,FINISHED,4.0,2.0,3.0,1.0,H,H/H
+498785,CD Leganés,Villarreal CF,Primera Division,2024-12-22 17:30:00+00:00,FINISHED,2.0,5.0,2.0,2.0,A,D/A
+498792,UD Las Palmas,RCD Espanyol de Barcelona,Primera Division,2024-12-22 17:30:00+00:00,FINISHED,1.0,0.0,0.0,0.0,H,D/H
+498783,Real Betis Balompié,Rayo Vallecano de Madrid,Primera Division,2024-12-22 20:00:00+00:00,FINISHED,1.0,1.0,1.0,0.0,D,H/D
+498730,Valencia CF,Real Madrid CF,Primera Division,2025-01-03 20:00:00+00:00,FINISHED,1.0,2.0,1.0,0.0,A,H/A
+498797,Rayo Vallecano de Madrid,RC Celta de Vigo,Primera Division,2025-01-10 20:00:00+00:00,FINISHED,2.0,1.0,1.0,1.0,H,D/H
+498795,Deportivo Alavés,Girona FC,Primera Division,2025-01-11 13:00:00+00:00,FINISHED,0.0,1.0,0.0,0.0,A,D/A
+498800,Real Valladolid CF,Real Betis Balompié,Primera Division,2025-01-11 15:15:00+00:00,FINISHED,1.0,0.0,0.0,0.0,H,D/H
+498802,RCD Espanyol de Barcelona,CD Leganés,Primera Division,2025-01-11 17:30:00+00:00,FINISHED,1.0,1.0,1.0,1.0,D,D/D
+498796,Sevilla FC,Valencia CF,Primera Division,2025-01-11 20:00:00+00:00,FINISHED,1.0,1.0,0.0,0.0,D,D/D
+498801,UD Las Palmas,Getafe CF,Primera Division,2025-01-12 13:00:00+00:00,FINISHED,1.0,2.0,0.0,0.0,A,D/A
+498794,Club Atlético de Madrid,CA Osasuna,Primera Division,2025-01-12 15:15:00+00:00,FINISHED,1.0,0.0,0.0,0.0,H,D/H
+498799,Real Sociedad de Fútbol,Villarreal CF,Primera Division,2025-01-13 20:00:00+00:00,FINISHED,1.0,0.0,0.0,0.0,H,D/H
+498812,RCD Espanyol de Barcelona,Real Valladolid CF,Primera Division,2025-01-17 20:00:00+00:00,FINISHED,2.0,1.0,1.0,0.0,H,H/H
+498808,Girona FC,Sevilla FC,Primera Division,2025-01-18 13:00:00+00:00,FINISHED,1.0,2.0,1.0,0.0,A,H/A
+498805,CD Leganés,Club Atlético de Madrid,Primera Division,2025-01-18 15:15:00+00:00,FINISHED,1.0,0.0,0.0,0.0,H,D/H
+498803,Real Betis Balompié,Deportivo Alavés,Primera Division,2025-01-18 17:30:00+00:00,FINISHED,1.0,3.0,1.0,1.0,A,D/A
+498807,Getafe CF,FC Barcelona,Primera Division,2025-01-18 20:00:00+00:00,FINISHED,1.0,1.0,1.0,1.0,D,D/D
+498806,RC Celta de Vigo,Athletic Club,Primera Division,2025-01-19 13:00:00+00:00,FINISHED,1.0,2.0,0.0,0.0,A,D/A
+498811,Real Madrid CF,UD Las Palmas,Primera Division,2025-01-19 15:15:00+00:00,FINISHED,4.0,1.0,3.0,1.0,H,H/H
+498804,CA Osasuna,Rayo Vallecano de Madrid,Primera Division,2025-01-19 17:30:00+00:00,FINISHED,1.0,1.0,0.0,1.0,D,A/D
+498809,Valencia CF,Real Sociedad de Fútbol,Primera Division,2025-01-19 20:00:00+00:00,FINISHED,1.0,0.0,1.0,0.0,H,H/H
+498810,Villarreal CF,RCD Mallorca,Primera Division,2025-01-20 20:00:00+00:00,FINISHED,4.0,0.0,4.0,0.0,H,H/H
+498821,UD Las Palmas,CA Osasuna,Primera Division,2025-01-24 20:00:00+00:00,FINISHED,1.0,1.0,0.0,0.0,D,D/D
+498818,RCD Mallorca,Real Betis Balompié,Primera Division,2025-01-25 13:00:00+00:00,FINISHED,0.0,1.0,0.0,0.0,A,D/A
+498814,Club Atlético de Madrid,Villarreal CF,Primera Division,2025-01-25 15:15:00+00:00,FINISHED,1.0,1.0,0.0,1.0,D,A/D
+498822,Sevilla FC,RCD Espanyol de Barcelona,Primera Division,2025-01-25 17:30:00+00:00,FINISHED,1.0,1.0,0.0,1.0,D,A/D
+498820,Real Valladolid CF,Real Madrid CF,Primera Division,2025-01-25 20:00:00+00:00,FINISHED,0.0,3.0,0.0,1.0,A,A/A
+498817,Rayo Vallecano de Madrid,Girona FC,Primera Division,2025-01-26 13:00:00+00:00,FINISHED,2.0,1.0,0.0,0.0,H,D/H
+498819,Real Sociedad de Fútbol,Getafe CF,Primera Division,2025-01-26 15:15:00+00:00,FINISHED,0.0,3.0,0.0,0.0,A,D/A
+498813,Athletic Club,CD Leganés,Primera Division,2025-01-26 17:30:00+00:00,FINISHED,0.0,0.0,0.0,0.0,D,D/D
+498816,FC Barcelona,Valencia CF,Primera Division,2025-01-26 20:00:00+00:00,FINISHED,7.0,1.0,5.0,0.0,H,H/H
+498815,Deportivo Alavés,RC Celta de Vigo,Primera Division,2025-01-27 20:00:00+00:00,FINISHED,1.0,1.0,1.0,0.0,D,H/D
+498826,CD Leganés,Rayo Vallecano de Madrid,Primera Division,2025-01-31 20:00:00+00:00,FINISHED,0.0,1.0,0.0,0.0,A,D/A
+498828,Getafe CF,Sevilla FC,Primera Division,2025-02-01 13:00:00+00:00,FINISHED,0.0,0.0,0.0,0.0,D,D/D
+498831,Villarreal CF,Real Valladolid CF,Primera Division,2025-02-01 15:15:00+00:00,FINISHED,5.0,1.0,1.0,0.0,H,H/H
+498823,Club Atlético de Madrid,RCD Mallorca,Primera Division,2025-02-01 17:30:00+00:00,FINISHED,2.0,0.0,1.0,0.0,H,H/H
+498832,RCD Espanyol de Barcelona,Real Madrid CF,Primera Division,2025-02-01 20:00:00+00:00,FINISHED,1.0,0.0,0.0,0.0,H,D/H
+498827,FC Barcelona,Deportivo Alavés,Primera Division,2025-02-02 13:00:00+00:00,FINISHED,1.0,0.0,0.0,0.0,H,D/H
+498830,Valencia CF,RC Celta de Vigo,Primera Division,2025-02-02 15:15:00+00:00,FINISHED,2.0,1.0,1.0,0.0,H,H/H
+498825,CA Osasuna,Real Sociedad de Fútbol,Primera Division,2025-02-02 17:30:00+00:00,FINISHED,2.0,1.0,1.0,0.0,H,H/H
+498824,Real Betis Balompié,Athletic Club,Primera Division,2025-02-02 20:00:00+00:00,FINISHED,2.0,2.0,2.0,1.0,D,H/D
+498829,Girona FC,UD Las Palmas,Primera Division,2025-02-03 20:00:00+00:00,FINISHED,2.0,1.0,1.0,0.0,H,H/H
+498838,Rayo Vallecano de Madrid,Real Valladolid CF,Primera Division,2025-02-07 20:00:00+00:00,FINISHED,1.0,0.0,0.0,0.0,H,D/H
+498834,RC Celta de Vigo,Real Betis Balompié,Primera Division,2025-02-08 13:00:00+00:00,FINISHED,3.0,2.0,0.0,2.0,H,A/H
+498833,Athletic Club,Girona FC,Primera Division,2025-02-08 15:15:00+00:00,FINISHED,3.0,0.0,2.0,0.0,H,H/H
+498841,UD Las Palmas,Villarreal CF,Primera Division,2025-02-08 17:30:00+00:00,FINISHED,1.0,2.0,0.0,0.0,A,D/A
+498840,Real Madrid CF,Club Atlético de Madrid,Primera Division,2025-02-08 20:00:00+00:00,FINISHED,1.0,1.0,0.0,1.0,D,A/D
+498835,Deportivo Alavés,Getafe CF,Primera Division,2025-02-09 13:00:00+00:00,FINISHED,0.0,1.0,0.0,1.0,A,A/A
+498837,Valencia CF,CD Leganés,Primera Division,2025-02-09 15:15:00+00:00,FINISHED,2.0,0.0,2.0,0.0,H,H/H
+498842,Real Sociedad de Fútbol,RCD Espanyol de Barcelona,Primera Division,2025-02-09 17:30:00+00:00,FINISHED,2.0,1.0,1.0,0.0,H,H/H
+498836,Sevilla FC,FC Barcelona,Primera Division,2025-02-09 20:00:00+00:00,FINISHED,1.0,4.0,1.0,1.0,A,D/A
+498839,RCD Mallorca,CA Osasuna,Primera Division,2025-02-10 20:00:00+00:00,FINISHED,1.0,1.0,0.0,0.0,D,D/D
+498848,Girona FC,Getafe CF,Primera Division,2025-02-14 20:00:00+00:00,FINISHED,1.0,2.0,0.0,1.0,A,A/A
+498846,CD Leganés,Deportivo Alavés,Primera Division,2025-02-15 13:00:00+00:00,FINISHED,3.0,3.0,2.0,1.0,D,H/D
+498845,CA Osasuna,Real Madrid CF,Primera Division,2025-02-15 15:15:00+00:00,FINISHED,1.0,1.0,0.0,1.0,D,A/D
+498843,Club Atlético de Madrid,RC Celta de Vigo,Primera Division,2025-02-15 17:30:00+00:00,FINISHED,1.0,1.0,0.0,0.0,D,D/D
+498849,Villarreal CF,Valencia CF,Primera Division,2025-02-15 20:00:00+00:00,FINISHED,1.0,1.0,1.0,0.0,D,H/D
+498852,RCD Espanyol de Barcelona,Athletic Club,Primera Division,2025-02-16 13:00:00+00:00,FINISHED,1.0,1.0,0.0,0.0,D,D/D
+498851,Real Valladolid CF,Sevilla FC,Primera Division,2025-02-16 15:15:00+00:00,FINISHED,0.0,4.0,0.0,2.0,A,A/A
+498850,RCD Mallorca,UD Las Palmas,Primera Division,2025-02-16 17:30:00+00:00,FINISHED,3.0,1.0,3.0,0.0,H,H/H
+498844,Real Betis Balompié,Real Sociedad de Fútbol,Primera Division,2025-02-16 20:00:00+00:00,FINISHED,3.0,0.0,0.0,0.0,H,D/H
+498847,FC Barcelona,Rayo Vallecano de Madrid,Primera Division,2025-02-17 20:00:00+00:00,FINISHED,1.0,0.0,1.0,0.0,H,H/H
+498854,RC Celta de Vigo,CA Osasuna,Primera Division,2025-02-21 20:00:00+00:00,FINISHED,1.0,0.0,0.0,0.0,H,D/H
+498862,Deportivo Alavés,RCD Espanyol de Barcelona,Primera Division,2025-02-22 13:00:00+00:00,FINISHED,0.0,1.0,0.0,0.0,A,D/A
+498858,Rayo Vallecano de Madrid,Villarreal CF,Primera Division,2025-02-22 15:15:00+00:00,FINISHED,0.0,1.0,0.0,0.0,A,D/A
+498857,Valencia CF,Club Atlético de Madrid,Primera Division,2025-02-22 17:30:00+00:00,FINISHED,0.0,3.0,0.0,2.0,A,A/A
+498861,UD Las Palmas,FC Barcelona,Primera Division,2025-02-22 20:00:00+00:00,FINISHED,0.0,2.0,0.0,0.0,A,D/A
+498853,Athletic Club,Real Valladolid CF,Primera Division,2025-02-23 13:00:00+00:00,FINISHED,7.0,1.0,4.0,0.0,H,H/H
+498859,Real Madrid CF,Girona FC,Primera Division,2025-02-23 15:15:00+00:00,FINISHED,2.0,0.0,1.0,0.0,H,H/H
+498855,Getafe CF,Real Betis Balompié,Primera Division,2025-02-23 17:30:00+00:00,FINISHED,1.0,2.0,0.0,1.0,A,A/A
+498860,Real Sociedad de Fútbol,CD Leganés,Primera Division,2025-02-23 20:00:00+00:00,FINISHED,3.0,0.0,1.0,0.0,H,H/H
+498856,Sevilla FC,RCD Mallorca,Primera Division,2025-02-24 20:00:00+00:00,FINISHED,1.0,1.0,1.0,0.0,D,H/D
+498871,Real Valladolid CF,UD Las Palmas,Primera Division,2025-02-28 20:00:00+00:00,FINISHED,1.0,1.0,0.0,1.0,D,A/D
+498868,Girona FC,RC Celta de Vigo,Primera Division,2025-03-01 13:00:00+00:00,FINISHED,2.0,2.0,1.0,1.0,D,D/D
+498869,Rayo Vallecano de Madrid,Sevilla FC,Primera Division,2025-03-01 15:15:00+00:00,FINISHED,1.0,1.0,0.0,0.0,D,D/D
+498864,Real Betis Balompié,Real Madrid CF,Primera Division,2025-03-01 17:30:00+00:00,FINISHED,2.0,1.0,1.0,1.0,H,D/H
+498863,Club Atlético de Madrid,Athletic Club,Primera Division,2025-03-01 20:00:00+00:00,FINISHED,1.0,0.0,0.0,0.0,H,D/H
+498866,CD Leganés,Getafe CF,Primera Division,2025-03-02 13:00:00+00:00,TIMED,,,,,,
+498867,FC Barcelona,Real Sociedad de Fútbol,Primera Division,2025-03-02 15:15:00+00:00,TIMED,,,,,,
+498870,RCD Mallorca,Deportivo Alavés,Primera Division,2025-03-02 17:30:00+00:00,TIMED,,,,,,
+498865,CA Osasuna,Valencia CF,Primera Division,2025-03-02 20:00:00+00:00,TIMED,,,,,,
+498872,Villarreal CF,RCD Espanyol de Barcelona,Primera Division,2025-03-03 20:00:00+00:00,TIMED,,,,,,
+498875,RC Celta de Vigo,CD Leganés,Primera Division,2025-03-08 13:00:00+00:00,TIMED,,,,,,
+498876,Deportivo Alavés,Villarreal CF,Primera Division,2025-03-08 15:15:00+00:00,TIMED,,,,,,
+498879,Valencia CF,Real Valladolid CF,Primera Division,2025-03-08 17:30:00+00:00,TIMED,,,,,,
+498877,FC Barcelona,CA Osasuna,Primera Division,2025-03-08 20:00:00+00:00,TIMED,,,,,,
+498878,Getafe CF,Club Atlético de Madrid,Primera Division,2025-03-09 13:00:00+00:00,TIMED,,,,,,
+498880,Real Madrid CF,Rayo Vallecano de Madrid,Primera Division,2025-03-09 15:15:00+00:00,TIMED,,,,,,
+498873,Athletic Club,RCD Mallorca,Primera Division,2025-03-09 17:30:00+00:00,TIMED,,,,,,
+498874,Real Betis Balompié,UD Las Palmas,Primera Division,2025-03-09 17:30:00+00:00,TIMED,,,,,,
+498881,Real Sociedad de Fútbol,Sevilla FC,Primera Division,2025-03-09 20:00:00+00:00,TIMED,,,,,,
+498882,RCD Espanyol de Barcelona,Girona FC,Primera Division,2025-03-10 20:00:00+00:00,TIMED,,,,,,
+498891,UD Las Palmas,Deportivo Alavés,Primera Division,2025-03-14 20:00:00+00:00,TIMED,,,,,,
+498890,Real Valladolid CF,RC Celta de Vigo,Primera Division,2025-03-15 13:00:00+00:00,TIMED,,,,,,
+498892,RCD Mallorca,RCD Espanyol de Barcelona,Primera Division,2025-03-15 15:15:00+00:00,TIMED,,,,,,
+498888,Villarreal CF,Real Madrid CF,Primera Division,2025-03-15 17:30:00+00:00,TIMED,,,,,,
+498886,Girona FC,Valencia CF,Primera Division,2025-03-15 20:00:00+00:00,TIMED,,,,,,
+498885,CD Leganés,Real Betis Balompié,Primera Division,2025-03-16 13:00:00+00:00,TIMED,,,,,,
+498887,Sevilla FC,Athletic Club,Primera Division,2025-03-16 15:15:00+00:00,TIMED,,,,,,
+498884,CA Osasuna,Getafe CF,Primera Division,2025-03-16 17:30:00+00:00,TIMED,,,,,,
+498889,Rayo Vallecano de Madrid,Real Sociedad de Fútbol,Primera Division,2025-03-16 17:30:00+00:00,TIMED,,,,,,
+498883,Club Atlético de Madrid,FC Barcelona,Primera Division,2025-03-16 20:00:00+00:00,TIMED,,,,,,
+498893,Athletic Club,CA Osasuna,Primera Division,2025-03-30 00:00:00+00:00,SCHEDULED,,,,,,
+498894,Real Betis Balompié,Sevilla FC,Primera Division,2025-03-30 00:00:00+00:00,SCHEDULED,,,,,,
+498895,RC Celta de Vigo,UD Las Palmas,Primera Division,2025-03-30 00:00:00+00:00,SCHEDULED,,,,,,
+498896,Deportivo Alavés,Rayo Vallecano de Madrid,Primera Division,2025-03-30 00:00:00+00:00,SCHEDULED,,,,,,
+498897,FC Barcelona,Girona FC,Primera Division,2025-03-30 00:00:00+00:00,SCHEDULED,,,,,,
+498898,Getafe CF,Villarreal CF,Primera Division,2025-03-30 00:00:00+00:00,SCHEDULED,,,,,,
+498899,Valencia CF,RCD Mallorca,Primera Division,2025-03-30 00:00:00+00:00,SCHEDULED,,,,,,
+498900,Real Madrid CF,CD Leganés,Primera Division,2025-03-30 00:00:00+00:00,SCHEDULED,,,,,,
+498901,Real Sociedad de Fútbol,Real Valladolid CF,Primera Division,2025-03-30 00:00:00+00:00,SCHEDULED,,,,,,
+498902,RCD Espanyol de Barcelona,Club Atlético de Madrid,Primera Division,2025-03-30 00:00:00+00:00,SCHEDULED,,,,,,
+498903,CD Leganés,CA Osasuna,Primera Division,2025-04-06 00:00:00+00:00,SCHEDULED,,,,,,
+498904,FC Barcelona,Real Betis Balompié,Primera Division,2025-04-06 00:00:00+00:00,SCHEDULED,,,,,,
+498905,Girona FC,Deportivo Alavés,Primera Division,2025-04-06 00:00:00+00:00,SCHEDULED,,,,,,
+498906,Sevilla FC,Club Atlético de Madrid,Primera Division,2025-04-06 00:00:00+00:00,SCHEDULED,,,,,,
+498907,Villarreal CF,Athletic Club,Primera Division,2025-04-06 00:00:00+00:00,SCHEDULED,,,,,,
+498908,RCD Mallorca,RC Celta de Vigo,Primera Division,2025-04-06 00:00:00+00:00,SCHEDULED,,,,,,
+498909,Real Madrid CF,Valencia CF,Primera Division,2025-04-06 00:00:00+00:00,SCHEDULED,,,,,,
+498910,Real Valladolid CF,Getafe CF,Primera Division,2025-04-06 00:00:00+00:00,SCHEDULED,,,,,,
+498911,UD Las Palmas,Real Sociedad de Fútbol,Primera Division,2025-04-06 00:00:00+00:00,SCHEDULED,,,,,,
+498912,Rayo Vallecano de Madrid,RCD Espanyol de Barcelona,Primera Division,2025-04-06 00:00:00+00:00,SCHEDULED,,,,,,
+498913,Athletic Club,Rayo Vallecano de Madrid,Primera Division,2025-04-13 00:00:00+00:00,SCHEDULED,,,,,,
+498914,Club Atlético de Madrid,Real Valladolid CF,Primera Division,2025-04-13 00:00:00+00:00,SCHEDULED,,,,,,
+498915,Real Betis Balompié,Villarreal CF,Primera Division,2025-04-13 00:00:00+00:00,SCHEDULED,,,,,,
+498916,CA Osasuna,Girona FC,Primera Division,2025-04-13 00:00:00+00:00,SCHEDULED,,,,,,
+498917,CD Leganés,FC Barcelona,Primera Division,2025-04-13 00:00:00+00:00,SCHEDULED,,,,,,
+498918,Deportivo Alavés,Real Madrid CF,Primera Division,2025-04-13 00:00:00+00:00,SCHEDULED,,,,,,
+498919,Getafe CF,UD Las Palmas,Primera Division,2025-04-13 00:00:00+00:00,SCHEDULED,,,,,,
+498920,Valencia CF,Sevilla FC,Primera Division,2025-04-13 00:00:00+00:00,SCHEDULED,,,,,,
+498921,Real Sociedad de Fútbol,RCD Mallorca,Primera Division,2025-04-13 00:00:00+00:00,SCHEDULED,,,,,,
+498922,RC Celta de Vigo,RCD Espanyol de Barcelona,Primera Division,2025-04-13 00:00:00+00:00,SCHEDULED,,,,,,
+498923,FC Barcelona,RC Celta de Vigo,Primera Division,2025-04-20 00:00:00+00:00,SCHEDULED,,,,,,
+498924,Girona FC,Real Betis Balompié,Primera Division,2025-04-20 00:00:00+00:00,SCHEDULED,,,,,,
+498925,Sevilla FC,Deportivo Alavés,Primera Division,2025-04-20 00:00:00+00:00,SCHEDULED,,,,,,
+498926,Villarreal CF,Real Sociedad de Fútbol,Primera Division,2025-04-20 00:00:00+00:00,SCHEDULED,,,,,,
+498927,Rayo Vallecano de Madrid,Valencia CF,Primera Division,2025-04-20 00:00:00+00:00,SCHEDULED,,,,,,
+498928,RCD Mallorca,CD Leganés,Primera Division,2025-04-20 00:00:00+00:00,SCHEDULED,,,,,,
+498929,Real Madrid CF,Athletic Club,Primera Division,2025-04-20 00:00:00+00:00,SCHEDULED,,,,,,
+498930,Real Valladolid CF,CA Osasuna,Primera Division,2025-04-20 00:00:00+00:00,SCHEDULED,,,,,,
+498931,UD Las Palmas,Club Atlético de Madrid,Primera Division,2025-04-20 00:00:00+00:00,SCHEDULED,,,,,,
+498932,RCD Espanyol de Barcelona,Getafe CF,Primera Division,2025-04-20 00:00:00+00:00,SCHEDULED,,,,,,
+498933,Athletic Club,UD Las Palmas,Primera Division,2025-04-23 00:00:00+00:00,SCHEDULED,,,,,,
+498934,Club Atlético de Madrid,Rayo Vallecano de Madrid,Primera Division,2025-04-23 00:00:00+00:00,SCHEDULED,,,,,,
+498935,Real Betis Balompié,Real Valladolid CF,Primera Division,2025-04-23 00:00:00+00:00,SCHEDULED,,,,,,
+498936,CA Osasuna,Sevilla FC,Primera Division,2025-04-23 00:00:00+00:00,SCHEDULED,,,,,,
+498937,CD Leganés,Girona FC,Primera Division,2025-04-23 00:00:00+00:00,SCHEDULED,,,,,,
+498938,RC Celta de Vigo,Villarreal CF,Primera Division,2025-04-23 00:00:00+00:00,SCHEDULED,,,,,,
+498939,Deportivo Alavés,Real Sociedad de Fútbol,Primera Division,2025-04-23 00:00:00+00:00,SCHEDULED,,,,,,
+498940,FC Barcelona,RCD Mallorca,Primera Division,2025-04-23 00:00:00+00:00,SCHEDULED,,,,,,
+498941,Getafe CF,Real Madrid CF,Primera Division,2025-04-23 00:00:00+00:00,SCHEDULED,,,,,,
+498942,Valencia CF,RCD Espanyol de Barcelona,Primera Division,2025-04-23 00:00:00+00:00,SCHEDULED,,,,,,
+498944,Girona FC,RCD Mallorca,Primera Division,2025-05-04 00:00:00+00:00,SCHEDULED,,,,,,
+498945,Sevilla FC,CD Leganés,Primera Division,2025-05-04 00:00:00+00:00,SCHEDULED,,,,,,
+498946,Villarreal CF,CA Osasuna,Primera Division,2025-05-04 00:00:00+00:00,SCHEDULED,,,,,,
+498947,Rayo Vallecano de Madrid,Getafe CF,Primera Division,2025-05-04 00:00:00+00:00,SCHEDULED,,,,,,
+498948,Real Madrid CF,RC Celta de Vigo,Primera Division,2025-05-04 00:00:00+00:00,SCHEDULED,,,,,,
+498949,Real Sociedad de Fútbol,Athletic Club,Primera Division,2025-05-04 00:00:00+00:00,SCHEDULED,,,,,,
+498950,Real Valladolid CF,FC Barcelona,Primera Division,2025-05-04 00:00:00+00:00,SCHEDULED,,,,,,
+498951,UD Las Palmas,Valencia CF,Primera Division,2025-05-04 00:00:00+00:00,SCHEDULED,,,,,,
+498952,RCD Espanyol de Barcelona,Real Betis Balompié,Primera Division,2025-05-04 00:00:00+00:00,SCHEDULED,,,,,,
+498943,Deportivo Alavés,Club Atlético de Madrid,Primera Division,2025-05-04 00:00:00+00:00,SCHEDULED,,,,,,
+498953,Athletic Club,Deportivo Alavés,Primera Division,2025-05-11 00:00:00+00:00,SCHEDULED,,,,,,
+498954,Club Atlético de Madrid,Real Sociedad de Fútbol,Primera Division,2025-05-11 00:00:00+00:00,SCHEDULED,,,,,,
+498955,Real Betis Balompié,CA Osasuna,Primera Division,2025-05-11 00:00:00+00:00,SCHEDULED,,,,,,
+498956,RC Celta de Vigo,Sevilla FC,Primera Division,2025-05-11 00:00:00+00:00,SCHEDULED,,,,,,
+498957,FC Barcelona,Real Madrid CF,Primera Division,2025-05-11 00:00:00+00:00,SCHEDULED,,,,,,
+498958,Girona FC,Villarreal CF,Primera Division,2025-05-11 00:00:00+00:00,SCHEDULED,,,,,,
+498959,Valencia CF,Getafe CF,Primera Division,2025-05-11 00:00:00+00:00,SCHEDULED,,,,,,
+498960,RCD Mallorca,Real Valladolid CF,Primera Division,2025-05-11 00:00:00+00:00,SCHEDULED,,,,,,
+498961,UD Las Palmas,Rayo Vallecano de Madrid,Primera Division,2025-05-11 00:00:00+00:00,SCHEDULED,,,,,,
+498962,CD Leganés,RCD Espanyol de Barcelona,Primera Division,2025-05-11 00:00:00+00:00,SCHEDULED,,,,,,
+498963,CA Osasuna,Club Atlético de Madrid,Primera Division,2025-05-14 00:00:00+00:00,SCHEDULED,,,,,,
+498964,Deportivo Alavés,Valencia CF,Primera Division,2025-05-14 00:00:00+00:00,SCHEDULED,,,,,,
+498965,Getafe CF,Athletic Club,Primera Division,2025-05-14 00:00:00+00:00,SCHEDULED,,,,,,
+498966,Sevilla FC,UD Las Palmas,Primera Division,2025-05-14 00:00:00+00:00,SCHEDULED,,,,,,
+498967,Villarreal CF,CD Leganés,Primera Division,2025-05-14 00:00:00+00:00,SCHEDULED,,,,,,
+498968,Rayo Vallecano de Madrid,Real Betis Balompié,Primera Division,2025-05-14 00:00:00+00:00,SCHEDULED,,,,,,
+498969,Real Madrid CF,RCD Mallorca,Primera Division,2025-05-14 00:00:00+00:00,SCHEDULED,,,,,,
+498970,Real Sociedad de Fútbol,RC Celta de Vigo,Primera Division,2025-05-14 00:00:00+00:00,SCHEDULED,,,,,,
+498971,Real Valladolid CF,Girona FC,Primera Division,2025-05-14 00:00:00+00:00,SCHEDULED,,,,,,
+498972,RCD Espanyol de Barcelona,FC Barcelona,Primera Division,2025-05-14 00:00:00+00:00,SCHEDULED,,,,,,
+498973,Club Atlético de Madrid,Real Betis Balompié,Primera Division,2025-05-18 00:00:00+00:00,SCHEDULED,,,,,,
+498974,RC Celta de Vigo,Rayo Vallecano de Madrid,Primera Division,2025-05-18 00:00:00+00:00,SCHEDULED,,,,,,
+498975,FC Barcelona,Villarreal CF,Primera Division,2025-05-18 00:00:00+00:00,SCHEDULED,,,,,,
+498976,Sevilla FC,Real Madrid CF,Primera Division,2025-05-18 00:00:00+00:00,SCHEDULED,,,,,,
+498977,Valencia CF,Athletic Club,Primera Division,2025-05-18 00:00:00+00:00,SCHEDULED,,,,,,
+498978,RCD Mallorca,Getafe CF,Primera Division,2025-05-18 00:00:00+00:00,SCHEDULED,,,,,,
+498979,Real Sociedad de Fútbol,Girona FC,Primera Division,2025-05-18 00:00:00+00:00,SCHEDULED,,,,,,
+498980,Real Valladolid CF,Deportivo Alavés,Primera Division,2025-05-18 00:00:00+00:00,SCHEDULED,,,,,,
+498981,UD Las Palmas,CD Leganés,Primera Division,2025-05-18 00:00:00+00:00,SCHEDULED,,,,,,
+498982,CA Osasuna,RCD Espanyol de Barcelona,Primera Division,2025-05-18 00:00:00+00:00,SCHEDULED,,,,,,
+498983,Athletic Club,FC Barcelona,Primera Division,2025-05-25 00:00:00+00:00,SCHEDULED,,,,,,
+498984,Real Betis Balompié,Valencia CF,Primera Division,2025-05-25 00:00:00+00:00,SCHEDULED,,,,,,
+498985,CD Leganés,Real Valladolid CF,Primera Division,2025-05-25 00:00:00+00:00,SCHEDULED,,,,,,
+498986,Deportivo Alavés,CA Osasuna,Primera Division,2025-05-25 00:00:00+00:00,SCHEDULED,,,,,,
+498987,Getafe CF,RC Celta de Vigo,Primera Division,2025-05-25 00:00:00+00:00,SCHEDULED,,,,,,
+498988,Girona FC,Club Atlético de Madrid,Primera Division,2025-05-25 00:00:00+00:00,SCHEDULED,,,,,,
+498989,Villarreal CF,Sevilla FC,Primera Division,2025-05-25 00:00:00+00:00,SCHEDULED,,,,,,
+498990,Rayo Vallecano de Madrid,RCD Mallorca,Primera Division,2025-05-25 00:00:00+00:00,SCHEDULED,,,,,,
+498991,Real Madrid CF,Real Sociedad de Fútbol,Primera Division,2025-05-25 00:00:00+00:00,SCHEDULED,,,,,,
+498992,RCD Espanyol de Barcelona,UD Las Palmas,Primera Division,2025-05-25 00:00:00+00:00,SCHEDULED,,,,,,
