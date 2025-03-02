@@ -1,8 +1,8 @@
 # 配置文件
 
 # API密钥
-FOOTBALL_DATA_API_KEY = "0a6f101f0e224b27bcdd066553355dc1"
-ODDS_API_KEY = "868202382ac70e56f4f78d182d88a544"
+FOOTBALL_DATA_API_KEY = ""
+ODDS_API_KEY = ""
 
 # 数据源配置
 FOOTBALL_DATA_BASE_URL = "https://api.football-data.org/v4"
