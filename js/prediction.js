@@ -10,16 +10,35 @@ function predictMatch(league_code, home_team, away_team, home_odds, draw_odds, a
         throw new Error(`找不到球队数据: ${home_team} 或 ${away_team}`);
     }
     
-    // 改进的概率计算，增加平局的权重
-    // 考虑球队的进攻和防守能力
-    const homeAttack = home_features.attack || home_features.home_goals_scored_avg || 1.5;
-    const homeDefense = home_features.defense || home_features.home_goals_conceded_avg || 1.2;
-    const awayAttack = away_features.attack || away_features.away_goals_scored_avg || 1.3;
-    const awayDefense = away_features.defense || away_features.away_goals_conceded_avg || 1.4;
+    // 更全面地利用球队特征数据
+    const homeAttack = calculateAttackStrength(home_features, true);
+    const homeDefense = calculateDefenseStrength(home_features, true);
+    const awayAttack = calculateAttackStrength(away_features, false);
+    const awayDefense = calculateDefenseStrength(away_features, false);
+    
+    // 考虑球队近期状态
+    const homeForm = calculateTeamForm(home_features);
+    const awayForm = calculateTeamForm(away_features);
+    
+    // 考虑历史交锋记录
+    const headToHeadFactor = calculateHeadToHeadFactor(home_team, away_team, league_code);
+    
+    // 联赛特定的主场优势
+    const leagueHomeAdvantage = {
+        'PL': 1.02,  // 英超
+        'PD': 1.00,  // 西甲
+        'SA': 1.02,  // 意甲
+        'BL1': 1.04, // 德甲
+        'FL1': 1.0  // 法甲
+    }[league_code] || 1.02;
     
     // 计算预期进球
-    const homeExpectedGoals = (homeAttack * 0.7 + awayDefense * 0.3) * 1.05; // 主场优势
-    const awayExpectedGoals = (awayAttack * 0.7 + homeDefense * 0.3) * 0.97; // 客场劣势
+    let homeExpectedGoals = homeAttack * 0.5 + awayDefense * 0.3 + homeForm * 0.1;
+    let awayExpectedGoals = awayAttack * 0.5 + homeDefense * 0.3 + awayForm * 0.1;
+    
+    // 应用主场优势和历史交锋因素
+    homeExpectedGoals *= leagueHomeAdvantage * headToHeadFactor.home;
+    awayExpectedGoals *= headToHeadFactor.away;
     
     // 使用泊松分布计算比分概率
     const maxGoals = 5;
@@ -198,4 +217,67 @@ function factorial(n) {
         result *= i;
     }
     return result;
+}
+
+/**
+ * 计算球队的进攻强度
+ */
+function calculateAttackStrength(features, isHome) {
+    if (isHome) {
+        // 主场进攻强度计算
+        return (
+            (features.home_goals_scored_avg || 1.3) * 0.4 +
+            (features.attack || 1.3) * 0.3 +
+            (features.recent_scoring_rate || 1.2) * 0.2 +
+            (features.xG || 1.2) * 0.1
+        );
+    } else {
+        // 客场进攻强度计算
+        return (
+            (features.away_goals_scored_avg || 1.1) * 0.4 +
+            (features.attack || 1.3) * 0.3 +
+            (features.recent_scoring_rate || 1.2) * 0.2 +
+            (features.xG || 1.2) * 0.1
+        );
+    }
+}
+
+/**
+ * 计算球队的防守强度
+ */
+function calculateDefenseStrength(features, isHome) {
+    if (isHome) {
+        // 主场防守强度计算
+        return (
+            (features.home_goals_conceded_avg || 1.1) * 0.4 +
+            (features.defense || 1.2) * 0.3 +
+            (features.recent_conceding_rate || 1.1) * 0.2 +
+            (features.xGA || 1.1) * 0.1
+        );
+    } else {
+        // 客场防守强度计算
+        return (
+            (features.away_goals_conceded_avg || 1.3) * 0.4 +
+            (features.defense || 1.2) * 0.3 +
+            (features.recent_conceding_rate || 1.1) * 0.2 +
+            (features.xGA || 1.1) * 0.1
+        );
+    }
+}
+
+/**
+ * 计算球队近期状态
+ */
+function calculateTeamForm(features) {
+    // 使用近期比赛结果计算状态
+    return (features.form || 1.0);
+}
+
+/**
+ * 计算历史交锋因素
+ */
+function calculateHeadToHeadFactor(home_team, away_team, league_code) {
+    // 这里需要实现获取历史交锋数据的逻辑
+    // 暂时返回默认值
+    return { home: 1.0, away: 1.0 };
 }
