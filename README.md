@@ -8,7 +8,28 @@
 
 ## 使用方法
 
-将需要预测的比赛信息放入matches.json并且输入赔率
+### 访问https://match-predict.vercel.app 进行预测，暂且支持英超，西甲，意甲
+
+### 本地部署
+
+1. 克隆项目到本地:
+   ```bash
+   git clone https://github.com/yourusername/football-prediction.git
+   cd football-prediction
+   ```
+
+2. 创建虚拟环境:
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # Windows: venv\Scripts\activate
+   ```
+
+3. 安装依赖:
+   ```bash
+   pip install -r requirements.txt
+   ```
+   
+4. 将需要预测的比赛信息放入matches.json并且输入赔率
 ```bash
     {
       "league_code": "PD",
