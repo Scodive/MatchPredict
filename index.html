@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>足球比赛预测系统</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
@@ -22,11 +22,11 @@
                         <label for="league-select">选择联赛:</label>
                         <select id="league-select">
                             <option value="">请选择联赛</option>
-                            <option value="PL">英超 (Premier League)</option>
-                            <option value="PD">西甲 (La Liga)</option>
-                            <option value="SA">意甲 (Serie A)</option>
-                            <option value="BL1">德甲 (Bundesliga)</option>
-                            <option value="FL1">法甲 (Ligue 1)</option>
+                            <option value="PL">英超</option>
+                            <option value="PD">西甲</option>
+                            <option value="SA">意甲</option>
+                            <option value="BL1">德甲</option>
+                            <option value="FL1">法甲</option>
                         </select>
                     </div>
 
@@ -34,13 +34,14 @@
                         <div class="form-group">
                             <label for="home-team-select">主队:</label>
                             <select id="home-team-select" disabled>
-                                <option value="">请先选择联赛</option>
+                                <option value="">请选择主队</option>
                             </select>
                         </div>
+                        
                         <div class="form-group">
                             <label for="away-team-select">客队:</label>
                             <select id="away-team-select" disabled>
-                                <option value="">请先选择联赛</option>
+                                <option value="">请选择客队</option>
                             </select>
                         </div>
                     </div>
@@ -50,31 +51,35 @@
                             <label for="home-odds">主胜赔率:</label>
                             <input type="number" id="home-odds" step="0.01" min="1.01" placeholder="例如: 2.10">
                         </div>
+                        
                         <div class="form-group">
                             <label for="draw-odds">平局赔率:</label>
                             <input type="number" id="draw-odds" step="0.01" min="1.01" placeholder="例如: 3.50">
                         </div>
+                        
                         <div class="form-group">
                             <label for="away-odds">客胜赔率:</label>
-                            <input type="number" id="away-odds" step="0.01" min="1.01" placeholder="例如: 3.20">
+                            <input type="number" id="away-odds" step="0.01" min="1.01" placeholder="例如: 2.80">
                         </div>
                     </div>
 
                     <button id="add-match-btn" class="btn primary-btn">
-                        <i class="fas fa-plus-circle"></i> 添加比赛
+                        <i class="fas fa-plus"></i> 添加比赛
                     </button>
                 </div>
             </section>
 
-            <section class="matches-list-section">
+            <section class="matches-section">
                 <h2>已添加比赛 <span id="match-count">(0)</span></h2>
                 <div id="matches-container" class="matches-container">
-                    <p class="empty-message">尚未添加任何比赛</p>
+                    <div class="empty-message">尚未添加任何比赛</div>
                 </div>
+                
                 <div class="action-buttons">
                     <button id="clear-matches-btn" class="btn secondary-btn" disabled>
-                        <i class="fas fa-trash-alt"></i> 清空比赛
+                        <i class="fas fa-trash"></i> 清空比赛
                     </button>
+                    
                     <button id="predict-btn" class="btn primary-btn" disabled>
                         <i class="fas fa-chart-line"></i> 开始预测
                     </button>
@@ -83,6 +88,7 @@
 
             <section id="results-section" class="results-section hidden">
                 <h2>预测结果</h2>
+                
                 <div class="tabs">
                     <button class="tab-btn active" data-tab="individual">单场预测</button>
                     <button class="tab-btn" data-tab="best-parlay">最佳串关</button>
@@ -96,7 +102,7 @@
                 </div>
                 
                 <div id="best-parlay-tab" class="tab-content">
-                    <div id="best-parlay-result" class="parlay-result">
+                    <div id="best-parlay-results" class="best-parlay-results">
                         <!-- 最佳串关结果将在这里动态生成 -->
                     </div>
                 </div>
@@ -119,7 +125,8 @@
         <p>正在分析数据，请稍候...</p>
     </div>
 
-    <link rel="stylesheet" href="style.css">
-    <script src="script.js"></script>
+    <script src="js/data.js"></script>
+    <script src="js/prediction.js"></script>
+    <script src="js/app.js"></script>
 </body>
 </html> 
