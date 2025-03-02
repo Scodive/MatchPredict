@@ -273,7 +273,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 const best_parlay = all_combinations.length > 0 ? all_combinations[0] : null;
                 
                 // 渲染结果
-                renderIndividualPredictions(individual_predictions);
+                displayIndividualResults(individual_predictions);
                 renderBestParlay(best_parlay);
                 renderAllParlays(all_combinations);
                 
@@ -293,74 +293,110 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // 渲染单场预测结果
-    function renderIndividualPredictions(predictions) {
+    function displayIndividualResults(predictions) {
         const container = document.getElementById('individual-results');
         container.innerHTML = '';
         
-        predictions.forEach((pred, index) => {
-            // 格式化结果名称
-            function formatResult(result) {
-                if (result === 'home') return '主胜';
-                if (result === 'draw') return '平局';
-                if (result === 'away') return '客胜';
-                return result;
+        predictions.forEach(prediction => {
+            const homeWinPercentage = (prediction.home_win_prob * 100).toFixed(1);
+            const drawPercentage = (prediction.draw_prob * 100).toFixed(1);
+            const awayWinPercentage = (prediction.away_win_prob * 100).toFixed(1);
+            
+            const bestBet = prediction.best_bet;
+            const bestEV = prediction.best_ev.toFixed(2);
+            
+            let bestBetText = '';
+            if (bestBet === 'home') {
+                bestBetText = `主胜 (${prediction.home_odds})`;
+            } else if (bestBet === 'draw') {
+                bestBetText = `平局 (${prediction.draw_odds})`;
+            } else {
+                bestBetText = `客胜 (${prediction.away_odds})`;
             }
             
-            // 创建投注选项HTML
-            let betsHTML = '';
-            pred.all_bets.forEach(([result, ev, odds, prob]) => {
-                const resultName = formatResult(result);
-                const evClass = ev > 0 ? 'positive-ev' : 'negative-ev';
-                
-                betsHTML += `
-                    <div class="bet-option ${result === pred.best_bet ? 'best-bet' : ''}">
-                        <div class="bet-name">${resultName}</div>
-                        <div class="bet-details">
-                            <span class="bet-odds">赔率: ${odds.toFixed(2)}</span>
-                            <span class="bet-prob">概率: ${(prob * 100).toFixed(1)}%</span>
-                            <span class="bet-ev ${evClass}">期望值: ${ev.toFixed(4)}</span>
-                        </div>
-                    </div>
-                `;
-            });
+            // 获取最可能的比分
+            const mostLikelyScore = prediction.most_likely_scores[0];
+            const mostLikelyScoreText = `${mostLikelyScore[0]} (${(mostLikelyScore[1] * 100).toFixed(1)}%)`;
             
-            const card = document.createElement('div');
-            card.className = 'prediction-card';
+            // 获取最可能的半场比分
+            const mostLikelyHTScore = prediction.most_likely_ht_scores[0];
+            const mostLikelyHTScoreText = `${mostLikelyHTScore[0]} (${(mostLikelyHTScore[1] * 100).toFixed(1)}%)`;
             
-            card.innerHTML = `
-                <div class="prediction-header">
-                    <h3>${pred.home_team} vs ${pred.away_team}</h3>
-                    <div class="match-number">比赛 #${index + 1}</div>
+            // 获取最可能的半全场结果
+            const mostLikelyHTFT = prediction.most_likely_htft[0];
+            let htftText = mostLikelyHTFT[0].replace('H', '主胜').replace('D', '平局').replace('A', '客胜');
+            htftText = `${htftText} (${(mostLikelyHTFT[1] * 100).toFixed(1)}%)`;
+            
+            // 获取最可能的总进球数
+            const mostLikelyTotalGoals = prediction.most_likely_total_goals[0];
+            const totalGoalsText = `${mostLikelyTotalGoals[0]} (${(mostLikelyTotalGoals[1] * 100).toFixed(1)}%)`;
+            
+            const resultCard = document.createElement('div');
+            resultCard.className = 'result-card';
+            
+            resultCard.innerHTML = `
+                <div class="match-info">
+                    <div class="league">${getLeagueName(prediction.league_code)}</div>
+                    <div class="teams">${prediction.home_team} vs ${prediction.away_team}</div>
                 </div>
-                <div class="prediction-content">
+                
+                <div class="prediction-details">
                     <div class="probabilities">
                         <div class="prob-item">
-                            <div class="prob-value">${(pred.home_win_prob * 100).toFixed(1)}%</div>
                             <div class="prob-label">主胜</div>
+                            <div class="prob-value">${homeWinPercentage}%</div>
                         </div>
                         <div class="prob-item">
-                            <div class="prob-value">${(pred.draw_prob * 100).toFixed(1)}%</div>
                             <div class="prob-label">平局</div>
+                            <div class="prob-value">${drawPercentage}%</div>
                         </div>
                         <div class="prob-item">
-                            <div class="prob-value">${(pred.away_win_prob * 100).toFixed(1)}%</div>
                             <div class="prob-label">客胜</div>
+                            <div class="prob-value">${awayWinPercentage}%</div>
                         </div>
                     </div>
-                    <div class="betting-options">
-                        <h4>投注选项</h4>
-                        ${betsHTML}
+                    
+                    <div class="detailed-predictions">
+                        <div class="detail-item">
+                            <div class="detail-label">最可能比分:</div>
+                            <div class="detail-value">${mostLikelyScoreText}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">最可能半场比分:</div>
+                            <div class="detail-value">${mostLikelyHTScoreText}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">最可能半全场:</div>
+                            <div class="detail-value">${htftText}</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">最可能总进球:</div>
+                            <div class="detail-value">${totalGoalsText}</div>
+                        </div>
                     </div>
-                    <div class="best-prediction">
-                        <div class="best-label">最佳投注</div>
-                        <div class="best-value">${formatResult(pred.best_bet)}</div>
-                        <div class="best-ev">期望值: ${pred.best_ev.toFixed(4)}</div>
+                    
+                    <div class="best-bet">
+                        <div class="bet-label">最佳投注:</div>
+                        <div class="bet-value">${bestBetText} (期望值: ${bestEV})</div>
                     </div>
                 </div>
             `;
             
-            container.appendChild(card);
+            container.appendChild(resultCard);
         });
+    }
+    
+    // 辅助函数：获取联赛名称
+    function getLeagueName(leagueCode) {
+        const leagueNames = {
+            'PL': '英超',
+            'PD': '西甲',
+            'SA': '意甲',
+            'BL1': '德甲',
+            'FL1': '法甲'
+        };
+        
+        return leagueNames[leagueCode] || leagueCode;
     }
     
     // 渲染最佳串关

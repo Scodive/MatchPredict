@@ -117,6 +117,127 @@ function predictMatch(league_code, home_team, away_team, home_odds, draw_odds, a
     // 按期望值排序
     allBets.sort((a, b) => b[1] - a[1]);
     
+    // 计算最可能的比分
+    const normalizedScoreProbs = {};
+    for (const [score, prob] of Object.entries(scoreProbs)) {
+        normalizedScoreProbs[score] = prob * normalizationFactor;
+    }
+    
+    // 按概率排序找出最可能的比分
+    const sortedScores = Object.entries(normalizedScoreProbs)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 3); // 取前三个最可能的比分
+    
+    // 计算半场比分
+    const halfTimeHomeExpectedGoals = homeExpectedGoals * 0.45; // 上半场进球通常少于下半场
+    const halfTimeAwayExpectedGoals = awayExpectedGoals * 0.45;
+    
+    const halfTimeScoreProbs = {};
+    let halfTimeTotalProb = 0;
+    
+    for (let i = 0; i <= 3; i++) { // 半场比分通常较低
+        for (let j = 0; j <= 3; j++) {
+            const homeProb = Math.exp(-halfTimeHomeExpectedGoals) * Math.pow(halfTimeHomeExpectedGoals, i) / factorial(i);
+            const awayProb = Math.exp(-halfTimeAwayExpectedGoals) * Math.pow(halfTimeAwayExpectedGoals, j) / factorial(j);
+            halfTimeScoreProbs[`${i}-${j}`] = homeProb * awayProb;
+            halfTimeTotalProb += homeProb * awayProb;
+        }
+    }
+    
+    // 归一化半场比分概率
+    const halfTimeNormalizationFactor = 1 / halfTimeTotalProb;
+    for (const score in halfTimeScoreProbs) {
+        halfTimeScoreProbs[score] *= halfTimeNormalizationFactor;
+    }
+    
+    // 找出最可能的半场比分
+    const sortedHalfTimeScores = Object.entries(halfTimeScoreProbs)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 3); // 取前三个最可能的半场比分
+    
+    // 计算半全场结果
+    const halfTimeFullTimeProbs = {};
+    
+    // 半场结果: 主胜(H)、平(D)、客胜(A)
+    // 全场结果: 主胜(H)、平(D)、客胜(A)
+    // 组合: HH, HD, HA, DH, DD, DA, AH, AD, AA
+    const halfTimeResults = ['H', 'D', 'A'];
+    const fullTimeResults = ['H', 'D', 'A'];
+    
+    // 计算半场结果概率
+    let halfTimeHomeWinProb = 0;
+    let halfTimeDrawProb = 0;
+    let halfTimeAwayWinProb = 0;
+    
+    for (const [score, prob] of Object.entries(halfTimeScoreProbs)) {
+        const [home, away] = score.split('-').map(Number);
+        
+        if (home > away) {
+            halfTimeHomeWinProb += prob;
+        } else if (home === away) {
+            halfTimeDrawProb += prob;
+        } else {
+            halfTimeAwayWinProb += prob;
+        }
+    }
+    
+    // 计算半全场组合概率
+    for (const ht of halfTimeResults) {
+        for (const ft of fullTimeResults) {
+            let htProb = 0;
+            let ftProb = 0;
+            
+            if (ht === 'H') htProb = halfTimeHomeWinProb;
+            else if (ht === 'D') htProb = halfTimeDrawProb;
+            else htProb = halfTimeAwayWinProb;
+            
+            if (ft === 'H') ftProb = adjustedHomeWinProb;
+            else if (ft === 'D') ftProb = adjustedDrawProb;
+            else ftProb = adjustedAwayWinProb;
+            
+            // 半全场结果不是完全独立的，需要调整
+            // 例如，半场领先的球队更可能赢得比赛
+            let adjustmentFactor = 1.0;
+            
+            if (ht === ft) {
+                adjustmentFactor = 1.4; // 半场和全场结果相同的概率更高
+            } else if ((ht === 'H' && ft === 'A') || (ht === 'A' && ft === 'H')) {
+                adjustmentFactor = 0.6; // 半场主胜全场客胜或半场客胜全场主胜的概率较低
+            }
+            
+            halfTimeFullTimeProbs[`${ht}/${ft}`] = htProb * ftProb * adjustmentFactor;
+        }
+    }
+    
+    // 归一化半全场概率
+    const htftTotal = Object.values(halfTimeFullTimeProbs).reduce((sum, prob) => sum + prob, 0);
+    for (const key in halfTimeFullTimeProbs) {
+        halfTimeFullTimeProbs[key] /= htftTotal;
+    }
+    
+    // 找出最可能的半全场结果
+    const sortedHalfTimeFullTime = Object.entries(halfTimeFullTimeProbs)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 3); // 取前三个最可能的半全场结果
+    
+    // 计算总进球数概率
+    const totalGoalsProbs = {};
+    for (let total = 0; total <= maxGoals * 2; total++) {
+        totalGoalsProbs[total] = 0;
+        
+        for (const [score, prob] of Object.entries(normalizedScoreProbs)) {
+            const [home, away] = score.split('-').map(Number);
+            if (home + away === total) {
+                totalGoalsProbs[total] += prob;
+            }
+        }
+    }
+    
+    // 找出最可能的总进球数
+    const sortedTotalGoals = Object.entries(totalGoalsProbs)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 3); // 取前三个最可能的总进球数
+    
     // 返回预测结果
     return {
         league_code: league_code,
@@ -130,7 +251,12 @@ function predictMatch(league_code, home_team, away_team, home_odds, draw_odds, a
         away_odds: away_odds,
         best_bet: allBets[0][0],
         best_ev: allBets[0][1],
-        all_bets: allBets
+        all_bets: allBets,
+        // 新增详细预测结果
+        most_likely_scores: sortedScores,
+        most_likely_ht_scores: sortedHalfTimeScores,
+        most_likely_htft: sortedHalfTimeFullTime,
+        most_likely_total_goals: sortedTotalGoals
     };
 }
 

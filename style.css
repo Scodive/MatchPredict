@@ -463,4 +463,33 @@ footer {
         flex-direction: column;
         gap: 10px;
     }
+}
+
+/* 详细预测结果样式 */
+.detailed-predictions {
+    margin: 15px 0;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 12px;
+}
+
+.detail-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.detail-item:last-child {
+    margin-bottom: 0;
+}
+
+.detail-label {
+    font-weight: 500;
+    color: #555;
+}
+
+.detail-value {
+    font-weight: 600;
+    color: #2c3e50;
 } 
