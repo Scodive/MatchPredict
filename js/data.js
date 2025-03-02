@@ -11,7 +11,7 @@ let featuresData = {};
 // 预加载所有联赛的数据
 async function loadAllLeaguesData() {
     const loadingOverlay = document.getElementById('loading-overlay');
-    loadingOverlay.classList.remove('hidden'); // 显示加载遮罩
+
 
     try {
         // 并行加载所有联赛数据

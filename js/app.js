@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     loadingOverlay.classList.add('hidden');
                 })
                 .catch(error => {
-                    loadingOverlay.classList.add('hidden');
+                   
                     alert(`加载 ${LEAGUES[leagueCode]} 数据失败: ${error.message}`);
                 });
         }
