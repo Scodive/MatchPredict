@@ -474,9 +474,7 @@ footer {
 }
 
 .detail-item {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 8px;
+    margin-bottom: 12px;
     font-size: 14px;
 }
 
@@ -487,9 +485,25 @@ footer {
 .detail-label {
     font-weight: 500;
     color: #555;
+    margin-bottom: 5px;
 }
 
 .detail-value {
-    font-weight: 600;
+    font-weight: 400;
     color: #2c3e50;
+}
+
+.prediction-item {
+    background-color: #e9ecef;
+    border-radius: 4px;
+    padding: 4px 8px;
+    margin-bottom: 4px;
+    display: inline-block;
+    margin-right: 8px;
+    font-weight: 500;
+}
+
+.no-data {
+    color: #999;
+    font-style: italic;
 } 

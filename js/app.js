@@ -313,33 +313,40 @@ document.addEventListener('DOMContentLoaded', function() {
                 bestBetText = `客胜 (${prediction.away_odds})`;
             }
             
-            // 安全地获取最可能的比分
-            let mostLikelyScoreText = "无数据";
+            // 格式化最可能的比分（前三个）
+            let scoresHTML = '<div class="no-data">无数据</div>';
             if (prediction.most_likely_scores && prediction.most_likely_scores.length > 0) {
-                const mostLikelyScore = prediction.most_likely_scores[0];
-                mostLikelyScoreText = `${mostLikelyScore[0]} (${(mostLikelyScore[1] * 100).toFixed(1)}%)`;
+                scoresHTML = prediction.most_likely_scores.map(score => 
+                    `<div class="prediction-item">${score[0]} (${(score[1] * 100).toFixed(1)}%)</div>`
+                ).join('');
             }
             
-            // 安全地获取最可能的半场比分
-            let mostLikelyHTScoreText = "无数据";
+            // 格式化最可能的半场比分（前三个）
+            let htScoresHTML = '<div class="no-data">无数据</div>';
             if (prediction.most_likely_ht_scores && prediction.most_likely_ht_scores.length > 0) {
-                const mostLikelyHTScore = prediction.most_likely_ht_scores[0];
-                mostLikelyHTScoreText = `${mostLikelyHTScore[0]} (${(mostLikelyHTScore[1] * 100).toFixed(1)}%)`;
+                htScoresHTML = prediction.most_likely_ht_scores.map(score => 
+                    `<div class="prediction-item">${score[0]} (${(score[1] * 100).toFixed(1)}%)</div>`
+                ).join('');
             }
             
-            // 安全地获取最可能的半全场结果
-            let htftText = "无数据";
+            // 格式化最可能的半全场结果（前三个）
+            let htftHTML = '<div class="no-data">无数据</div>';
             if (prediction.most_likely_htft && prediction.most_likely_htft.length > 0) {
-                const mostLikelyHTFT = prediction.most_likely_htft[0];
-                htftText = mostLikelyHTFT[0].replace('H', '主胜').replace('D', '平局').replace('A', '客胜');
-                htftText = `${htftText} (${(mostLikelyHTFT[1] * 100).toFixed(1)}%)`;
+                htftHTML = prediction.most_likely_htft.map(htft => {
+                    // 将半全场结果格式化为中文
+                    const [ht, ft] = htft[0].split('/');
+                    const htText = ht === 'H' ? '主胜' : (ht === 'D' ? '平局' : '客胜');
+                    const ftText = ft === 'H' ? '主胜' : (ft === 'D' ? '平局' : '客胜');
+                    return `<div class="prediction-item">${htText}/${ftText} (${(htft[1] * 100).toFixed(1)}%)</div>`;
+                }).join('');
             }
             
-            // 安全地获取最可能的总进球数
-            let totalGoalsText = "无数据";
+            // 格式化最可能的总进球数（前三个）
+            let totalGoalsHTML = '<div class="no-data">无数据</div>';
             if (prediction.most_likely_total_goals && prediction.most_likely_total_goals.length > 0) {
-                const mostLikelyTotalGoals = prediction.most_likely_total_goals[0];
-                totalGoalsText = `${mostLikelyTotalGoals[0]} (${(mostLikelyTotalGoals[1] * 100).toFixed(1)}%)`;
+                totalGoalsHTML = prediction.most_likely_total_goals.map(goals => 
+                    `<div class="prediction-item">${goals[0]} (${(goals[1] * 100).toFixed(1)}%)</div>`
+                ).join('');
             }
             
             const resultCard = document.createElement('div');
@@ -370,19 +377,19 @@ document.addEventListener('DOMContentLoaded', function() {
                     <div class="detailed-predictions">
                         <div class="detail-item">
                             <div class="detail-label">最可能比分:</div>
-                            <div class="detail-value">${mostLikelyScoreText}</div>
+                            <div class="detail-value">${scoresHTML}</div>
                         </div>
                         <div class="detail-item">
                             <div class="detail-label">最可能半场比分:</div>
-                            <div class="detail-value">${mostLikelyHTScoreText}</div>
+                            <div class="detail-value">${htScoresHTML}</div>
                         </div>
                         <div class="detail-item">
                             <div class="detail-label">最可能半全场:</div>
-                            <div class="detail-value">${htftText}</div>
+                            <div class="detail-value">${htftHTML}</div>
                         </div>
                         <div class="detail-item">
                             <div class="detail-label">最可能总进球:</div>
-                            <div class="detail-value">${totalGoalsText}</div>
+                            <div class="detail-value">${totalGoalsHTML}</div>
                         </div>
                     </div>
                     
