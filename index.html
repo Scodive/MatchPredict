@@ -89,7 +89,11 @@
             <section id="results-section" class="results-section hidden">
                 <h2>预测结果</h2>
                 
-                
+                <div class="tabs">
+                    <button class="tab-btn active" data-tab="individual">单场预测</button>
+                    <button class="tab-btn" data-tab="best-parlay">最佳串关</button>
+                    <button class="tab-btn" data-tab="all-parlays">其他组合</button>
+                </div>
                 
                 <div id="individual-tab" class="tab-content active">
                     <div id="individual-results" class="individual-results">
@@ -114,6 +118,11 @@
         <footer>
             <p>© 2024 足球比赛预测系统 | 数据仅供参考，请理性投注</p>
         </footer>
+
+        <div id="loading-overlay" class="loading-overlay hidden">
+            <div class="spinner"></div>
+            <p>正在分析数据，请稍候...</p>
+        </div>
     </div>
 
 
