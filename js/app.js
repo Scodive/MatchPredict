@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function() {
             populateTeamSelects(leagueCode, Object.keys(featuresData[leagueCode]));
         } else {
             // 否则加载数据
-            loadingOverlay.classList.remove('hidden');
+
             loadLeagueData(leagueCode)
                 .then(() => {
                     loadingOverlay.classList.add('hidden');
