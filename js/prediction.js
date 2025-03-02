@@ -10,64 +10,108 @@ function predictMatch(league_code, home_team, away_team, home_odds, draw_odds, a
         throw new Error(`找不到球队数据: ${home_team} 或 ${away_team}`);
     }
     
-    // 计算预期进球数
-    const home_expected_goals = home_features.home_goals_scored_avg * away_features.away_goals_conceded_avg / 1.3;
-    const away_expected_goals = away_features.away_goals_scored_avg * home_features.home_goals_conceded_avg / 1.3;
+    // 改进的概率计算，增加平局的权重
+    // 考虑球队的进攻和防守能力
+    const homeAttack = home_features.attack || home_features.home_goals_scored_avg || 1.5;
+    const homeDefense = home_features.defense || home_features.home_goals_conceded_avg || 1.2;
+    const awayAttack = away_features.attack || away_features.away_goals_scored_avg || 1.3;
+    const awayDefense = away_features.defense || away_features.away_goals_conceded_avg || 1.4;
+    
+    // 计算预期进球
+    const homeExpectedGoals = (homeAttack * 0.7 + awayDefense * 0.3) * 1.1; // 主场优势
+    const awayExpectedGoals = (awayAttack * 0.7 + homeDefense * 0.3) * 0.9; // 客场劣势
     
     // 使用泊松分布计算比分概率
-    const max_goals = 10;
-    const score_probs = {};
+    const maxGoals = 5;
+    const scoreProbs = {};
+    let totalProb = 0;
     
-    for (let i = 0; i <= max_goals; i++) {
-        for (let j = 0; j <= max_goals; j++) {
-            score_probs[`${i}-${j}`] = poissonPmf(i, home_expected_goals) * poissonPmf(j, away_expected_goals);
+    for (let i = 0; i <= maxGoals; i++) {
+        for (let j = 0; j <= maxGoals; j++) {
+            // 使用泊松分布计算特定比分的概率
+            const homeProb = Math.exp(-homeExpectedGoals) * Math.pow(homeExpectedGoals, i) / factorial(i);
+            const awayProb = Math.exp(-awayExpectedGoals) * Math.pow(awayExpectedGoals, j) / factorial(j);
+            scoreProbs[`${i}-${j}`] = homeProb * awayProb;
+            totalProb += homeProb * awayProb;
         }
     }
     
-    // 计算结果概率
-    let home_win_prob = 0;
-    let draw_prob = 0;
-    let away_win_prob = 0;
+    // 计算胜平负概率
+    let homeWinProb = 0;
+    let drawProb = 0;
+    let awayWinProb = 0;
     
-    for (const [score, prob] of Object.entries(score_probs)) {
-        const [home_goals, away_goals] = score.split('-').map(Number);
+    for (const [score, prob] of Object.entries(scoreProbs)) {
+        const [home, away] = score.split('-').map(Number);
         
-        if (home_goals > away_goals) {
-            home_win_prob += prob;
-        } else if (home_goals === away_goals) {
-            draw_prob += prob;
+        if (home > away) {
+            homeWinProb += prob;
+        } else if (home === away) {
+            drawProb += prob;
         } else {
-            away_win_prob += prob;
+            awayWinProb += prob;
         }
     }
+    
+    // 归一化概率
+    const normalizationFactor = 1 / totalProb;
+    homeWinProb *= normalizationFactor;
+    drawProb *= normalizationFactor;
+    awayWinProb *= normalizationFactor;
+    
+    // 增加平局的权重 - 根据历史数据调整
+    // 足球比赛中平局的概率通常在25%-30%之间
+    const leagueDrawAdjustment = {
+        'PL': 1.1,  // 英超平局率略高
+        'PD': 1.3,  // 西甲平局率更高
+        'SA': 1.1,  // 意甲平局率很高
+        'BL1': 0.9, // 德甲平局率较低
+        'FL1': 1.0  // 法甲平局率中等
+    };
+    
+    const drawAdjustment = leagueDrawAdjustment[league_code] || 1.1;
+    
+    // 应用平局调整
+    let adjustedDrawProb = drawProb * drawAdjustment;
+    const reduction = (adjustedDrawProb - drawProb) / 2;
+    let adjustedHomeWinProb = homeWinProb - reduction;
+    let adjustedAwayWinProb = awayWinProb - reduction;
+    
+    // 再次归一化
+    const totalAdjustedProb = adjustedHomeWinProb + adjustedDrawProb + adjustedAwayWinProb;
+    adjustedHomeWinProb /= totalAdjustedProb;
+    adjustedDrawProb /= totalAdjustedProb;
+    adjustedAwayWinProb /= totalAdjustedProb;
     
     // 计算期望值
-    const home_ev = (home_win_prob * home_odds) - 1;
-    const draw_ev = (draw_prob * draw_odds) - 1;
-    const away_ev = (away_win_prob * away_odds) - 1;
+    const homeEV = (adjustedHomeWinProb * home_odds) - 1;
+    const drawEV = (adjustedDrawProb * draw_odds) - 1;
+    const awayEV = (adjustedAwayWinProb * away_odds) - 1;
     
-    // 确定最佳投注
-    const all_bets = [
-        ['home', home_ev, home_odds, home_win_prob],
-        ['draw', draw_ev, draw_odds, draw_prob],
-        ['away', away_ev, away_odds, away_win_prob]
+    // 所有投注选项（按期望值排序）
+    const allBets = [
+        ['home', homeEV, home_odds, adjustedHomeWinProb],
+        ['draw', drawEV, draw_odds, adjustedDrawProb],
+        ['away', awayEV, away_odds, adjustedAwayWinProb]
     ];
     
-    all_bets.sort((a, b) => b[1] - a[1]);
-    const [best_bet, best_ev] = all_bets[0];
+    // 按期望值排序
+    allBets.sort((a, b) => b[1] - a[1]);
     
+    // 返回预测结果
     return {
-        home_team,
-        away_team,
-        home_win_prob,
-        draw_prob,
-        away_win_prob,
-        home_odds,
-        draw_odds,
-        away_odds,
-        best_bet,
-        best_ev,
-        all_bets
+        league_code: league_code,
+        home_team: home_team,
+        away_team: away_team,
+        home_win_prob: adjustedHomeWinProb,
+        draw_prob: adjustedDrawProb,
+        away_win_prob: adjustedAwayWinProb,
+        home_odds: home_odds,
+        draw_odds: draw_odds,
+        away_odds: away_odds,
+        best_bet: allBets[0][0],
+        best_ev: allBets[0][1],
+        all_bets: allBets
     };
 }
 
