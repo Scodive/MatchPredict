@@ -137,3 +137,27 @@ def predict_match(model_data, match_features):
     # 获取类别标签
     classes = model.classes_
     
+    # 创建结果字典
+    result = {}
+    for i, cls in enumerate(classes):
+        if cls == 'H':
+            result['home_win'] = proba[i]
+        elif cls == 'D':
+            result['draw'] = proba[i]
+        elif cls == 'A':
+            result['away_win'] = proba[i]
+    
+    return result
+
+if __name__ == "__main__":
+    # 测试模型训练功能
+    from data_processing import load_or_process_data
+    from models.feature_engineering import load_or_create_features, prepare_match_features
+    
+    processed_data = load_or_process_data()
+    features_df = load_or_create_features(processed_data['matches'])
+    
+    if features_df is not None:
+        match_features_df = prepare_match_features(processed_data['matches'], features_df)
+        model_data = train_match_result_model(match_features_df)
+        print("模型训练完成")
