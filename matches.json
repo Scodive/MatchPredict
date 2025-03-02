@@ -1,0 +1,34 @@
+[
+    {
+      "league_code": "PD",
+      "home_team": "CD Leganés",
+      "away_team": "Getafe CF",
+      "home_odds": 2.9,
+      "draw_odds": 2.48,
+      "away_odds": 2.62
+    },
+    {
+      "league_code": "PL",
+      "home_team": "Newcastle United FC",
+      "away_team": "Brighton & Hove Albion FC",
+      "home_odds": 1.89,
+      "draw_odds": 3.6,
+      "away_odds": 3.1
+    },
+    {
+      "league_code": "SA",
+      "home_team": "Genoa CFC",
+      "away_team": "Empoli FC",
+      "home_odds": 1.77,
+      "draw_odds": 3.05,
+      "away_odds": 4.22
+    },
+    {
+      "league_code": "SA",
+      "home_team": "Bologna FC 1909",
+      "away_team": "Cagliari Calcio",
+      "home_odds": 1.45,
+      "draw_odds": 3.75,
+      "away_odds": 5.8
+    }
+  ]
