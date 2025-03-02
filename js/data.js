@@ -25,7 +25,7 @@ async function loadAllLeaguesData() {
         console.error('加载数据失败:', error);
         alert('加载球队数据失败，请刷新页面重试');
     } finally {
-        loadingOverlay.classList.add('hidden'); // 确保隐藏加载遮罩
+       
     }
 }
 

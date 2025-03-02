@@ -243,9 +243,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // 预测比赛
     function predictMatches() {
         if (matches.length === 0) return;
+
         
-        // 显示加载动画
-        loadingOverlay.classList.remove('hidden');
         
         // 使用setTimeout来模拟异步操作，让UI有时间更新
         setTimeout(() => {
