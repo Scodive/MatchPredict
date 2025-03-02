@@ -1,0 +1,307 @@
+match_id,home_team,away_team,competition,match_date,status,home_score,away_score,half_time_home,half_time_away,result,half_full_result
+502371,Borussia Mönchengladbach,Bayer 04 Leverkusen,Bundesliga,2024-08-23 18:30:00+00:00,FINISHED,2.0,3.0,0.0,2.0,A,A/A
+502372,RB Leipzig,VfL Bochum 1848,Bundesliga,2024-08-24 13:30:00+00:00,FINISHED,1.0,0.0,0.0,0.0,H,D/H
+502374,TSG 1899 Hoffenheim,Holstein Kiel,Bundesliga,2024-08-24 13:30:00+00:00,FINISHED,3.0,2.0,2.0,0.0,H,H/H
+502375,SC Freiburg,VfB Stuttgart,Bundesliga,2024-08-24 13:30:00+00:00,FINISHED,3.0,1.0,1.0,1.0,H,D/H
+502376,FC Augsburg,SV Werder Bremen,Bundesliga,2024-08-24 13:30:00+00:00,FINISHED,2.0,2.0,2.0,1.0,D,H/D
+502378,1. FSV Mainz 05,1. FC Union Berlin,Bundesliga,2024-08-24 13:30:00+00:00,FINISHED,1.0,1.0,0.0,0.0,D,D/D
+502373,Borussia Dortmund,Eintracht Frankfurt,Bundesliga,2024-08-24 16:30:00+00:00,FINISHED,2.0,0.0,0.0,0.0,H,D/H
+502377,VfL Wolfsburg,FC Bayern München,Bundesliga,2024-08-25 13:30:00+00:00,FINISHED,2.0,3.0,0.0,1.0,A,A/A
+502379,FC St. Pauli 1910,1. FC Heidenheim 1846,Bundesliga,2024-08-25 15:30:00+00:00,FINISHED,0.0,2.0,0.0,0.0,A,D/A
+502386,1. FC Union Berlin,FC St. Pauli 1910,Bundesliga,2024-08-30 18:30:00+00:00,FINISHED,1.0,0.0,1.0,0.0,H,H/H
+502381,VfB Stuttgart,1. FSV Mainz 05,Bundesliga,2024-08-31 13:30:00+00:00,FINISHED,3.0,3.0,2.0,1.0,D,H/D
+502383,Eintracht Frankfurt,TSG 1899 Hoffenheim,Bundesliga,2024-08-31 13:30:00+00:00,FINISHED,3.0,1.0,2.0,0.0,H,H/H
+502385,SV Werder Bremen,Borussia Dortmund,Bundesliga,2024-08-31 13:30:00+00:00,FINISHED,0.0,0.0,0.0,0.0,D,D/D
+502387,VfL Bochum 1848,Borussia Mönchengladbach,Bundesliga,2024-08-31 13:30:00+00:00,FINISHED,0.0,2.0,0.0,0.0,A,D/A
+502388,Holstein Kiel,VfL Wolfsburg,Bundesliga,2024-08-31 13:30:00+00:00,FINISHED,0.0,2.0,0.0,2.0,A,A/A
+502380,Bayer 04 Leverkusen,RB Leipzig,Bundesliga,2024-08-31 16:30:00+00:00,FINISHED,2.0,3.0,2.0,1.0,A,H/A
+502384,1. FC Heidenheim 1846,FC Augsburg,Bundesliga,2024-09-01 13:30:00+00:00,FINISHED,4.0,0.0,2.0,0.0,H,H/H
+502382,FC Bayern München,SC Freiburg,Bundesliga,2024-09-01 15:30:00+00:00,FINISHED,2.0,0.0,1.0,0.0,H,H/H
+502390,Borussia Dortmund,1. FC Heidenheim 1846,Bundesliga,2024-09-13 18:30:00+00:00,FINISHED,4.0,2.0,3.0,1.0,H,H/H
+502389,RB Leipzig,1. FC Union Berlin,Bundesliga,2024-09-14 13:30:00+00:00,FINISHED,0.0,0.0,0.0,0.0,D,D/D
+502391,TSG 1899 Hoffenheim,Bayer 04 Leverkusen,Bundesliga,2024-09-14 13:30:00+00:00,FINISHED,1.0,4.0,1.0,2.0,A,A/A
+502392,SC Freiburg,VfL Bochum 1848,Bundesliga,2024-09-14 13:30:00+00:00,FINISHED,2.0,1.0,0.0,1.0,H,A/H
+502394,VfL Wolfsburg,Eintracht Frankfurt,Bundesliga,2024-09-14 13:30:00+00:00,FINISHED,1.0,2.0,0.0,1.0,A,A/A
+502396,Borussia Mönchengladbach,VfB Stuttgart,Bundesliga,2024-09-14 13:30:00+00:00,FINISHED,1.0,3.0,1.0,1.0,A,D/A
+502397,Holstein Kiel,FC Bayern München,Bundesliga,2024-09-14 16:30:00+00:00,FINISHED,1.0,6.0,0.0,4.0,A,A/A
+502393,FC Augsburg,FC St. Pauli 1910,Bundesliga,2024-09-15 13:30:00+00:00,FINISHED,3.0,1.0,0.0,0.0,H,D/H
+502395,1. FSV Mainz 05,SV Werder Bremen,Bundesliga,2024-09-15 15:30:00+00:00,FINISHED,1.0,2.0,1.0,1.0,A,D/A
+502403,FC Augsburg,1. FSV Mainz 05,Bundesliga,2024-09-20 18:30:00+00:00,FINISHED,2.0,3.0,1.0,2.0,A,A/A
+502401,1. FC Heidenheim 1846,SC Freiburg,Bundesliga,2024-09-21 13:30:00+00:00,FINISHED,0.0,3.0,0.0,0.0,A,D/A
+502402,SV Werder Bremen,FC Bayern München,Bundesliga,2024-09-21 13:30:00+00:00,FINISHED,0.0,5.0,0.0,2.0,A,A/A
+502404,1. FC Union Berlin,TSG 1899 Hoffenheim,Bundesliga,2024-09-21 13:30:00+00:00,FINISHED,2.0,1.0,2.0,0.0,H,H/H
+502405,VfL Bochum 1848,Holstein Kiel,Bundesliga,2024-09-21 13:30:00+00:00,FINISHED,2.0,2.0,2.0,1.0,D,H/D
+502400,Eintracht Frankfurt,Borussia Mönchengladbach,Bundesliga,2024-09-21 16:30:00+00:00,FINISHED,2.0,0.0,1.0,0.0,H,H/H
+502398,Bayer 04 Leverkusen,VfL Wolfsburg,Bundesliga,2024-09-22 13:30:00+00:00,FINISHED,4.0,3.0,2.0,3.0,H,A/H
+502399,VfB Stuttgart,Borussia Dortmund,Bundesliga,2024-09-22 15:30:00+00:00,FINISHED,5.0,1.0,2.0,0.0,H,H/H
+502406,FC St. Pauli 1910,RB Leipzig,Bundesliga,2024-09-22 17:30:00+00:00,FINISHED,0.0,0.0,0.0,0.0,D,D/D
+502409,Borussia Dortmund,VfL Bochum 1848,Bundesliga,2024-09-27 18:30:00+00:00,FINISHED,4.0,2.0,1.0,2.0,H,A/H
+502408,RB Leipzig,FC Augsburg,Bundesliga,2024-09-28 13:30:00+00:00,FINISHED,4.0,0.0,2.0,0.0,H,H/H
+502411,SC Freiburg,FC St. Pauli 1910,Bundesliga,2024-09-28 13:30:00+00:00,FINISHED,0.0,3.0,0.0,2.0,A,A/A
+502412,VfL Wolfsburg,VfB Stuttgart,Bundesliga,2024-09-28 13:30:00+00:00,FINISHED,2.0,2.0,1.0,1.0,D,D/D
+502413,1. FSV Mainz 05,1. FC Heidenheim 1846,Bundesliga,2024-09-28 13:30:00+00:00,FINISHED,0.0,2.0,0.0,1.0,A,A/A
+502414,Borussia Mönchengladbach,1. FC Union Berlin,Bundesliga,2024-09-28 13:30:00+00:00,FINISHED,1.0,0.0,0.0,0.0,H,D/H
+502407,FC Bayern München,Bayer 04 Leverkusen,Bundesliga,2024-09-28 16:30:00+00:00,FINISHED,1.0,1.0,1.0,1.0,D,D/D
+502415,Holstein Kiel,Eintracht Frankfurt,Bundesliga,2024-09-29 13:30:00+00:00,FINISHED,2.0,4.0,1.0,1.0,A,D/A
+502410,TSG 1899 Hoffenheim,SV Werder Bremen,Bundesliga,2024-09-29 15:30:00+00:00,FINISHED,3.0,4.0,3.0,3.0,A,D/A
+502421,FC Augsburg,Borussia Mönchengladbach,Bundesliga,2024-10-04 18:30:00+00:00,FINISHED,2.0,1.0,1.0,0.0,H,H/H
+502416,Bayer 04 Leverkusen,Holstein Kiel,Bundesliga,2024-10-05 13:30:00+00:00,FINISHED,2.0,2.0,2.0,1.0,D,H/D
+502420,SV Werder Bremen,SC Freiburg,Bundesliga,2024-10-05 13:30:00+00:00,FINISHED,0.0,1.0,0.0,0.0,A,D/A
+502422,1. FC Union Berlin,Borussia Dortmund,Bundesliga,2024-10-05 13:30:00+00:00,FINISHED,2.0,1.0,2.0,0.0,H,H/H
+502423,VfL Bochum 1848,VfL Wolfsburg,Bundesliga,2024-10-05 13:30:00+00:00,FINISHED,1.0,3.0,0.0,2.0,A,A/A
+502424,FC St. Pauli 1910,1. FSV Mainz 05,Bundesliga,2024-10-05 16:30:00+00:00,FINISHED,0.0,3.0,0.0,2.0,A,A/A
+502419,1. FC Heidenheim 1846,RB Leipzig,Bundesliga,2024-10-06 13:30:00+00:00,FINISHED,0.0,1.0,0.0,0.0,A,D/A
+502418,Eintracht Frankfurt,FC Bayern München,Bundesliga,2024-10-06 15:30:00+00:00,FINISHED,3.0,3.0,2.0,2.0,D,D/D
+502417,VfB Stuttgart,TSG 1899 Hoffenheim,Bundesliga,2024-10-06 17:30:00+00:00,FINISHED,1.0,1.0,0.0,1.0,D,A/D
+502427,Borussia Dortmund,FC St. Pauli 1910,Bundesliga,2024-10-18 18:30:00+00:00,FINISHED,2.0,1.0,1.0,0.0,H,H/H
+502425,Bayer 04 Leverkusen,Eintracht Frankfurt,Bundesliga,2024-10-19 13:30:00+00:00,FINISHED,2.0,1.0,1.0,1.0,H,D/H
+502428,TSG 1899 Hoffenheim,VfL Bochum 1848,Bundesliga,2024-10-19 13:30:00+00:00,FINISHED,3.0,1.0,1.0,0.0,H,H/H
+502429,SC Freiburg,FC Augsburg,Bundesliga,2024-10-19 13:30:00+00:00,FINISHED,3.0,1.0,3.0,0.0,H,H/H
+502431,1. FSV Mainz 05,RB Leipzig,Bundesliga,2024-10-19 13:30:00+00:00,FINISHED,0.0,2.0,0.0,2.0,A,A/A
+502432,Borussia Mönchengladbach,1. FC Heidenheim 1846,Bundesliga,2024-10-19 13:30:00+00:00,FINISHED,3.0,2.0,1.0,1.0,H,D/H
+502426,FC Bayern München,VfB Stuttgart,Bundesliga,2024-10-19 16:30:00+00:00,FINISHED,4.0,0.0,0.0,0.0,H,D/H
+502433,Holstein Kiel,1. FC Union Berlin,Bundesliga,2024-10-20 13:30:00+00:00,FINISHED,0.0,2.0,0.0,1.0,A,A/A
+502430,VfL Wolfsburg,SV Werder Bremen,Bundesliga,2024-10-20 15:30:00+00:00,FINISHED,2.0,4.0,1.0,1.0,A,D/A
+502439,1. FSV Mainz 05,Borussia Mönchengladbach,Bundesliga,2024-10-25 18:30:00+00:00,FINISHED,1.0,1.0,0.0,0.0,D,D/D
+502434,VfB Stuttgart,Holstein Kiel,Bundesliga,2024-10-26 13:30:00+00:00,FINISHED,2.0,1.0,1.0,0.0,H,H/H
+502435,RB Leipzig,SC Freiburg,Bundesliga,2024-10-26 13:30:00+00:00,FINISHED,3.0,1.0,0.0,1.0,H,A/H
+502438,FC Augsburg,Borussia Dortmund,Bundesliga,2024-10-26 13:30:00+00:00,FINISHED,2.0,1.0,1.0,1.0,H,D/H
+502442,FC St. Pauli 1910,VfL Wolfsburg,Bundesliga,2024-10-26 13:30:00+00:00,FINISHED,0.0,0.0,0.0,0.0,D,D/D
+502437,SV Werder Bremen,Bayer 04 Leverkusen,Bundesliga,2024-10-26 16:30:00+00:00,FINISHED,2.0,2.0,0.0,1.0,D,A/D
+502441,VfL Bochum 1848,FC Bayern München,Bundesliga,2024-10-27 14:30:00+00:00,FINISHED,0.0,5.0,0.0,2.0,A,A/A
+502440,1. FC Union Berlin,Eintracht Frankfurt,Bundesliga,2024-10-27 16:30:00+00:00,FINISHED,1.0,1.0,0.0,1.0,D,A/D
+502436,1. FC Heidenheim 1846,TSG 1899 Hoffenheim,Bundesliga,2024-10-27 18:30:00+00:00,FINISHED,0.0,0.0,0.0,0.0,D,D/D
+502443,Bayer 04 Leverkusen,VfB Stuttgart,Bundesliga,2024-11-01 19:30:00+00:00,FINISHED,0.0,0.0,0.0,0.0,D,D/D
+502444,FC Bayern München,1. FC Union Berlin,Bundesliga,2024-11-02 14:30:00+00:00,FINISHED,3.0,0.0,2.0,0.0,H,H/H
+502446,Eintracht Frankfurt,VfL Bochum 1848,Bundesliga,2024-11-02 14:30:00+00:00,FINISHED,7.0,2.0,4.0,1.0,H,H/H
+502447,TSG 1899 Hoffenheim,FC St. Pauli 1910,Bundesliga,2024-11-02 14:30:00+00:00,FINISHED,0.0,2.0,0.0,1.0,A,A/A
+502449,VfL Wolfsburg,FC Augsburg,Bundesliga,2024-11-02 14:30:00+00:00,FINISHED,1.0,1.0,0.0,1.0,D,A/D
+502451,Holstein Kiel,1. FC Heidenheim 1846,Bundesliga,2024-11-02 14:30:00+00:00,FINISHED,1.0,0.0,1.0,0.0,H,H/H
+502445,Borussia Dortmund,RB Leipzig,Bundesliga,2024-11-02 17:30:00+00:00,FINISHED,2.0,1.0,1.0,1.0,H,D/H
+502448,SC Freiburg,1. FSV Mainz 05,Bundesliga,2024-11-03 14:30:00+00:00,FINISHED,0.0,0.0,0.0,0.0,D,D/D
+502450,Borussia Mönchengladbach,SV Werder Bremen,Bundesliga,2024-11-03 16:30:00+00:00,FINISHED,4.0,1.0,3.0,0.0,H,H/H
+502458,1. FC Union Berlin,SC Freiburg,Bundesliga,2024-11-08 19:30:00+00:00,FINISHED,0.0,0.0,0.0,0.0,D,D/D
+502455,SV Werder Bremen,Holstein Kiel,Bundesliga,2024-11-09 14:30:00+00:00,FINISHED,2.0,1.0,1.0,0.0,H,H/H
+502457,1. FSV Mainz 05,Borussia Dortmund,Bundesliga,2024-11-09 14:30:00+00:00,FINISHED,3.0,1.0,2.0,1.0,H,H/H
+502459,VfL Bochum 1848,Bayer 04 Leverkusen,Bundesliga,2024-11-09 14:30:00+00:00,FINISHED,1.0,1.0,0.0,1.0,D,A/D
+502460,FC St. Pauli 1910,FC Bayern München,Bundesliga,2024-11-09 14:30:00+00:00,FINISHED,0.0,1.0,0.0,1.0,A,A/A
+502453,RB Leipzig,Borussia Mönchengladbach,Bundesliga,2024-11-09 17:30:00+00:00,FINISHED,0.0,0.0,0.0,0.0,D,D/D
+502456,FC Augsburg,TSG 1899 Hoffenheim,Bundesliga,2024-11-10 14:30:00+00:00,FINISHED,0.0,0.0,0.0,0.0,D,D/D
+502452,VfB Stuttgart,Eintracht Frankfurt,Bundesliga,2024-11-10 16:30:00+00:00,FINISHED,2.0,3.0,0.0,1.0,A,A/A
+502454,1. FC Heidenheim 1846,VfL Wolfsburg,Bundesliga,2024-11-10 18:30:00+00:00,FINISHED,1.0,3.0,0.0,2.0,A,A/A
+502463,FC Bayern München,FC Augsburg,Bundesliga,2024-11-22 19:30:00+00:00,FINISHED,3.0,0.0,0.0,0.0,H,D/H
+502461,Bayer 04 Leverkusen,1. FC Heidenheim 1846,Bundesliga,2024-11-23 14:30:00+00:00,FINISHED,5.0,2.0,2.0,2.0,H,D/H
+502462,VfB Stuttgart,VfL Bochum 1848,Bundesliga,2024-11-23 14:30:00+00:00,FINISHED,2.0,0.0,0.0,0.0,H,D/H
+502464,Borussia Dortmund,SC Freiburg,Bundesliga,2024-11-23 14:30:00+00:00,FINISHED,4.0,0.0,2.0,0.0,H,H/H
+502466,TSG 1899 Hoffenheim,RB Leipzig,Bundesliga,2024-11-23 14:30:00+00:00,FINISHED,4.0,3.0,1.0,2.0,H,A/H
+502467,VfL Wolfsburg,1. FC Union Berlin,Bundesliga,2024-11-23 14:30:00+00:00,FINISHED,1.0,0.0,0.0,0.0,H,D/H
+502465,Eintracht Frankfurt,SV Werder Bremen,Bundesliga,2024-11-23 17:30:00+00:00,FINISHED,1.0,0.0,1.0,0.0,H,H/H
+502469,Holstein Kiel,1. FSV Mainz 05,Bundesliga,2024-11-24 14:30:00+00:00,FINISHED,0.0,3.0,0.0,2.0,A,A/A
+502468,Borussia Mönchengladbach,FC St. Pauli 1910,Bundesliga,2024-11-24 16:30:00+00:00,FINISHED,2.0,0.0,2.0,0.0,H,H/H
+502478,FC St. Pauli 1910,Holstein Kiel,Bundesliga,2024-11-29 19:30:00+00:00,FINISHED,3.0,1.0,1.0,0.0,H,H/H
+502470,RB Leipzig,VfL Wolfsburg,Bundesliga,2024-11-30 14:30:00+00:00,FINISHED,1.0,5.0,0.0,3.0,A,A/A
+502473,SV Werder Bremen,VfB Stuttgart,Bundesliga,2024-11-30 14:30:00+00:00,FINISHED,2.0,2.0,1.0,1.0,D,D/D
+502474,SC Freiburg,Borussia Mönchengladbach,Bundesliga,2024-11-30 14:30:00+00:00,FINISHED,3.0,1.0,1.0,0.0,H,H/H
+502475,FC Augsburg,VfL Bochum 1848,Bundesliga,2024-11-30 14:30:00+00:00,FINISHED,1.0,0.0,1.0,0.0,H,H/H
+502477,1. FC Union Berlin,Bayer 04 Leverkusen,Bundesliga,2024-11-30 14:30:00+00:00,FINISHED,1.0,2.0,1.0,1.0,A,D/A
+502471,Borussia Dortmund,FC Bayern München,Bundesliga,2024-11-30 17:30:00+00:00,FINISHED,1.0,1.0,1.0,0.0,D,H/D
+502476,1. FSV Mainz 05,TSG 1899 Hoffenheim,Bundesliga,2024-12-01 14:30:00+00:00,FINISHED,2.0,0.0,2.0,0.0,H,H/H
+502472,1. FC Heidenheim 1846,Eintracht Frankfurt,Bundesliga,2024-12-01 16:30:00+00:00,FINISHED,0.0,4.0,0.0,1.0,A,A/A
+502480,VfB Stuttgart,1. FC Union Berlin,Bundesliga,2024-12-06 19:30:00+00:00,FINISHED,3.0,2.0,0.0,1.0,H,A/H
+502479,Bayer 04 Leverkusen,FC St. Pauli 1910,Bundesliga,2024-12-07 14:30:00+00:00,FINISHED,2.0,1.0,2.0,0.0,H,H/H
+502481,FC Bayern München,1. FC Heidenheim 1846,Bundesliga,2024-12-07 14:30:00+00:00,FINISHED,4.0,2.0,1.0,0.0,H,H/H
+502482,Eintracht Frankfurt,FC Augsburg,Bundesliga,2024-12-07 14:30:00+00:00,FINISHED,2.0,2.0,0.0,0.0,D,D/D
+502486,VfL Bochum 1848,SV Werder Bremen,Bundesliga,2024-12-07 14:30:00+00:00,FINISHED,0.0,1.0,0.0,0.0,A,D/A
+502487,Holstein Kiel,RB Leipzig,Bundesliga,2024-12-07 14:30:00+00:00,FINISHED,0.0,2.0,0.0,1.0,A,A/A
+502485,Borussia Mönchengladbach,Borussia Dortmund,Bundesliga,2024-12-07 17:30:00+00:00,FINISHED,1.0,1.0,0.0,0.0,D,D/D
+502484,VfL Wolfsburg,1. FSV Mainz 05,Bundesliga,2024-12-08 14:30:00+00:00,FINISHED,4.0,3.0,1.0,2.0,H,A/H
+502483,TSG 1899 Hoffenheim,SC Freiburg,Bundesliga,2024-12-08 16:30:00+00:00,FINISHED,1.0,1.0,0.0,0.0,D,D/D
+502491,SC Freiburg,VfL Wolfsburg,Bundesliga,2024-12-13 19:30:00+00:00,FINISHED,3.0,2.0,1.0,0.0,H,H/H
+502492,1. FSV Mainz 05,FC Bayern München,Bundesliga,2024-12-14 14:30:00+00:00,FINISHED,2.0,1.0,1.0,0.0,H,H/H
+502493,Borussia Mönchengladbach,Holstein Kiel,Bundesliga,2024-12-14 14:30:00+00:00,FINISHED,4.0,1.0,3.0,1.0,H,H/H
+502494,1. FC Union Berlin,VfL Bochum 1848,Bundesliga,2024-12-14 14:30:00+00:00,FINISHED,0.0,2.0,,,A,
+502496,FC Augsburg,Bayer 04 Leverkusen,Bundesliga,2024-12-14 14:30:00+00:00,FINISHED,0.0,2.0,0.0,2.0,A,A/A
+502495,FC St. Pauli 1910,SV Werder Bremen,Bundesliga,2024-12-14 17:30:00+00:00,FINISHED,0.0,2.0,0.0,1.0,A,A/A
+502490,1. FC Heidenheim 1846,VfB Stuttgart,Bundesliga,2024-12-15 14:30:00+00:00,FINISHED,1.0,3.0,1.0,2.0,A,A/A
+502489,Borussia Dortmund,TSG 1899 Hoffenheim,Bundesliga,2024-12-15 16:30:00+00:00,FINISHED,1.0,1.0,0.0,0.0,D,D/D
+502488,RB Leipzig,Eintracht Frankfurt,Bundesliga,2024-12-15 18:30:00+00:00,FINISHED,2.0,1.0,1.0,1.0,H,D/H
+502499,FC Bayern München,RB Leipzig,Bundesliga,2024-12-20 19:30:00+00:00,FINISHED,5.0,1.0,3.0,1.0,H,H/H
+502498,VfB Stuttgart,FC St. Pauli 1910,Bundesliga,2024-12-21 14:30:00+00:00,FINISHED,0.0,1.0,0.0,1.0,A,A/A
+502500,Eintracht Frankfurt,1. FSV Mainz 05,Bundesliga,2024-12-21 14:30:00+00:00,FINISHED,1.0,3.0,0.0,2.0,A,A/A
+502501,TSG 1899 Hoffenheim,Borussia Mönchengladbach,Bundesliga,2024-12-21 14:30:00+00:00,FINISHED,1.0,2.0,0.0,1.0,A,A/A
+502502,SV Werder Bremen,1. FC Union Berlin,Bundesliga,2024-12-21 14:30:00+00:00,FINISHED,4.0,1.0,3.0,1.0,H,H/H
+502505,Holstein Kiel,FC Augsburg,Bundesliga,2024-12-21 14:30:00+00:00,FINISHED,5.0,1.0,4.0,1.0,H,H/H
+502497,Bayer 04 Leverkusen,SC Freiburg,Bundesliga,2024-12-21 17:30:00+00:00,FINISHED,5.0,1.0,1.0,0.0,H,H/H
+502504,VfL Bochum 1848,1. FC Heidenheim 1846,Bundesliga,2024-12-22 14:30:00+00:00,FINISHED,2.0,0.0,2.0,0.0,H,H/H
+502503,VfL Wolfsburg,Borussia Dortmund,Bundesliga,2024-12-22 16:30:00+00:00,FINISHED,1.0,3.0,0.0,3.0,A,A/A
+502507,Borussia Dortmund,Bayer 04 Leverkusen,Bundesliga,2025-01-10 19:45:00+00:00,FINISHED,2.0,3.0,1.0,3.0,A,A/A
+502508,TSG 1899 Hoffenheim,VfL Wolfsburg,Bundesliga,2025-01-11 14:30:00+00:00,FINISHED,0.0,1.0,0.0,1.0,A,A/A
+502509,1. FC Heidenheim 1846,1. FC Union Berlin,Bundesliga,2025-01-11 14:30:00+00:00,FINISHED,2.0,0.0,1.0,0.0,H,H/H
+502510,SC Freiburg,Holstein Kiel,Bundesliga,2025-01-11 14:30:00+00:00,FINISHED,3.0,2.0,2.0,0.0,H,H/H
+502512,1. FSV Mainz 05,VfL Bochum 1848,Bundesliga,2025-01-11 14:30:00+00:00,FINISHED,2.0,0.0,1.0,0.0,H,H/H
+502514,FC St. Pauli 1910,Eintracht Frankfurt,Bundesliga,2025-01-11 14:30:00+00:00,FINISHED,0.0,1.0,0.0,1.0,A,A/A
+502513,Borussia Mönchengladbach,FC Bayern München,Bundesliga,2025-01-11 17:30:00+00:00,FINISHED,0.0,1.0,0.0,0.0,A,D/A
+502506,RB Leipzig,SV Werder Bremen,Bundesliga,2025-01-12 14:30:00+00:00,FINISHED,4.0,2.0,2.0,1.0,H,H/H
+502511,FC Augsburg,VfB Stuttgart,Bundesliga,2025-01-12 16:30:00+00:00,FINISHED,0.0,1.0,0.0,0.0,A,D/A
+502523,Holstein Kiel,Borussia Dortmund,Bundesliga,2025-01-14 17:30:00+00:00,FINISHED,4.0,2.0,3.0,0.0,H,H/H
+502515,Bayer 04 Leverkusen,1. FSV Mainz 05,Bundesliga,2025-01-14 19:30:00+00:00,FINISHED,1.0,0.0,0.0,0.0,H,D/H
+502518,Eintracht Frankfurt,SC Freiburg,Bundesliga,2025-01-14 19:30:00+00:00,FINISHED,4.0,1.0,1.0,1.0,H,D/H
+502520,VfL Wolfsburg,Borussia Mönchengladbach,Bundesliga,2025-01-14 19:30:00+00:00,FINISHED,5.0,1.0,1.0,0.0,H,H/H
+502522,VfL Bochum 1848,FC St. Pauli 1910,Bundesliga,2025-01-15 17:30:00+00:00,FINISHED,1.0,0.0,0.0,0.0,H,D/H
+502516,VfB Stuttgart,RB Leipzig,Bundesliga,2025-01-15 19:30:00+00:00,FINISHED,2.0,1.0,0.0,1.0,H,A/H
+502517,FC Bayern München,TSG 1899 Hoffenheim,Bundesliga,2025-01-15 19:30:00+00:00,FINISHED,5.0,0.0,3.0,0.0,H,H/H
+502519,SV Werder Bremen,1. FC Heidenheim 1846,Bundesliga,2025-01-15 19:30:00+00:00,FINISHED,3.0,3.0,1.0,1.0,D,D/D
+502521,1. FC Union Berlin,FC Augsburg,Bundesliga,2025-01-15 19:30:00+00:00,FINISHED,0.0,2.0,0.0,2.0,A,A/A
+502526,Eintracht Frankfurt,Borussia Dortmund,Bundesliga,2025-01-17 19:30:00+00:00,FINISHED,2.0,0.0,1.0,0.0,H,H/H
+502528,VfB Stuttgart,SC Freiburg,Bundesliga,2025-01-18 14:30:00+00:00,FINISHED,4.0,0.0,3.0,0.0,H,H/H
+502530,FC Bayern München,VfL Wolfsburg,Bundesliga,2025-01-18 14:30:00+00:00,FINISHED,3.0,2.0,2.0,1.0,H,H/H
+502532,1. FC Heidenheim 1846,FC St. Pauli 1910,Bundesliga,2025-01-18 14:30:00+00:00,FINISHED,0.0,2.0,0.0,1.0,A,A/A
+502525,VfL Bochum 1848,RB Leipzig,Bundesliga,2025-01-18 14:30:00+00:00,FINISHED,3.0,3.0,0.0,3.0,D,A/D
+502527,Holstein Kiel,TSG 1899 Hoffenheim,Bundesliga,2025-01-18 14:30:00+00:00,FINISHED,1.0,3.0,0.0,2.0,A,A/A
+502524,Bayer 04 Leverkusen,Borussia Mönchengladbach,Bundesliga,2025-01-18 17:30:00+00:00,FINISHED,3.0,1.0,1.0,0.0,H,H/H
+502531,1. FC Union Berlin,1. FSV Mainz 05,Bundesliga,2025-01-19 14:30:00+00:00,FINISHED,2.0,1.0,2.0,1.0,H,H/H
+502529,SV Werder Bremen,FC Augsburg,Bundesliga,2025-01-19 16:30:00+00:00,FINISHED,0.0,2.0,0.0,2.0,A,A/A
+502541,VfL Wolfsburg,Holstein Kiel,Bundesliga,2025-01-24 19:30:00+00:00,FINISHED,2.0,2.0,0.0,1.0,D,A/D
+502533,RB Leipzig,Bayer 04 Leverkusen,Bundesliga,2025-01-25 14:30:00+00:00,FINISHED,2.0,2.0,1.0,2.0,D,A/D
+502534,1. FSV Mainz 05,VfB Stuttgart,Bundesliga,2025-01-25 14:30:00+00:00,FINISHED,2.0,0.0,1.0,0.0,H,H/H
+502535,SC Freiburg,FC Bayern München,Bundesliga,2025-01-25 14:30:00+00:00,FINISHED,1.0,2.0,0.0,1.0,A,A/A
+502537,FC Augsburg,1. FC Heidenheim 1846,Bundesliga,2025-01-25 14:30:00+00:00,FINISHED,2.0,1.0,1.0,0.0,H,H/H
+502538,Borussia Dortmund,SV Werder Bremen,Bundesliga,2025-01-25 14:30:00+00:00,FINISHED,2.0,2.0,1.0,0.0,D,H/D
+502540,Borussia Mönchengladbach,VfL Bochum 1848,Bundesliga,2025-01-25 17:30:00+00:00,FINISHED,3.0,0.0,1.0,0.0,H,H/H
+502536,TSG 1899 Hoffenheim,Eintracht Frankfurt,Bundesliga,2025-01-26 14:30:00+00:00,FINISHED,2.0,2.0,0.0,1.0,D,A/D
+502539,FC St. Pauli 1910,1. FC Union Berlin,Bundesliga,2025-01-26 16:30:00+00:00,FINISHED,3.0,0.0,1.0,0.0,H,H/H
+502548,SV Werder Bremen,1. FSV Mainz 05,Bundesliga,2025-01-31 19:30:00+00:00,FINISHED,1.0,0.0,1.0,0.0,H,H/H
+502543,1. FC Heidenheim 1846,Borussia Dortmund,Bundesliga,2025-02-01 14:30:00+00:00,FINISHED,1.0,2.0,0.0,1.0,A,A/A
+502545,VfL Bochum 1848,SC Freiburg,Bundesliga,2025-02-01 14:30:00+00:00,FINISHED,0.0,1.0,0.0,1.0,A,A/A
+502546,FC St. Pauli 1910,FC Augsburg,Bundesliga,2025-02-01 14:30:00+00:00,FINISHED,1.0,1.0,1.0,0.0,D,H/D
+502549,VfB Stuttgart,Borussia Mönchengladbach,Bundesliga,2025-02-01 14:30:00+00:00,FINISHED,1.0,2.0,0.0,1.0,A,A/A
+502550,FC Bayern München,Holstein Kiel,Bundesliga,2025-02-01 14:30:00+00:00,FINISHED,4.0,3.0,2.0,0.0,H,H/H
+502542,1. FC Union Berlin,RB Leipzig,Bundesliga,2025-02-01 17:30:00+00:00,FINISHED,0.0,0.0,0.0,0.0,D,D/D
+502547,Eintracht Frankfurt,VfL Wolfsburg,Bundesliga,2025-02-02 14:30:00+00:00,FINISHED,1.0,1.0,0.0,0.0,D,D/D
+502544,Bayer 04 Leverkusen,TSG 1899 Hoffenheim,Bundesliga,2025-02-02 16:30:00+00:00,FINISHED,3.0,1.0,2.0,0.0,H,H/H
+502555,FC Bayern München,SV Werder Bremen,Bundesliga,2025-02-07 19:30:00+00:00,FINISHED,3.0,0.0,0.0,0.0,H,D/H
+502551,VfL Wolfsburg,Bayer 04 Leverkusen,Bundesliga,2025-02-08 14:30:00+00:00,FINISHED,0.0,0.0,0.0,0.0,D,D/D
+502552,Borussia Dortmund,VfB Stuttgart,Bundesliga,2025-02-08 14:30:00+00:00,FINISHED,1.0,2.0,0.0,0.0,A,D/A
+502554,SC Freiburg,1. FC Heidenheim 1846,Bundesliga,2025-02-08 14:30:00+00:00,FINISHED,1.0,0.0,1.0,0.0,H,H/H
+502556,1. FSV Mainz 05,FC Augsburg,Bundesliga,2025-02-08 14:30:00+00:00,FINISHED,0.0,0.0,0.0,0.0,D,D/D
+502557,TSG 1899 Hoffenheim,1. FC Union Berlin,Bundesliga,2025-02-08 14:30:00+00:00,FINISHED,0.0,4.0,0.0,1.0,A,A/A
+502553,Borussia Mönchengladbach,Eintracht Frankfurt,Bundesliga,2025-02-08 17:30:00+00:00,FINISHED,1.0,1.0,1.0,1.0,D,D/D
+502558,Holstein Kiel,VfL Bochum 1848,Bundesliga,2025-02-09 14:30:00+00:00,FINISHED,2.0,2.0,1.0,2.0,D,A/D
+502559,RB Leipzig,FC St. Pauli 1910,Bundesliga,2025-02-09 16:30:00+00:00,FINISHED,2.0,0.0,2.0,0.0,H,H/H
+502561,FC Augsburg,RB Leipzig,Bundesliga,2025-02-14 19:30:00+00:00,FINISHED,0.0,0.0,0.0,0.0,D,D/D
+502562,VfL Bochum 1848,Borussia Dortmund,Bundesliga,2025-02-15 14:30:00+00:00,FINISHED,2.0,0.0,2.0,0.0,H,H/H
+502564,FC St. Pauli 1910,SC Freiburg,Bundesliga,2025-02-15 14:30:00+00:00,FINISHED,0.0,1.0,0.0,0.0,A,D/A
+502565,VfB Stuttgart,VfL Wolfsburg,Bundesliga,2025-02-15 14:30:00+00:00,FINISHED,1.0,2.0,0.0,0.0,A,D/A
+502567,1. FC Union Berlin,Borussia Mönchengladbach,Bundesliga,2025-02-15 14:30:00+00:00,FINISHED,1.0,2.0,0.0,2.0,A,A/A
+502560,Bayer 04 Leverkusen,FC Bayern München,Bundesliga,2025-02-15 17:30:00+00:00,FINISHED,0.0,0.0,0.0,0.0,D,D/D
+502563,SV Werder Bremen,TSG 1899 Hoffenheim,Bundesliga,2025-02-16 14:30:00+00:00,FINISHED,1.0,3.0,1.0,2.0,A,A/A
+502568,Eintracht Frankfurt,Holstein Kiel,Bundesliga,2025-02-16 16:30:00+00:00,FINISHED,3.0,1.0,2.0,0.0,H,H/H
+502566,1. FC Heidenheim 1846,1. FSV Mainz 05,Bundesliga,2025-02-16 18:30:00+00:00,FINISHED,0.0,2.0,0.0,1.0,A,A/A
+502573,SC Freiburg,SV Werder Bremen,Bundesliga,2025-02-21 19:30:00+00:00,FINISHED,5.0,0.0,2.0,0.0,H,H/H
+502569,Holstein Kiel,Bayer 04 Leverkusen,Bundesliga,2025-02-22 14:30:00+00:00,FINISHED,0.0,2.0,0.0,2.0,A,A/A
+502574,Borussia Mönchengladbach,FC Augsburg,Bundesliga,2025-02-22 14:30:00+00:00,FINISHED,0.0,3.0,0.0,0.0,A,D/A
+502576,VfL Wolfsburg,VfL Bochum 1848,Bundesliga,2025-02-22 14:30:00+00:00,FINISHED,1.0,1.0,0.0,0.0,D,D/D
+502577,1. FSV Mainz 05,FC St. Pauli 1910,Bundesliga,2025-02-22 14:30:00+00:00,FINISHED,2.0,0.0,0.0,0.0,H,D/H
+502575,Borussia Dortmund,1. FC Union Berlin,Bundesliga,2025-02-22 17:30:00+00:00,FINISHED,6.0,0.0,2.0,0.0,H,H/H
+502572,RB Leipzig,1. FC Heidenheim 1846,Bundesliga,2025-02-23 14:30:00+00:00,FINISHED,2.0,2.0,1.0,2.0,D,A/D
+502571,FC Bayern München,Eintracht Frankfurt,Bundesliga,2025-02-23 16:30:00+00:00,FINISHED,4.0,0.0,1.0,0.0,H,H/H
+502570,TSG 1899 Hoffenheim,VfB Stuttgart,Bundesliga,2025-02-23 18:30:00+00:00,FINISHED,1.0,1.0,0.0,1.0,D,A/D
+502579,VfB Stuttgart,FC Bayern München,Bundesliga,2025-02-28 19:30:00+00:00,FINISHED,1.0,3.0,1.0,1.0,A,D/A
+502580,FC St. Pauli 1910,Borussia Dortmund,Bundesliga,2025-03-01 14:30:00+00:00,FINISHED,0.0,2.0,0.0,0.0,A,D/A
+502581,VfL Bochum 1848,TSG 1899 Hoffenheim,Bundesliga,2025-03-01 14:30:00+00:00,FINISHED,0.0,1.0,0.0,0.0,A,D/A
+502583,SV Werder Bremen,VfL Wolfsburg,Bundesliga,2025-03-01 14:30:00+00:00,FINISHED,1.0,2.0,0.0,1.0,A,A/A
+502584,RB Leipzig,1. FSV Mainz 05,Bundesliga,2025-03-01 14:30:00+00:00,FINISHED,1.0,2.0,1.0,0.0,A,H/A
+502585,1. FC Heidenheim 1846,Borussia Mönchengladbach,Bundesliga,2025-03-01 14:30:00+00:00,FINISHED,0.0,3.0,0.0,2.0,A,A/A
+502578,Eintracht Frankfurt,Bayer 04 Leverkusen,Bundesliga,2025-03-01 17:30:00+00:00,FINISHED,1.0,4.0,1.0,3.0,A,A/A
+502586,1. FC Union Berlin,Holstein Kiel,Bundesliga,2025-03-02 14:30:00+00:00,IN_PLAY,,,,,,
+502582,FC Augsburg,SC Freiburg,Bundesliga,2025-03-02 16:30:00+00:00,TIMED,,,,,,
+502592,Borussia Mönchengladbach,1. FSV Mainz 05,Bundesliga,2025-03-07 19:30:00+00:00,TIMED,,,,,,
+502587,Holstein Kiel,VfB Stuttgart,Bundesliga,2025-03-08 14:30:00+00:00,TIMED,,,,,,
+502590,Bayer 04 Leverkusen,SV Werder Bremen,Bundesliga,2025-03-08 14:30:00+00:00,TIMED,,,,,,
+502591,Borussia Dortmund,FC Augsburg,Bundesliga,2025-03-08 14:30:00+00:00,TIMED,,,,,,
+502594,FC Bayern München,VfL Bochum 1848,Bundesliga,2025-03-08 14:30:00+00:00,TIMED,,,,,,
+502595,VfL Wolfsburg,FC St. Pauli 1910,Bundesliga,2025-03-08 14:30:00+00:00,TIMED,,,,,,
+502588,SC Freiburg,RB Leipzig,Bundesliga,2025-03-08 17:30:00+00:00,TIMED,,,,,,
+502593,Eintracht Frankfurt,1. FC Union Berlin,Bundesliga,2025-03-09 14:30:00+00:00,TIMED,,,,,,
+502589,TSG 1899 Hoffenheim,1. FC Heidenheim 1846,Bundesliga,2025-03-09 16:30:00+00:00,TIMED,,,,,,
+502600,FC St. Pauli 1910,TSG 1899 Hoffenheim,Bundesliga,2025-03-14 19:30:00+00:00,TIMED,,,,,,
+502597,1. FC Union Berlin,FC Bayern München,Bundesliga,2025-03-15 14:30:00+00:00,TIMED,,,,,,
+502601,1. FSV Mainz 05,SC Freiburg,Bundesliga,2025-03-15 14:30:00+00:00,TIMED,,,,,,
+502602,FC Augsburg,VfL Wolfsburg,Bundesliga,2025-03-15 14:30:00+00:00,TIMED,,,,,,
+502603,SV Werder Bremen,Borussia Mönchengladbach,Bundesliga,2025-03-15 14:30:00+00:00,TIMED,,,,,,
+502598,RB Leipzig,Borussia Dortmund,Bundesliga,2025-03-15 17:30:00+00:00,TIMED,,,,,,
+502599,VfL Bochum 1848,Eintracht Frankfurt,Bundesliga,2025-03-16 14:30:00+00:00,TIMED,,,,,,
+502604,1. FC Heidenheim 1846,Holstein Kiel,Bundesliga,2025-03-16 16:30:00+00:00,TIMED,,,,,,
+502596,VfB Stuttgart,Bayer 04 Leverkusen,Bundesliga,2025-03-16 18:30:00+00:00,TIMED,,,,,,
+502612,Bayer 04 Leverkusen,VfL Bochum 1848,Bundesliga,2025-03-28 19:30:00+00:00,TIMED,,,,,,
+502606,Borussia Mönchengladbach,RB Leipzig,Bundesliga,2025-03-29 14:30:00+00:00,TIMED,,,,,,
+502607,VfL Wolfsburg,1. FC Heidenheim 1846,Bundesliga,2025-03-29 14:30:00+00:00,TIMED,,,,,,
+502608,Holstein Kiel,SV Werder Bremen,Bundesliga,2025-03-29 14:30:00+00:00,TIMED,,,,,,
+502609,TSG 1899 Hoffenheim,FC Augsburg,Bundesliga,2025-03-29 14:30:00+00:00,TIMED,,,,,,
+502613,FC Bayern München,FC St. Pauli 1910,Bundesliga,2025-03-29 14:30:00+00:00,TIMED,,,,,,
+502605,Eintracht Frankfurt,VfB Stuttgart,Bundesliga,2025-03-29 17:30:00+00:00,TIMED,,,,,,
+502611,SC Freiburg,1. FC Union Berlin,Bundesliga,2025-03-30 13:30:00+00:00,TIMED,,,,,,
+502610,Borussia Dortmund,1. FSV Mainz 05,Bundesliga,2025-03-30 15:30:00+00:00,TIMED,,,,,,
+502614,1. FC Heidenheim 1846,Bayer 04 Leverkusen,Bundesliga,2025-04-05 00:00:00+00:00,SCHEDULED,,,,,,
+502615,VfL Bochum 1848,VfB Stuttgart,Bundesliga,2025-04-05 00:00:00+00:00,SCHEDULED,,,,,,
+502616,FC Augsburg,FC Bayern München,Bundesliga,2025-04-05 00:00:00+00:00,SCHEDULED,,,,,,
+502617,SC Freiburg,Borussia Dortmund,Bundesliga,2025-04-05 00:00:00+00:00,SCHEDULED,,,,,,
+502618,SV Werder Bremen,Eintracht Frankfurt,Bundesliga,2025-04-05 00:00:00+00:00,SCHEDULED,,,,,,
+502619,RB Leipzig,TSG 1899 Hoffenheim,Bundesliga,2025-04-05 00:00:00+00:00,SCHEDULED,,,,,,
+502620,1. FC Union Berlin,VfL Wolfsburg,Bundesliga,2025-04-05 00:00:00+00:00,SCHEDULED,,,,,,
+502621,FC St. Pauli 1910,Borussia Mönchengladbach,Bundesliga,2025-04-05 00:00:00+00:00,SCHEDULED,,,,,,
+502622,1. FSV Mainz 05,Holstein Kiel,Bundesliga,2025-04-05 00:00:00+00:00,SCHEDULED,,,,,,
+502623,VfL Wolfsburg,RB Leipzig,Bundesliga,2025-04-12 00:00:00+00:00,SCHEDULED,,,,,,
+502624,FC Bayern München,Borussia Dortmund,Bundesliga,2025-04-12 00:00:00+00:00,SCHEDULED,,,,,,
+502625,Eintracht Frankfurt,1. FC Heidenheim 1846,Bundesliga,2025-04-12 00:00:00+00:00,SCHEDULED,,,,,,
+502626,VfB Stuttgart,SV Werder Bremen,Bundesliga,2025-04-12 00:00:00+00:00,SCHEDULED,,,,,,
+502627,Borussia Mönchengladbach,SC Freiburg,Bundesliga,2025-04-12 00:00:00+00:00,SCHEDULED,,,,,,
+502628,VfL Bochum 1848,FC Augsburg,Bundesliga,2025-04-12 00:00:00+00:00,SCHEDULED,,,,,,
+502629,TSG 1899 Hoffenheim,1. FSV Mainz 05,Bundesliga,2025-04-12 00:00:00+00:00,SCHEDULED,,,,,,
+502630,Bayer 04 Leverkusen,1. FC Union Berlin,Bundesliga,2025-04-12 00:00:00+00:00,SCHEDULED,,,,,,
+502631,Holstein Kiel,FC St. Pauli 1910,Bundesliga,2025-04-12 00:00:00+00:00,SCHEDULED,,,,,,
+502632,FC St. Pauli 1910,Bayer 04 Leverkusen,Bundesliga,2025-04-19 00:00:00+00:00,SCHEDULED,,,,,,
+502633,1. FC Union Berlin,VfB Stuttgart,Bundesliga,2025-04-19 00:00:00+00:00,SCHEDULED,,,,,,
+502634,1. FC Heidenheim 1846,FC Bayern München,Bundesliga,2025-04-19 00:00:00+00:00,SCHEDULED,,,,,,
+502635,FC Augsburg,Eintracht Frankfurt,Bundesliga,2025-04-19 00:00:00+00:00,SCHEDULED,,,,,,
+502636,SC Freiburg,TSG 1899 Hoffenheim,Bundesliga,2025-04-19 00:00:00+00:00,SCHEDULED,,,,,,
+502637,1. FSV Mainz 05,VfL Wolfsburg,Bundesliga,2025-04-19 00:00:00+00:00,SCHEDULED,,,,,,
+502638,Borussia Dortmund,Borussia Mönchengladbach,Bundesliga,2025-04-19 00:00:00+00:00,SCHEDULED,,,,,,
+502639,SV Werder Bremen,VfL Bochum 1848,Bundesliga,2025-04-19 00:00:00+00:00,SCHEDULED,,,,,,
+502640,RB Leipzig,Holstein Kiel,Bundesliga,2025-04-19 00:00:00+00:00,SCHEDULED,,,,,,
+502641,Eintracht Frankfurt,RB Leipzig,Bundesliga,2025-04-26 00:00:00+00:00,SCHEDULED,,,,,,
+502642,TSG 1899 Hoffenheim,Borussia Dortmund,Bundesliga,2025-04-26 00:00:00+00:00,SCHEDULED,,,,,,
+502643,VfB Stuttgart,1. FC Heidenheim 1846,Bundesliga,2025-04-26 00:00:00+00:00,SCHEDULED,,,,,,
+502644,VfL Wolfsburg,SC Freiburg,Bundesliga,2025-04-26 00:00:00+00:00,SCHEDULED,,,,,,
+502645,FC Bayern München,1. FSV Mainz 05,Bundesliga,2025-04-26 00:00:00+00:00,SCHEDULED,,,,,,
+502646,Holstein Kiel,Borussia Mönchengladbach,Bundesliga,2025-04-26 00:00:00+00:00,SCHEDULED,,,,,,
+502647,VfL Bochum 1848,1. FC Union Berlin,Bundesliga,2025-04-26 00:00:00+00:00,SCHEDULED,,,,,,
+502648,SV Werder Bremen,FC St. Pauli 1910,Bundesliga,2025-04-26 00:00:00+00:00,SCHEDULED,,,,,,
+502649,Bayer 04 Leverkusen,FC Augsburg,Bundesliga,2025-04-26 00:00:00+00:00,SCHEDULED,,,,,,
+502650,SC Freiburg,Bayer 04 Leverkusen,Bundesliga,2025-05-03 00:00:00+00:00,SCHEDULED,,,,,,
+502651,FC St. Pauli 1910,VfB Stuttgart,Bundesliga,2025-05-03 00:00:00+00:00,SCHEDULED,,,,,,
+502652,RB Leipzig,FC Bayern München,Bundesliga,2025-05-03 00:00:00+00:00,SCHEDULED,,,,,,
+502653,1. FSV Mainz 05,Eintracht Frankfurt,Bundesliga,2025-05-03 00:00:00+00:00,SCHEDULED,,,,,,
+502654,Borussia Mönchengladbach,TSG 1899 Hoffenheim,Bundesliga,2025-05-03 00:00:00+00:00,SCHEDULED,,,,,,
+502655,1. FC Union Berlin,SV Werder Bremen,Bundesliga,2025-05-03 00:00:00+00:00,SCHEDULED,,,,,,
+502656,Borussia Dortmund,VfL Wolfsburg,Bundesliga,2025-05-03 00:00:00+00:00,SCHEDULED,,,,,,
+502657,1. FC Heidenheim 1846,VfL Bochum 1848,Bundesliga,2025-05-03 00:00:00+00:00,SCHEDULED,,,,,,
+502658,FC Augsburg,Holstein Kiel,Bundesliga,2025-05-03 00:00:00+00:00,SCHEDULED,,,,,,
+502659,SV Werder Bremen,RB Leipzig,Bundesliga,2025-05-10 00:00:00+00:00,SCHEDULED,,,,,,
+502660,Bayer 04 Leverkusen,Borussia Dortmund,Bundesliga,2025-05-10 00:00:00+00:00,SCHEDULED,,,,,,
+502661,VfL Wolfsburg,TSG 1899 Hoffenheim,Bundesliga,2025-05-10 00:00:00+00:00,SCHEDULED,,,,,,
+502662,1. FC Union Berlin,1. FC Heidenheim 1846,Bundesliga,2025-05-10 00:00:00+00:00,SCHEDULED,,,,,,
+502663,Holstein Kiel,SC Freiburg,Bundesliga,2025-05-10 00:00:00+00:00,SCHEDULED,,,,,,
+502664,VfB Stuttgart,FC Augsburg,Bundesliga,2025-05-10 00:00:00+00:00,SCHEDULED,,,,,,
+502665,VfL Bochum 1848,1. FSV Mainz 05,Bundesliga,2025-05-10 00:00:00+00:00,SCHEDULED,,,,,,
+502666,FC Bayern München,Borussia Mönchengladbach,Bundesliga,2025-05-10 00:00:00+00:00,SCHEDULED,,,,,,
+502667,Eintracht Frankfurt,FC St. Pauli 1910,Bundesliga,2025-05-10 00:00:00+00:00,SCHEDULED,,,,,,
+502668,1. FSV Mainz 05,Bayer 04 Leverkusen,Bundesliga,2025-05-17 13:30:00+00:00,TIMED,,,,,,
+502669,RB Leipzig,VfB Stuttgart,Bundesliga,2025-05-17 13:30:00+00:00,TIMED,,,,,,
+502670,TSG 1899 Hoffenheim,FC Bayern München,Bundesliga,2025-05-17 13:30:00+00:00,TIMED,,,,,,
+502671,SC Freiburg,Eintracht Frankfurt,Bundesliga,2025-05-17 13:30:00+00:00,TIMED,,,,,,
+502672,1. FC Heidenheim 1846,SV Werder Bremen,Bundesliga,2025-05-17 13:30:00+00:00,TIMED,,,,,,
+502673,Borussia Mönchengladbach,VfL Wolfsburg,Bundesliga,2025-05-17 13:30:00+00:00,TIMED,,,,,,
+502674,FC Augsburg,1. FC Union Berlin,Bundesliga,2025-05-17 13:30:00+00:00,TIMED,,,,,,
+502675,FC St. Pauli 1910,VfL Bochum 1848,Bundesliga,2025-05-17 13:30:00+00:00,TIMED,,,,,,
+502676,Borussia Dortmund,Holstein Kiel,Bundesliga,2025-05-17 13:30:00+00:00,TIMED,,,,,,
