@@ -3,8 +3,6 @@ const LEAGUES = {
     "PL": "英超",
     "PD": "西甲",
     "SA": "意甲",
-    "BL1": "德甲",
-    "FL1": "法甲"
 };
 
 // 存储各联赛的球队特征数据
@@ -13,7 +11,7 @@ let featuresData = {};
 // 预加载所有联赛的数据
 async function loadAllLeaguesData() {
     const loadingOverlay = document.getElementById('loading-overlay');
-    loadingOverlay.classList.remove('hidden');
+
     
     try {
         // 并行加载所有联赛数据
