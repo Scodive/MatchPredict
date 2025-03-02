@@ -2,46 +2,29 @@
  * 预测单场比赛结果
  */
 function predictMatch(league_code, home_team, away_team, home_odds, draw_odds, away_odds) {
-    // 获取球队特征
-    const home_features = getTeamFeatures(home_team, league_code);
-    const away_features = getTeamFeatures(away_team, league_code);
+    // 计算期望进球
+    const { homeExpectedGoals, awayExpectedGoals } = calculateExpectedGoals(
+        home_team, away_team, league_code, home_odds, away_odds
+    );
     
-    if (!home_features || !away_features) {
-        throw new Error(`找不到球队数据: ${home_team} 或 ${away_team}`);
+    // 根据赔率差异调整最大进球数
+    // 当赔率悬殊时，增加最大可能进球数
+    let maxGoals = 5;  // 默认最大进球数
+    
+    // 计算赔率比例来判断实力差距
+    const favoriteOdds = Math.min(home_odds, away_odds);
+    const underdogOdds = Math.max(home_odds, away_odds);
+    const oddsRatio = underdogOdds / favoriteOdds;
+    
+    if (oddsRatio > 5) {
+        maxGoals = 8;  // 实力极度悬殊
+    } else if (oddsRatio > 3) {
+        maxGoals = 7;  // 实力非常悬殊
+    } else if (oddsRatio > 2) {
+        maxGoals = 6;  // 实力明显悬殊
     }
     
-    // 更全面地利用球队特征数据
-    const homeAttack = calculateAttackStrength(home_features, true);
-    const homeDefense = calculateDefenseStrength(home_features, true);
-    const awayAttack = calculateAttackStrength(away_features, false);
-    const awayDefense = calculateDefenseStrength(away_features, false);
-    
-    // 考虑球队近期状态
-    const homeForm = calculateTeamForm(home_features);
-    const awayForm = calculateTeamForm(away_features);
-    
-    // 考虑历史交锋记录
-    const headToHeadFactor = calculateHeadToHeadFactor(home_team, away_team, league_code);
-    
-    // 联赛特定的主场优势
-    const leagueHomeAdvantage = {
-        'PL': 1.02,  // 英超
-        'PD': 1.00,  // 西甲
-        'SA': 1.02,  // 意甲
-        'BL1': 1.04, // 德甲
-        'FL1': 1.0  // 法甲
-    }[league_code] || 1.02;
-    
-    // 计算预期进球
-    let homeExpectedGoals = homeAttack * 0.5 + awayDefense * 0.3 + homeForm * 0.1;
-    let awayExpectedGoals = awayAttack * 0.5 + homeDefense * 0.3 + awayForm * 0.1;
-    
-    // 应用主场优势和历史交锋因素
-    homeExpectedGoals *= leagueHomeAdvantage * headToHeadFactor.home;
-    awayExpectedGoals *= headToHeadFactor.away;
-    
     // 使用泊松分布计算比分概率
-    const maxGoals = 5;
     const scoreProbs = {};
     let totalProb = 0;
     
@@ -135,8 +118,11 @@ function predictMatch(league_code, home_team, away_team, home_odds, draw_odds, a
     const halfTimeScoreProbs = {};
     let halfTimeTotalProb = 0;
     
-    for (let i = 0; i <= 3; i++) { // 半场比分通常较低
-        for (let j = 0; j <= 3; j++) {
+    // 半场最大进球数也应该根据实力差距调整
+    const halfTimeMaxGoals = Math.min(4, Math.ceil(maxGoals * 0.6));
+    
+    for (let i = 0; i <= halfTimeMaxGoals; i++) {
+        for (let j = 0; j <= halfTimeMaxGoals; j++) {
             const homeProb = Math.exp(-halfTimeHomeExpectedGoals) * Math.pow(halfTimeHomeExpectedGoals, i) / factorial(i);
             const awayProb = Math.exp(-halfTimeAwayExpectedGoals) * Math.pow(halfTimeAwayExpectedGoals, j) / factorial(j);
             halfTimeScoreProbs[`${i}-${j}`] = homeProb * awayProb;
@@ -200,9 +186,9 @@ function predictMatch(league_code, home_team, away_team, home_odds, draw_odds, a
             let adjustmentFactor = 1.0;
             
             if (ht === ft) {
-                adjustmentFactor = 1.4; // 半场和全场结果相同的概率更高
+                adjustmentFactor = 1.5; // 半场和全场结果相同的概率更高
             } else if ((ht === 'H' && ft === 'A') || (ht === 'A' && ft === 'H')) {
-                adjustmentFactor = 0.6; // 半场主胜全场客胜或半场客胜全场主胜的概率较低
+                adjustmentFactor = 0.5; // 半场主胜全场客胜或半场客胜全场主胜的概率较低
             }
             
             halfTimeFullTimeProbs[`${ht}/${ft}`] = htProb * ftProb * adjustmentFactor;
@@ -252,7 +238,7 @@ function predictMatch(league_code, home_team, away_team, home_odds, draw_odds, a
         best_bet: allBets[0][0],
         best_ev: allBets[0][1],
         all_bets: allBets,
-        // 新增详细预测结果
+        // 详细预测结果
         most_likely_scores: sortedScores,
         most_likely_ht_scores: sortedHalfTimeScores,
         most_likely_htft: sortedHalfTimeFullTime,
@@ -406,4 +392,63 @@ function calculateHeadToHeadFactor(home_team, away_team, league_code) {
     // 这里需要实现获取历史交锋数据的逻辑
     // 暂时返回默认值
     return { home: 1.0, away: 1.0 };
+}
+
+/**
+ * 计算预期进球
+ */
+function calculateExpectedGoals(homeTeam, awayTeam, league_code, home_odds, away_odds) {
+    // 获取球队特征
+    const home_features = getTeamFeatures(homeTeam, league_code);
+    const away_features = getTeamFeatures(awayTeam, league_code);
+    
+    if (!home_features || !away_features) {
+        throw new Error(`找不到球队数据: ${homeTeam} 或 ${awayTeam}`);
+    }
+    
+    // 基础计算
+    const homeAttack = calculateAttackStrength(home_features, true);
+    const homeDefense = calculateDefenseStrength(home_features, true);
+    const awayAttack = calculateAttackStrength(away_features, false);
+    const awayDefense = calculateDefenseStrength(away_features, false);
+    
+    // 考虑球队近期状态
+    const homeForm = calculateTeamForm(home_features);
+    const awayForm = calculateTeamForm(away_features);
+    
+    // 联赛特定的主场优势
+    const leagueHomeAdvantage = {
+        'PL': 1.02,  // 英超
+        'PD': 1.00,  // 西甲
+        'SA': 1.02,  // 意甲
+        'BL1': 1.04, // 德甲
+        'FL1': 1.0   // 法甲
+    }[league_code] || 1.02;
+    
+    // 基础期望进球
+    let homeExpectedGoals = homeAttack * 0.5 + awayDefense * 0.3 + homeForm * 0.1;
+    let awayExpectedGoals = awayAttack * 0.5 + homeDefense * 0.3 + awayForm * 0.1;
+    
+    // 应用主场优势
+    homeExpectedGoals *= leagueHomeAdvantage;
+    
+    // 根据赔率调整期望进球
+    // 当赔率悬殊时，增加强队的期望进球，减少弱队的期望进球
+    const oddsRatio = home_odds / away_odds;
+    
+    if (oddsRatio < 0.5) {  // 主队明显强于客队
+        const strengthDiff = Math.pow(0.5 / oddsRatio, 0.5);
+        homeExpectedGoals *= (1 + (strengthDiff - 1) * 0.5);
+        awayExpectedGoals *= (1 - (strengthDiff - 1) * 0.3);
+    } else if (oddsRatio > 2.0) {  // 客队明显强于主队
+        const strengthDiff = Math.pow(oddsRatio / 2.0, 0.5);
+        homeExpectedGoals *= (1 - (strengthDiff - 1) * 0.3);
+        awayExpectedGoals *= (1 + (strengthDiff - 1) * 0.5);
+    }
+    
+    // 确保期望进球不会低于一个最小值
+    homeExpectedGoals = Math.max(homeExpectedGoals, 0.3);
+    awayExpectedGoals = Math.max(awayExpectedGoals, 0.2);
+    
+    return { homeExpectedGoals, awayExpectedGoals };
 }
