@@ -286,8 +286,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 console.error('预测出错:', error);
                 alert('预测过程中发生错误: ' + error.message);
             } finally {
-                // 隐藏加载动画
-                loadingOverlay.classList.add('hidden');
+                
             }
         }, 100);
     }
@@ -314,22 +313,34 @@ document.addEventListener('DOMContentLoaded', function() {
                 bestBetText = `客胜 (${prediction.away_odds})`;
             }
             
-            // 获取最可能的比分
-            const mostLikelyScore = prediction.most_likely_scores[0];
-            const mostLikelyScoreText = `${mostLikelyScore[0]} (${(mostLikelyScore[1] * 100).toFixed(1)}%)`;
+            // 安全地获取最可能的比分
+            let mostLikelyScoreText = "无数据";
+            if (prediction.most_likely_scores && prediction.most_likely_scores.length > 0) {
+                const mostLikelyScore = prediction.most_likely_scores[0];
+                mostLikelyScoreText = `${mostLikelyScore[0]} (${(mostLikelyScore[1] * 100).toFixed(1)}%)`;
+            }
             
-            // 获取最可能的半场比分
-            const mostLikelyHTScore = prediction.most_likely_ht_scores[0];
-            const mostLikelyHTScoreText = `${mostLikelyHTScore[0]} (${(mostLikelyHTScore[1] * 100).toFixed(1)}%)`;
+            // 安全地获取最可能的半场比分
+            let mostLikelyHTScoreText = "无数据";
+            if (prediction.most_likely_ht_scores && prediction.most_likely_ht_scores.length > 0) {
+                const mostLikelyHTScore = prediction.most_likely_ht_scores[0];
+                mostLikelyHTScoreText = `${mostLikelyHTScore[0]} (${(mostLikelyHTScore[1] * 100).toFixed(1)}%)`;
+            }
             
-            // 获取最可能的半全场结果
-            const mostLikelyHTFT = prediction.most_likely_htft[0];
-            let htftText = mostLikelyHTFT[0].replace('H', '主胜').replace('D', '平局').replace('A', '客胜');
-            htftText = `${htftText} (${(mostLikelyHTFT[1] * 100).toFixed(1)}%)`;
+            // 安全地获取最可能的半全场结果
+            let htftText = "无数据";
+            if (prediction.most_likely_htft && prediction.most_likely_htft.length > 0) {
+                const mostLikelyHTFT = prediction.most_likely_htft[0];
+                htftText = mostLikelyHTFT[0].replace('H', '主胜').replace('D', '平局').replace('A', '客胜');
+                htftText = `${htftText} (${(mostLikelyHTFT[1] * 100).toFixed(1)}%)`;
+            }
             
-            // 获取最可能的总进球数
-            const mostLikelyTotalGoals = prediction.most_likely_total_goals[0];
-            const totalGoalsText = `${mostLikelyTotalGoals[0]} (${(mostLikelyTotalGoals[1] * 100).toFixed(1)}%)`;
+            // 安全地获取最可能的总进球数
+            let totalGoalsText = "无数据";
+            if (prediction.most_likely_total_goals && prediction.most_likely_total_goals.length > 0) {
+                const mostLikelyTotalGoals = prediction.most_likely_total_goals[0];
+                totalGoalsText = `${mostLikelyTotalGoals[0]} (${(mostLikelyTotalGoals[1] * 100).toFixed(1)}%)`;
+            }
             
             const resultCard = document.createElement('div');
             resultCard.className = 'result-card';
