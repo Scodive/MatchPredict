@@ -18,8 +18,8 @@ function predictMatch(league_code, home_team, away_team, home_odds, draw_odds, a
     const awayDefense = away_features.defense || away_features.away_goals_conceded_avg || 1.4;
     
     // 计算预期进球
-    const homeExpectedGoals = (homeAttack * 0.7 + awayDefense * 0.3) * 1.1; // 主场优势
-    const awayExpectedGoals = (awayAttack * 0.7 + homeDefense * 0.3) * 0.9; // 客场劣势
+    const homeExpectedGoals = (homeAttack * 0.7 + awayDefense * 0.3) * 1.05; // 主场优势
+    const awayExpectedGoals = (awayAttack * 0.7 + homeDefense * 0.3) * 0.97; // 客场劣势
     
     // 使用泊松分布计算比分概率
     const maxGoals = 5;
