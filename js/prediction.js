@@ -7,22 +7,33 @@ function predictMatch(league_code, home_team, away_team, home_odds, draw_odds, a
         home_team, away_team, league_code, home_odds, away_odds
     );
     
-    // 根据赔率差异调整最大进球数
-    // 当赔率悬殊时，增加最大可能进球数
+    // 根据赔率差异和联赛特性调整最大进球数
     let maxGoals = 5;  // 默认最大进球数
+    
+    // 获取联赛大球率
+    const highScoringFactor = leagueHighScoringFactor[league_code] || 1.0;
+    
+    // 根据联赛大球率调整基础最大进球数
+    maxGoals = Math.ceil(maxGoals * highScoringFactor);
     
     // 计算赔率比例来判断实力差距
     const favoriteOdds = Math.min(home_odds, away_odds);
     const underdogOdds = Math.max(home_odds, away_odds);
     const oddsRatio = underdogOdds / favoriteOdds;
     
+    // 更激进的最大进球数调整
     if (oddsRatio > 5) {
-        maxGoals = 8;  // 实力极度悬殊
+        maxGoals = Math.max(9, maxGoals + 3);  // 实力极度悬殊
     } else if (oddsRatio > 3) {
-        maxGoals = 7;  // 实力非常悬殊
+        maxGoals = Math.max(8, maxGoals + 2);  // 实力非常悬殊
     } else if (oddsRatio > 2) {
-        maxGoals = 6;  // 实力明显悬殊
+        maxGoals = Math.max(7, maxGoals + 1);  // 实力明显悬殊
+    } else if (oddsRatio > 1.5) {
+        maxGoals = Math.max(6, maxGoals);      // 实力有差距
     }
+    
+    // 确保最大进球数不会太小
+    maxGoals = Math.max(maxGoals, 6);
     
     // 使用泊松分布计算比分概率
     const scoreProbs = {};
@@ -425,6 +436,9 @@ function calculateExpectedGoals(homeTeam, awayTeam, league_code, home_odds, away
         'FL1': 1.0   // 法甲
     }[league_code] || 1.02;
     
+    // 获取联赛大球率
+    const highScoringFactor = leagueHighScoringFactor[league_code] || 1.0;
+    
     // 基础期望进球
     let homeExpectedGoals = homeAttack * 0.5 + awayDefense * 0.3 + homeForm * 0.1;
     let awayExpectedGoals = awayAttack * 0.5 + homeDefense * 0.3 + awayForm * 0.1;
@@ -432,19 +446,22 @@ function calculateExpectedGoals(homeTeam, awayTeam, league_code, home_odds, away
     // 应用主场优势
     homeExpectedGoals *= leagueHomeAdvantage;
     
-    // 根据赔率调整期望进球
-    // 当赔率悬殊时，增加强队的期望进球，减少弱队的期望进球
+    // 根据赔率调整期望进球 - 更激进的调整
     const oddsRatio = home_odds / away_odds;
     
     if (oddsRatio < 0.5) {  // 主队明显强于客队
-        const strengthDiff = Math.pow(0.5 / oddsRatio, 0.5);
-        homeExpectedGoals *= (1 + (strengthDiff - 1) * 0.5);
-        awayExpectedGoals *= (1 - (strengthDiff - 1) * 0.3);
+        const strengthDiff = Math.pow(0.5 / oddsRatio, 0.7); // 增加指数以放大效果
+        homeExpectedGoals *= (1 + (strengthDiff - 1) * 0.7);  // 增加系数
+        awayExpectedGoals *= (1 - (strengthDiff - 1) * 0.4);
     } else if (oddsRatio > 2.0) {  // 客队明显强于主队
-        const strengthDiff = Math.pow(oddsRatio / 2.0, 0.5);
-        homeExpectedGoals *= (1 - (strengthDiff - 1) * 0.3);
-        awayExpectedGoals *= (1 + (strengthDiff - 1) * 0.5);
+        const strengthDiff = Math.pow(oddsRatio / 2.0, 0.7); // 增加指数以放大效果
+        homeExpectedGoals *= (1 - (strengthDiff - 1) * 0.4);
+        awayExpectedGoals *= (1 + (strengthDiff - 1) * 0.7);  // 增加系数
     }
+    
+    // 应用联赛大球率
+    homeExpectedGoals *= highScoringFactor;
+    awayExpectedGoals *= highScoringFactor;
     
     // 确保期望进球不会低于一个最小值
     homeExpectedGoals = Math.max(homeExpectedGoals, 0.3);
@@ -452,3 +469,12 @@ function calculateExpectedGoals(homeTeam, awayTeam, league_code, home_odds, away
     
     return { homeExpectedGoals, awayExpectedGoals };
 }
+
+// 联赛大球率参数 - 表示各联赛进球数的倾向
+const leagueHighScoringFactor = {
+    'PL': 1.15,  // 英超进球较多
+    'PD': 1.15,  // 西甲进球适中
+    'SA': 0.95,  // 意甲进球较少
+    'BL1': 1.25, // 德甲进球最多
+    'FL1': 1.10, // 法甲进球较多
+};
