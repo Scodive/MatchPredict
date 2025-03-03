@@ -66,55 +66,59 @@ function predictMatch(league_code, home_team, away_team, home_odds, draw_odds, a
         }
     }
     
-    // 归一化概率
-    const normalizationFactor = 1 / totalProb;
-    homeWinProb *= normalizationFactor;
-    drawProb *= normalizationFactor;
-    awayWinProb *= normalizationFactor;
+    // 根据赔率调整概率 - 降低赔率权重
+    // 原始概率权重提高，赔率权重降低
+    const originalProbWeight = 0.7;  // 提高原始概率权重
+    const oddsWeight = 0.3;         // 降低赔率权重
     
-    // 增加平局的权重 - 根据历史数据调整
-    // 足球比赛中平局的概率通常在25%-30%之间
-    const leagueDrawAdjustment = {
-        'PL': 1.1,  // 英超平局率略高
-        'PD': 1.3,  // 西甲平局率更高
-        'SA': 1.1,  // 意甲平局率很高
-        'BL1': 0.9, // 德甲平局率较低
-        'FL1': 1.0  // 法甲平局率中等
-    };
+    // 从赔率计算隐含概率
+    const totalMargin = 1/home_odds + 1/draw_odds + 1/away_odds - 1;
+    const homeImpliedProb = (1/home_odds) / (1 + totalMargin);
+    const drawImpliedProb = (1/draw_odds) / (1 + totalMargin);
+    const awayImpliedProb = (1/away_odds) / (1 + totalMargin);
     
-    const drawAdjustment = leagueDrawAdjustment[league_code] || 1.1;
+    // 混合原始概率和赔率隐含概率
+    const adjustedHomeWinProb = homeWinProb * originalProbWeight + homeImpliedProb * oddsWeight;
+    const adjustedDrawProb = drawProb * originalProbWeight + drawImpliedProb * oddsWeight;
+    const adjustedAwayWinProb = awayWinProb * originalProbWeight + awayImpliedProb * oddsWeight;
     
-    // 应用平局调整
-    let adjustedDrawProb = drawProb * drawAdjustment;
-    const reduction = (adjustedDrawProb - drawProb) / 2;
-    let adjustedHomeWinProb = homeWinProb - reduction;
-    let adjustedAwayWinProb = awayWinProb - reduction;
-    
-    // 再次归一化
+    // 归一化调整后的概率
     const totalAdjustedProb = adjustedHomeWinProb + adjustedDrawProb + adjustedAwayWinProb;
-    adjustedHomeWinProb /= totalAdjustedProb;
-    adjustedDrawProb /= totalAdjustedProb;
-    adjustedAwayWinProb /= totalAdjustedProb;
+    const finalHomeWinProb = adjustedHomeWinProb / totalAdjustedProb;
+    const finalDrawProb = adjustedDrawProb / totalAdjustedProb;
+    const finalAwayWinProb = adjustedAwayWinProb / totalAdjustedProb;
     
-    // 计算期望值
-    const homeEV = (adjustedHomeWinProb * home_odds) - 1;
-    const drawEV = (adjustedDrawProb * draw_odds) - 1;
-    const awayEV = (adjustedAwayWinProb * away_odds) - 1;
+    // 计算期望值 - 考虑实力差距
+    // 实力差距越大，越降低弱队的期望值权重
+    let homeEV = (finalHomeWinProb * home_odds) - 1;
+    let drawEV = (finalDrawProb * draw_odds) - 1;
+    let awayEV = (finalAwayWinProb * away_odds) - 1;
     
-    // 所有投注选项（按期望值排序）
+    // 根据实力差距调整期望值
+    if (oddsRatio > 3) {
+        // 实力差距很大时，降低弱队的期望值
+        const strengthPenalty = Math.min(0.5, (oddsRatio - 3) * 0.1);
+        
+        if (home_odds > away_odds) {
+            // 主队是弱队
+            homeEV *= (1 - strengthPenalty);
+        } else {
+            // 客队是弱队
+            awayEV *= (1 - strengthPenalty);
+        }
+    }
+    
+    // 所有可能的投注选择及其期望值
     const allBets = [
-        ['home', homeEV, home_odds, adjustedHomeWinProb],
-        ['draw', drawEV, draw_odds, adjustedDrawProb],
-        ['away', awayEV, away_odds, adjustedAwayWinProb]
-    ];
-    
-    // 按期望值排序
-    allBets.sort((a, b) => b[1] - a[1]);
+        ['home', homeEV, home_odds, finalHomeWinProb],
+        ['draw', drawEV, draw_odds, finalDrawProb],
+        ['away', awayEV, away_odds, finalAwayWinProb]
+    ].sort((a, b) => b[1] - a[1]);  // 按期望值排序
     
     // 计算最可能的比分
     const normalizedScoreProbs = {};
     for (const [score, prob] of Object.entries(scoreProbs)) {
-        normalizedScoreProbs[score] = prob * normalizationFactor;
+        normalizedScoreProbs[score] = prob * totalProb;
     }
     
     // 按概率排序找出最可能的比分
@@ -188,9 +192,9 @@ function predictMatch(league_code, home_team, away_team, home_odds, draw_odds, a
             else if (ht === 'D') htProb = halfTimeDrawProb;
             else htProb = halfTimeAwayWinProb;
             
-            if (ft === 'H') ftProb = adjustedHomeWinProb;
-            else if (ft === 'D') ftProb = adjustedDrawProb;
-            else ftProb = adjustedAwayWinProb;
+            if (ft === 'H') ftProb = finalHomeWinProb;
+            else if (ft === 'D') ftProb = finalDrawProb;
+            else ftProb = finalAwayWinProb;
             
             // 半全场结果不是完全独立的，需要调整
             // 例如，半场领先的球队更可能赢得比赛
@@ -240,9 +244,9 @@ function predictMatch(league_code, home_team, away_team, home_odds, draw_odds, a
         league_code: league_code,
         home_team: home_team,
         away_team: away_team,
-        home_win_prob: adjustedHomeWinProb,
-        draw_prob: adjustedDrawProb,
-        away_win_prob: adjustedAwayWinProb,
+        home_win_prob: finalHomeWinProb,  // 使用最终调整后的概率
+        draw_prob: finalDrawProb,
+        away_win_prob: finalAwayWinProb,
         home_odds: home_odds,
         draw_odds: draw_odds,
         away_odds: away_odds,
