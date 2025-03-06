@@ -508,194 +508,144 @@ footer {
     font-style: italic;
 } 
 /* 欧冠模拟页面样式 */
+/* 欧冠模拟页面样式 - 白色背景和紧凑布局 */
 .champions-league-section {
     margin-top: 2rem;
     padding: 1.5rem;
-    background-color: #1e2430;
+    background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
 
 .cl-controls {
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
     text-align: center;
 }
 
-.cl-bracket {
+.tournament-bracket {
     display: flex;
     flex-direction: column;
-    width: 100%;
-    overflow-x: auto;
+    align-items: center;
+    margin-top: 1rem;
+    background-color: #fff;
 }
 
-.cl-rounds {
+.rounds-container {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 2rem;
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 1rem;
 }
 
-.cl-round {
+.round {
     display: flex;
     flex-direction: column;
     align-items: center;
-    flex: 1;
+    min-width: 220px;
+    margin: 0 5px;
 }
 
-.cl-round-title {
+.round-title {
     font-size: 1rem;
-    font-weight: bold;
     margin-bottom: 1rem;
-    color: #fff;
+    color: #333;
     text-align: center;
 }
 
-.cl-matches {
+.matches-container {
     display: flex;
     flex-direction: column;
     width: 100%;
 }
 
-.cl-match-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 1.5rem;
-    position: relative;
-}
-
-.cl-match {
-    background-color: #2c3544;
-    border-radius: 8px;
-    width: 90%;
-    max-width: 280px;
-    padding: 0.8rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-}
-
-.cl-match-date {
-    font-size: 0.8rem;
-    color: #8a9ab0;
-    text-align: right;
-    margin-bottom: 0.5rem;
-}
-
-.cl-team {
-    display: flex;
-    align-items: center;
-    margin: 0.5rem 0;
-}
-
-.cl-team-logo {
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background-color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: 0.8rem;
-    overflow: hidden;
-}
-
-.cl-team-logo img {
-    max-width: 90%;
-    max-height: 90%;
-}
-
-.cl-team-name {
-    flex-grow: 1;
-    font-size: 0.9rem;
-}
-
-.cl-score {
-    font-weight: bold;
-    min-width: 40px;
-    text-align: center;
-    font-size: 1.1rem;
-    background-color: #1e2430;
-    border-radius: 4px;
-    padding: 0.2rem 0.5rem;
-}
-
-.cl-connector {
-    width: 2px;
-    background-color: #3a4555;
-    height: 30px;
-}
-
-.cl-horizontal-connector {
-    height: 2px;
-    background-color: #3a4555;
-    width: 50%;
-    position: absolute;
-}
-
-.cl-placeholder {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.1);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin: 1rem 0;
-}
-
-.cl-placeholder-text {
-    font-size: 1.5rem;
-    color: rgba(255, 255, 255, 0.5);
-}
-
-.cl-winner {
-    color: #2ecc71;
-    font-weight: bold;
-}
-
-.cl-champion-section {
-    text-align: center;
-    margin-top: 2rem;
-    padding: 2rem;
-    background-color: #2c3544;
-    border-radius: 8px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-}
-
-.cl-champion-title {
-    font-size: 1.5rem;
-    margin-bottom: 1.5rem;
-    color: gold;
-}
-
-.cl-champion-team {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.cl-champion-logo {
-    width: 100px;
-    height: 100px;
-    background-color: #fff;
-    border-radius: 50%;
-    padding: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.match-pair, .match-single {
     margin-bottom: 1rem;
 }
 
-.cl-champion-name {
-    font-size: 2rem;
-    font-weight: bold;
-    margin-bottom: 0.5rem;
+.match {
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 4px;
+    padding: 0.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
-@media (max-width: 768px) {
-    .cl-bracket {
-        overflow-x: scroll;
-    }
-    
-    .cl-rounds {
-        width: 900px;
+.match-date {
+    font-size: 0.7rem;
+    color: #6c757d;
+    text-align: right;
+    margin-bottom: 0.3rem;
+}
+
+.team {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.3rem 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.team:last-child {
+    border-bottom: none;
+}
+
+.team-name {
+    font-size: 0.85rem;
+}
+
+.score {
+    font-weight: bold;
+    min-width: 25px;
+    text-align: center;
+    background-color: #e9ecef;
+    border-radius: 3px;
+    padding: 0.1rem 0.4rem;
+}
+
+.winner {
+    color: #28a745;
+    font-weight: bold;
+}
+
+.connector {
+    width: 2px;
+    background-color: #dee2e6;
+    height: 10px;
+    margin: 0 auto;
+}
+
+.champion-container {
+    margin-top: 1.5rem;
+    text-align: center;
+    padding: 1rem;
+    background-color: #f8f9fa;
+    border-radius: 6px;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+}
+
+.champion-title {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+
+.champion-team {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #007bff;
+}
+
+.loading {
+    text-align: center;
+    margin: 30px 0;
+    font-size: 1.1rem;
+    color: #6c757d;
+}
+
+/* 响应式设计 */
+@media (max-width: 992px) {
+    .rounds-container {
+        width: 800px;
     }
 }
