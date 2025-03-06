@@ -396,472 +396,257 @@ if (typeof module !== 'undefined' && module.exports) {
 
 document.addEventListener('DOMContentLoaded', function() {
     // 获取DOM元素
-    const simulateClBtn = document.getElementById('simulate-cl-btn');
-    const clBracket = document.getElementById('cl-bracket');
-    const championsLeagueSection = document.getElementById('champions-league-section');
-    
-    // 添加导航菜单项
-    addChampionsLeagueNavItem();
+    const simulateBtn = document.getElementById('simulate-cl-btn');
+    const bracketContainer = document.getElementById('cl-bracket');
     
     // 绑定模拟按钮事件
-    if (simulateClBtn) {
-        simulateClBtn.addEventListener('click', function() {
-            simulateAndRenderChampionsLeague();
+    if (simulateBtn) {
+        simulateBtn.addEventListener('click', function() {
+            // 显示加载状态
+            bracketContainer.innerHTML = '<div class="loading">正在模拟比赛...</div>';
+            
+            // 延迟执行以显示加载状态
+            setTimeout(() => {
+                // 模拟欧冠赛程
+                simulateAndRender();
+            }, 300);
         });
     }
     
-    // 添加导航菜单项函数
-    function addChampionsLeagueNavItem() {
-        // 创建导航菜单项
-        const navItem = document.createElement('li');
-        navItem.className = 'nav-item';
-        navItem.innerHTML = '<a href="#" id="cl-nav-link"><i class="fas fa-trophy"></i> 欧冠模拟</a>';
-        
-        // 获取导航菜单
-        const navMenu = document.querySelector('header nav ul');
-        if (navMenu) {
-            navMenu.appendChild(navItem);
-            
-            // 绑定点击事件
-            document.getElementById('cl-nav-link').addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                // 隐藏其他部分
-                document.querySelectorAll('main > section').forEach(section => {
-                    section.classList.add('hidden');
-                });
-                
-                // 显示欧冠模拟部分
-                championsLeagueSection.classList.remove('hidden');
-                
-                // 如果还没有模拟过，自动模拟一次
-                if (clBracket.innerHTML === '') {
-                    simulateAndRenderChampionsLeague();
-                }
-            });
-        } else {
-            // 如果没有找到导航菜单，添加一个按钮到页面顶部
-            const headerButtons = document.createElement('div');
-            headerButtons.className = 'header-buttons';
-            headerButtons.innerHTML = '<button id="show-cl-btn" class="btn secondary-btn"><i class="fas fa-trophy"></i> 欧冠模拟</button>';
-            
-            const header = document.querySelector('header');
-            if (header) {
-                header.appendChild(headerButtons);
-                
-                document.getElementById('show-cl-btn').addEventListener('click', function() {
-                    // 隐藏其他部分
-                    document.querySelectorAll('main > section').forEach(section => {
-                        section.classList.add('hidden');
-                    });
-                    
-                    // 显示欧冠模拟部分
-                    championsLeagueSection.classList.remove('hidden');
-                    
-                    // 如果还没有模拟过，自动模拟一次
-                    if (clBracket.innerHTML === '') {
-                        simulateAndRenderChampionsLeague();
-                    }
-                });
-            }
-        }
-    }
-    
     // 模拟并渲染欧冠赛程
-    function simulateAndRenderChampionsLeague() {
-        // 显示加载状态
-        clBracket.innerHTML = '<div class="loading">正在模拟比赛...</div>';
-        
-        // 使用setTimeout让UI有时间更新
-        setTimeout(() => {
-            // 模拟欧冠赛程
-            const results = simulateChampionsLeague();
-            
-            // 渲染结果
-            renderChampionsLeagueBracket(results);
-        }, 500);
-    }
-    
-    // 渲染欧冠赛程图
-    function renderChampionsLeagueBracket(results) {
+    function simulateAndRender() {
         // 清空内容
-        clBracket.innerHTML = '';
+        bracketContainer.innerHTML = '';
         
-        // 创建赛程图容器
-        const bracketContainer = document.createElement('div');
-        bracketContainer.className = 'cl-bracket-container';
+        // 1/8决赛第一回合结果（固定的）
+        const firstLegMatches = [
+            { team1: "PSV埃因霍温", team2: "阿森纳", score1: 1, score2: 7, date: "03/13" },
+            { team1: "皇家马德里", team2: "马德里竞技", score1: 2, score2: 1, date: "03/13" },
+            { team1: "巴黎圣日耳曼", team2: "利物浦", score1: 0, score2: 1, date: "03/12" },
+            { team1: "布鲁日", team2: "阿斯顿维拉", score1: 1, score2: 3, date: "03/13" },
+            { team1: "本菲卡", team2: "巴塞罗那", score1: 0, score2: 1, date: "03/12" },
+            { team1: "多特蒙德", team2: "里尔", score1: 1, score2: 1, date: "03/13" },
+            { team1: "拜仁慕尼黑", team2: "勒沃库森", score1: 3, score2: 0, date: "03/12" },
+            { team1: "费耶诺德", team2: "国际米兰", score1: 0, score2: 2, date: "03/12" }
+        ];
         
-        // 创建各轮次容器
-        const roundsContainer = document.createElement('div');
-        roundsContainer.className = 'cl-rounds';
+        // 模拟第二回合和后续比赛
+        const round16Winners = simulateRound16(firstLegMatches);
+        const quarterFinalists = round16Winners.map(m => m.winner);
+        const quarterFinalMatches = createPairs(quarterFinalists);
+        const semiFinalMatches = createPairs(quarterFinalMatches.map(m => m.winner));
+        const finalists = semiFinalMatches.map(m => m.winner);
+        const champion = simulateFinal(finalists[0], finalists[1]);
         
-        // 渲染1/8决赛
-        const round16Container = createRoundContainer('1/8决赛');
-        renderRound16Matches(round16Container, results.round16);
-        roundsContainer.appendChild(round16Container);
-        
-        // 渲染1/4决赛
-        const quarterFinalsContainer = createRoundContainer('1/4决赛');
-        renderQuarterFinalMatches(quarterFinalsContainer, results.quarterFinals);
-        roundsContainer.appendChild(quarterFinalsContainer);
-        
-        // 渲染半决赛
-        const semiFinalsContainer = createRoundContainer('半决赛');
-        renderSemiFinalMatches(semiFinalsContainer, results.semiFinals);
-        roundsContainer.appendChild(semiFinalsContainer);
-        
-        // 渲染决赛
-        const finalContainer = createRoundContainer('决赛');
-        renderFinalMatch(finalContainer, results.final);
-        roundsContainer.appendChild(finalContainer);
-        
-        bracketContainer.appendChild(roundsContainer);
-        
-        // 渲染冠军
-        const championSection = createChampionSection(results.champion);
-        bracketContainer.appendChild(championSection);
-        
-        clBracket.appendChild(bracketContainer);
-    }
-    
-    // 创建轮次容器
-    function createRoundContainer(title) {
-        const container = document.createElement('div');
-        container.className = 'cl-round';
-        
-        const titleElement = document.createElement('div');
-        titleElement.className = 'cl-round-title';
-        titleElement.textContent = title;
-        
-        container.appendChild(titleElement);
-        
-        return container;
-    }
-    
-    // 渲染1/8决赛
-    function renderRound16Matches(container, matches) {
-        const matchesContainer = document.createElement('div');
-        matchesContainer.className = 'cl-matches';
-        
-        // 第一回合结果
-        for (let i = 0; i < matches.length; i++) {
-            const match = matches[i];
-            const matchElement = createMatchElement(
-                match.team1.name, 
-                match.team2.name, 
-                match.firstLeg.homeGoals, 
-                match.firstLeg.awayGoals,
-                firstLegResults[i].date,
-                match.team1.logo,
-                match.team2.logo
-            );
-            
-            const matchContainer = document.createElement('div');
-            matchContainer.className = 'cl-match-container';
-            matchContainer.appendChild(matchElement);
-            
-            // 添加连接线
-            if (i < matches.length - 1) {
-                const connector = document.createElement('div');
-                connector.className = 'cl-connector';
-                matchContainer.appendChild(connector);
-            }
-            
-            matchesContainer.appendChild(matchContainer);
-        }
-        
-        container.appendChild(matchesContainer);
-    }
-    
-    // 渲染1/4决赛
-    function renderQuarterFinalMatches(container, matches) {
-        const matchesContainer = document.createElement('div');
-        matchesContainer.className = 'cl-matches';
-        
-        for (let i = 0; i < matches.length; i++) {
-            const match = matches[i];
-            
-            // 创建两回合比赛元素
-            const firstLegElement = createMatchElement(
-                match.team1.name, 
-                match.team2.name, 
-                match.firstLeg.homeGoals, 
-                match.firstLeg.awayGoals,
-                match.date || generateRandomDate(),
-                match.team1.logo,
-                match.team2.logo
-            );
-            
-            const secondLegElement = createMatchElement(
-                match.team2.name, 
-                match.team1.name, 
-                match.secondLeg.homeGoals, 
-                match.secondLeg.awayGoals,
-                match.date ? incrementDate(match.date) : generateRandomDate(),
-                match.team2.logo,
-                match.team1.logo
-            );
-            
-            // 添加晋级标记
-            markWinningTeam(firstLegElement, secondLegElement, match.winner);
-            
-            const matchContainer = document.createElement('div');
-            matchContainer.className = 'cl-match-container';
-            matchContainer.appendChild(firstLegElement);
-            
-            const connector = document.createElement('div');
-            connector.className = 'cl-connector';
-            matchContainer.appendChild(connector);
-            
-            matchContainer.appendChild(secondLegElement);
-            
-            // 添加连接线
-            if (i < matches.length - 1) {
-                const connector2 = document.createElement('div');
-                connector2.className = 'cl-connector';
-                connector2.style.height = '50px';
-                matchContainer.appendChild(connector2);
-            }
-            
-            matchesContainer.appendChild(matchContainer);
-        }
-        
-        container.appendChild(matchesContainer);
-    }
-    
-    // 渲染半决赛
-    function renderSemiFinalMatches(container, matches) {
-        const matchesContainer = document.createElement('div');
-        matchesContainer.className = 'cl-matches';
-        
-        for (let i = 0; i < matches.length; i++) {
-            const match = matches[i];
-            
-            // 创建两回合比赛元素
-            const firstLegElement = createMatchElement(
-                match.team1.name, 
-                match.team2.name, 
-                match.firstLeg.homeGoals, 
-                match.firstLeg.awayGoals,
-                match.date || generateRandomDate(),
-                match.team1.logo,
-                match.team2.logo
-            );
-            
-            const secondLegElement = createMatchElement(
-                match.team2.name, 
-                match.team1.name, 
-                match.secondLeg.homeGoals, 
-                match.secondLeg.awayGoals,
-                match.date ? incrementDate(match.date) : generateRandomDate(),
-                match.team2.logo,
-                match.team1.logo
-            );
-            
-            // 添加晋级标记
-            markWinningTeam(firstLegElement, secondLegElement, match.winner);
-            
-            const matchContainer = document.createElement('div');
-            matchContainer.className = 'cl-match-container';
-            matchContainer.appendChild(firstLegElement);
-            
-            const connector = document.createElement('div');
-            connector.className = 'cl-connector';
-            matchContainer.appendChild(connector);
-            
-            matchContainer.appendChild(secondLegElement);
-            
-            // 添加连接线
-            if (i < matches.length - 1) {
-                const connector2 = document.createElement('div');
-                connector2.className = 'cl-connector';
-                connector2.style.height = '80px';
-                matchContainer.appendChild(connector2);
-            }
-            
-            matchesContainer.appendChild(matchContainer);
-        }
-        
-        container.appendChild(matchesContainer);
-    }
-    
-    // 渲染决赛
-    function renderFinalMatch(container, finalMatch) {
-        const matchesContainer = document.createElement('div');
-        matchesContainer.className = 'cl-matches';
-        
-        const matchElement = createMatchElement(
-            finalMatch.team1.name, 
-            finalMatch.team2.name, 
-            finalMatch.result.homeGoals, 
-            finalMatch.result.awayGoals,
-            finalMatch.date || "05/31",
-            finalMatch.team1.logo,
-            finalMatch.team2.logo,
-            true
+        // 创建赛程图
+        const bracketHTML = createBracketHTML(
+            firstLegMatches, 
+            round16Winners,
+            quarterFinalMatches,
+            semiFinalMatches,
+            { team1: finalists[0], team2: finalists[1], winner: champion }
         );
         
-        // 添加冠军标记
-        const team1Element = matchElement.querySelector('.cl-team:first-child');
-        const team2Element = matchElement.querySelector('.cl-team:last-child');
-        
-        if (finalMatch.winner.name === finalMatch.team1.name) {
-            team1Element.classList.add('cl-winner');
-        } else {
-            team2Element.classList.add('cl-winner');
-        }
-        
-        const matchContainer = document.createElement('div');
-        matchContainer.className = 'cl-match-container';
-        matchContainer.appendChild(matchElement);
-        
-        matchesContainer.appendChild(matchContainer);
-        container.appendChild(matchesContainer);
+        bracketContainer.innerHTML = bracketHTML;
     }
     
-    // 创建比赛元素
-    function createMatchElement(homeTeam, awayTeam, homeGoals, awayGoals, date, homeLogo, awayLogo, isFinal = false) {
-        const matchElement = document.createElement('div');
-        matchElement.className = 'cl-match';
-        
-        // 添加日期
-        const dateElement = document.createElement('div');
-        dateElement.className = 'cl-match-date';
-        dateElement.textContent = date;
-        matchElement.appendChild(dateElement);
-        
-        // 添加主队
-        const homeTeamElement = document.createElement('div');
-        homeTeamElement.className = 'cl-team';
-        
-        const homeLogoElement = document.createElement('div');
-        homeLogoElement.className = 'cl-team-logo';
-        
-        // 如果有logo，添加logo
-        if (homeLogo) {
-            const logoImg = document.createElement('img');
-            logoImg.src = homeLogo;
-            logoImg.alt = homeTeam;
-            homeLogoElement.appendChild(logoImg);
-        } else {
-            homeLogoElement.textContent = homeTeam.charAt(0);
-        }
-        
-        homeTeamElement.appendChild(homeLogoElement);
-        
-        const homeNameElement = document.createElement('div');
-        homeNameElement.className = 'cl-team-name';
-        homeNameElement.textContent = homeTeam;
-        homeTeamElement.appendChild(homeNameElement);
-        
-        const homeScoreElement = document.createElement('div');
-        homeScoreElement.className = 'cl-score';
-        homeScoreElement.textContent = homeGoals;
-        homeTeamElement.appendChild(homeScoreElement);
-        
-        matchElement.appendChild(homeTeamElement);
-        
-        // 添加客队
-        const awayTeamElement = document.createElement('div');
-        awayTeamElement.className = 'cl-team';
-        
-        const awayLogoElement = document.createElement('div');
-        awayLogoElement.className = 'cl-team-logo';
-        
-        // 如果有logo，添加logo
-        if (awayLogo) {
-            const logoImg = document.createElement('img');
-            logoImg.src = awayLogo;
-            logoImg.alt = awayTeam;
-            awayLogoElement.appendChild(logoImg);
-        } else {
-            awayLogoElement.textContent = awayTeam.charAt(0);
-        }
-        
-        awayTeamElement.appendChild(awayLogoElement);
-        
-        const awayNameElement = document.createElement('div');
-        awayNameElement.className = 'cl-team-name';
-        awayNameElement.textContent = awayTeam;
-        awayTeamElement.appendChild(awayNameElement);
-        
-        const awayScoreElement = document.createElement('div');
-        awayScoreElement.className = 'cl-score';
-        awayScoreElement.textContent = awayGoals;
-        awayTeamElement.appendChild(awayScoreElement);
-        
-        matchElement.appendChild(awayTeamElement);
-        
-        // 如果是决赛，添加额外样式
-        if (isFinal) {
-            matchElement.classList.add('cl-final-match');
-        }
-        
-        return matchElement;
+    // 模拟1/8决赛第二回合
+    function simulateRound16(firstLegMatches) {
+        return firstLegMatches.map(match => {
+            // 模拟第二回合比分
+            const score1 = Math.floor(Math.random() * 4);
+            const score2 = Math.floor(Math.random() * 4);
+            
+            // 计算总比分
+            const totalScore1 = match.score1 + score2;
+            const totalScore2 = match.score2 + score1;
+            
+            // 确定晋级球队
+            let winner;
+            if (totalScore1 > totalScore2) {
+                winner = match.team1;
+            } else if (totalScore1 < totalScore2) {
+                winner = match.team2;
+            } else {
+                // 如果总比分相同，客场进球多的晋级
+                winner = match.score2 > score2 ? match.team2 : match.team1;
+            }
+            
+            return {
+                firstLeg: { team1: match.team1, team2: match.team2, score1: match.score1, score2: match.score2 },
+                secondLeg: { team1: match.team2, team2: match.team1, score1: score1, score2: score2 },
+                winner: winner
+            };
+        });
     }
     
-    // 标记晋级球队
-    function markWinningTeam(firstLegElement, secondLegElement, winner) {
-        const firstLegHomeTeam = firstLegElement.querySelector('.cl-team:first-child .cl-team-name').textContent;
-        const firstLegAwayTeam = firstLegElement.querySelector('.cl-team:last-child .cl-team-name').textContent;
+    // 创建配对
+    function createPairs(teams) {
+        const shuffled = [...teams].sort(() => Math.random() - 0.5);
+        const matches = [];
         
-        if (winner.name === firstLegHomeTeam) {
-            firstLegElement.querySelector('.cl-team:first-child').classList.add('cl-winner');
-            secondLegElement.querySelector('.cl-team:last-child').classList.add('cl-winner');
-        } else if (winner.name === firstLegAwayTeam) {
-            firstLegElement.querySelector('.cl-team:last-child').classList.add('cl-winner');
-            secondLegElement.querySelector('.cl-team:first-child').classList.add('cl-winner');
-        }
-    }
-    
-    // 创建冠军部分
-    function createChampionSection(champion) {
-        const championSection = document.createElement('div');
-        championSection.className = 'cl-champion-section';
-        
-        const championTitle = document.createElement('div');
-        championTitle.className = 'cl-champion-title';
-        championTitle.textContent = '🏆 冠军';
-        championSection.appendChild(championTitle);
-        
-        const championTeam = document.createElement('div');
-        championTeam.className = 'cl-champion-team';
-        
-        const championLogo = document.createElement('div');
-        championLogo.className = 'cl-champion-logo';
-        
-        if (champion.logo) {
-            const logoImg = document.createElement('img');
-            logoImg.src = champion.logo;
-            logoImg.alt = champion.name;
-            championLogo.appendChild(logoImg);
-        } else {
-            championLogo.textContent = champion.name.charAt(0);
+        for (let i = 0; i < shuffled.length; i += 2) {
+            const score1 = Math.floor(Math.random() * 4);
+            const score2 = Math.floor(Math.random() * 4);
+            const winner = score1 > score2 ? shuffled[i] : shuffled[i+1];
+            
+            matches.push({
+                team1: shuffled[i],
+                team2: shuffled[i+1],
+                score1: score1,
+                score2: score2,
+                winner: winner
+            });
         }
         
-        championTeam.appendChild(championLogo);
-        
-        const championName = document.createElement('div');
-        championName.className = 'cl-champion-name';
-        championName.textContent = champion.name;
-        championTeam.appendChild(championName);
-        
-        championSection.appendChild(championTeam);
-        
-        return championSection;
+        return matches;
     }
     
-    // 生成随机日期 (03/XX 格式)
-    function generateRandomDate() {
-        const day = Math.floor(Math.random() * 15) + 15; // 15-30之间
-        return `03/${day < 10 ? '0' + day : day}`;
+    // 模拟决赛
+    function simulateFinal(team1, team2) {
+        const score1 = Math.floor(Math.random() * 4);
+        const score2 = Math.floor(Math.random() * 4);
+        
+        if (score1 === score2) {
+            // 决赛不能平局，随机决定胜者
+            return Math.random() > 0.5 ? team1 : team2;
+        }
+        
+        return score1 > score2 ? team1 : team2;
     }
     
-    // 增加日期
-    function incrementDate(date) {
+    // 创建赛程图HTML
+    function createBracketHTML(firstLegMatches, round16Results, quarterFinals, semiFinals, final) {
+        let html = `
+        <div class="tournament-bracket">
+            <div class="rounds-container">
+                <!-- 1/8决赛 -->
+                <div class="round">
+                    <h3 class="round-title">1/8决赛</h3>
+                    <div class="matches-container">`;
+        
+        // 添加1/8决赛
+        for (let i = 0; i < firstLegMatches.length; i++) {
+            const match = firstLegMatches[i];
+            const result = round16Results[i];
+            
+            html += `
+                <div class="match-pair">
+                    <div class="match">
+                        <div class="match-date">${match.date}</div>
+                        <div class="team ${result.winner === match.team1 ? 'winner' : ''}">
+                            <div class="team-name">${match.team1}</div>
+                            <div class="score">${match.score1}</div>
+                        </div>
+                        <div class="team ${result.winner === match.team2 ? 'winner' : ''}">
+                            <div class="team-name">${match.team2}</div>
+                            <div class="score">${match.score2}</div>
+                        </div>
+                    </div>
+                    <div class="connector"></div>
+                    <div class="match">
+                        <div class="match-date">${getNextDate(match.date)}</div>
+                        <div class="team ${result.winner === match.team2 ? 'winner' : ''}">
+                            <div class="team-name">${match.team2}</div>
+                            <div class="score">${result.secondLeg.score1}</div>
+                        </div>
+                        <div class="team ${result.winner === match.team1 ? 'winner' : ''}">
+                            <div class="team-name">${match.team1}</div>
+                            <div class="score">${result.secondLeg.score2}</div>
+                        </div>
+                    </div>
+                </div>`;
+        }
+        
+        html += `
+                    </div>
+                </div>
+                
+                <!-- 1/4决赛 -->
+                <div class="round">
+                    <h3 class="round-title">1/4决赛</h3>
+                    <div class="matches-container">`;
+        
+        // 添加1/4决赛
+        for (const match of quarterFinals) {
+            html += `
+                <div class="match-single">
+                    <div class="team-placeholder">
+                        <div class="team ${match.winner === match.team1 ? 'winner' : ''}">
+                            <div class="team-name">${match.team1}</div>
+                            <div class="score">${match.score1}</div>
+                        </div>
+                        <div class="team ${match.winner === match.team2 ? 'winner' : ''}">
+                            <div class="team-name">${match.team2}</div>
+                            <div class="score">${match.score2}</div>
+                        </div>
+                    </div>
+                </div>`;
+        }
+        
+        html += `
+                    </div>
+                </div>
+                
+                <!-- 半决赛 -->
+                <div class="round">
+                    <h3 class="round-title">半决赛</h3>
+                    <div class="matches-container">`;
+        
+        // 添加半决赛
+        for (const match of semiFinals) {
+            html += `
+                <div class="match-single">
+                    <div class="team-placeholder">
+                        <div class="team ${match.winner === match.team1 ? 'winner' : ''}">
+                            <div class="team-name">${match.team1}</div>
+                            <div class="score">${match.score1}</div>
+                        </div>
+                        <div class="team ${match.winner === match.team2 ? 'winner' : ''}">
+                            <div class="team-name">${match.team2}</div>
+                            <div class="score">${match.score2}</div>
+                        </div>
+                    </div>
+                </div>`;
+        }
+        
+        html += `
+                    </div>
+                </div>
+                
+                <!-- 决赛 -->
+                <div class="round">
+                    <h3 class="round-title">决赛</h3>
+                    <div class="matches-container">
+                        <div class="match-single final">
+                            <div class="team-placeholder">
+                                <div class="team ${final.winner === final.team1 ? 'winner' : ''}">
+                                    <div class="team-name">${final.team1}</div>
+                                </div>
+                                <div class="team ${final.winner === final.team2 ? 'winner' : ''}">
+                                    <div class="team-name">${final.team2}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 冠军 -->
+            <div class="champion-container">
+                <h3 class="champion-title">🏆 冠军</h3>
+                <div class="champion-team">${final.winner}</div>
+            </div>
+        </div>`;
+        
+        return html;
+    }
+    
+    // 获取下一个比赛日期
+    function getNextDate(date) {
         const parts = date.split('/');
-        let day = parseInt(parts[1]) + 7;
         let month = parseInt(parts[0]);
+        let day = parseInt(parts[1]) + 7;
         
         if (day > 30) {
             day = day - 30;
