@@ -507,13 +507,14 @@ footer {
     color: #999;
     font-style: italic;
 } 
-/* 欧冠模拟页面样式 */
+/* 欧冠模拟页面样式 - 改进UI */
 .champions-league-section {
     margin-top: 2rem;
     padding: 1.5rem;
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    overflow-x: auto;
 }
 
 .cl-controls {
@@ -527,61 +528,73 @@ footer {
     align-items: center;
     margin-top: 1rem;
     background-color: #fff;
+    width: 100%;
 }
 
 .bracket-container {
     display: flex;
     justify-content: center;
     width: 100%;
-    overflow-x: auto;
-    padding-bottom: 1rem;
+    min-width: 900px;
+    margin-bottom: 1rem;
 }
 
 .bracket-column {
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-width: 180px;
-    margin: 0 5px;
+    width: 14.28%;
+    padding: 0 5px;
 }
 
 .round-title {
-    font-size: 0.9rem;
-    margin-bottom: 1rem;
+    font-size: 0.85rem;
+    margin-bottom: 0.8rem;
     color: #333;
     text-align: center;
+    font-weight: bold;
 }
 
 .matches-container {
     display: flex;
     flex-direction: column;
     width: 100%;
+    justify-content: space-around;
+    height: 100%;
 }
 
-.match-pair, .match-single {
-    margin-bottom: 1rem;
+.match-pair {
+    margin-bottom: 0.5rem;
+}
+
+.match-single {
+    margin: 0.5rem 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
 }
 
 .match {
     background-color: #f8f9fa;
     border: 1px solid #e9ecef;
     border-radius: 4px;
-    padding: 0.5rem;
+    padding: 0.4rem;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
 .match-date {
-    font-size: 0.7rem;
+    font-size: 0.65rem;
     color: #6c757d;
     text-align: right;
-    margin-bottom: 0.3rem;
+    margin-bottom: 0.2rem;
 }
 
 .team {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.3rem 0;
+    padding: 0.25rem 0;
     border-bottom: 1px solid #e9ecef;
 }
 
@@ -590,16 +603,21 @@ footer {
 }
 
 .team-name {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 70%;
 }
 
 .score {
     font-weight: bold;
-    min-width: 20px;
+    min-width: 18px;
     text-align: center;
     background-color: #e9ecef;
     border-radius: 3px;
-    padding: 0.1rem 0.3rem;
+    padding: 0.1rem 0.25rem;
+    font-size: 0.75rem;
 }
 
 .winner {
@@ -610,27 +628,29 @@ footer {
 .connector {
     width: 2px;
     background-color: #dee2e6;
-    height: 8px;
+    height: 6px;
     margin: 0 auto;
 }
 
 .champion-container {
-    margin-top: 1.5rem;
+    margin-top: 0;
     text-align: center;
-    padding: 1rem;
+    padding: 0.8rem;
     background-color: #f8f9fa;
     border-radius: 6px;
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+    width: 50%;
+    max-width: 300px;
 }
 
 .champion-title {
-    font-size: 1.2rem;
-    margin-bottom: 0.5rem;
+    font-size: 1rem;
+    margin-bottom: 0.3rem;
     color: #333;
 }
 
 .champion-team {
-    font-size: 1.5rem;
+    font-size: 1.2rem;
     font-weight: bold;
     color: #007bff;
 }
@@ -638,13 +658,17 @@ footer {
 .loading {
     text-align: center;
     margin: 30px 0;
-    font-size: 1.1rem;
+    font-size: 1rem;
     color: #6c757d;
 }
 
 /* 响应式设计 */
 @media (max-width: 992px) {
+    .champions-league-section {
+        padding: 1rem 0.5rem;
+    }
+    
     .bracket-container {
-        width: 1000px;
+        min-width: 900px;
     }
 }
