@@ -508,7 +508,6 @@ footer {
     font-style: italic;
 } 
 /* 欧冠模拟页面样式 */
-/* 欧冠模拟页面样式 - 白色背景和紧凑布局 */
 .champions-league-section {
     margin-top: 2rem;
     padding: 1.5rem;
@@ -530,24 +529,24 @@ footer {
     background-color: #fff;
 }
 
-.rounds-container {
+.bracket-container {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     width: 100%;
     overflow-x: auto;
     padding-bottom: 1rem;
 }
 
-.round {
+.bracket-column {
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-width: 220px;
+    min-width: 180px;
     margin: 0 5px;
 }
 
 .round-title {
-    font-size: 1rem;
+    font-size: 0.9rem;
     margin-bottom: 1rem;
     color: #333;
     text-align: center;
@@ -591,16 +590,16 @@ footer {
 }
 
 .team-name {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
 }
 
 .score {
     font-weight: bold;
-    min-width: 25px;
+    min-width: 20px;
     text-align: center;
     background-color: #e9ecef;
     border-radius: 3px;
-    padding: 0.1rem 0.4rem;
+    padding: 0.1rem 0.3rem;
 }
 
 .winner {
@@ -611,7 +610,7 @@ footer {
 .connector {
     width: 2px;
     background-color: #dee2e6;
-    height: 10px;
+    height: 8px;
     margin: 0 auto;
 }
 
@@ -645,7 +644,7 @@ footer {
 
 /* 响应式设计 */
 @media (max-width: 992px) {
-    .rounds-container {
-        width: 800px;
+    .bracket-container {
+        width: 1000px;
     }
 }

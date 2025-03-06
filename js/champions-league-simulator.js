@@ -396,14 +396,14 @@ if (typeof module !== 'undefined' && module.exports) {
 
 document.addEventListener('DOMContentLoaded', function() {
     // 获取DOM元素
-    const simulateBtn = document.getElementById('simulate-cl-btn');
-    const bracketContainer = document.getElementById('cl-bracket');
+    const simulateClBtn = document.getElementById('simulate-cl-btn');
+    const clBracket = document.getElementById('cl-bracket');
     
     // 绑定模拟按钮事件
-    if (simulateBtn) {
-        simulateBtn.addEventListener('click', function() {
+    if (simulateClBtn) {
+        simulateClBtn.addEventListener('click', function() {
             // 显示加载状态
-            bracketContainer.innerHTML = '<div class="loading">正在模拟比赛...</div>';
+            clBracket.innerHTML = '<div class="loading">正在模拟比赛...</div>';
             
             // 延迟执行以显示加载状态
             setTimeout(() => {
@@ -416,7 +416,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // 模拟并渲染欧冠赛程
     function simulateAndRender() {
         // 清空内容
-        bracketContainer.innerHTML = '';
+        clBracket.innerHTML = '';
         
         // 1/8决赛第一回合结果（固定的）
         const firstLegMatches = [
@@ -431,23 +431,77 @@ document.addEventListener('DOMContentLoaded', function() {
         ];
         
         // 模拟第二回合和后续比赛
-        const round16Winners = simulateRound16(firstLegMatches);
-        const quarterFinalists = round16Winners.map(m => m.winner);
-        const quarterFinalMatches = createPairs(quarterFinalists);
-        const semiFinalMatches = createPairs(quarterFinalMatches.map(m => m.winner));
-        const finalists = semiFinalMatches.map(m => m.winner);
-        const champion = simulateFinal(finalists[0], finalists[1]);
+        const round16Results = simulateRound16(firstLegMatches);
         
-        // 创建赛程图
+        // 按照固定的晋级路线配对1/4决赛
+        const quarterFinalPairs = [
+            { match1Index: 0, match2Index: 1 }, // PSV/阿森纳 vs 皇马/马竞
+            { match1Index: 2, match2Index: 3 }, // 巴黎/利物浦 vs 布鲁日/维拉
+            { match1Index: 4, match2Index: 5 }, // 本菲卡/巴萨 vs 多特/里尔
+            { match1Index: 6, match2Index: 7 }  // 拜仁/勒沃库森 vs 费耶诺德/国米
+        ];
+        
+        const quarterFinalMatches = quarterFinalPairs.map(pair => {
+            const team1 = round16Results[pair.match1Index].winner;
+            const team2 = round16Results[pair.match2Index].winner;
+            const score1 = Math.floor(Math.random() * 4);
+            const score2 = Math.floor(Math.random() * 4);
+            
+            return {
+                team1: team1,
+                team2: team2,
+                score1: score1,
+                score2: score2,
+                winner: score1 > score2 ? team1 : (score1 < score2 ? team2 : (Math.random() > 0.5 ? team1 : team2))
+            };
+        });
+        
+        // 按照固定的晋级路线配对半决赛
+        const semiFinalPairs = [
+            { match1Index: 0, match2Index: 1 }, // 1/4决赛1胜者 vs 1/4决赛2胜者
+            { match1Index: 2, match2Index: 3 }  // 1/4决赛3胜者 vs 1/4决赛4胜者
+        ];
+        
+        const semiFinalMatches = semiFinalPairs.map(pair => {
+            const team1 = quarterFinalMatches[pair.match1Index].winner;
+            const team2 = quarterFinalMatches[pair.match2Index].winner;
+            const score1 = Math.floor(Math.random() * 4);
+            const score2 = Math.floor(Math.random() * 4);
+            
+            return {
+                team1: team1,
+                team2: team2,
+                score1: score1,
+                score2: score2,
+                winner: score1 > score2 ? team1 : (score1 < score2 ? team2 : (Math.random() > 0.5 ? team1 : team2))
+            };
+        });
+        
+        // 决赛
+        const team1 = semiFinalMatches[0].winner;
+        const team2 = semiFinalMatches[1].winner;
+        const finalScore1 = Math.floor(Math.random() * 4);
+        const finalScore2 = Math.floor(Math.random() * 4);
+        const champion = finalScore1 > finalScore2 ? team1 : (finalScore1 < finalScore2 ? team2 : (Math.random() > 0.5 ? team1 : team2));
+        
+        const finalMatch = {
+            team1: team1,
+            team2: team2,
+            score1: finalScore1,
+            score2: finalScore2,
+            winner: champion
+        };
+        
+        // 创建赛程图HTML
         const bracketHTML = createBracketHTML(
-            firstLegMatches, 
-            round16Winners,
+            firstLegMatches,
+            round16Results,
             quarterFinalMatches,
             semiFinalMatches,
-            { team1: finalists[0], team2: finalists[1], winner: champion }
+            finalMatch
         );
         
-        bracketContainer.innerHTML = bracketHTML;
+        clBracket.innerHTML = bracketHTML;
     }
     
     // 模拟1/8决赛第二回合
@@ -473,60 +527,25 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             
             return {
-                firstLeg: { team1: match.team1, team2: match.team2, score1: match.score1, score2: match.score2 },
-                secondLeg: { team1: match.team2, team2: match.team1, score1: score1, score2: score2 },
+                firstLeg: { team1: match.team1, team2: match.team2, score1: match.score1, score2: match.score2, date: match.date },
+                secondLeg: { team1: match.team2, team2: match.team1, score1: score1, score2: score2, date: getNextDate(match.date) },
                 winner: winner
             };
         });
-    }
-    
-    // 创建配对
-    function createPairs(teams) {
-        const shuffled = [...teams].sort(() => Math.random() - 0.5);
-        const matches = [];
-        
-        for (let i = 0; i < shuffled.length; i += 2) {
-            const score1 = Math.floor(Math.random() * 4);
-            const score2 = Math.floor(Math.random() * 4);
-            const winner = score1 > score2 ? shuffled[i] : shuffled[i+1];
-            
-            matches.push({
-                team1: shuffled[i],
-                team2: shuffled[i+1],
-                score1: score1,
-                score2: score2,
-                winner: winner
-            });
-        }
-        
-        return matches;
-    }
-    
-    // 模拟决赛
-    function simulateFinal(team1, team2) {
-        const score1 = Math.floor(Math.random() * 4);
-        const score2 = Math.floor(Math.random() * 4);
-        
-        if (score1 === score2) {
-            // 决赛不能平局，随机决定胜者
-            return Math.random() > 0.5 ? team1 : team2;
-        }
-        
-        return score1 > score2 ? team1 : team2;
     }
     
     // 创建赛程图HTML
     function createBracketHTML(firstLegMatches, round16Results, quarterFinals, semiFinals, final) {
         let html = `
         <div class="tournament-bracket">
-            <div class="rounds-container">
-                <!-- 1/8决赛 -->
-                <div class="round">
+            <div class="bracket-container">
+                <!-- 1/8决赛 - 左侧 -->
+                <div class="bracket-column">
                     <h3 class="round-title">1/8决赛</h3>
                     <div class="matches-container">`;
         
-        // 添加1/8决赛
-        for (let i = 0; i < firstLegMatches.length; i++) {
+        // 添加1/8决赛左侧4场
+        for (let i = 0; i < 4; i++) {
             const match = firstLegMatches[i];
             const result = round16Results[i];
             
@@ -545,7 +564,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                     <div class="connector"></div>
                     <div class="match">
-                        <div class="match-date">${getNextDate(match.date)}</div>
+                        <div class="match-date">${result.secondLeg.date}</div>
                         <div class="team ${result.winner === match.team2 ? 'winner' : ''}">
                             <div class="team-name">${match.team2}</div>
                             <div class="score">${result.secondLeg.score1}</div>
@@ -562,16 +581,18 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                 </div>
                 
-                <!-- 1/4决赛 -->
-                <div class="round">
+                <!-- 1/4决赛 - 左侧 -->
+                <div class="bracket-column">
                     <h3 class="round-title">1/4决赛</h3>
                     <div class="matches-container">`;
         
-        // 添加1/4决赛
-        for (const match of quarterFinals) {
+        // 添加1/4决赛左侧2场
+        for (let i = 0; i < 2; i++) {
+            const match = quarterFinals[i];
+            
             html += `
                 <div class="match-single">
-                    <div class="team-placeholder">
+                    <div class="match">
                         <div class="team ${match.winner === match.team1 ? 'winner' : ''}">
                             <div class="team-name">${match.team1}</div>
                             <div class="score">${match.score1}</div>
@@ -588,46 +609,130 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                 </div>
                 
-                <!-- 半决赛 -->
-                <div class="round">
+                <!-- 半决赛 - 左侧 -->
+                <div class="bracket-column">
                     <h3 class="round-title">半决赛</h3>
-                    <div class="matches-container">`;
-        
-        // 添加半决赛
-        for (const match of semiFinals) {
-            html += `
-                <div class="match-single">
-                    <div class="team-placeholder">
-                        <div class="team ${match.winner === match.team1 ? 'winner' : ''}">
-                            <div class="team-name">${match.team1}</div>
-                            <div class="score">${match.score1}</div>
+                    <div class="matches-container">
+                        <div class="match-single">
+                            <div class="match">
+                                <div class="team ${semiFinals[0].winner === semiFinals[0].team1 ? 'winner' : ''}">
+                                    <div class="team-name">${semiFinals[0].team1}</div>
+                                    <div class="score">${semiFinals[0].score1}</div>
+                                </div>
+                                <div class="team ${semiFinals[0].winner === semiFinals[0].team2 ? 'winner' : ''}">
+                                    <div class="team-name">${semiFinals[0].team2}</div>
+                                    <div class="score">${semiFinals[0].score2}</div>
+                                </div>
+                            </div>
                         </div>
-                        <div class="team ${match.winner === match.team2 ? 'winner' : ''}">
-                            <div class="team-name">${match.team2}</div>
-                            <div class="score">${match.score2}</div>
-                        </div>
-                    </div>
-                </div>`;
-        }
-        
-        html += `
                     </div>
                 </div>
                 
                 <!-- 决赛 -->
-                <div class="round">
+                <div class="bracket-column">
                     <h3 class="round-title">决赛</h3>
                     <div class="matches-container">
                         <div class="match-single final">
-                            <div class="team-placeholder">
+                            <div class="match">
                                 <div class="team ${final.winner === final.team1 ? 'winner' : ''}">
                                     <div class="team-name">${final.team1}</div>
+                                    <div class="score">${final.score1}</div>
                                 </div>
                                 <div class="team ${final.winner === final.team2 ? 'winner' : ''}">
                                     <div class="team-name">${final.team2}</div>
+                                    <div class="score">${final.score2}</div>
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+                
+                <!-- 半决赛 - 右侧 -->
+                <div class="bracket-column">
+                    <h3 class="round-title">半决赛</h3>
+                    <div class="matches-container">
+                        <div class="match-single">
+                            <div class="match">
+                                <div class="team ${semiFinals[1].winner === semiFinals[1].team1 ? 'winner' : ''}">
+                                    <div class="team-name">${semiFinals[1].team1}</div>
+                                    <div class="score">${semiFinals[1].score1}</div>
+                                </div>
+                                <div class="team ${semiFinals[1].winner === semiFinals[1].team2 ? 'winner' : ''}">
+                                    <div class="team-name">${semiFinals[1].team2}</div>
+                                    <div class="score">${semiFinals[1].score2}</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 1/4决赛 - 右侧 -->
+                <div class="bracket-column">
+                    <h3 class="round-title">1/4决赛</h3>
+                    <div class="matches-container">`;
+        
+        // 添加1/4决赛右侧2场
+        for (let i = 2; i < 4; i++) {
+            const match = quarterFinals[i];
+            
+            html += `
+                <div class="match-single">
+                    <div class="match">
+                        <div class="team ${match.winner === match.team1 ? 'winner' : ''}">
+                            <div class="team-name">${match.team1}</div>
+                            <div class="score">${match.score1}</div>
+                        </div>
+                        <div class="team ${match.winner === match.team2 ? 'winner' : ''}">
+                            <div class="team-name">${match.team2}</div>
+                            <div class="score">${match.score2}</div>
+                        </div>
+                    </div>
+                </div>`;
+        }
+        
+        html += `
+                    </div>
+                </div>
+                
+                <!-- 1/8决赛 - 右侧 -->
+                <div class="bracket-column">
+                    <h3 class="round-title">1/8决赛</h3>
+                    <div class="matches-container">`;
+        
+        // 添加1/8决赛右侧4场
+        for (let i = 4; i < 8; i++) {
+            const match = firstLegMatches[i];
+            const result = round16Results[i];
+            
+            html += `
+                <div class="match-pair">
+                    <div class="match">
+                        <div class="match-date">${match.date}</div>
+                        <div class="team ${result.winner === match.team1 ? 'winner' : ''}">
+                            <div class="team-name">${match.team1}</div>
+                            <div class="score">${match.score1}</div>
+                        </div>
+                        <div class="team ${result.winner === match.team2 ? 'winner' : ''}">
+                            <div class="team-name">${match.team2}</div>
+                            <div class="score">${match.score2}</div>
+                        </div>
+                    </div>
+                    <div class="connector"></div>
+                    <div class="match">
+                        <div class="match-date">${result.secondLeg.date}</div>
+                        <div class="team ${result.winner === match.team2 ? 'winner' : ''}">
+                            <div class="team-name">${match.team2}</div>
+                            <div class="score">${result.secondLeg.score1}</div>
+                        </div>
+                        <div class="team ${result.winner === match.team1 ? 'winner' : ''}">
+                            <div class="team-name">${match.team1}</div>
+                            <div class="score">${result.secondLeg.score2}</div>
+                        </div>
+                    </div>
+                </div>`;
+        }
+        
+        html += `
                     </div>
                 </div>
             </div>
