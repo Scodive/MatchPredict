@@ -5,6 +5,7 @@
 |  100% | 2025-03-02 | 周日008 | 胜     | 1-0         | @2.900         | 周日011      | 胜     |2-1     |@1.430     |
 | 100%  | 2025-03-03 |周日019  |  负    | 1-2    |   @3.40      | 周日021      |  平    |    3-3 |   @2.83  |
 
+[3月6日小红书欧冠预测](https://www.xiaohongshu.com/explore/67c99dab000000001203ff4b?xsec_token=AByh0xsff8-H8l4V3eMBH6Wv3loi_kpNOl87lwJJ8VjWk=&xsec_source=pc_user)：欧冠8强全对
 
 ## 项目简介
 
