@@ -3,8 +3,19 @@ import os
 import json
 import logging
 from datetime import datetime
-from lottery_api import ChinaSportsLotteryAPI
-from ai_predictor import AIFootballPredictor
+
+# 延迟导入，避免在Vercel环境中的问题
+try:
+    from lottery_api import ChinaSportsLotteryAPI
+except ImportError as e:
+    print(f"导入彩票API失败: {e}")
+    ChinaSportsLotteryAPI = None
+
+try:
+    from ai_predictor import AIFootballPredictor
+except ImportError as e:
+    print(f"导入AI预测器失败: {e}")
+    AIFootballPredictor = None
 
 app = Flask(__name__)
 
@@ -37,28 +48,58 @@ def initialize_services():
     """初始化服务"""
     global lottery_api, ai_predictor
     
-    # 初始化中国体育彩票API
-    lottery_api = ChinaSportsLotteryAPI()
+    try:
+        # 初始化中国体育彩票API
+        if ChinaSportsLotteryAPI:
+            lottery_api = ChinaSportsLotteryAPI()
+            app.logger.info("彩票API初始化成功")
+        else:
+            app.logger.warning("彩票API类未加载")
+    except Exception as e:
+        app.logger.error(f"彩票API初始化失败: {e}")
+        lottery_api = None
     
-    # 初始化AI预测器
-    gemini_key = os.getenv('GEMINI_API_KEY', 'AIzaSyDy9pYAEW7e2Ewk__9TCHAD5X_G1VhCtVw')
-    gemini_model = os.getenv('GEMINI_MODEL', 'gemini-2.0-flash-exp')
-    ai_predictor = AIFootballPredictor(gemini_api_key=gemini_key, model=gemini_model)
+    try:
+        # 初始化AI预测器
+        if AIFootballPredictor:
+            gemini_key = os.getenv('GEMINI_API_KEY', 'AIzaSyDy9pYAEW7e2Ewk__9TCHAD5X_G1VhCtVw')
+            gemini_model = os.getenv('GEMINI_MODEL', 'gemini-2.0-flash-exp')
+            ai_predictor = AIFootballPredictor(gemini_api_key=gemini_key, model=gemini_model)
+            app.logger.info("AI预测器初始化成功")
+        else:
+            app.logger.warning("AI预测器类未加载")
+    except Exception as e:
+        app.logger.error(f"AI预测器初始化失败: {e}")
+        ai_predictor = None
 
 # 初始化
-initialize_services()
+try:
+    initialize_services()
+except Exception as e:
+    app.logger.error(f"服务初始化失败: {e}")
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    try:
+        return render_template('index.html')
+    except Exception as e:
+        app.logger.error(f"渲染主页失败: {e}")
+        return f"页面加载错误: {str(e)}", 500
 
 @app.route('/api/teams', methods=['GET'])
 def get_teams():
     """获取所有联赛的球队"""
-    return jsonify({
-        'success': True,
-        'teams': TEAMS_DATA
-    })
+    try:
+        return jsonify({
+            'success': True,
+            'teams': TEAMS_DATA
+        })
+    except Exception as e:
+        app.logger.error(f"获取球队数据失败: {e}")
+        return jsonify({
+            'success': False,
+            'message': str(e)
+        }), 500
 
 @app.route('/api/lottery/matches', methods=['GET'])
 def get_lottery_matches():
@@ -318,6 +359,22 @@ def ai_batch_predict():
             'success': False,
             'message': f'批量预测失败: {str(e)}'
         })
+
+@app.route('/test')
+def test():
+    """测试路由"""
+    return jsonify({
+        'status': 'ok',
+        'message': '服务正常运行',
+        'lottery_api': lottery_api is not None,
+        'ai_predictor': ai_predictor is not None,
+        'timestamp': datetime.now().isoformat()
+    })
+
+@app.route('/health')
+def health():
+    """健康检查"""
+    return "OK", 200
 
 if __name__ == '__main__':
     app.run(debug=True) 
