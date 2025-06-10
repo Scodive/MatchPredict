@@ -135,22 +135,8 @@ class AIPredictionManager {
             // AI模式：显示AI模式的比赛列表
             this.renderAIMatches();
         } else if (mode === 'lottery') {
-            // 体彩模式：检查是否有体彩数据
-            if (window.lotteryManager && window.lotteryManager.matches && window.lotteryManager.matches.length > 0) {
-                // 如果有体彩数据，显示在lottery-matches容器中，matches-container显示选中的比赛
-                const selectedMatches = window.lotteryManager.getSelectedMatches();
-                if (selectedMatches.length > 0) {
-                    let html = '';
-                    selectedMatches.forEach((match, index) => {
-                        html += this.renderLotterySelectedCard(match, index);
-                    });
-                    matchesContainer.innerHTML = html;
-                } else {
-                    matchesContainer.innerHTML = '<div class="empty-message"><i class="fas fa-ticket-alt"></i><p>请在上方选择比赛</p></div>';
-                }
-            } else {
-                matchesContainer.innerHTML = '<div class="empty-message"><i class="fas fa-ticket-alt"></i><p>请先刷新比赛数据</p></div>';
-            }
+            // 体彩模式：隐藏matches-container，因为体彩有自己的显示区域
+            matchesContainer.innerHTML = '<div class="empty-message"><i class="fas fa-info-circle"></i><p>体彩模式的比赛显示在上方选择区域</p></div>';
         }
     }
 

@@ -118,6 +118,27 @@
                         点击"刷新比赛数据"获取最新比赛
                     </div>
                 </div>
+                
+                <!-- 选中的比赛显示区域 -->
+                <div class="selected-matches-section">
+                    <h3><i class="fas fa-check-circle"></i> 已选择的比赛 <span id="lottery-selected-count">(0)</span></h3>
+                    <div id="lottery-selected-matches" class="selected-matches-container">
+                        <div class="empty-message">
+                            <i class="fas fa-info-circle"></i>
+                            <p>请在上方选择比赛</p>
+                        </div>
+                    </div>
+                    
+                    <div class="lottery-actions">
+                        <button id="clear-lottery-selection-btn" class="btn secondary-btn" disabled>
+                            <i class="fas fa-trash"></i> 清空选择
+                        </button>
+                        
+                        <button id="lottery-ai-predict-btn" class="btn primary-btn" disabled>
+                            <i class="fas fa-brain"></i> AI智能预测
+                        </button>
+                    </div>
+                </div>
             </section>
 
             <!-- AI智能模式 -->

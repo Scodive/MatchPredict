@@ -13,7 +13,11 @@ class LotteryManager {
         // 刷新比赛数据按钮
         const refreshBtn = document.getElementById('refresh-lottery-btn');
         if (refreshBtn) {
-            refreshBtn.addEventListener('click', () => this.refreshMatches());
+            refreshBtn.addEventListener('click', () => {
+                const daysSelect = document.getElementById('days-filter');
+                const days = daysSelect ? parseInt(daysSelect.value) : 3;
+                this.refreshMatches(days);
+            });
         }
 
         // 天数筛选
@@ -21,6 +25,24 @@ class LotteryManager {
         if (daysFilter) {
             daysFilter.addEventListener('change', (e) => {
                 this.refreshMatches(parseInt(e.target.value));
+            });
+        }
+
+        // 清空选择按钮
+        const clearBtn = document.getElementById('clear-lottery-selection-btn');
+        if (clearBtn) {
+            clearBtn.addEventListener('click', () => {
+                this.clearSelection();
+            });
+        }
+        
+        // 体彩AI预测按钮
+        const predictBtn = document.getElementById('lottery-ai-predict-btn');
+        if (predictBtn) {
+            predictBtn.addEventListener('click', () => {
+                if (window.aiPredictionManager) {
+                    window.aiPredictionManager.startAIPrediction();
+                }
             });
         }
     }
@@ -278,102 +300,20 @@ class LotteryManager {
         if (this.selectedMatches.has(matchId)) {
             // 取消选择
             this.selectedMatches.delete(matchId);
-            // 从全局matches数组中移除
-            this.removeFromGlobalMatches(matchId);
         } else {
             // 选择比赛
             this.selectedMatches.add(matchId);
-            // 添加到全局matches数组
-            this.addToGlobalMatches(match);
         }
 
         // 更新显示
         this.updateMatchCardSelection(matchId);
         this.updateSelectionInfo();
+        this.updateSelectedMatchesDisplay();
         
         // 如果当前是体彩模式，立即更新AI模式的显示
         if (window.aiPredictionManager && window.aiPredictionManager.currentMode === 'lottery') {
             window.aiPredictionManager.updateModeSpecificDisplay('lottery');
             window.aiPredictionManager.updateAIPredictButtonText();
-        }
-    }
-
-    addToGlobalMatches(match) {
-        // 检查全局matches数组是否存在
-        if (typeof window.matches === 'undefined') {
-            window.matches = [];
-        }
-
-        // 转换体彩数据格式为全局格式
-        const globalMatch = this.convertToGlobalFormat(match);
-        
-        // 检查是否已存在（避免重复添加）
-        const existingIndex = window.matches.findIndex(m => m.id === globalMatch.id);
-        if (existingIndex === -1) {
-            window.matches.push(globalMatch);
-            console.log('添加比赛到全局:', globalMatch);
-        }
-    }
-
-    removeFromGlobalMatches(matchId) {
-        if (typeof window.matches !== 'undefined') {
-            const index = window.matches.findIndex(m => m.id === matchId);
-            if (index !== -1) {
-                window.matches.splice(index, 1);
-                console.log('从全局移除比赛:', matchId);
-            }
-        }
-    }
-
-    convertToGlobalFormat(match) {
-        // 从体彩格式转换为全局比赛格式
-        const odds = match.odds || {};
-        const hhadOdds = odds.hhad || {};
-        
-        return {
-            id: match.match_id,
-            league_code: this.getLeagueCode(match.league_name),
-            leagueName: match.league_name,
-            home_team: match.home_team,
-            away_team: match.away_team,
-            home_odds: parseFloat(hhadOdds.h) || 2.0,
-            draw_odds: parseFloat(hhadOdds.d) || 3.2,
-            away_odds: parseFloat(hhadOdds.a) || 2.8,
-            match_time: match.match_time,
-            source: 'lottery' // 标记来源
-        };
-    }
-
-    getLeagueCode(leagueName) {
-        // 将联赛名称映射为代码
-        const leagueMap = {
-            '英超': 'PL',
-            '西甲': 'PD', 
-            '德甲': 'BL1',
-            '意甲': 'SA',
-            '法甲': 'FL1',
-            '中超': 'CSL',
-            '中超联赛': 'CSL'
-        };
-        return leagueMap[leagueName] || 'OTHER';
-    }
-
-    updateGlobalMatchesDisplay() {
-        // 更新全局比赛显示
-        if (typeof window.updateMatchesUI === 'function') {
-            window.updateMatchesUI();
-        }
-        
-        // 更新主界面的比赛计数
-        const matchCountSpan = document.getElementById('match-count');
-        if (matchCountSpan && typeof window.matches !== 'undefined') {
-            matchCountSpan.textContent = `(${window.matches.length})`;
-        }
-        
-        // 更新主界面的预测按钮状态
-        const predictBtn = document.getElementById('predict-btn');
-        if (predictBtn && typeof window.matches !== 'undefined') {
-            predictBtn.disabled = window.matches.length === 0;
         }
     }
 
@@ -408,6 +348,85 @@ class LotteryManager {
         }
     }
 
+    updateSelectedMatchesDisplay() {
+        const container = document.getElementById('lottery-selected-matches');
+        const countElement = document.getElementById('lottery-selected-count');
+        const clearBtn = document.getElementById('clear-lottery-selection-btn');
+        const predictBtn = document.getElementById('lottery-ai-predict-btn');
+        
+        if (!container) return;
+        
+        const selectedMatches = this.getSelectedMatches();
+        const count = selectedMatches.length;
+        
+        // 更新计数
+        if (countElement) {
+            countElement.textContent = `(${count})`;
+        }
+        
+        // 更新按钮状态
+        if (clearBtn) {
+            clearBtn.disabled = count === 0;
+        }
+        if (predictBtn) {
+            predictBtn.disabled = count === 0;
+        }
+        
+        // 更新选中比赛列表
+        if (count === 0) {
+            container.innerHTML = '<div class="empty-message"><i class="fas fa-info-circle"></i><p>请在上方选择比赛</p></div>';
+            return;
+        }
+        
+        let html = '';
+        selectedMatches.forEach((match, index) => {
+            html += this.renderSelectedMatchCard(match, index);
+        });
+        
+        container.innerHTML = html;
+        this.bindSelectedMatchEvents();
+    }
+
+    renderSelectedMatchCard(match, index) {
+        const odds = match.odds?.hhad || {};
+        return `
+            <div class="match-card lottery-selected-card" data-match-id="${match.match_id}">
+                <div class="match-info">
+                    <div class="teams">
+                        <span class="home-team">${match.home_team}</span>
+                        <span class="vs">VS</span>
+                        <span class="away-team">${match.away_team}</span>
+                    </div>
+                    <div class="league">${match.league_name}</div>
+                </div>
+                
+                <div class="odds-info">
+                    <div class="odds-group">
+                        <span class="odds-label">胜平负:</span>
+                        <span class="odds-values">${odds.h || 'N/A'} / ${odds.d || 'N/A'} / ${odds.a || 'N/A'}</span>
+                    </div>
+                </div>
+                
+                <div class="match-actions">
+                    <button class="remove-selected-match-btn" data-match-id="${match.match_id}">
+                        <i class="fas fa-times"></i> 移除
+                    </button>
+                </div>
+            </div>
+        `;
+    }
+
+    bindSelectedMatchEvents() {
+        // 移除选中比赛按钮
+        document.querySelectorAll('.remove-selected-match-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const matchId = btn.getAttribute('data-match-id');
+                this.toggleMatchSelection(matchId); // 重用现有逻辑
+            });
+        });
+    }
+
     getSelectedMatches() {
         return this.matches.filter(match => this.selectedMatches.has(match.match_id));
     }
@@ -422,6 +441,7 @@ class LotteryManager {
             btn.innerHTML = '<i class="fas fa-square"></i> 选择比赛';
         });
         this.updateSelectionInfo();
+        this.updateSelectedMatchesDisplay();
     }
 
     showMessage(message, type = 'info') {
@@ -444,6 +464,7 @@ let lotteryManager = null;
 // 初始化
 document.addEventListener('DOMContentLoaded', function() {
     lotteryManager = new LotteryManager();
+    window.lotteryManager = lotteryManager; // 暴露为全局变量
 });
 
 // 导出给其他模块使用

@@ -58,7 +58,7 @@ class ChinaSportsLotterySpider:
             soup = BeautifulSoup(response.text, 'html.parser')
             
             # 解析比赛数据
-            matches = self._parse_matches_from_html(soup)
+            matches = self._parse_matches_from_html(soup, days_ahead)
             
             if not matches:
                 self.logger.warning("未能从官网获取比赛数据，返回模拟数据")
@@ -71,7 +71,7 @@ class ChinaSportsLotterySpider:
             self.logger.error(f"爬取体彩官网失败: {e}")
             return self._get_mock_matches(days_ahead)
     
-    def _parse_matches_from_html(self, soup: BeautifulSoup) -> List[Dict]:
+    def _parse_matches_from_html(self, soup: BeautifulSoup, days_ahead: int = 7) -> List[Dict]:
         """解析HTML中的比赛数据"""
         matches = []
         
@@ -104,11 +104,11 @@ class ChinaSportsLotterySpider:
             # 方法4: 如果都失败，生成基于当前日期的模拟数据
             if not matches:
                 self.logger.warning("所有解析方法都失败，生成真实感的模拟数据")
-                matches = self._generate_realistic_matches()
+                matches = self._generate_realistic_matches(days_ahead)
                 
         except Exception as e:
             self.logger.error(f"解析HTML失败: {e}")
-            matches = self._generate_realistic_matches()
+            matches = self._generate_realistic_matches(days_ahead)
         
         return matches
     
@@ -310,7 +310,7 @@ class ChinaSportsLotterySpider:
         
         return '国际足球'
     
-    def _generate_realistic_matches(self) -> List[Dict]:
+    def _generate_realistic_matches(self, days_ahead: int = 7) -> List[Dict]:
         """生成更真实的模拟比赛数据，包含各种联赛"""
         realistic_matches = [
             # 欧洲五大联赛
@@ -377,7 +377,8 @@ class ChinaSportsLotterySpider:
                 draw_odds = round(random.uniform(2.80, 3.50), 2)
                 away_odds = round(random.uniform(2.30, 3.20), 2)
             
-            match_date = datetime.now() + timedelta(days=random.randint(1, 7))
+            # 使用传入的days_ahead参数生成时间
+            match_date = datetime.now() + timedelta(days=random.randint(0, days_ahead))
             match_time = f"{match_date.strftime('%Y-%m-%d')} {random.choice(['19:30', '20:00', '21:00', '22:00'])}:00"
             
             match = {
@@ -394,7 +395,7 @@ class ChinaSportsLotterySpider:
         import random
         selected_matches = random.sample(matches, min(15, len(matches)))
         
-        self.logger.info(f"生成了 {len(selected_matches)} 场真实感的模拟比赛")
+        self.logger.info(f"生成了 {len(selected_matches)} 场真实感的模拟比赛（{days_ahead}天内）")
         return selected_matches
     
     def _extract_match_from_row(self, row) -> Optional[Dict]:
@@ -620,7 +621,7 @@ class ChinaSportsLotterySpider:
     
     def _get_mock_matches(self, days_ahead: int = 7) -> List[Dict]:
         """获取模拟比赛数据 - 重用realistic matches逻辑"""
-        return self._generate_realistic_matches()
+        return self._generate_realistic_matches(days_ahead)
 
 # 使用示例
 if __name__ == "__main__":
