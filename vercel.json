@@ -3,7 +3,10 @@
   "builds": [
     {
       "src": "app.py",
-      "use": "@vercel/python"
+      "use": "@vercel/python",
+      "config": {
+        "maxLambdaSize": "50mb"
+      }
     }
   ],
   "routes": [
@@ -15,5 +18,10 @@
   "env": {
     "GEMINI_API_KEY": "AIzaSyDy9pYAEW7e2Ewk__9TCHAD5X_G1VhCtVw",
     "GEMINI_MODEL": "gemini-2.0-flash-exp"
+  },
+  "functions": {
+    "app.py": {
+      "maxDuration": 30
+    }
   }
 } 

@@ -9,7 +9,6 @@ import requests
 import json
 import time
 from datetime import datetime, timedelta
-import pandas as pd
 from typing import Dict, List, Optional, Tuple
 import logging
 

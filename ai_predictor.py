@@ -11,7 +11,7 @@ from typing import Dict, List, Optional, Tuple
 from datetime import datetime
 import requests
 import time
-import numpy as np
+import random
 from dataclasses import dataclass
 
 @dataclass

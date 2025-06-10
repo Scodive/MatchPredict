@@ -1,43 +1,37 @@
-from flask import Flask, request, jsonify, render_template, logging
-import pandas as pd
-import numpy as np
-from scipy.stats import poisson
+from flask import Flask, request, jsonify, render_template
 import os
 import json
-from datetime import datetime
-from itertools import product
 import logging
-
-# 导入新模块
+from datetime import datetime
 from lottery_api import ChinaSportsLotteryAPI
-from ai_predictor import AIFootballPredictor, MatchAnalysis
+from ai_predictor import AIFootballPredictor
 
 app = Flask(__name__)
 
 # 配置日志
-logging.basicConfig(
-    filename='user_predictions.log',
-    level=logging.INFO,
-    format='%(asctime)s - %(message)s'
-)
+logging.basicConfig(level=logging.INFO)
 
-# 联赛名称映射（扩展版）
+# 全局变量
+lottery_api = None
+ai_predictor = None
+
+# 联赛配置（简化版）
 LEAGUES = {
     "PL": "英超",
     "PD": "西甲", 
     "SA": "意甲",
     "BL1": "德甲",
-    "FL1": "法甲",
-    "CL": "欧冠",
-    "EL": "欧联",
-    "CSL": "中超",
-    "AFC": "亚冠"
+    "FL1": "法甲"
 }
 
-# 全局变量
-features = {}
-lottery_api = None
-ai_predictor = None
+# 简化的球队数据
+TEAMS_DATA = {
+    "PL": ["Arsenal FC", "Manchester City FC", "Liverpool FC", "Manchester United FC", "Chelsea FC", "Tottenham Hotspur FC", "Newcastle United FC", "Brighton & Hove Albion FC"],
+    "PD": ["Real Madrid CF", "FC Barcelona", "Atlético de Madrid", "Sevilla FC", "Valencia CF", "Real Betis Balompié", "Real Sociedad de Fútbol", "Athletic Club"],
+    "SA": ["FC Internazionale Milano", "AC Milan", "Juventus FC", "SSC Napoli", "AS Roma", "SS Lazio", "Atalanta BC", "ACF Fiorentina"],
+    "BL1": ["FC Bayern München", "Borussia Dortmund", "RB Leipzig", "Bayer 04 Leverkusen", "VfB Stuttgart", "Eintracht Frankfurt", "VfL Wolfsburg", "SC Freiburg"],
+    "FL1": ["Paris Saint-Germain FC", "Olympique de Marseille", "AS Monaco FC", "Olympique Lyonnais", "OGC Nice", "Stade Rennais FC", "RC Lens", "LOSC Lille"]
+}
 
 def initialize_services():
     """初始化服务"""
@@ -46,24 +40,13 @@ def initialize_services():
     # 初始化中国体育彩票API
     lottery_api = ChinaSportsLotteryAPI()
     
-    # 初始化AI预测器（可以在config.py中配置Gemini API Key）
+    # 初始化AI预测器
     gemini_key = os.getenv('GEMINI_API_KEY', 'AIzaSyDy9pYAEW7e2Ewk__9TCHAD5X_G1VhCtVw')
     gemini_model = os.getenv('GEMINI_MODEL', 'gemini-2.0-flash-exp')
     ai_predictor = AIFootballPredictor(gemini_api_key=gemini_key, model=gemini_model)
 
-# 加载特征数据
-def load_features():
-    features = {}
-    for league_code in LEAGUES.keys():
-        file_path = f"data/features_{league_code}2024.csv"
-        if os.path.exists(file_path):
-            features[league_code] = pd.read_csv(file_path, index_col=0)
-            app.logger.info(f"已加载 {LEAGUES[league_code]} 数据")
-    return features
-
 # 初始化
 initialize_services()
-features = load_features()
 
 @app.route('/')
 def index():
@@ -72,14 +55,9 @@ def index():
 @app.route('/api/teams', methods=['GET'])
 def get_teams():
     """获取所有联赛的球队"""
-    teams_dict = {}
-    
-    for league_code, df in features.items():
-        teams_dict[league_code] = df.index.tolist()
-    
     return jsonify({
         'success': True,
-        'teams': teams_dict
+        'teams': TEAMS_DATA
     })
 
 @app.route('/api/lottery/matches', methods=['GET'])
@@ -176,7 +154,7 @@ def ai_predict():
 
 @app.route('/api/predict', methods=['POST'])
 def predict():
-    """原有的预测比赛结果接口（兼容性保持）"""
+    """简化版预测接口"""
     try:
         data = request.json
         matches = data.get('matches', [])
@@ -190,33 +168,16 @@ def predict():
         # 记录用户输入
         log_user_prediction(matches)
         
-        # 处理每场比赛
+        # 简化预测逻辑
         individual_predictions = []
         for match in matches:
-            prediction = predict_match(
-                match.get('league_code', ''),
-                match['home_team'],
-                match['away_team'],
-                match['home_odds'],
-                match['draw_odds'],
-                match['away_odds']
-            )
+            prediction = simple_predict_match(match)
             individual_predictions.append(prediction)
-        
-        # 生成所有可能的串关组合
-        all_combinations = generate_parlays(individual_predictions)
-        
-        # 按期望值排序
-        all_combinations.sort(key=lambda x: x['expected_value'], reverse=True)
-        
-        # 最佳串关
-        best_parlay = all_combinations[0] if all_combinations else None
         
         return jsonify({
             'success': True,
             'individual_predictions': individual_predictions,
-            'best_parlay': best_parlay,
-            'all_combinations': all_combinations
+            'message': '简化预测模式，推荐使用AI智能预测获得更准确结果'
         })
         
     except Exception as e:
@@ -225,6 +186,41 @@ def predict():
             'success': False,
             'message': f'预测过程中发生错误: {str(e)}'
         })
+
+def simple_predict_match(match):
+    """简化的比赛预测"""
+    home_odds = float(match.get('home_odds', 2.0))
+    draw_odds = float(match.get('draw_odds', 3.0))
+    away_odds = float(match.get('away_odds', 2.5))
+    
+    # 基于赔率的简单概率计算
+    home_prob = 1 / home_odds
+    draw_prob = 1 / draw_odds
+    away_prob = 1 / away_odds
+    
+    total_prob = home_prob + draw_prob + away_prob
+    
+    # 归一化概率
+    home_prob /= total_prob
+    draw_prob /= total_prob
+    away_prob /= total_prob
+    
+    return {
+        'match': f"{match['home_team']} vs {match['away_team']}",
+        'home_team': match['home_team'],
+        'away_team': match['away_team'],
+        'probabilities': {
+            'home': round(home_prob, 3),
+            'draw': round(draw_prob, 3), 
+            'away': round(away_prob, 3)
+        },
+        'odds': {
+            'home': home_odds,
+            'draw': draw_odds,
+            'away': away_odds
+        },
+        'recommendation': '主胜' if home_prob > max(draw_prob, away_prob) else ('平局' if draw_prob > away_prob else '客胜')
+    }
 
 def generate_ai_combinations(ai_analyses):
     """基于AI分析生成组合预测"""
@@ -254,188 +250,43 @@ def generate_ai_combinations(ai_analyses):
         'description': '基于AI分析的最高概率胜平负组合'
     })
     
-    # 半全场推荐组合
-    best_hf_combo = []
-    for analysis in ai_analyses:
-        hf = analysis['half_full_time']
-        if hf:
-            best_hf_outcome = max(hf, key=hf.get)
-            best_hf_combo.append({
-                'match': f"{analysis['home_team']} vs {analysis['away_team']}",
-                'prediction': best_hf_outcome,
-                'probability': hf[best_hf_outcome]
-            })
-    
-    if best_hf_combo:
-        combinations.append({
-            'type': '半全场推荐组合',
-            'selections': best_hf_combo,
-            'description': 'AI推荐的半全场投注组合'
-        })
-    
-    # 进球数推荐组合
-    best_goals_combo = []
-    for analysis in ai_analyses:
-        goals = analysis['total_goals']
-        if goals:
-            best_goals_outcome = max(goals, key=goals.get)
-            best_goals_combo.append({
-                'match': f"{analysis['home_team']} vs {analysis['away_team']}",
-                'prediction': best_goals_outcome,
-                'probability': goals[best_goals_outcome]
-            })
-    
-    if best_goals_combo:
-        combinations.append({
-            'type': '进球数推荐组合',
-            'selections': best_goals_combo,
-            'description': 'AI推荐的进球数投注组合'
-        })
-    
     return combinations
 
-def predict_match(league_code, home_team, away_team, home_odds, draw_odds, away_odds):
-    """预测单场比赛结果（原有函数保持不变）"""
-    # 获取球队特征
-    home_features = get_team_features(home_team, league_code)
-    away_features = get_team_features(away_team, league_code)
-    
-    if home_features is None or away_features is None:
-        raise ValueError(f"找不到球队数据: {home_team} 或 {away_team}")
-    
-    # 计算预期进球数
-    home_expected_goals = home_features['home_goals_scored_avg'] * away_features['away_goals_conceded_avg'] / 1.3
-    away_expected_goals = away_features['away_goals_scored_avg'] * home_features['home_goals_conceded_avg'] / 1.3
-    
-    # 使用泊松分布计算比分概率
-    max_goals = 10
-    score_probs = {}
-    for i in range(max_goals + 1):
-        for j in range(max_goals + 1):
-            score_probs[(i, j)] = poisson.pmf(i, home_expected_goals) * poisson.pmf(j, away_expected_goals)
-    
-    # 计算结果概率
-    home_win_prob = sum(prob for (h, a), prob in score_probs.items() if h > a)
-    draw_prob = sum(prob for (h, a), prob in score_probs.items() if h == a)
-    away_win_prob = sum(prob for (h, a), prob in score_probs.items() if h < a)
-    
-    # 计算期望值
-    home_ev = (home_win_prob * home_odds) - 1
-    draw_ev = (draw_prob * draw_odds) - 1
-    away_ev = (away_win_prob * away_odds) - 1
-    
-    # 确定最佳投注
-    all_bets = [
-        ('home', home_ev, home_odds, home_win_prob),
-        ('draw', draw_ev, draw_odds, draw_prob),
-        ('away', away_ev, away_odds, away_win_prob)
-    ]
-    all_bets.sort(key=lambda x: x[1], reverse=True)
-    best_bet, best_ev, _, _ = all_bets[0]
-    
-    return {
-        'home_team': home_team,
-        'away_team': away_team,
-        'home_win_prob': home_win_prob,
-        'draw_prob': draw_prob,
-        'away_win_prob': away_win_prob,
-        'home_odds': home_odds,
-        'draw_odds': draw_odds,
-        'away_odds': away_odds,
-        'best_bet': best_bet,
-        'best_ev': best_ev,
-        'all_bets': all_bets
-    }
-
-def get_team_features(team_name, league_code=None):
-    """获取球队特征"""
-    if league_code and league_code in features:
-        # 在指定联赛中查找
-        if team_name in features[league_code].index:
-            return features[league_code].loc[team_name]
-    
-    # 在所有联赛中查找
-    for code, df in features.items():
-        if team_name in df.index:
-            return df.loc[team_name]
-    
-    return None
-
-def generate_parlays(predictions):
-    """生成所有可能的串关组合（原有函数保持不变）"""
-    # 为每场比赛创建所有可能的选择
-    all_selections = []
-    for pred in predictions:
-        match_selections = []
-        for bet_type, ev, odds, prob in pred['all_bets']:
-            selection = {
-                'match': f"{pred['home_team']} vs {pred['away_team']}",
-                'pick': bet_type,
-                'odds': odds,
-                'prob': prob,
-                'ev': ev
-            }
-            match_selections.append(selection)
-        all_selections.append(match_selections)
-    
-    # 生成所有可能的组合
-    all_combinations = []
-    
-    # 获取所有可能的选择组合
-    for combo in product(*all_selections):
-        total_odds = 1.0
-        total_prob = 1.0
-        
-        for selection in combo:
-            total_odds *= selection['odds']
-            total_prob *= selection['prob']
-        
-        expected_value = (total_prob * total_odds) - 1
-        
-        parlay = {
-            'selections': combo,
-            'total_odds': total_odds,
-            'total_prob': total_prob,
-            'expected_value': expected_value
+def log_user_prediction(matches):
+    """记录用户预测请求"""
+    try:
+        log_entry = {
+            'timestamp': datetime.now().isoformat(),
+            'matches_count': len(matches),
+            'matches': matches
         }
         
-        all_combinations.append(parlay)
-    
-    # 按期望值排序
-    all_combinations.sort(key=lambda x: x['expected_value'], reverse=True)
-    
-    return all_combinations
-
-def log_user_prediction(matches):
-    """记录用户的预测请求"""
-    timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    client_ip = request.remote_addr
-    
-    log_entry = {
-        'timestamp': timestamp,
-        'ip': client_ip,
-        'matches': matches
-    }
-    
-    logging.info(json.dumps(log_entry))
-
-# 新增API端点
+        # 简单的文件日志
+        with open('user_predictions.log', 'a', encoding='utf-8') as f:
+            f.write(json.dumps(log_entry, ensure_ascii=False) + '\n')
+            
+    except Exception as e:
+        app.logger.error(f"记录用户预测失败: {str(e)}")
 
 @app.route('/api/lottery/refresh', methods=['POST'])
 def refresh_lottery_data():
     """刷新彩票数据"""
     try:
-        days_ahead = request.json.get('days', 3)
-        matches = lottery_api.get_formatted_matches(days_ahead)
+        data = request.json
+        days = data.get('days', 3)
         
-        # 保存到文件
-        filename = f"data/lottery_matches_{datetime.now().strftime('%Y%m%d')}.json"
-        lottery_api.save_matches_to_json(matches, filename)
+        if not lottery_api:
+            return jsonify({
+                'success': False,
+                'message': '彩票API未初始化'
+            })
+        
+        matches = lottery_api.get_formatted_matches(days)
         
         return jsonify({
             'success': True,
-            'message': f'已刷新 {len(matches)} 场比赛数据',
-            'matches_count': len(matches)
+            'matches': matches,
+            'count': len(matches)
         })
         
     except Exception as e:
@@ -447,51 +298,22 @@ def refresh_lottery_data():
 
 @app.route('/api/ai/batch-predict', methods=['POST'])
 def ai_batch_predict():
-    """批量AI预测"""
+    """AI批量预测"""
     try:
         data = request.json
-        match_ids = data.get('match_ids', [])
+        matches = data.get('matches', [])
         
-        if not match_ids:
+        if not matches:
             return jsonify({
                 'success': False,
-                'message': '未提供比赛ID'
+                'message': '未提供比赛数据'
             })
         
-        # 获取比赛数据
-        all_analyses = []
-        for match_id in match_ids:
-            # 这里需要根据match_id获取比赛详细信息
-            # 暂时使用示例数据
-            match_data = {
-                'match_id': match_id,
-                'home_team': '示例主队',
-                'away_team': '示例客队',
-                'league_name': '示例联赛'
-            }
-            
-            analysis = ai_predictor.analyze_match(match_data)
-            all_analyses.append({
-                'match_id': analysis.match_id,
-                'home_team': analysis.home_team,
-                'away_team': analysis.away_team,
-                'league_name': analysis.league_name,
-                'win_draw_loss': analysis.win_draw_loss,
-                'confidence_level': analysis.confidence_level,
-                'half_full_time': analysis.half_full_time,
-                'total_goals': analysis.total_goals,
-                'exact_scores': analysis.exact_scores,
-                'analysis_reason': analysis.analysis_reason,
-                'recommended_bets': analysis.recommended_bets
-            })
-        
-        return jsonify({
-            'success': True,
-            'analyses': all_analyses
-        })
+        # 调用AI预测
+        return ai_predict()
         
     except Exception as e:
-        app.logger.error(f"批量AI预测失败: {str(e)}")
+        app.logger.error(f"AI批量预测错误: {str(e)}")
         return jsonify({
             'success': False,
             'message': f'批量预测失败: {str(e)}'
