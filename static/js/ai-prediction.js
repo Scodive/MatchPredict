@@ -45,6 +45,9 @@ class AIPredictionManager {
     switchMode(mode) {
         this.currentMode = mode;
         
+        // 清空所有结果显示
+        this.clearAllResults();
+        
         // 更新模式按钮状态
         document.querySelectorAll('.mode-btn').forEach(btn => {
             btn.classList.remove('active');
@@ -75,6 +78,53 @@ class AIPredictionManager {
 
         // 更新标签页显示
         this.updateTabsVisibility(mode);
+        
+        // 更新AI预测按钮文本
+        this.updateAIPredictButtonText();
+        
+        // 更新比赛列表显示
+        this.updateModeSpecificDisplay(mode);
+    }
+
+    clearAllResults() {
+        // 清空所有结果区域
+        const containers = [
+            'ai-results', 
+            'half-full-results', 
+            'goals-results', 
+            'scores-results',
+            'results-container'
+        ];
+        
+        containers.forEach(id => {
+            const container = document.getElementById(id);
+            if (container) {
+                container.innerHTML = '';
+            }
+        });
+        
+        // 重置AI结果
+        this.aiResults = null;
+    }
+
+    updateModeSpecificDisplay(mode) {
+        const matchesContainer = document.getElementById('matches-container');
+        if (!matchesContainer) return;
+
+        if (mode === 'classic') {
+            // 经典模式：显示全局比赛列表
+            if (typeof window.updateMatchesUI === 'function') {
+                window.updateMatchesUI();
+            }
+        } else if (mode === 'ai') {
+            // AI模式：显示AI模式的比赛列表
+            this.renderAIMatches();
+        } else if (mode === 'lottery') {
+            // 体彩模式：显示体彩的比赛（由lottery.js管理）
+            if (window.lotteryManager && typeof window.lotteryManager.renderMatches === 'function') {
+                window.lotteryManager.renderMatches();
+            }
+        }
     }
 
     updateTabsVisibility(mode) {
@@ -231,441 +281,206 @@ class AIPredictionManager {
     }
 
     async startAIPrediction() {
-        let matches = [];
-        
-        if (this.currentMode === 'lottery') {
-            // 彩票模式：使用选中的彩票比赛
-            if (window.lotteryManager) {
-                matches = window.lotteryManager.getSelectedMatches();
-            }
-        } else if (this.currentMode === 'ai') {
-            // AI模式：使用手动添加的比赛
-            matches = this.aiMatches;
-        }
-
-        if (matches.length === 0) {
-            this.showMessage('请先添加或选择比赛', 'error');
-            return;
-        }
-
-        const aiPredictBtn = document.getElementById('ai-predict-btn');
-        
         try {
-            // 显示加载状态
-            aiPredictBtn.disabled = true;
-            aiPredictBtn.innerHTML = '<i class="fas fa-spin fa-spinner"></i> AI分析中...';
+            // 获取要预测的比赛数据
+            let matchesToPredict = [];
+            
+            if (this.currentMode === 'lottery') {
+                // 体彩模式：获取体彩选中的比赛
+                if (window.lotteryManager && window.lotteryManager.getSelectedMatches) {
+                    const lotteryMatches = window.lotteryManager.getSelectedMatches();
+                    matchesToPredict = lotteryMatches.map(match => this.convertToAIFormat(match));
+                    console.log('体彩模式选中比赛:', lotteryMatches);
+                }
+            } else if (this.currentMode === 'ai') {
+                // AI模式：使用AI模式添加的比赛
+                matchesToPredict = this.aiMatches;
+            } else if (this.currentMode === 'classic') {
+                // 经典模式：使用全局比赛列表
+                if (window.matches && window.matches.length > 0) {
+                    matchesToPredict = window.matches.map(match => this.convertToAIFormat(match));
+                }
+            }
 
-            // 调用AI预测API
+            if (!matchesToPredict || matchesToPredict.length === 0) {
+                this.showMessage('请先选择或添加比赛', 'error');
+                return;
+            }
+
+            console.log('开始AI预测，比赛数量:', matchesToPredict.length);
+            console.log('比赛数据:', matchesToPredict);
+
+            // 显示加载状态
+            const loadingElement = document.getElementById('loading-overlay');
+            if (loadingElement) {
+                loadingElement.classList.remove('hidden');
+            }
+
+            // 更新按钮状态
+            const aiPredictBtn = document.getElementById('ai-predict-btn');
+            if (aiPredictBtn) {
+                aiPredictBtn.disabled = true;
+                aiPredictBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> AI分析中...';
+            }
+
+            // 发送预测请求
             const response = await fetch('/api/ai/predict', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ matches })
+                body: JSON.stringify({
+                    matches: matchesToPredict
+                })
             });
 
-            const data = await response.json();
+            if (!response.ok) {
+                throw new Error(`网络错误: ${response.status}`);
+            }
 
-            if (data.success) {
-                this.aiResults = data;
+            const result = await response.json();
+            
+            if (result.success) {
+                this.aiResults = result.predictions;
                 this.displayAIResults();
-                this.showMessage('AI分析完成', 'success');
+                this.showMessage('AI预测完成', 'success');
+                
+                // 切换到结果标签页
+                this.switchTab('results');
             } else {
-                throw new Error(data.message || 'AI预测失败');
+                throw new Error(result.error || '预测失败');
             }
 
         } catch (error) {
             console.error('AI预测失败:', error);
-            this.showMessage('AI预测失败: ' + error.message, 'error');
+            this.showMessage(`AI预测失败: ${error.message}`, 'error');
         } finally {
+            // 隐藏加载状态
+            const loadingElement = document.getElementById('loading-overlay');
+            if (loadingElement) {
+                loadingElement.classList.add('hidden');
+            }
+
             // 恢复按钮状态
+            const aiPredictBtn = document.getElementById('ai-predict-btn');
+            if (aiPredictBtn) {
+                aiPredictBtn.disabled = false;
+                this.updateAIPredictButtonText();
+            }
+        }
+    }
+
+    convertToAIFormat(match) {
+        // 将不同格式的比赛数据转换为AI预测API需要的格式
+        if (match.odds && match.odds.hhad) {
+            // 已经是正确格式（体彩或AI格式）
+            return match;
+        } else {
+            // 从全局格式转换
+            return {
+                match_id: match.id || match.match_id || `converted_${Date.now()}`,
+                home_team: match.home_team,
+                away_team: match.away_team,
+                league_name: match.leagueName || match.league_name || '未知联赛',
+                odds: {
+                    hhad: {
+                        h: (match.home_odds || 2.0).toString(),
+                        d: (match.draw_odds || 3.2).toString(),
+                        a: (match.away_odds || 2.8).toString()
+                    }
+                }
+            };
+        }
+    }
+
+    updateAIPredictButtonText() {
+        const aiPredictBtn = document.getElementById('ai-predict-btn');
+        if (!aiPredictBtn) return;
+
+        let matchCount = 0;
+        
+        if (this.currentMode === 'lottery') {
+            if (window.lotteryManager && window.lotteryManager.selectedMatches) {
+                matchCount = window.lotteryManager.selectedMatches.size;
+            }
+        } else if (this.currentMode === 'ai') {
+            matchCount = this.aiMatches.length;
+        } else if (this.currentMode === 'classic') {
+            matchCount = window.matches ? window.matches.length : 0;
+        }
+
+        if (matchCount > 0) {
+            aiPredictBtn.innerHTML = `<i class="fas fa-brain"></i> AI预测选中的 ${matchCount} 场比赛`;
             aiPredictBtn.disabled = false;
+        } else {
             aiPredictBtn.innerHTML = '<i class="fas fa-brain"></i> AI智能预测';
+            aiPredictBtn.disabled = true;
         }
     }
 
     displayAIResults() {
-        if (!this.aiResults) return;
-
-        // 显示结果区域
-        const resultsSection = document.getElementById('results-section');
-        resultsSection.classList.remove('hidden');
-
-        // 切换到AI分析标签页
-        this.switchTab('ai-analysis');
-
-        // 渲染各种结果
-        this.renderAIAnalysisResults();
-        this.renderHalfFullResults();
-        this.renderGoalsResults();
-        this.renderScoresResults();
-    }
-
-    renderAIAnalysisResults() {
-        const container = document.getElementById('ai-analysis-results');
-        const analyses = this.aiResults.ai_analyses || [];
-
-        let html = '<div class="ai-analysis-container">';
-
-        analyses.forEach(analysis => {
-            html += this.renderSingleAnalysis(analysis);
-        });
-
-        // 添加组合预测
-        if (this.aiResults.combination_predictions) {
-            html += this.renderCombinationPredictions(this.aiResults.combination_predictions);
+        if (!this.aiResults || this.aiResults.length === 0) {
+            this.showMessage('没有AI分析结果', 'error');
+            return;
         }
 
-        html += '</div>';
-        container.innerHTML = html;
+        // 清空所有结果区域
+        const resultsContainer = document.getElementById('ai-results');
+        const halfFullContainer = document.getElementById('half-full-results');
+        const goalsContainer = document.getElementById('goals-results');
+        const scoresContainer = document.getElementById('scores-results');
+
+        if (resultsContainer) resultsContainer.innerHTML = '';
+        if (halfFullContainer) halfFullContainer.innerHTML = '';
+        if (goalsContainer) goalsContainer.innerHTML = '';
+        if (scoresContainer) scoresContainer.innerHTML = '';
+
+        // 显示简化的AI分析结果
+        this.renderSimpleAIResults();
+        this.showMessage('AI预测完成', 'success');
     }
 
-    renderSingleAnalysis(analysis) {
-        const wdl = analysis.win_draw_loss;
-        const confidence = Math.round(analysis.confidence_level * 100);
+    renderSimpleAIResults() {
+        const container = document.getElementById('ai-results');
+        if (!container) return;
 
-        return `
-            <div class="analysis-card">
-                <div class="match-header">
-                    <h3>${analysis.home_team} vs ${analysis.away_team}</h3>
-                    <span class="league">${analysis.league_name}</span>
-                    <span class="confidence ${confidence > 70 ? 'high' : confidence > 50 ? 'medium' : 'low'}">
-                        置信度: ${confidence}%
-                    </span>
-                </div>
-                
-                <div class="prediction-section">
-                    <h4><i class="fas fa-chart-pie"></i> 胜平负预测</h4>
-                    <div class="wdl-predictions">
-                        <div class="wdl-item ${this.getBestOutcome(wdl) === 'home' ? 'best' : ''}">
-                            <span class="label">主胜</span>
-                            <span class="probability">${Math.round(wdl.home * 100)}%</span>
-                            <div class="probability-bar">
-                                <div class="probability-fill home-fill" style="width: ${wdl.home * 100}%"></div>
-                            </div>
-                        </div>
-                        <div class="wdl-item ${this.getBestOutcome(wdl) === 'draw' ? 'best' : ''}">
-                            <span class="label">平局</span>
-                            <span class="probability">${Math.round(wdl.draw * 100)}%</span>
-                            <div class="probability-bar">
-                                <div class="probability-fill draw-fill" style="width: ${wdl.draw * 100}%"></div>
-                            </div>
-                        </div>
-                        <div class="wdl-item ${this.getBestOutcome(wdl) === 'away' ? 'best' : ''}">
-                            <span class="label">客胜</span>
-                            <span class="probability">${Math.round(wdl.away * 100)}%</span>
-                            <div class="probability-bar">
-                                <div class="probability-fill away-fill" style="width: ${wdl.away * 100}%"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="analysis-reason">
-                    <h4><i class="fas fa-brain"></i> AI分析理由</h4>
-                    <div class="reason-content">
-                        <p>${analysis.analysis_reason}</p>
-                    </div>
-                </div>
-                
-                ${this.renderQuickStats(analysis)}
-                ${this.renderRecommendedBets(analysis.recommended_bets)}
-                ${this.renderValueBets(analysis.value_bets)}
-            </div>
-        `;
-    }
-
-    renderQuickStats(analysis) {
-        const wdl = analysis.win_draw_loss;
-        const hf = analysis.half_full_time;
-        const goals = analysis.total_goals;
-        const scores = analysis.exact_scores;
-
-        // 找出最可能的结果
-        const bestHalfFull = Object.entries(hf || {})
-            .sort(([,a], [,b]) => b - a)
-            .slice(0, 3);
+        let html = '<div class="simple-ai-results">';
         
-        const bestGoals = Object.entries(goals || {})
-            .sort(([,a], [,b]) => b - a)[0];
-        
-        const topScore = scores && scores.length > 0 ? scores[0] : ['1-1', 0.1];
-
-        return `
-            <div class="quick-stats">
-                <h4><i class="fas fa-chart-line"></i> 关键预测</h4>
-                <div class="stats-grid">
-                    <div class="stat-item">
-                        <span class="stat-label">最可能结果</span>
-                        <span class="stat-value">${this.formatOutcome(this.getBestOutcome(wdl))}</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">最可能比分</span>
-                        <span class="stat-value">${topScore[0]}</span>
-                        <span class="stat-prob">${Math.round(topScore[1] * 100)}%</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">进球数区间</span>
-                        <span class="stat-value">${this.formatGoalsRange(bestGoals?.[0])}</span>
-                        <span class="stat-prob">${Math.round((bestGoals?.[1] || 0) * 100)}%</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-label">半全场推荐</span>
-                        <span class="stat-value">${this.formatHalfFull(bestHalfFull[0]?.[0])}</span>
-                        <span class="stat-prob">${Math.round((bestHalfFull[0]?.[1] || 0) * 100)}%</span>
-                    </div>
-                </div>
-            </div>
-        `;
-    }
-
-    formatOutcome(outcome) {
-        const map = {'home': '主胜', 'draw': '平局', 'away': '客胜'};
-        return map[outcome] || outcome;
-    }
-
-    formatGoalsRange(range) {
-        const map = {
-            '0-1': '0-1球',
-            '2-3': '2-3球', 
-            '4-6': '4-6球',
-            '7+': '7球以上'
-        };
-        return map[range] || range;
-    }
-
-    formatHalfFull(hf) {
-        const map = {
-            'home_home': '主/主',
-            'home_draw': '主/平',
-            'home_away': '主/客',
-            'draw_home': '平/主',
-            'draw_draw': '平/平',
-            'draw_away': '平/客',
-            'away_home': '客/主',
-            'away_draw': '客/平',
-            'away_away': '客/客'
-        };
-        return map[hf] || hf;
-    }
-
-    getBestOutcome(wdl) {
-        const max = Math.max(wdl.home, wdl.draw, wdl.away);
-        if (wdl.home === max) return 'home';
-        if (wdl.draw === max) return 'draw';
-        return 'away';
-    }
-
-    renderRecommendedBets(bets) {
-        if (!bets || bets.length === 0) return '';
-
-        let html = '<div class="recommended-bets"><h4>推荐投注</h4><div class="bets-list">';
-        
-        bets.forEach(bet => {
-            const confidence = Math.round((bet.confidence || 0) * 100);
+        this.aiResults.forEach((result, index) => {
             html += `
-                <div class="bet-item">
-                    <span class="bet-type">${bet.bet_type}</span>
-                    <span class="bet-selection">${bet.selection}</span>
-                    <span class="bet-confidence">${confidence}%</span>
-                    <p class="bet-reason">${bet.reason}</p>
-                </div>
-            `;
-        });
-
-        html += '</div></div>';
-        return html;
-    }
-
-    renderValueBets(bets) {
-        if (!bets || bets.length === 0) return '';
-
-        let html = '<div class="value-bets"><h4>价值投注机会</h4><div class="bets-list">';
-        
-        bets.forEach(bet => {
-            const expectedValue = Math.round(bet.expected_value * 100);
-            const probability = Math.round(bet.predicted_probability * 100);
-            
-            html += `
-                <div class="value-bet-item ${expectedValue > 10 ? 'high-value' : ''}">
-                    <div class="bet-info">
-                        <span class="bet-type">${bet.bet_type}</span>
-                        <span class="bet-selection">${bet.selection}</span>
-                        <span class="odds">赔率: ${bet.odds}</span>
-                    </div>
-                    <div class="bet-stats">
-                        <span class="probability">预测概率: ${probability}%</span>
-                        <span class="expected-value">期望值: ${expectedValue > 0 ? '+' : ''}${expectedValue}%</span>
-                    </div>
-                </div>
-            `;
-        });
-
-        html += '</div></div>';
-        return html;
-    }
-
-    renderCombinationPredictions(combinations) {
-        if (!combinations || combinations.length === 0) return '';
-
-        let html = '<div class="combination-predictions"><h3>AI推荐组合</h3>';
-
-        combinations.forEach(combo => {
-            html += `
-                <div class="combination-card">
-                    <h4>${combo.type}</h4>
-                    <p class="combination-desc">${combo.description}</p>
-                    
-                    <div class="selections">
-                        ${combo.selections.map(selection => `
-                            <div class="selection-item">
-                                <span class="match">${selection.match}</span>
-                                <span class="prediction">${this.formatPrediction(selection.prediction)}</span>
-                                <span class="probability">${Math.round((selection.probability || 0) * 100)}%</span>
-                            </div>
-                        `).join('')}
+                <div class="ai-result-card">
+                    <div class="match-header">
+                        <h3 class="match-title">
+                            <span class="home-team">${result.home_team}</span>
+                            <span class="vs">VS</span>
+                            <span class="away-team">${result.away_team}</span>
+                        </h3>
+                        <div class="league-info">${result.league_name}</div>
                     </div>
                     
-                    ${combo.total_confidence ? `
-                        <div class="combination-confidence">
-                            组合置信度: ${Math.round(combo.total_confidence * 100)}%
-                        </div>
-                    ` : ''}
+                    <div class="odds-display">
+                        <span class="odds-item">主胜: ${result.odds.home}</span>
+                        <span class="odds-item">平局: ${result.odds.draw}</span>
+                        <span class="odds-item">客胜: ${result.odds.away}</span>
+                    </div>
+                    
+                    <div class="ai-analysis-content">
+                        <h4><i class="fas fa-brain"></i> AI智能分析</h4>
+                        <div class="analysis-text">${this.formatAnalysisText(result.ai_analysis)}</div>
+                    </div>
                 </div>
             `;
         });
-
-        html += '</div>';
-        return html;
-    }
-
-    formatPrediction(prediction) {
-        const formatMap = {
-            'home': '主胜',
-            'draw': '平局',
-            'away': '客胜',
-            'home_home': '主/主',
-            'home_draw': '主/平',
-            'home_away': '主/客',
-            'draw_home': '平/主',
-            'draw_draw': '平/平',
-            'draw_away': '平/客',
-            'away_home': '客/主',
-            'away_draw': '客/平',
-            'away_away': '客/客',
-            '0-1': '0-1球',
-            '2-3': '2-3球',
-            '4-6': '4-6球',
-            '7+': '7球或以上'
-        };
-        return formatMap[prediction] || prediction;
-    }
-
-    renderHalfFullResults() {
-        const container = document.getElementById('half-full-results');
-        const analyses = this.aiResults.ai_analyses || [];
-
-        let html = '<div class="half-full-container">';
-
-        analyses.forEach(analysis => {
-            if (analysis.half_full_time) {
-                html += this.renderHalfFullAnalysis(analysis);
-            }
-        });
-
+        
         html += '</div>';
         container.innerHTML = html;
     }
 
-    renderHalfFullAnalysis(analysis) {
-        const hf = analysis.half_full_time;
-        const sortedHF = Object.entries(hf)
-            .sort(([,a], [,b]) => b - a)
-            .slice(0, 5); // 只显示前5个最可能的结果
-
-        return `
-            <div class="half-full-card">
-                <h3>${analysis.home_team} vs ${analysis.away_team}</h3>
-                <div class="half-full-predictions">
-                    ${sortedHF.map(([outcome, prob], index) => `
-                        <div class="hf-item ${index === 0 ? 'best' : ''}">
-                            <span class="outcome">${this.formatPrediction(outcome)}</span>
-                            <span class="probability">${Math.round(prob * 100)}%</span>
-                        </div>
-                    `).join('')}
-                </div>
-            </div>
-        `;
-    }
-
-    renderGoalsResults() {
-        const container = document.getElementById('goals-results');
-        const analyses = this.aiResults.ai_analyses || [];
-
-        let html = '<div class="goals-container">';
-
-        analyses.forEach(analysis => {
-            if (analysis.total_goals) {
-                html += this.renderGoalsAnalysis(analysis);
-            }
-        });
-
-        html += '</div>';
-        container.innerHTML = html;
-    }
-
-    renderGoalsAnalysis(analysis) {
-        const goals = analysis.total_goals;
-        const sortedGoals = Object.entries(goals)
-            .sort(([,a], [,b]) => b - a);
-
-        return `
-            <div class="goals-card">
-                <h3>${analysis.home_team} vs ${analysis.away_team}</h3>
-                <div class="goals-predictions">
-                    ${sortedGoals.map(([range, prob], index) => `
-                        <div class="goals-item ${index === 0 ? 'best' : ''}">
-                            <span class="range">${this.formatPrediction(range)}</span>
-                            <span class="probability">${Math.round(prob * 100)}%</span>
-                        </div>
-                    `).join('')}
-                </div>
-            </div>
-        `;
-    }
-
-    renderScoresResults() {
-        const container = document.getElementById('scores-results');
-        const analyses = this.aiResults.ai_analyses || [];
-
-        let html = '<div class="scores-container">';
-
-        analyses.forEach(analysis => {
-            if (analysis.exact_scores) {
-                html += this.renderScoresAnalysis(analysis);
-            }
-        });
-
-        html += '</div>';
-        container.innerHTML = html;
-    }
-
-    renderScoresAnalysis(analysis) {
-        const scores = analysis.exact_scores;
-
-        return `
-            <div class="scores-card">
-                <h3>${analysis.home_team} vs ${analysis.away_team}</h3>
-                <div class="scores-predictions">
-                    ${scores.map(([score, prob], index) => `
-                        <div class="score-item ${index === 0 ? 'best' : ''}">
-                            <span class="score">${score}</span>
-                            <span class="probability">${Math.round(prob * 100)}%</span>
-                        </div>
-                    `).join('')}
-                </div>
-            </div>
-        `;
+    formatAnalysisText(text) {
+        if (!text) return '暂无分析';
+        
+        // 将换行符转换为HTML换行
+        return text.replace(/\n/g, '<br>').replace(/\r/g, '');
     }
 
     switchTab(tabName) {
@@ -713,6 +528,7 @@ let aiPredictionManager = null;
 // 初始化
 document.addEventListener('DOMContentLoaded', function() {
     aiPredictionManager = new AIPredictionManager();
+    window.aiPredictionManager = aiPredictionManager;  // 暴露为全局变量
 });
 
 // 导出给其他模块使用

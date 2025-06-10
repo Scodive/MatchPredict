@@ -276,14 +276,100 @@ class LotteryManager {
         if (!match) return;
 
         if (this.selectedMatches.has(matchId)) {
+            // 取消选择
             this.selectedMatches.delete(matchId);
+            // 从全局matches数组中移除
+            this.removeFromGlobalMatches(matchId);
         } else {
+            // 选择比赛
             this.selectedMatches.add(matchId);
+            // 添加到全局matches数组
+            this.addToGlobalMatches(match);
         }
 
         // 更新显示
         this.updateMatchCardSelection(matchId);
         this.updateSelectionInfo();
+        this.updateGlobalMatchesDisplay();
+    }
+
+    addToGlobalMatches(match) {
+        // 检查全局matches数组是否存在
+        if (typeof window.matches === 'undefined') {
+            window.matches = [];
+        }
+
+        // 转换体彩数据格式为全局格式
+        const globalMatch = this.convertToGlobalFormat(match);
+        
+        // 检查是否已存在（避免重复添加）
+        const existingIndex = window.matches.findIndex(m => m.id === globalMatch.id);
+        if (existingIndex === -1) {
+            window.matches.push(globalMatch);
+            console.log('添加比赛到全局:', globalMatch);
+        }
+    }
+
+    removeFromGlobalMatches(matchId) {
+        if (typeof window.matches !== 'undefined') {
+            const index = window.matches.findIndex(m => m.id === matchId);
+            if (index !== -1) {
+                window.matches.splice(index, 1);
+                console.log('从全局移除比赛:', matchId);
+            }
+        }
+    }
+
+    convertToGlobalFormat(match) {
+        // 从体彩格式转换为全局比赛格式
+        const odds = match.odds || {};
+        const hhadOdds = odds.hhad || {};
+        
+        return {
+            id: match.match_id,
+            league_code: this.getLeagueCode(match.league_name),
+            leagueName: match.league_name,
+            home_team: match.home_team,
+            away_team: match.away_team,
+            home_odds: parseFloat(hhadOdds.h) || 2.0,
+            draw_odds: parseFloat(hhadOdds.d) || 3.2,
+            away_odds: parseFloat(hhadOdds.a) || 2.8,
+            match_time: match.match_time,
+            source: 'lottery' // 标记来源
+        };
+    }
+
+    getLeagueCode(leagueName) {
+        // 将联赛名称映射为代码
+        const leagueMap = {
+            '英超': 'PL',
+            '西甲': 'PD', 
+            '德甲': 'BL1',
+            '意甲': 'SA',
+            '法甲': 'FL1',
+            '中超': 'CSL',
+            '中超联赛': 'CSL'
+        };
+        return leagueMap[leagueName] || 'OTHER';
+    }
+
+    updateGlobalMatchesDisplay() {
+        // 更新全局比赛显示
+        if (typeof window.updateMatchesUI === 'function') {
+            window.updateMatchesUI();
+        }
+        
+        // 更新主界面的比赛计数
+        const matchCountSpan = document.getElementById('match-count');
+        if (matchCountSpan && typeof window.matches !== 'undefined') {
+            matchCountSpan.textContent = `(${window.matches.length})`;
+        }
+        
+        // 更新主界面的预测按钮状态
+        const predictBtn = document.getElementById('predict-btn');
+        if (predictBtn && typeof window.matches !== 'undefined') {
+            predictBtn.disabled = window.matches.length === 0;
+        }
     }
 
     updateMatchCardSelection(matchId) {
@@ -305,22 +391,15 @@ class LotteryManager {
     updateSelectionInfo() {
         const count = this.selectedMatches.size;
         
-        // 更新按钮状态
-        const predictBtn = document.getElementById('ai-predict-btn');
-        if (predictBtn) {
-            if (count > 0) {
-                predictBtn.disabled = false;
-                predictBtn.innerHTML = `<i class="fas fa-brain"></i> AI预测选中的 ${count} 场比赛`;
-            } else {
-                predictBtn.disabled = true;
-                predictBtn.innerHTML = '<i class="fas fa-brain"></i> AI智能预测';
-            }
-        }
-
-        // 更新匹配数计数
+        // 更新主界面的比赛计数
         const matchCount = document.getElementById('match-count');
         if (matchCount) {
             matchCount.textContent = `(${count})`;
+        }
+        
+        // 更新AI预测按钮状态（如果AI预测管理器存在）
+        if (window.aiPredictionManager && typeof window.aiPredictionManager.updateAIPredictButtonText === 'function') {
+            window.aiPredictionManager.updateAIPredictButtonText();
         }
     }
 

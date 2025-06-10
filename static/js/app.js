@@ -16,6 +16,7 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 存储已添加的比赛
     let matches = [];
+    window.matches = matches;  // 暴露为全局变量
     
     // 初始化函数
     function init() {
@@ -212,14 +213,18 @@ document.addEventListener('DOMContentLoaded', function() {
             matchesContainer.appendChild(matchCard);
         });
         
-        // 添加删除按钮事件
+        // 重新绑定删除按钮事件
         document.querySelectorAll('.remove-match').forEach(btn => {
-            btn.addEventListener('click', function() {
-                const matchId = parseInt(this.getAttribute('data-id'));
+            btn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const matchId = parseInt(btn.getAttribute('data-id'));
                 removeMatch(matchId);
             });
         });
     }
+    
+    // 暴露为全局函数
+    window.updateMatchesUI = updateMatchesUI;
     
     // 删除比赛
     function removeMatch(matchId) {

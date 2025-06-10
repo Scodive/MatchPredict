@@ -240,4 +240,146 @@
     .quick-stats {
         padding: 16px;
     }
+}
+
+/* 简化的AI结果样式 */
+.simple-ai-results {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px 0;
+}
+
+.ai-result-card {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e5e7eb;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.ai-result-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.match-header {
+    text-align: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #f3f4f6;
+}
+
+.match-title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin: 0 0 8px 0;
+    font-size: 1.4em;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.home-team, .away-team {
+    padding: 8px 16px;
+    border-radius: 8px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    font-weight: 600;
+}
+
+.home-team {
+    color: #059669;
+}
+
+.away-team {
+    color: #dc2626;
+}
+
+.vs {
+    font-weight: 700;
+    color: #6b7280;
+    font-size: 0.9em;
+}
+
+.league-info {
+    font-size: 0.9em;
+    color: #6b7280;
+    font-weight: 500;
+}
+
+.odds-display {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-bottom: 20px;
+    padding: 12px;
+    background: #f9fafb;
+    border-radius: 8px;
+    border: 1px solid #e5e7eb;
+}
+
+.odds-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: 0.9em;
+    font-weight: 600;
+    color: #374151;
+}
+
+.ai-analysis-content {
+    background: #fafbfc;
+    border-radius: 10px;
+    padding: 20px;
+    border-left: 4px solid #3b82f6;
+}
+
+.ai-analysis-content h4 {
+    margin: 0 0 15px 0;
+    color: #1f2937;
+    font-size: 1.1em;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.ai-analysis-content h4 i {
+    color: #3b82f6;
+}
+
+.analysis-text {
+    line-height: 1.7;
+    color: #374151;
+    font-size: 0.95em;
+}
+
+.analysis-text br {
+    margin-bottom: 8px;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .simple-ai-results {
+        padding: 10px 0;
+    }
+    
+    .ai-result-card {
+        padding: 16px;
+        margin: 0 10px;
+    }
+    
+    .match-title {
+        flex-direction: column;
+        gap: 8px;
+        font-size: 1.2em;
+    }
+    
+    .odds-display {
+        flex-direction: column;
+        gap: 8px;
+    }
 } 

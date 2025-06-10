@@ -62,9 +62,10 @@ def initialize_services():
     try:
         # 初始化AI预测器
         if AIFootballPredictor:
-            gemini_key = os.getenv('GEMINI_API_KEY', 'AIzaSyDy9pYAEW7e2Ewk__9TCHAD5X_G1VhCtVw')
-            gemini_model = os.getenv('GEMINI_MODEL', 'gemini-2.0-flash-exp')
-            ai_predictor = AIFootballPredictor(gemini_api_key=gemini_key, model=gemini_model)
+            ai_predictor = AIFootballPredictor(
+                api_key='AIzaSyDy9pYAEW7e2Ewk__9TCHAD5X_G1VhCtVw',
+                model_name='gemini-2.0-flash-exp'
+            )
             app.logger.info("AI预测器初始化成功")
         else:
             app.logger.warning("AI预测器类未加载")
@@ -195,68 +196,66 @@ def get_lottery_matches():
 
 @app.route('/api/ai/predict', methods=['POST'])
 def ai_predict():
-    """AI智能预测比赛结果"""
+    """AI智能预测接口"""
     try:
-        data = request.json
+        data = request.get_json()
         matches = data.get('matches', [])
         
         if not matches:
             return jsonify({
                 'success': False,
-                'message': '未提供比赛数据'
-            })
+                'error': '没有提供比赛数据'
+            }), 400
         
-        if not ai_predictor:
-            return jsonify({
-                'success': False,
-                'message': 'AI预测器未初始化'
-            })
+        app.logger.info(f"收到AI预测请求，比赛数量: {len(matches)}")
         
-        # 记录用户输入
-        log_user_prediction(matches)
+        # 确保AI预测器可用
+        current_predictor = ai_predictor
+        if not current_predictor:
+            try:
+                current_predictor = AIFootballPredictor(
+                    api_key='AIzaSyDy9pYAEW7e2Ewk__9TCHAD5X_G1VhCtVw',
+                    model_name='gemini-2.0-flash-exp'
+                )
+                app.logger.info("临时创建AI预测器")
+            except Exception as e:
+                app.logger.error(f"创建AI预测器失败: {e}")
+                return jsonify({
+                    'success': False,
+                    'error': 'AI预测器初始化失败'
+                }), 500
         
-        # 使用AI分析比赛
-        ai_analyses = []
-        for match in matches:
-            analysis = ai_predictor.analyze_match(match)
-            
-            # 转换为可序列化的字典
-            analysis_dict = {
+        # 分析比赛
+        analyses = current_predictor.analyze_matches(matches)
+        
+        # 转换为简单格式返回
+        results = []
+        for analysis in analyses:
+            results.append({
                 'match_id': analysis.match_id,
                 'home_team': analysis.home_team,
                 'away_team': analysis.away_team,
                 'league_name': analysis.league_name,
-                'win_draw_loss': analysis.win_draw_loss,
-                'confidence_level': analysis.confidence_level,
-                'half_full_time': analysis.half_full_time,
-                'total_goals': analysis.total_goals,
-                'exact_scores': analysis.exact_scores,
-                'analysis_reason': analysis.analysis_reason,
-                'recommended_bets': analysis.recommended_bets
-            }
-            
-            # 寻找价值投注
-            if 'odds' in match:
-                value_bets = ai_predictor.get_value_bets(analysis, match['odds'])
-                analysis_dict['value_bets'] = value_bets
-            
-            ai_analyses.append(analysis_dict)
-        
-        # 生成组合预测
-        combination_predictions = generate_ai_combinations(ai_analyses)
+                'ai_analysis': analysis.ai_analysis,
+                'odds': {
+                    'home': analysis.home_odds,
+                    'draw': analysis.draw_odds,
+                    'away': analysis.away_odds
+                }
+            })
         
         return jsonify({
             'success': True,
-            'ai_analyses': ai_analyses,
-            'combination_predictions': combination_predictions
+            'predictions': results,
+            'count': len(results)
         })
         
     except Exception as e:
-        app.logger.error(f"AI预测错误: {str(e)}")
+        app.logger.error(f"AI预测失败: {e}")
         return jsonify({
             'success': False,
-            'message': f'AI预测过程中发生错误: {str(e)}'
-        })
+            'error': str(e)
+        }), 500
 
 @app.route('/api/predict', methods=['POST'])
 def predict():
