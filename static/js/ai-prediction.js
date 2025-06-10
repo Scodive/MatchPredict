@@ -8,6 +8,11 @@ class AIPredictionManager {
         this.aiMatches = [];
         this.aiResults = null;
         this.initializeEventListeners();
+        
+        // 初始化按钮状态
+        setTimeout(() => {
+            this.updateAIPredictButtonText();
+        }, 100);
     }
 
     initializeEventListeners() {
@@ -69,11 +74,13 @@ class AIPredictionManager {
         const aiPredictBtn = document.getElementById('ai-predict-btn');
 
         if (mode === 'ai' || mode === 'lottery') {
-            classicPredictBtn.classList.add('hidden');
-            aiPredictBtn.classList.remove('hidden');
+            if (classicPredictBtn) classicPredictBtn.classList.add('hidden');
+            if (aiPredictBtn) {
+                aiPredictBtn.classList.remove('hidden');
+            }
         } else {
-            classicPredictBtn.classList.remove('hidden');
-            aiPredictBtn.classList.add('hidden');
+            if (classicPredictBtn) classicPredictBtn.classList.remove('hidden');
+            if (aiPredictBtn) aiPredictBtn.classList.add('hidden');
         }
 
         // 更新标签页显示
@@ -180,7 +187,11 @@ class AIPredictionManager {
         this.aiMatches.push(match);
         this.renderAIMatches();
         this.clearAIForm();
-        this.updateAIPredictButton();
+        
+        // 强制更新按钮状态
+        setTimeout(() => {
+            this.updateAIPredictButtonText();
+        }, 50);
 
         this.showMessage('比赛添加成功', 'success');
     }
@@ -254,22 +265,7 @@ class AIPredictionManager {
     removeAIMatch(index) {
         this.aiMatches.splice(index, 1);
         this.renderAIMatches();
-        this.updateAIPredictButton();
-        this.updateMatchCount();
-    }
-
-    updateAIPredictButton() {
-        const aiPredictBtn = document.getElementById('ai-predict-btn');
-        const clearBtn = document.getElementById('clear-matches-btn');
-        
-        if (this.aiMatches.length > 0) {
-            aiPredictBtn.disabled = false;
-            clearBtn.disabled = false;
-        } else {
-            aiPredictBtn.disabled = true;
-            clearBtn.disabled = true;
-        }
-
+        this.updateAIPredictButtonText();
         this.updateMatchCount();
     }
 
@@ -345,8 +341,12 @@ class AIPredictionManager {
                 this.displayAIResults();
                 this.showMessage('AI预测完成', 'success');
                 
-                // 切换到结果标签页
-                this.switchTab('results');
+                // 显示结果区域并切换到AI分析标签页
+                const resultsSection = document.getElementById('results-section');
+                if (resultsSection) {
+                    resultsSection.classList.remove('hidden');
+                }
+                this.switchTab('ai-analysis');
             } else {
                 throw new Error(result.error || '预测失败');
             }
@@ -395,7 +395,9 @@ class AIPredictionManager {
 
     updateAIPredictButtonText() {
         const aiPredictBtn = document.getElementById('ai-predict-btn');
-        if (!aiPredictBtn) return;
+        if (!aiPredictBtn) {
+            return;
+        }
 
         let matchCount = 0;
         
@@ -408,7 +410,7 @@ class AIPredictionManager {
         } else if (this.currentMode === 'classic') {
             matchCount = window.matches ? window.matches.length : 0;
         }
-
+        
         if (matchCount > 0) {
             aiPredictBtn.innerHTML = `<i class="fas fa-brain"></i> AI预测选中的 ${matchCount} 场比赛`;
             aiPredictBtn.disabled = false;
@@ -424,25 +426,16 @@ class AIPredictionManager {
             return;
         }
 
-        // 清空所有结果区域
-        const resultsContainer = document.getElementById('ai-results');
-        const halfFullContainer = document.getElementById('half-full-results');
-        const goalsContainer = document.getElementById('goals-results');
-        const scoresContainer = document.getElementById('scores-results');
-
-        if (resultsContainer) resultsContainer.innerHTML = '';
-        if (halfFullContainer) halfFullContainer.innerHTML = '';
-        if (goalsContainer) goalsContainer.innerHTML = '';
-        if (scoresContainer) scoresContainer.innerHTML = '';
-
-        // 显示简化的AI分析结果
+        // 显示简化的AI分析结果到ai-analysis-results容器
         this.renderSimpleAIResults();
-        this.showMessage('AI预测完成', 'success');
     }
 
     renderSimpleAIResults() {
-        const container = document.getElementById('ai-results');
-        if (!container) return;
+        const container = document.getElementById('ai-analysis-results');
+        if (!container) {
+            console.error('ai-analysis-results容器不存在');
+            return;
+        }
 
         let html = '<div class="simple-ai-results">';
         

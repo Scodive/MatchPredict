@@ -3,20 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>足球比赛预测系统</title>
+    <title>AI足球预测 - 智能分析平台</title>
     <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
         <header>
-            <h1><i class="fas fa-futbol"></i> 足球比赛预测系统</h1>
-            <p>基于数据分析的足球比赛预测工具</p>
+            <h1><i class="fas fa-futbol"></i> AI足球预测</h1>
+            <p class="subtitle">基于大语言模型的智能足球比赛分析平台</p>
         </header>
 
         <main>
-            <!-- 新增模式选择 -->
             <section class="mode-selection">
                 <h2>选择预测模式</h2>
                 <div class="mode-buttons">
@@ -40,17 +42,17 @@
 
             <!-- 经典模式 -->
             <section id="classic-mode" class="match-input-section active">
-                <h2>添加比赛 - 经典模式</h2>
+                <h2><i class="fas fa-plus-circle"></i> 添加比赛 - 经典模式</h2>
                 <div class="match-form">
                     <div class="form-group">
                         <label for="league-select">选择联赛:</label>
                         <select id="league-select">
                             <option value="">请选择联赛</option>
-                            <option value="PL">英超</option>
-                            <option value="PD">西甲</option>
-                            <option value="SA">意甲</option>
-                            <option value="BL1">德甲</option>
-                            <option value="FL1">法甲</option>
+                            <option value="PL">英超 Premier League</option>
+                            <option value="PD">西甲 La Liga</option>
+                            <option value="SA">意甲 Serie A</option>
+                            <option value="BL1">德甲 Bundesliga</option>
+                            <option value="FL1">法甲 Ligue 1</option>
                         </select>
                     </div>
 
@@ -95,7 +97,7 @@
 
             <!-- 彩票模式 -->
             <section id="lottery-mode" class="match-input-section hidden">
-                <h2>中国体育彩票 - 实时比赛</h2>
+                <h2><i class="fas fa-globe"></i> 中国体育彩票 - 实时比赛</h2>
                 <div class="lottery-controls">
                     <button id="refresh-lottery-btn" class="btn secondary-btn">
                         <i class="fas fa-sync"></i> 刷新比赛数据
@@ -111,15 +113,18 @@
                 </div>
                 
                 <div id="lottery-matches" class="lottery-matches">
-                    <div class="loading-message">点击"刷新比赛数据"获取最新比赛</div>
+                    <div class="loading-message">
+                        <i class="fas fa-info-circle"></i>
+                        点击"刷新比赛数据"获取最新比赛
+                    </div>
                 </div>
             </section>
 
             <!-- AI智能模式 -->
             <section id="ai-mode" class="match-input-section hidden">
-                <h2>AI智能分析模式</h2>
+                <h2><i class="fas fa-robot"></i> AI智能分析模式</h2>
                 <div class="ai-intro">
-                    <p><i class="fas fa-robot"></i> 使用大模型进行智能分析，提供胜平负、半全场、进球数、比分等全方位预测</p>
+                    <p><i class="fas fa-lightbulb"></i> 使用先进的大语言模型进行智能分析，提供专业的比赛预测建议</p>
                 </div>
                 
                 <div class="ai-match-form">
@@ -164,9 +169,12 @@
             </section>
 
             <section class="matches-section">
-                <h2>已添加比赛 <span id="match-count">(0)</span></h2>
+                <h2><i class="fas fa-list"></i> 已添加比赛 <span id="match-count">(0)</span></h2>
                 <div id="matches-container" class="matches-container">
-                    <div class="empty-message">尚未添加任何比赛</div>
+                    <div class="empty-message">
+                        <i class="fas fa-futbol"></i>
+                        <p>尚未添加任何比赛</p>
+                    </div>
                 </div>
                 
                 <div class="action-buttons">
@@ -185,16 +193,21 @@
             </section>
 
             <section id="results-section" class="results-section hidden">
-                <h2>预测结果</h2>
+                <h2><i class="fas fa-trophy"></i> 预测结果</h2>
                 
                 <div class="tabs">
-                    <button class="tab-btn active" data-tab="individual">单场预测</button>
-                    <button class="tab-btn" data-tab="best-parlay">最佳串关</button>
-                    <button class="tab-btn" data-tab="all-parlays">其他组合</button>
-                    <button class="tab-btn hidden ai-tab" data-tab="ai-analysis">AI分析</button>
-                    <button class="tab-btn hidden ai-tab" data-tab="half-full">半全场</button>
-                    <button class="tab-btn hidden ai-tab" data-tab="goals">进球数</button>
-                    <button class="tab-btn hidden ai-tab" data-tab="scores">比分预测</button>
+                    <button class="tab-btn active" data-tab="individual">
+                        <i class="fas fa-chart-pie"></i> 单场预测
+                    </button>
+                    <button class="tab-btn" data-tab="best-parlay">
+                        <i class="fas fa-star"></i> 最佳串关
+                    </button>
+                    <button class="tab-btn" data-tab="all-parlays">
+                        <i class="fas fa-layer-group"></i> 其他组合
+                    </button>
+                    <button class="tab-btn hidden ai-tab" data-tab="ai-analysis">
+                        <i class="fas fa-brain"></i> AI分析
+                    </button>
                 </div>
                 
                 <div id="individual-tab" class="tab-content active">
@@ -221,54 +234,23 @@
                         <!-- AI分析结果将在这里动态生成 -->
                     </div>
                 </div>
-                
-                <div id="half-full-tab" class="tab-content">
-                    <div id="half-full-results" class="half-full-results">
-                        <!-- 半全场预测结果将在这里动态生成 -->
-                    </div>
-                </div>
-                
-                <div id="goals-tab" class="tab-content">
-                    <div id="goals-results" class="goals-results">
-                        <!-- 进球数预测结果将在这里动态生成 -->
-                    </div>
-                </div>
-                
-                <div id="scores-tab" class="tab-content">
-                    <div id="scores-results" class="scores-results">
-                        <!-- 比分预测结果将在这里动态生成 -->
-                    </div>
-                </div>
-            </section>
-            
-            <!-- 新增欧冠模拟页面 -->
-            <section id="champions-league-section" class="champions-league-section hidden">
-                <h2>欧冠模拟</h2>
-                <div class="cl-controls">
-                    <button id="simulate-cl-btn" class="btn primary-btn">
-                        <i class="fas fa-random"></i> 模拟欧冠赛程
-                    </button>
-                </div>
-                
-                <div id="cl-bracket" class="cl-bracket">
-                    <!-- 欧冠赛程图将在这里动态生成 -->
-                </div>
             </section>
         </main>
 
         <footer>
-            <p>© 2024 足球比赛预测系统 | 数据仅供参考，请理性投注</p>
+            <p><i class="fas fa-shield-alt"></i> © 2024 AI足球预测平台 | 数据仅供参考，请理性投注</p>
         </footer>
-
-
     </div>
 
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay hidden">
+        <div class="loading-spinner"></div>
+    </div>
 
     <script src="{{ url_for('static', filename='js/data.js') }}"></script>
     <script src="{{ url_for('static', filename='js/prediction.js') }}"></script>
     <script src="{{ url_for('static', filename='js/lottery.js') }}"></script>
     <script src="{{ url_for('static', filename='js/ai-prediction.js') }}"></script>
     <script src="{{ url_for('static', filename='js/app.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/champions-league-simulator.js') }}"></script>
 </body>
 </html> 
