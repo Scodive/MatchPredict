@@ -290,7 +290,12 @@ class LotteryManager {
         // 更新显示
         this.updateMatchCardSelection(matchId);
         this.updateSelectionInfo();
-        this.updateGlobalMatchesDisplay();
+        
+        // 如果当前是体彩模式，立即更新AI模式的显示
+        if (window.aiPredictionManager && window.aiPredictionManager.currentMode === 'lottery') {
+            window.aiPredictionManager.updateModeSpecificDisplay('lottery');
+            window.aiPredictionManager.updateAIPredictButtonText();
+        }
     }
 
     addToGlobalMatches(match) {

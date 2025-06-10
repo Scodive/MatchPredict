@@ -50,9 +50,46 @@ class AIPredictionManager {
     switchMode(mode) {
         this.currentMode = mode;
         
-        // 清空所有结果显示
+        // 清空所有结果
         this.clearAllResults();
         
+        // 更新UI显示
+        this.updateTabsVisibility(mode);
+        this.updateModeButtons(mode);
+        this.updateModeSpecificDisplay(mode);
+        
+        // 根据模式更新按钮文本
+        this.updateAIPredictButtonText();
+        
+        // 重新渲染当前模式的比赛
+        if (mode === 'lottery' && window.lotteryManager) {
+            // 重新显示体彩选中的比赛
+            setTimeout(() => {
+                this.updateModeSpecificDisplay(mode);
+            }, 100);
+        }
+        
+        console.log(`切换到${mode}模式`);
+    }
+
+    clearAllResults() {
+        // 清空分析结果显示
+        const resultContainer = document.getElementById('ai-analysis-results');
+        if (resultContainer) {
+            resultContainer.innerHTML = '';
+        }
+        
+        // 清空经典模式结果
+        const classicResults = document.getElementById('results');
+        if (classicResults) {
+            classicResults.innerHTML = '';
+        }
+        
+        // 重置为默认标签页
+        this.switchTab('ai-input');
+    }
+
+    updateModeButtons(mode) {
         // 更新模式按钮状态
         document.querySelectorAll('.mode-btn').forEach(btn => {
             btn.classList.remove('active');
@@ -69,49 +106,17 @@ class AIPredictionManager {
             targetSection.classList.remove('hidden');
         }
 
-        // 更新预测按钮显示
+        // 所有模式都只显示AI预测按钮，隐藏经典预测按钮
         const classicPredictBtn = document.getElementById('predict-btn');
         const aiPredictBtn = document.getElementById('ai-predict-btn');
 
-        if (mode === 'ai' || mode === 'lottery') {
-            if (classicPredictBtn) classicPredictBtn.classList.add('hidden');
-            if (aiPredictBtn) {
-                aiPredictBtn.classList.remove('hidden');
-            }
-        } else {
-            if (classicPredictBtn) classicPredictBtn.classList.remove('hidden');
-            if (aiPredictBtn) aiPredictBtn.classList.add('hidden');
+        // 隐藏经典预测按钮
+        if (classicPredictBtn) classicPredictBtn.classList.add('hidden');
+        
+        // 显示AI预测按钮
+        if (aiPredictBtn) {
+            aiPredictBtn.classList.remove('hidden');
         }
-
-        // 更新标签页显示
-        this.updateTabsVisibility(mode);
-        
-        // 更新AI预测按钮文本
-        this.updateAIPredictButtonText();
-        
-        // 更新比赛列表显示
-        this.updateModeSpecificDisplay(mode);
-    }
-
-    clearAllResults() {
-        // 清空所有结果区域
-        const containers = [
-            'ai-results', 
-            'half-full-results', 
-            'goals-results', 
-            'scores-results',
-            'results-container'
-        ];
-        
-        containers.forEach(id => {
-            const container = document.getElementById(id);
-            if (container) {
-                container.innerHTML = '';
-            }
-        });
-        
-        // 重置AI结果
-        this.aiResults = null;
     }
 
     updateModeSpecificDisplay(mode) {
@@ -122,16 +127,57 @@ class AIPredictionManager {
             // 经典模式：显示全局比赛列表
             if (typeof window.updateMatchesUI === 'function') {
                 window.updateMatchesUI();
+            } else {
+                matchesContainer.innerHTML = '<div class="empty-message"><i class="fas fa-futbol"></i><p>尚未添加任何比赛</p></div>';
             }
         } else if (mode === 'ai') {
             // AI模式：显示AI模式的比赛列表
             this.renderAIMatches();
         } else if (mode === 'lottery') {
-            // 体彩模式：显示体彩的比赛（由lottery.js管理）
-            if (window.lotteryManager && typeof window.lotteryManager.renderMatches === 'function') {
-                window.lotteryManager.renderMatches();
+            // 体彩模式：检查是否有体彩数据
+            if (window.lotteryManager && window.lotteryManager.matches && window.lotteryManager.matches.length > 0) {
+                // 如果有体彩数据，显示在lottery-matches容器中，matches-container显示选中的比赛
+                const selectedMatches = window.lotteryManager.getSelectedMatches();
+                if (selectedMatches.length > 0) {
+                    let html = '';
+                    selectedMatches.forEach((match, index) => {
+                        html += this.renderLotterySelectedCard(match, index);
+                    });
+                    matchesContainer.innerHTML = html;
+                } else {
+                    matchesContainer.innerHTML = '<div class="empty-message"><i class="fas fa-ticket-alt"></i><p>请在上方选择比赛</p></div>';
+                }
+            } else {
+                matchesContainer.innerHTML = '<div class="empty-message"><i class="fas fa-ticket-alt"></i><p>请先刷新比赛数据</p></div>';
             }
         }
+    }
+
+    renderLotterySelectedCard(match, index) {
+        const odds = match.odds?.hhad || {};
+        return `
+            <div class="match-card lottery-selected-card" data-match-id="${match.match_id}">
+                <div class="match-info">
+                    <div class="teams">
+                        <span class="home-team">${match.home_team}</span>
+                        <span class="vs">VS</span>
+                        <span class="away-team">${match.away_team}</span>
+                    </div>
+                    <div class="league">${match.league_name}</div>
+                </div>
+                
+                <div class="odds-info">
+                    <div class="odds-group">
+                        <span class="odds-label">胜平负:</span>
+                        <span class="odds-values">${odds.h || 'N/A'} / ${odds.d || 'N/A'} / ${odds.a || 'N/A'}</span>
+                    </div>
+                </div>
+                
+                <div class="match-source">
+                    <span class="source-tag">体彩数据</span>
+                </div>
+            </div>
+        `;
     }
 
     updateTabsVisibility(mode) {

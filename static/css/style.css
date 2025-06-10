@@ -92,17 +92,17 @@ main {
 
 .mode-buttons {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.5rem;
-    max-width: 900px;
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+    max-width: 700px;
     margin: 0 auto;
 }
 
 .mode-btn {
     background: var(--card-bg);
     border: 2px solid var(--border-color);
-    border-radius: 16px;
-    padding: 2rem 1.5rem;
+    border-radius: 12px;
+    padding: 1.2rem 1rem;
     cursor: pointer;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     text-align: center;
@@ -136,20 +136,20 @@ main {
 }
 
 .mode-btn i {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
+    font-size: 1.8rem;
+    margin-bottom: 0.6rem;
     display: block;
 }
 
 .mode-btn span {
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: 600;
     display: block;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.3rem;
 }
 
 .mode-btn small {
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     opacity: 0.8;
 }
 
@@ -490,6 +490,30 @@ main {
     line-height: 1.8;
     color: var(--text-primary);
     font-size: 1rem;
+}
+
+/* Source Tag */
+.match-source {
+    text-align: right;
+    margin-top: 1rem;
+}
+
+.source-tag {
+    background: var(--gradient-primary);
+    color: white;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    box-shadow: var(--shadow-light);
+}
+
+.lottery-selected-card {
+    border-left: 4px solid var(--secondary-color);
+}
+
+.lottery-selected-card .match-source {
+    opacity: 0.9;
 }
 
 /* Messages */
