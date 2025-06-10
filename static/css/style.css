@@ -1,23 +1,33 @@
 /* 现代化足球预测网站UI设计 */
 :root {
-    --primary-color: #00C851;
-    --primary-hover: #00A043;
-    --secondary-color: #1E88E5;
-    --accent-color: #FF6B35;
-    --danger-color: #FF3D71;
-    --success-color: #00C851;
-    --warning-color: #FFB400;
-    --dark-bg: #1a1a1a;
+    /* 现代蓝绿色主题 */
+    --primary-color: #1e40af;
+    --secondary-color: #0ea5e9;
+    --accent-color: #10b981;
+    --success-color: #059669;
+    --warning-color: #f59e0b;
+    --danger-color: #dc2626;
+    
+    /* 中性色 */
+    --text-primary: #1f2937;
+    --text-secondary: #6b7280;
+    --text-light: #9ca3af;
+    
+    /* 背景色 */
+    --bg-primary: #f8fafc;
+    --bg-secondary: #f1f5f9;
     --card-bg: #ffffff;
-    --text-primary: #2c3e50;
-    --text-secondary: #7f8c8d;
-    --border-color: #e0e6ed;
-    --shadow-light: 0 2px 10px rgba(0, 0, 0, 0.08);
-    --shadow-medium: 0 4px 20px rgba(0, 0, 0, 0.12);
-    --shadow-heavy: 0 8px 30px rgba(0, 0, 0, 0.16);
-    --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    --gradient-success: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-    --gradient-danger: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+    --border-color: #e2e8f0;
+    
+    /* 渐变 */
+    --gradient-primary: linear-gradient(135deg, #1e40af 0%, #0ea5e9 100%);
+    --gradient-success: linear-gradient(135deg, #059669 0%, #10b981 100%);
+    --gradient-danger: linear-gradient(135deg, #dc2626 0%, #f87171 100%);
+    
+    /* 阴影 */
+    --shadow-light: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+    --shadow-medium: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-heavy: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
 * {
@@ -27,145 +37,138 @@
 }
 
 body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    min-height: 100vh;
-    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg-primary);
     color: var(--text-primary);
+    line-height: 1.6;
+    font-size: 14px;
 }
 
 .container {
-    max-width: 1400px;
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 1rem;
+    min-height: 100vh;
 }
 
 /* Header */
 header {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    box-shadow: var(--shadow-light);
-    padding: 1rem 0;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
+    text-align: center;
+    padding: 2rem 0;
+    background: var(--card-bg);
+    margin-bottom: 2rem;
+    border-bottom: 1px solid var(--border-color);
 }
 
 header h1 {
-    font-size: 2.5rem;
+    font-size: 2rem;
     font-weight: 700;
+    margin: 0 0 0.5rem 0;
     background: var(--gradient-primary);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    text-align: center;
-    margin: 0;
+    background-clip: text;
 }
 
 header .subtitle {
-    text-align: center;
+    font-size: 1rem;
     color: var(--text-secondary);
-    margin-top: 0.5rem;
-    font-size: 1.1rem;
+    margin: 0;
+    font-weight: 400;
 }
 
 /* Main Content */
 main {
-    padding: 2rem 0;
-    min-height: calc(100vh - 200px);
+    padding: 0;
+    max-width: 100%;
 }
 
 /* Mode Selection */
 .mode-selection {
     background: var(--card-bg);
-    border-radius: 20px;
-    padding: 2rem;
+    border-radius: 12px;
+    padding: 1.5rem;
     margin-bottom: 2rem;
-    box-shadow: var(--shadow-medium);
+    box-shadow: var(--shadow-light);
+    border: 1px solid var(--border-color);
 }
 
 .mode-selection h2 {
     text-align: center;
-    margin-bottom: 2rem;
-    font-size: 1.8rem;
+    margin-bottom: 1.5rem;
     color: var(--text-primary);
+    font-size: 1.25rem;
+    font-weight: 600;
 }
 
 .mode-buttons {
     display: grid;
-    grid-template-columns: 1fr;
-    gap: 0.8rem;
-    max-width: 700px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    max-width: 800px;
     margin: 0 auto;
 }
 
 .mode-btn {
     background: var(--card-bg);
-    border: 2px solid var(--border-color);
-    border-radius: 12px;
-    padding: 1.2rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1rem;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.2s ease;
     text-align: center;
     position: relative;
     overflow: hidden;
 }
 
-.mode-btn::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: var(--gradient-primary);
-    transition: left 0.3s ease;
-    z-index: -1;
+.mode-btn:hover {
+    border-color: var(--primary-color);
+    box-shadow: var(--shadow-medium);
+    transform: translateY(-1px);
 }
 
-.mode-btn:hover::before,
-.mode-btn.active::before {
-    left: 0;
-}
-
-.mode-btn:hover,
 .mode-btn.active {
-    border-color: transparent;
+    border-color: var(--primary-color);
+    background: var(--primary-color);
     color: white;
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-heavy);
+    box-shadow: var(--shadow-medium);
 }
 
 .mode-btn i {
-    font-size: 1.8rem;
-    margin-bottom: 0.6rem;
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
     display: block;
 }
 
 .mode-btn span {
-    font-size: 1rem;
+    font-size: 0.9rem;
     font-weight: 600;
     display: block;
-    margin-bottom: 0.3rem;
+    margin-bottom: 0.25rem;
 }
 
 .mode-btn small {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     opacity: 0.8;
 }
 
 /* Input Sections */
 .match-input-section {
     background: var(--card-bg);
-    border-radius: 20px;
-    padding: 2rem;
-    margin-bottom: 2rem;
-    box-shadow: var(--shadow-medium);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--shadow-light);
+    border: 1px solid var(--border-color);
 }
 
 .match-input-section h2 {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.25rem;
     color: var(--text-primary);
-    font-size: 1.6rem;
+    font-size: 1.1rem;
+    font-weight: 600;
 }
 
 .match-input-section.hidden {
@@ -182,8 +185,8 @@ main {
 .form-row {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1.5rem;
-    margin-bottom: 1.5rem;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
 }
 
 .form-group {
@@ -193,17 +196,18 @@ main {
 
 .form-group label {
     margin-bottom: 0.5rem;
-    font-weight: 600;
+    font-weight: 500;
     color: var(--text-primary);
+    font-size: 0.85rem;
 }
 
 .form-group input,
 .form-group select {
-    padding: 0.75rem 1rem;
-    border: 2px solid var(--border-color);
-    border-radius: 12px;
-    font-size: 1rem;
-    transition: all 0.3s ease;
+    padding: 0.75rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
     background: var(--card-bg);
 }
 
@@ -211,23 +215,22 @@ main {
 .form-group select:focus {
     outline: none;
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(0, 200, 81, 0.1);
+    box-shadow: 0 0 0 3px rgba(30, 64, 175, 0.1);
 }
 
 /* Buttons */
 .btn {
     padding: 0.75rem 1.5rem;
     border: none;
-    border-radius: 12px;
-    font-size: 1rem;
-    font-weight: 600;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
     cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.2s ease;
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    position: relative;
-    overflow: hidden;
+    text-decoration: none;
 }
 
 .btn:disabled {
@@ -243,19 +246,19 @@ main {
 }
 
 .primary-btn:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-heavy);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-medium);
 }
 
 .secondary-btn {
     background: var(--card-bg);
     color: var(--text-primary);
-    border: 2px solid var(--border-color);
+    border: 1px solid var(--border-color);
 }
 
 .secondary-btn:hover:not(:disabled) {
-    background: var(--border-color);
-    transform: translateY(-1px);
+    background: var(--bg-secondary);
+    border-color: var(--primary-color);
 }
 
 /* Lottery Controls */
@@ -277,33 +280,40 @@ main {
 /* Match Cards */
 .matches-section {
     background: var(--card-bg);
-    border-radius: 20px;
-    padding: 2rem;
-    margin-bottom: 2rem;
-    box-shadow: var(--shadow-medium);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--shadow-light);
+    border: 1px solid var(--border-color);
+}
+
+.matches-section h2 {
+    margin-bottom: 1.25rem;
+    color: var(--text-primary);
+    font-size: 1.1rem;
+    font-weight: 600;
 }
 
 .matches-container {
-    max-height: 600px;
+    max-height: 500px;
     overflow-y: auto;
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
 }
 
 .empty-message {
     text-align: center;
+    padding: 2rem;
     color: var(--text-secondary);
-    padding: 3rem;
-    font-size: 1.1rem;
+    font-size: 0.9rem;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1rem;
+    gap: 0.75rem;
 }
 
 .empty-message i {
-    font-size: 3rem;
-    color: var(--primary-color);
-    opacity: 0.5;
+    font-size: 2rem;
+    color: var(--text-light);
 }
 
 .empty-message p {
@@ -311,45 +321,136 @@ main {
 }
 
 .match-card,
-.lottery-match-card,
-.ai-match-card {
+.lottery-match-card {
     background: var(--card-bg);
     border: 1px solid var(--border-color);
-    border-radius: 16px;
-    padding: 1.5rem;
+    border-radius: 8px;
+    padding: 1.25rem;
     margin-bottom: 1rem;
-    transition: all 0.3s ease;
-    position: relative;
+    transition: all 0.2s ease;
+    cursor: pointer;
 }
 
 .match-card:hover,
-.lottery-match-card:hover,
-.ai-match-card:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-medium);
+.lottery-match-card:hover {
     border-color: var(--primary-color);
+    box-shadow: var(--shadow-medium);
+    transform: translateY(-1px);
 }
 
 .match-card.selected,
 .lottery-match-card.selected {
     border-color: var(--primary-color);
-    background: linear-gradient(135deg, rgba(0, 200, 81, 0.05) 0%, rgba(0, 200, 81, 0.02) 100%);
+    background: rgba(30, 64, 175, 0.05);
+}
+
+/* Match Card Content */
+.match-info {
+    margin-bottom: 1rem;
+}
+
+.teams {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    gap: 1rem;
+}
+
+.home-team,
+.away-team {
+    font-weight: 600;
+    color: var(--text-primary);
+    flex: 1;
+    text-align: center;
+    padding: 0.5rem;
+    background: var(--bg-secondary);
+    border-radius: 6px;
+    font-size: 0.9rem;
+}
+
+.vs {
+    font-weight: 700;
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    flex-shrink: 0;
+}
+
+.league {
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+    text-align: center;
+    font-weight: 500;
+}
+
+.odds-info {
+    margin-bottom: 1rem;
+}
+
+.odds-group {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem;
+    background: var(--bg-secondary);
+    border-radius: 6px;
+}
+
+.odds-label {
+    font-weight: 500;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+}
+
+.odds-values {
+    font-weight: 600;
+    color: var(--text-primary);
+    font-size: 0.9rem;
+}
+
+.match-actions {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.remove-match-btn {
+    background: var(--danger-color);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 0.5rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.8rem;
+}
+
+.remove-match-btn:hover {
+    background: #b91c1c;
+    transform: scale(1.05);
 }
 
 /* Action Buttons */
 .action-buttons {
     display: flex;
-    justify-content: center;
     gap: 1rem;
+    justify-content: center;
     flex-wrap: wrap;
 }
 
 /* Results Section */
 .results-section {
     background: var(--card-bg);
-    border-radius: 20px;
-    padding: 2rem;
-    box-shadow: var(--shadow-medium);
+    border-radius: 12px;
+    padding: 1.5rem;
+    box-shadow: var(--shadow-light);
+    border: 1px solid var(--border-color);
+}
+
+.results-section h2 {
+    margin-bottom: 1.25rem;
+    color: var(--text-primary);
+    font-size: 1.1rem;
+    font-weight: 600;
 }
 
 .results-section.hidden {
@@ -423,22 +524,6 @@ main {
     margin-bottom: 0.5rem;
     font-size: 1.4rem;
     font-weight: 700;
-}
-
-.home-team,
-.away-team {
-    padding: 0.5rem 1rem;
-    border-radius: 10px;
-    font-weight: 700;
-    background: var(--gradient-primary);
-    color: white;
-    box-shadow: var(--shadow-light);
-}
-
-.vs {
-    font-weight: 700;
-    color: var(--text-secondary);
-    font-size: 1rem;
 }
 
 .league-info {
@@ -592,12 +677,13 @@ main {
 
 /* Footer */
 footer {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
+    background: var(--card-bg);
+    border-top: 1px solid var(--border-color);
     text-align: center;
-    padding: 2rem;
+    padding: 1.5rem;
     color: var(--text-secondary);
     margin-top: 2rem;
+    font-size: 0.85rem;
 }
 
 /* Responsive Design */
@@ -607,46 +693,45 @@ footer {
     }
     
     header h1 {
-        font-size: 2rem;
+        font-size: 1.5rem;
+    }
+    
+    header .subtitle {
+        font-size: 0.9rem;
     }
     
     .mode-buttons {
         grid-template-columns: 1fr;
+        gap: 0.75rem;
     }
     
     .form-row {
         grid-template-columns: 1fr;
     }
     
-    .lottery-controls {
+    .teams {
         flex-direction: column;
-        align-items: stretch;
+        gap: 0.5rem;
+    }
+    
+    .vs {
+        transform: rotate(90deg);
     }
     
     .action-buttons {
         flex-direction: column;
     }
     
-    .match-title {
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-    
-    .odds-display {
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-    
     .message {
-        right: 10px;
-        left: 10px;
-        top: 10px;
+        right: 1rem;
+        left: 1rem;
+        top: 1rem;
     }
 }
 
 @media (max-width: 480px) {
-    main {
-        padding: 1rem 0;
+    header {
+        padding: 1.5rem 0;
     }
     
     .match-input-section,
@@ -654,11 +739,16 @@ footer {
     .results-section,
     .mode-selection {
         padding: 1rem;
-        border-radius: 12px;
+        border-radius: 8px;
     }
     
-    .tabs {
-        flex-wrap: wrap;
+    .mode-btn {
+        padding: 0.75rem;
+    }
+    
+    .btn {
+        padding: 0.6rem 1rem;
+        font-size: 0.85rem;
     }
 }
 

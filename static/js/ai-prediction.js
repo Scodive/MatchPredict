@@ -58,14 +58,15 @@ class AIPredictionManager {
         this.updateModeButtons(mode);
         this.updateModeSpecificDisplay(mode);
         
-        // 根据模式更新按钮文本
-        this.updateAIPredictButtonText();
+        // 根据模式更新按钮文本和比赛计数
+        this.updateMatchCount();
         
         // 重新渲染当前模式的比赛
         if (mode === 'lottery' && window.lotteryManager) {
             // 重新显示体彩选中的比赛
             setTimeout(() => {
                 this.updateModeSpecificDisplay(mode);
+                this.updateMatchCount();
             }, 100);
         }
         
@@ -317,9 +318,22 @@ class AIPredictionManager {
 
     updateMatchCount() {
         const matchCount = document.getElementById('match-count');
-        if (matchCount) {
-            matchCount.textContent = `(${this.aiMatches.length})`;
+        if (!matchCount) return;
+        
+        let count = 0;
+        
+        if (this.currentMode === 'lottery') {
+            count = window.lotteryManager ? window.lotteryManager.selectedMatches.size : 0;
+        } else if (this.currentMode === 'ai') {
+            count = this.aiMatches.length;
+        } else if (this.currentMode === 'classic') {
+            count = window.matches ? window.matches.length : 0;
         }
+        
+        matchCount.textContent = `(${count})`;
+        
+        // 同时更新按钮状态
+        this.updateAIPredictButtonText();
     }
 
     async startAIPrediction() {

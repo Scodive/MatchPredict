@@ -173,54 +173,48 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // 更新按钮状态
         clearMatchesBtn.disabled = matches.length === 0;
-        predictBtn.disabled = matches.length === 0;
+        
+        // 更新AI预测按钮
+        if (window.aiPredictionManager) {
+            window.aiPredictionManager.updateMatchCount();
+        }
         
         // 更新比赛列表
         if (matches.length === 0) {
-            matchesContainer.innerHTML = '<div class="empty-message">尚未添加任何比赛</div>';
+            matchesContainer.innerHTML = '<div class="empty-message"><i class="fas fa-futbol"></i><p>尚未添加任何比赛</p></div>';
             return;
         }
         
-        matchesContainer.innerHTML = '';
-        
-        matches.forEach(match => {
-            const matchCard = document.createElement('div');
-            matchCard.className = 'match-card';
-            matchCard.innerHTML = `
-                <div class="match-header">
-                    <div class="match-teams">${match.home_team} vs ${match.away_team}</div>
-                    <div class="match-league">${match.leagueName}</div>
+        let html = '';
+        matches.forEach((match, index) => {
+            html += `
+                <div class="match-card" data-match-id="${match.id}">
+                    <div class="match-info">
+                        <div class="teams">
+                            <span class="home-team">${match.home_team}</span>
+                            <span class="vs">VS</span>
+                            <span class="away-team">${match.away_team}</span>
+                        </div>
+                        <div class="league">${match.leagueName}</div>
+                    </div>
+                    
+                    <div class="odds-info">
+                        <div class="odds-group">
+                            <span class="odds-label">胜平负:</span>
+                            <span class="odds-values">${match.home_odds.toFixed(2)} / ${match.draw_odds.toFixed(2)} / ${match.away_odds.toFixed(2)}</span>
+                        </div>
+                    </div>
+                    
+                    <div class="match-actions">
+                        <button class="remove-match-btn" onclick="removeMatch(${match.id})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
                 </div>
-                <div class="match-odds">
-                    <div class="odds-item">
-                        <div class="odds-label">主胜</div>
-                        <div class="odds-value">${match.home_odds.toFixed(2)}</div>
-                    </div>
-                    <div class="odds-item">
-                        <div class="odds-label">平局</div>
-                        <div class="odds-value">${match.draw_odds.toFixed(2)}</div>
-                    </div>
-                    <div class="odds-item">
-                        <div class="odds-label">客胜</div>
-                        <div class="odds-value">${match.away_odds.toFixed(2)}</div>
-                    </div>
-                </div>
-                <button class="remove-match" data-id="${match.id}">
-                    <i class="fas fa-times"></i>
-                </button>
             `;
-            
-            matchesContainer.appendChild(matchCard);
         });
         
-        // 重新绑定删除按钮事件
-        document.querySelectorAll('.remove-match').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const matchId = parseInt(btn.getAttribute('data-id'));
-                removeMatch(matchId);
-            });
-        });
+        matchesContainer.innerHTML = html;
     }
     
     // 暴露为全局函数
@@ -601,8 +595,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-
-    
     // 调用初始化函数
     init();
+    
+    // 暴露全局函数
+    window.removeMatch = removeMatch;
+    window.clearMatches = clearMatches;
 });
