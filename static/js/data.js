@@ -3,7 +3,8 @@ const LEAGUES = {
     "PL": "英超",
     "PD": "西甲",
     "SA": "意甲",
-    "BL1": "德甲"
+    "BL1": "德甲",
+    "FL1": "法甲"
 };
 
 // 存储各联赛的球队特征数据
@@ -11,61 +12,58 @@ let featuresData = {};
 
 // 预加载所有联赛的数据
 async function loadAllLeaguesData() {
-    const loadingOverlay = document.getElementById('loading-overlay');
-
-
     try {
-        // 并行加载所有联赛数据
-        const promises = Object.keys(LEAGUES).map(leagueCode => 
-            loadLeagueData(leagueCode)
-        );
-        
-        await Promise.all(promises);
-        console.log('所有联赛数据加载完成');
-    } catch (error) {
-        console.error('加载数据失败:', error);
-        alert('加载球队数据失败，请刷新页面重试');
-    } finally {
-       
-    }
-}
-
-// 加载单个联赛的数据
-async function loadLeagueData(leagueCode) {
-    try {
-        // 这里我们使用JSON文件而不是CSV，更容易在前端处理
-        const response = await fetch(`data/features_${leagueCode}2024.json`);
+        // 从API获取球队数据
+        const response = await fetch('/api/teams');
         if (!response.ok) {
-            throw new Error(`无法加载 ${LEAGUES[leagueCode]} 数据`);
+            throw new Error('无法获取球队数据');
         }
         
         const data = await response.json();
-        featuresData[leagueCode] = data;
-        
-        // 填充球队选择框
-        populateTeamSelects(leagueCode, Object.keys(data));
-        
-        return data;
+        if (data.success) {
+            featuresData = data.teams;
+            
+            // 填充球队选择框
+            for (const [leagueCode, teams] of Object.entries(featuresData)) {
+                populateTeamSelects(leagueCode, teams);
+            }
+            
+            console.log('所有联赛数据加载完成');
+        } else {
+            throw new Error(data.message || '获取球队数据失败');
+        }
     } catch (error) {
-        console.error(`加载 ${LEAGUES[leagueCode]} 数据失败:`, error);
-        throw error;
+        console.error('加载数据失败:', error);
+        // 使用默认数据
+        featuresData = {
+            "PL": ["Arsenal FC", "Manchester City FC", "Liverpool FC", "Manchester United FC", "Chelsea FC", "Tottenham Hotspur FC"],
+            "PD": ["Real Madrid CF", "FC Barcelona", "Atlético de Madrid", "Sevilla FC", "Valencia CF", "Real Betis Balompié"],
+            "SA": ["FC Internazionale Milano", "AC Milan", "Juventus FC", "SSC Napoli", "AS Roma", "SS Lazio"],
+            "BL1": ["FC Bayern München", "Borussia Dortmund", "RB Leipzig", "Bayer 04 Leverkusen", "VfB Stuttgart", "Eintracht Frankfurt"],
+            "FL1": ["Paris Saint-Germain FC", "Olympique de Marseille", "AS Monaco FC", "Olympique Lyonnais", "OGC Nice", "Stade Rennais FC"]
+        };
+        
+        // 填充默认数据
+        for (const [leagueCode, teams] of Object.entries(featuresData)) {
+            populateTeamSelects(leagueCode, teams);
+        }
+        
+        console.log('使用默认球队数据');
     }
 }
 
-// 获取球队特征
+// 获取球队特征 (简化版)
 function getTeamFeatures(teamName, leagueCode = null) {
-    if (leagueCode && featuresData[leagueCode] && featuresData[leagueCode][teamName]) {
-        return featuresData[leagueCode][teamName];
-    }
-    
-    // 在所有联赛中查找
-    for (const [code, teams] of Object.entries(featuresData)) {
-        if (teams[teamName]) {
-            return teams[teamName];
-        }
-    }
-    
-    return null;
+    // 返回基础信息，不再依赖复杂的统计数据
+    return {
+        team_name: teamName,
+        league_code: leagueCode,
+        // 默认数据，实际预测会通过AI进行
+        home_goals_scored_avg: 1.5,
+        away_goals_scored_avg: 1.2,
+        home_goals_conceded_avg: 1.0,
+        away_goals_conceded_avg: 1.3
+    };
 }
 
 // 填充球队选择框
@@ -85,9 +83,14 @@ function logUserPrediction(matches) {
     
     // 获取现有日志
     let logs = [];
-    const storedLogs = localStorage.getItem('prediction_logs');
-    if (storedLogs) {
-        logs = JSON.parse(storedLogs);
+    try {
+        const storedLogs = localStorage.getItem('prediction_logs');
+        if (storedLogs) {
+            logs = JSON.parse(storedLogs);
+        }
+    } catch (e) {
+        console.warn('读取本地日志失败:', e);
+        logs = [];
     }
     
     // 添加新日志
@@ -99,10 +102,14 @@ function logUserPrediction(matches) {
     }
     
     // 保存到本地存储
-    localStorage.setItem('prediction_logs', JSON.stringify(logs));
+    try {
+        localStorage.setItem('prediction_logs', JSON.stringify(logs));
+    } catch (e) {
+        console.warn('保存本地日志失败:', e);
+    }
 }
 
-// 在 app.js 的 DOMContentLoaded 事件处理函数开始处添加
+// 页面加载完成后初始化
 document.addEventListener('DOMContentLoaded', function() {
     // 确保加载遮罩在页面加载后隐藏
     const loadingOverlay = document.getElementById('loading-overlay');
@@ -110,5 +117,6 @@ document.addEventListener('DOMContentLoaded', function() {
         loadingOverlay.classList.add('hidden');
     }
     
-    // 其余代码...
+    // 加载球队数据
+    loadAllLeaguesData();
 });

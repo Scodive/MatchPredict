@@ -329,36 +329,124 @@ class AIPredictionManager {
                 <div class="match-header">
                     <h3>${analysis.home_team} vs ${analysis.away_team}</h3>
                     <span class="league">${analysis.league_name}</span>
-                    <span class="confidence">置信度: ${confidence}%</span>
+                    <span class="confidence ${confidence > 70 ? 'high' : confidence > 50 ? 'medium' : 'low'}">
+                        置信度: ${confidence}%
+                    </span>
                 </div>
                 
                 <div class="prediction-section">
-                    <h4>胜平负预测</h4>
+                    <h4><i class="fas fa-chart-pie"></i> 胜平负预测</h4>
                     <div class="wdl-predictions">
                         <div class="wdl-item ${this.getBestOutcome(wdl) === 'home' ? 'best' : ''}">
                             <span class="label">主胜</span>
                             <span class="probability">${Math.round(wdl.home * 100)}%</span>
+                            <div class="probability-bar">
+                                <div class="probability-fill home-fill" style="width: ${wdl.home * 100}%"></div>
+                            </div>
                         </div>
                         <div class="wdl-item ${this.getBestOutcome(wdl) === 'draw' ? 'best' : ''}">
                             <span class="label">平局</span>
                             <span class="probability">${Math.round(wdl.draw * 100)}%</span>
+                            <div class="probability-bar">
+                                <div class="probability-fill draw-fill" style="width: ${wdl.draw * 100}%"></div>
+                            </div>
                         </div>
                         <div class="wdl-item ${this.getBestOutcome(wdl) === 'away' ? 'best' : ''}">
                             <span class="label">客胜</span>
                             <span class="probability">${Math.round(wdl.away * 100)}%</span>
+                            <div class="probability-bar">
+                                <div class="probability-fill away-fill" style="width: ${wdl.away * 100}%"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
                 
                 <div class="analysis-reason">
-                    <h4>分析理由</h4>
-                    <p>${analysis.analysis_reason}</p>
+                    <h4><i class="fas fa-brain"></i> AI分析理由</h4>
+                    <div class="reason-content">
+                        <p>${analysis.analysis_reason}</p>
+                    </div>
                 </div>
                 
+                ${this.renderQuickStats(analysis)}
                 ${this.renderRecommendedBets(analysis.recommended_bets)}
                 ${this.renderValueBets(analysis.value_bets)}
             </div>
         `;
+    }
+
+    renderQuickStats(analysis) {
+        const wdl = analysis.win_draw_loss;
+        const hf = analysis.half_full_time;
+        const goals = analysis.total_goals;
+        const scores = analysis.exact_scores;
+
+        // 找出最可能的结果
+        const bestHalfFull = Object.entries(hf || {})
+            .sort(([,a], [,b]) => b - a)
+            .slice(0, 3);
+        
+        const bestGoals = Object.entries(goals || {})
+            .sort(([,a], [,b]) => b - a)[0];
+        
+        const topScore = scores && scores.length > 0 ? scores[0] : ['1-1', 0.1];
+
+        return `
+            <div class="quick-stats">
+                <h4><i class="fas fa-chart-line"></i> 关键预测</h4>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <span class="stat-label">最可能结果</span>
+                        <span class="stat-value">${this.formatOutcome(this.getBestOutcome(wdl))}</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">最可能比分</span>
+                        <span class="stat-value">${topScore[0]}</span>
+                        <span class="stat-prob">${Math.round(topScore[1] * 100)}%</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">进球数区间</span>
+                        <span class="stat-value">${this.formatGoalsRange(bestGoals?.[0])}</span>
+                        <span class="stat-prob">${Math.round((bestGoals?.[1] || 0) * 100)}%</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">半全场推荐</span>
+                        <span class="stat-value">${this.formatHalfFull(bestHalfFull[0]?.[0])}</span>
+                        <span class="stat-prob">${Math.round((bestHalfFull[0]?.[1] || 0) * 100)}%</span>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    formatOutcome(outcome) {
+        const map = {'home': '主胜', 'draw': '平局', 'away': '客胜'};
+        return map[outcome] || outcome;
+    }
+
+    formatGoalsRange(range) {
+        const map = {
+            '0-1': '0-1球',
+            '2-3': '2-3球', 
+            '4-6': '4-6球',
+            '7+': '7球以上'
+        };
+        return map[range] || range;
+    }
+
+    formatHalfFull(hf) {
+        const map = {
+            'home_home': '主/主',
+            'home_draw': '主/平',
+            'home_away': '主/客',
+            'draw_home': '平/主',
+            'draw_draw': '平/平',
+            'draw_away': '平/客',
+            'away_home': '客/主',
+            'away_draw': '客/平',
+            'away_away': '客/客'
+        };
+        return map[hf] || hf;
     }
 
     getBestOutcome(wdl) {

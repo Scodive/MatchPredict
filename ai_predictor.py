@@ -72,22 +72,13 @@ class AIFootballPredictor:
             '4-6': '4-6球', '7+': '7球或以上'
         }
     
-    def analyze_match(self, match_data: Dict, historical_data: Optional[Dict] = None) -> MatchAnalysis:
-        """
-        分析单场比赛
-        
-        Args:
-            match_data: 比赛基本信息和赔率
-            historical_data: 历史数据（可选）
-            
-        Returns:
-            比赛分析结果
-        """
+    def analyze_match(self, match_data: Dict) -> 'MatchAnalysis':
+        """分析单场比赛"""
         try:
-            # 构建分析提示词
-            prompt = self._build_analysis_prompt(match_data, historical_data)
+            # 构建详细的分析提示
+            prompt = self._build_analysis_prompt(match_data)
             
-            # 调用AI模型进行分析
+            # 调用AI模型
             ai_response = self._call_ai_model(prompt)
             
             # 解析AI响应
@@ -96,97 +87,98 @@ class AIFootballPredictor:
             return analysis
             
         except Exception as e:
-            self.logger.error(f"分析比赛失败: {e}")
+            self.logger.error(f"AI分析失败: {e}")
             # 返回默认分析
-            return self._get_default_analysis(match_data)
+            return self._get_fallback_analysis(match_data)
     
-    def _build_analysis_prompt(self, match_data: Dict, historical_data: Optional[Dict] = None) -> str:
-        """构建AI分析提示词"""
-        
-        home_team = match_data.get('home_team', '')
-        away_team = match_data.get('away_team', '')
-        league_name = match_data.get('league_name', '')
+    def _build_analysis_prompt(self, match_data: Dict) -> str:
+        """构建详细的AI分析提示"""
+        home_team = match_data.get('home_team', '主队')
+        away_team = match_data.get('away_team', '客队')
+        league = match_data.get('league_name', '联赛')
         
         # 获取赔率信息
         odds = match_data.get('odds', {})
-        hhad_odds = odds.get('hhad', {})
+        hhad_odds = odds.get('hhad', {}) if isinstance(odds, dict) else {}
         
-        home_odds = hhad_odds.get('h', 'N/A')
-        draw_odds = hhad_odds.get('d', 'N/A')
-        away_odds = hhad_odds.get('a', 'N/A')
-        
+        home_odds = float(hhad_odds.get('h', match_data.get('home_odds', 2.0)))
+        draw_odds = float(hhad_odds.get('d', match_data.get('draw_odds', 3.2)))
+        away_odds = float(hhad_odds.get('a', match_data.get('away_odds', 2.8)))
+
         prompt = f"""
-作为专业的足球分析师，请分析以下比赛并给出详细预测：
+你是世界顶级的足球数据分析师，拥有20年的足球预测经验。请深度分析以下比赛：
 
-比赛信息：
+📊 比赛信息：
 - 主队：{home_team}
-- 客队：{away_team}
-- 联赛：{league_name}
-- 胜平负赔率：主胜 {home_odds}, 平局 {draw_odds}, 客胜 {away_odds}
+- 客队：{away_team}  
+- 联赛：{league}
+- 博彩公司赔率 → 主胜:{home_odds}, 平局:{draw_odds}, 客胜:{away_odds}
 
-请基于以下因素进行分析：
-1. 球队实力对比
-2. 近期状态
-3. 主客场优势
-4. 历史交锋记录
-5. 伤病情况
-6. 赔率分析
+🎯 分析要求：
+1. 根据球队实力、历史交锋、近期状态、主客场因素进行专业分析
+2. 考虑赔率背后的市场预期，寻找价值投注机会
+3. 提供具体的概率数值，确保所有概率加起来等于1.0
+4. 给出多样化的比分预测，避免千篇一律
 
-请以JSON格式返回分析结果，包含：
+📋 请严格按照以下JSON格式返回（不要添加任何其他文字）：
+
 {{
     "win_draw_loss": {{
-        "home": 0.0-1.0,
-        "draw": 0.0-1.0,
-        "away": 0.0-1.0
+        "home": 0.42,
+        "draw": 0.28, 
+        "away": 0.30
     }},
-    "confidence_level": 0.0-1.0,
     "half_full_time": {{
-        "home_home": 0.0-1.0,
-        "home_draw": 0.0-1.0,
-        "home_away": 0.0-1.0,
-        "draw_home": 0.0-1.0,
-        "draw_draw": 0.0-1.0,
-        "draw_away": 0.0-1.0,
-        "away_home": 0.0-1.0,
-        "away_draw": 0.0-1.0,
-        "away_away": 0.0-1.0
+        "home_home": 0.25,
+        "home_draw": 0.08,
+        "home_away": 0.09,
+        "draw_home": 0.12,
+        "draw_draw": 0.15,
+        "draw_away": 0.05,
+        "away_home": 0.06,
+        "away_draw": 0.08,
+        "away_away": 0.12
     }},
     "total_goals": {{
-        "0-1": 0.0-1.0,
-        "2-3": 0.0-1.0,
-        "4-6": 0.0-1.0,
-        "7+": 0.0-1.0
+        "0-1": 0.22,
+        "2-3": 0.48,
+        "4-6": 0.26,
+        "7+": 0.04
     }},
     "exact_scores": [
-        ["1-0", 0.12],
-        ["2-1", 0.10],
-        ["1-1", 0.08],
-        ["0-0", 0.06],
-        ["2-0", 0.05]
+        ["2-1", 0.14],
+        ["1-1", 0.12],
+        ["2-0", 0.11],
+        ["1-0", 0.10],
+        ["3-1", 0.08]
     ],
-    "analysis_reason": "详细分析理由，包括支持预测的关键因素",
+    "confidence_level": 0.78,
+    "analysis_reason": "基于{home_team}近期表现出色，主场优势明显，而{away_team}客场战绩一般，预计主队有较大胜算。考虑到双方攻击力都较强，预计会是一场进球较多的比赛。赔率显示市场对主队较为看好，与我们的分析一致。",
     "recommended_bets": [
         {{
             "bet_type": "胜平负",
             "selection": "主胜",
+            "confidence": 0.82,
+            "reason": "主队实力明显占优，主场作战优势突出"
+        }},
+        {{
+            "bet_type": "总进球数",
+            "selection": "2-3球",
             "confidence": 0.75,
-            "reason": "推荐理由"
+            "reason": "双方攻击力较强，预计会有精彩对攻"
         }}
     ]
 }}
 
-注意：
-- 所有概率数值必须为0-1之间的小数
-- 胜平负概率之和必须等于1
-- 半全场9个选项概率之和必须等于1
-- 进球数4个区间概率之和必须等于1
-- 比分预测给出最可能的5个比分及其概率
+⚠️ 重要提醒：
+- 严格遵循JSON格式，不要添加注释或额外文字
+- 胜平负概率之和必须等于1.0
+- 半全场9个选项概率之和必须等于1.0  
+- 总进球数4个选项概率之和必须等于1.0
+- 根据具体球队特点给出差异化的预测，避免雷同
+- 比分预测要符合实际足球比赛规律
 """
-        
-        # 如果有历史数据，添加到提示词中
-        if historical_data:
-            prompt += f"\n\n历史数据参考：\n{json.dumps(historical_data, ensure_ascii=False, indent=2)}"
-        
+
         return prompt
     
     def _call_ai_model(self, prompt: str) -> str:
@@ -328,7 +320,7 @@ class AIFootballPredictor:
             
         except Exception as e:
             self.logger.error(f"解析AI响应失败: {e}")
-            return self._get_default_analysis(match_data)
+            return self._get_fallback_analysis(match_data)
     
     def _normalize_probabilities(self, probs_dict: Dict) -> Dict[str, float]:
         """标准化概率，确保和为1"""
@@ -341,24 +333,80 @@ class AIFootballPredictor:
         
         return {k: v / total for k, v in probs_dict.items()}
     
-    def _get_default_analysis(self, match_data: Dict) -> MatchAnalysis:
-        """获取默认分析结果"""
+    def _get_fallback_analysis(self, match_data: Dict) -> MatchAnalysis:
+        """获取默认分析结果（当AI调用失败时使用）"""
+        home_team = match_data.get('home_team', '主队')
+        away_team = match_data.get('away_team', '客队')
+        
+        # 基于赔率生成更智能的默认预测
+        home_odds = float(match_data.get('home_odds', 2.0))
+        draw_odds = float(match_data.get('draw_odds', 3.2))
+        away_odds = float(match_data.get('away_odds', 2.8))
+        
+        # 计算隐含概率
+        home_prob = 1 / home_odds
+        draw_prob = 1 / draw_odds
+        away_prob = 1 / away_odds
+        total_prob = home_prob + draw_prob + away_prob
+        
+        # 归一化概率
+        home_prob /= total_prob
+        draw_prob /= total_prob
+        away_prob /= total_prob
+        
+        # 生成多样化的半全场预测
+        half_full_time = {
+            'home_home': round(home_prob * 0.6, 3),
+            'home_draw': round(home_prob * 0.2, 3),
+            'home_away': round(home_prob * 0.2, 3),
+            'draw_home': round(draw_prob * 0.4, 3),
+            'draw_draw': round(draw_prob * 0.5, 3),
+            'draw_away': round(draw_prob * 0.1, 3),
+            'away_home': round(away_prob * 0.25, 3),
+            'away_draw': round(away_prob * 0.25, 3),
+            'away_away': round(away_prob * 0.5, 3)
+        }
+        
+        # 生成进球数预测
+        total_goals = {
+            '0-1': 0.25,
+            '2-3': 0.45,
+            '4-6': 0.25,
+            '7+': 0.05
+        }
+        
+        # 生成比分预测
+        exact_scores = [
+            ['1-1', 0.12],
+            ['2-1', 0.11],
+            ['1-0', 0.10],
+            ['2-0', 0.09],
+            ['0-1', 0.08]
+        ]
+        
         return MatchAnalysis(
-            match_id=match_data.get('match_id', ''),
-            home_team=match_data.get('home_team', ''),
-            away_team=match_data.get('away_team', ''),
-            league_name=match_data.get('league_name', ''),
-            win_draw_loss={'home': 0.33, 'draw': 0.33, 'away': 0.34},
-            confidence_level=0.5,
-            half_full_time={
-                'home_home': 0.15, 'home_draw': 0.10, 'home_away': 0.08,
-                'draw_home': 0.10, 'draw_draw': 0.14, 'draw_away': 0.08,
-                'away_home': 0.08, 'away_draw': 0.10, 'away_away': 0.17
+            match_id=match_data.get('match_id', f"{home_team}_vs_{away_team}"),
+            home_team=home_team,
+            away_team=away_team,
+            league_name=match_data.get('league_name', '未知联赛'),
+            win_draw_loss={
+                'home': round(home_prob, 3),
+                'draw': round(draw_prob, 3),
+                'away': round(away_prob, 3)
             },
-            total_goals={'0-1': 0.25, '2-3': 0.45, '4-6': 0.25, '7+': 0.05},
-            exact_scores=[['1-1', 0.10], ['1-0', 0.09], ['0-1', 0.09], ['2-1', 0.08], ['1-2', 0.08]],
-            analysis_reason='基于基础统计模型的预测结果',
-            recommended_bets=[]
+            confidence_level=0.65,
+            half_full_time=half_full_time,
+            total_goals=total_goals,
+            exact_scores=exact_scores,
+            analysis_reason=f"基于博彩赔率分析，{home_team}主胜概率{home_prob:.1%}，平局概率{draw_prob:.1%}，{away_team}客胜概率{away_prob:.1%}。这是系统默认分析，建议使用AI智能分析获得更准确结果。",
+            recommended_bets=[
+                {
+                    'bet_type': '胜平负',
+                    'selection': '主胜' if home_prob > max(draw_prob, away_prob) else ('平局' if draw_prob > away_prob else '客胜'),
+                    'confidence': 0.7,
+                    'reason': '基于赔率计算的最优选择'
+                }
+            ]
         )
     
     def batch_analyze_matches(self, matches_data: List[Dict]) -> List[MatchAnalysis]:

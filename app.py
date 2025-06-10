@@ -86,19 +86,36 @@ def index():
         app.logger.error(f"渲染主页失败: {e}")
         return f"页面加载错误: {str(e)}", 500
 
-@app.route('/api/teams', methods=['GET'])
+@app.route('/api/teams')
 def get_teams():
-    """获取所有联赛的球队"""
+    """获取球队数据"""
     try:
+        # 返回简化的球队数据
+        teams = {
+            "PL": ["Arsenal FC", "Manchester City FC", "Liverpool FC", "Manchester United FC", 
+                   "Chelsea FC", "Tottenham Hotspur FC", "Newcastle United FC", "Brighton & Hove Albion FC"],
+            "PD": ["Real Madrid CF", "FC Barcelona", "Atlético de Madrid", "Sevilla FC", 
+                   "Valencia CF", "Real Betis Balompié", "Real Sociedad", "Athletic Bilbao"],
+            "SA": ["FC Internazionale Milano", "AC Milan", "Juventus FC", "SSC Napoli", 
+                   "AS Roma", "SS Lazio", "Atalanta BC", "ACF Fiorentina"],
+            "BL1": ["FC Bayern München", "Borussia Dortmund", "RB Leipzig", "Bayer 04 Leverkusen", 
+                    "VfB Stuttgart", "Eintracht Frankfurt", "Borussia Mönchengladbach", "VfL Wolfsburg"],
+            "FL1": ["Paris Saint-Germain FC", "Olympique de Marseille", "AS Monaco FC", "Olympique Lyonnais", 
+                    "OGC Nice", "Stade Rennais FC", "RC Lens", "RC Strasbourg Alsace"]
+        }
+        
         return jsonify({
             'success': True,
-            'teams': TEAMS_DATA
+            'teams': teams,
+            'message': '球队数据获取成功'
         })
+        
     except Exception as e:
         app.logger.error(f"获取球队数据失败: {e}")
         return jsonify({
             'success': False,
-            'message': str(e)
+            'error': str(e),
+            'message': '获取球队数据失败'
         }), 500
 
 @app.route('/api/lottery/matches', methods=['GET'])
