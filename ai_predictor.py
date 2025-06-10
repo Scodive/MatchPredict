@@ -182,63 +182,139 @@ class AIFootballPredictor:
         return prompt
     
     def _call_ai_model(self, prompt: str) -> str:
-        """调用AI模型"""
+        """调用AI模型 - 基于更健壮的实现"""
         try:
-            if self.gemini_api_key and self.gemini_api_key != 'YOUR_GEMINI_API_KEY':
-                self.logger.info(f"正在调用Gemini API: {self.model}")
-                self.logger.info(f"API URL: {self.api_url}")
-                
-                # 使用Gemini API
-                headers = {
-                    'Content-Type': 'application/json',
-                }
-                
-                payload = {
-                    "contents": [
-                        {
-                            "parts": [
-                                {
-                                    "text": f"你是一个专业的足球分析师，擅长通过数据分析预测比赛结果。\n\n{prompt}"
-                                }
-                            ]
-                        }
-                    ],
-                    "generationConfig": {
-                        "temperature": 0.3,
-                        "topK": 40,
-                        "topP": 0.95,
-                        "maxOutputTokens": 2000,
-                    }
-                }
-                
-                self.logger.info("发送请求到Gemini API...")
-                response = requests.post(
-                    self.api_url,
-                    headers=headers,
-                    json=payload,
-                    timeout=30
-                )
-                
-                self.logger.info(f"Gemini API响应状态码: {response.status_code}")
-                
-                if response.status_code == 200:
-                    result = response.json()
-                    self.logger.info("Gemini API调用成功")
-                    if 'candidates' in result and len(result['candidates']) > 0:
-                        content = result['candidates'][0]['content']['parts'][0]['text']
-                        self.logger.info(f"获得AI响应，长度: {len(content)}")
-                        return content
-                    else:
-                        self.logger.error(f"Gemini API响应格式异常: {result}")
-                        return self._get_mock_ai_response()
-                else:
-                    self.logger.error(f"Gemini API调用失败: {response.status_code}")
-                    self.logger.error(f"错误详情: {response.text}")
-                    return self._get_mock_ai_response()
-            else:
-                # 如果没有API密钥，返回模拟响应
-                self.logger.warning(f"没有有效的Gemini API密钥，使用模拟响应。当前密钥: {self.gemini_api_key}")
+            if not self.gemini_api_key or self.gemini_api_key == 'YOUR_GEMINI_API_KEY':
+                self.logger.warning("没有有效的Gemini API密钥，使用模拟响应")
                 return self._get_mock_ai_response()
+            
+            self.logger.info(f"正在调用Gemini API: {self.model}")
+            
+            # 构建请求体 - 参考用户提供的格式
+            request_body = {
+                "contents": [
+                    {
+                        "parts": [
+                            {
+                                "text": prompt
+                            }
+                        ]
+                    }
+                ],
+                "generationConfig": {
+                    "temperature": 0.3,
+                    "topK": 40,
+                    "topP": 0.95,
+                    "maxOutputTokens": 2000,
+                }
+            }
+            
+            max_retries = 3
+            base_delay = 2
+            
+            for attempt in range(max_retries):
+                try:
+                    if attempt > 0:
+                        delay = base_delay * (2 ** (attempt - 1))
+                        self.logger.info(f"等待 {delay} 秒后进行第 {attempt + 1}/{max_retries} 次重试")
+                        time.sleep(delay)
+                    
+                    self.logger.info(f"正在调用API，尝试 {attempt + 1}/{max_retries}...")
+                    
+                    response = requests.post(
+                        self.api_url,
+                        json=request_body,
+                        timeout=60
+                    )
+                    
+                    if response.status_code == 429:  # Too Many Requests
+                        self.logger.warning(f"API请求过于频繁，第 {attempt + 1} 次尝试")
+                        continue
+                    
+                    if response.status_code == 200:
+                        result = response.json()
+                        
+                        # 检查是否有错误信息
+                        if 'error' in result:
+                            error_info = result['error']
+                            if error_info.get('code') == 429:
+                                self.logger.warning("错误: API配额已用完或请求过于频繁")
+                                continue
+                            elif error_info.get('code') == 403:
+                                self.logger.error("错误: API Key无效或权限不足")
+                                return self._get_mock_ai_response()
+                            else:
+                                raise Exception(f"API返回错误: {error_info}")
+                        
+                        # 检查响应结构
+                        if not result.get('candidates'):
+                            self.logger.warning("错误: 响应中没有candidates")
+                            continue
+                        
+                        candidate = result['candidates'][0]
+                        
+                        # 检查是否达到了最大令牌限制
+                        if candidate.get('finishReason') == 'MAX_TOKENS':
+                            self.logger.warning("警告: 响应由于MAX_TOKENS限制被截断")
+                        
+                        # 获取文本内容 - 更健壮的处理逻辑
+                        extracted_text = None
+                        
+                        if 'content' in candidate:
+                            content = candidate['content']
+                            if 'parts' in content and len(content['parts']) > 0:
+                                for part in content['parts']:
+                                    if 'text' in part:
+                                        extracted_text = part['text']
+                                        break
+                            elif 'text' in content:
+                                extracted_text = content['text']
+                            else:
+                                extracted_text = str(content)
+                        elif 'text' in candidate:
+                            extracted_text = candidate['text']
+                        elif 'parts' in candidate and len(candidate['parts']) > 0:
+                            for part in candidate['parts']:
+                                if 'text' in part:
+                                    extracted_text = part['text']
+                                    break
+                        
+                        if extracted_text is not None:
+                            self.logger.info(f"成功获取AI响应，长度: {len(extracted_text)} 字符")
+                            return extracted_text
+                        
+                        self.logger.warning("错误: 无法在响应中找到文本内容")
+                        self.logger.debug(f"candidate结构: {candidate}")
+                        continue
+                    
+                    else:
+                        error_msg = f"Gemini API请求失败，状态码: {response.status_code}"
+                        if response.text:
+                            error_msg += f", 响应: {response.text}"
+                        if attempt == max_retries - 1:
+                            raise Exception(error_msg)
+                        self.logger.warning(f"{error_msg}")
+                        continue
+                
+                except requests.exceptions.Timeout:
+                    self.logger.warning(f"请求超时，第 {attempt + 1} 次尝试")
+                    if attempt == max_retries - 1:
+                        return self._get_mock_ai_response()
+                    continue
+                except requests.exceptions.RequestException as e:
+                    self.logger.warning(f"网络请求失败，第 {attempt + 1} 次尝试: {str(e)}")
+                    if attempt == max_retries - 1:
+                        return self._get_mock_ai_response()
+                    continue
+                except Exception as e:
+                    if attempt == max_retries - 1:
+                        self.logger.error(f"API调用出错: {str(e)}")
+                        return self._get_mock_ai_response()
+                    self.logger.warning(f"第 {attempt + 1} 次尝试失败: {str(e)}")
+                    continue
+            
+            self.logger.warning("达到最大重试次数，返回模拟响应")
+            return self._get_mock_ai_response()
                 
         except Exception as e:
             self.logger.error(f"调用AI模型失败: {e}")
