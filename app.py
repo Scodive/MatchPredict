@@ -6,10 +6,10 @@ from datetime import datetime
 
 # 延迟导入，避免在Vercel环境中的问题
 try:
-    from lottery_api import ChinaSportsLotteryAPI
+    from lottery_api import ChinaSportsLotterySpider
 except ImportError as e:
     print(f"导入彩票API失败: {e}")
-    ChinaSportsLotteryAPI = None
+    ChinaSportsLotterySpider = None
 
 try:
     from ai_predictor import AIFootballPredictor
@@ -23,7 +23,7 @@ app = Flask(__name__)
 logging.basicConfig(level=logging.INFO)
 
 # 全局变量
-lottery_api = None
+lottery_spider = None
 ai_predictor = None
 
 # 联赛配置（简化版）
@@ -46,18 +46,18 @@ TEAMS_DATA = {
 
 def initialize_services():
     """初始化服务"""
-    global lottery_api, ai_predictor
+    global lottery_spider, ai_predictor
     
     try:
         # 初始化中国体育彩票API
-        if ChinaSportsLotteryAPI:
-            lottery_api = ChinaSportsLotteryAPI()
+        if ChinaSportsLotterySpider:
+            lottery_spider = ChinaSportsLotterySpider()
             app.logger.info("彩票API初始化成功")
         else:
             app.logger.warning("彩票API类未加载")
     except Exception as e:
         app.logger.error(f"彩票API初始化失败: {e}")
-        lottery_api = None
+        lottery_spider = None
     
     try:
         # 初始化AI预测器
@@ -118,31 +118,79 @@ def get_teams():
             'message': '获取球队数据失败'
         }), 500
 
-@app.route('/api/lottery/matches', methods=['GET'])
+@app.route('/api/lottery/matches')
 def get_lottery_matches():
     """获取中国体育彩票比赛数据"""
     try:
-        days_ahead = request.args.get('days', 3, type=int)
+        days = request.args.get('days', 3, type=int)
+        days = min(max(days, 1), 7)  # 限制在1-7天之间
         
-        if not lottery_api:
+        app.logger.info(f"开始爬取体彩官网数据，天数: {days}")
+        
+        try:
+            lottery_spider = ChinaSportsLotterySpider()
+            matches = lottery_spider.get_formatted_matches(days_ahead=days)
+            
+            app.logger.info(f"成功爬取 {len(matches)} 场比赛")
+            
             return jsonify({
-                'success': False,
-                'message': '彩票API未初始化'
+                'success': True,
+                'matches': matches,
+                'count': len(matches),
+                'message': '数据爬取成功'
             })
+            
+        except Exception as api_error:
+            app.logger.warning(f"体彩官网爬取失败: {api_error}，返回模拟数据")
+            
+            # 返回模拟数据
+            lottery_spider = ChinaSportsLotterySpider()
+            mock_matches = lottery_spider._get_mock_matches(days)
+            formatted_matches = lottery_spider._format_matches(mock_matches)
+            
+            return jsonify({
+                'success': True,
+                'matches': formatted_matches,
+                'count': len(formatted_matches),
+                'message': '官网爬取失败，返回模拟数据'
+            })
+            
+    except Exception as e:
+        app.logger.error(f"获取体彩数据失败: {e}")
         
-        matches = lottery_api.get_formatted_matches(days_ahead)
+        # 返回基本的模拟数据
+        mock_matches = [
+            {
+                'match_id': 'mock_001',
+                'league_name': '英超',
+                'home_team': '曼彻斯特城',
+                'away_team': '利物浦',
+                'match_time': '2024-12-20 21:00:00',
+                'match_date': '2024-12-20',
+                'odds': {
+                    'hhad': {'h': '2.10', 'd': '3.20', 'a': '3.40'}
+                },
+                'status': 'PENDING'
+            },
+            {
+                'match_id': 'mock_002',
+                'league_name': '西甲',
+                'home_team': '皇家马德里',
+                'away_team': '巴塞罗那',
+                'match_time': '2024-12-21 20:00:00',
+                'match_date': '2024-12-21',
+                'odds': {
+                    'hhad': {'h': '1.95', 'd': '3.50', 'a': '3.80'}
+                },
+                'status': 'PENDING'
+            }
+        ]
         
         return jsonify({
             'success': True,
-            'matches': matches,
-            'count': len(matches)
-        })
-        
-    except Exception as e:
-        app.logger.error(f"获取彩票比赛数据失败: {str(e)}")
-        return jsonify({
-            'success': False,
-            'message': f'获取比赛数据失败: {str(e)}'
+            'matches': mock_matches,
+            'count': len(mock_matches),
+            'message': '系统错误，返回示例数据'
         })
 
 @app.route('/api/ai/predict', methods=['POST'])
@@ -333,13 +381,13 @@ def refresh_lottery_data():
         data = request.json
         days = data.get('days', 3)
         
-        if not lottery_api:
+        if not lottery_spider:
             return jsonify({
                 'success': False,
                 'message': '彩票API未初始化'
             })
         
-        matches = lottery_api.get_formatted_matches(days)
+        matches = lottery_spider.get_formatted_matches(days)
         
         return jsonify({
             'success': True,
@@ -383,7 +431,7 @@ def test():
     return jsonify({
         'status': 'ok',
         'message': '服务正常运行',
-        'lottery_api': lottery_api is not None,
+        'lottery_spider': lottery_spider is not None,
         'ai_predictor': ai_predictor is not None,
         'timestamp': datetime.now().isoformat()
     })
