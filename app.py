@@ -46,10 +46,10 @@ def initialize_services():
     # 初始化中国体育彩票API
     lottery_api = ChinaSportsLotteryAPI()
     
-    # 初始化AI预测器（可以在config.py中配置OpenAI API Key）
+    # 初始化AI预测器（可以在config.py中配置Gemini API Key）
     gemini_key = os.getenv('GEMINI_API_KEY', 'AIzaSyDy9pYAEW7e2Ewk__9TCHAD5X_G1VhCtVw')
-gemini_model = os.getenv('GEMINI_MODEL', 'gemini-2.0-flash-exp')
-ai_predictor = AIFootballPredictor(gemini_api_key=gemini_key, model=gemini_model)
+    gemini_model = os.getenv('GEMINI_MODEL', 'gemini-2.0-flash-exp')
+    ai_predictor = AIFootballPredictor(gemini_api_key=gemini_key, model=gemini_model)
 
 # 加载特征数据
 def load_features():
