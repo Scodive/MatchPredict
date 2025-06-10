@@ -3,7 +3,7 @@
 
 # Gemini API配置  
 GEMINI_API_KEY = "AIzaSyDy9pYAEW7e2Ewk__9TCHAD5X_G1VhCtVw"
-GEMINI_MODEL = "gemini-2.0-flash-exp"
+GEMINI_MODEL = "gemini-2.5-flash-preview-05-20"
 
 # Flask配置
 DEBUG = True
