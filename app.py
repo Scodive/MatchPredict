@@ -8,6 +8,10 @@ from datetime import datetime
 from itertools import product
 import logging
 
+# 导入新模块
+from lottery_api import ChinaSportsLotteryAPI
+from ai_predictor import AIFootballPredictor, MatchAnalysis
+
 app = Flask(__name__)
 
 # 配置日志
@@ -17,14 +21,35 @@ logging.basicConfig(
     format='%(asctime)s - %(message)s'
 )
 
-# 联赛名称映射
+# 联赛名称映射（扩展版）
 LEAGUES = {
     "PL": "英超",
-    "PD": "西甲",
+    "PD": "西甲", 
     "SA": "意甲",
     "BL1": "德甲",
-    "FL1": "法甲"
+    "FL1": "法甲",
+    "CL": "欧冠",
+    "EL": "欧联",
+    "CSL": "中超",
+    "AFC": "亚冠"
 }
+
+# 全局变量
+features = {}
+lottery_api = None
+ai_predictor = None
+
+def initialize_services():
+    """初始化服务"""
+    global lottery_api, ai_predictor
+    
+    # 初始化中国体育彩票API
+    lottery_api = ChinaSportsLotteryAPI()
+    
+    # 初始化AI预测器（可以在config.py中配置OpenAI API Key）
+    gemini_key = os.getenv('GEMINI_API_KEY', 'AIzaSyDy9pYAEW7e2Ewk__9TCHAD5X_G1VhCtVw')
+gemini_model = os.getenv('GEMINI_MODEL', 'gemini-2.0-flash-exp')
+ai_predictor = AIFootballPredictor(gemini_api_key=gemini_key, model=gemini_model)
 
 # 加载特征数据
 def load_features():
@@ -36,7 +61,8 @@ def load_features():
             app.logger.info(f"已加载 {LEAGUES[league_code]} 数据")
     return features
 
-# 全局变量
+# 初始化
+initialize_services()
 features = load_features()
 
 @app.route('/')
@@ -56,9 +82,101 @@ def get_teams():
         'teams': teams_dict
     })
 
+@app.route('/api/lottery/matches', methods=['GET'])
+def get_lottery_matches():
+    """获取中国体育彩票比赛数据"""
+    try:
+        days_ahead = request.args.get('days', 3, type=int)
+        
+        if not lottery_api:
+            return jsonify({
+                'success': False,
+                'message': '彩票API未初始化'
+            })
+        
+        matches = lottery_api.get_formatted_matches(days_ahead)
+        
+        return jsonify({
+            'success': True,
+            'matches': matches,
+            'count': len(matches)
+        })
+        
+    except Exception as e:
+        app.logger.error(f"获取彩票比赛数据失败: {str(e)}")
+        return jsonify({
+            'success': False,
+            'message': f'获取比赛数据失败: {str(e)}'
+        })
+
+@app.route('/api/ai/predict', methods=['POST'])
+def ai_predict():
+    """AI智能预测比赛结果"""
+    try:
+        data = request.json
+        matches = data.get('matches', [])
+        
+        if not matches:
+            return jsonify({
+                'success': False,
+                'message': '未提供比赛数据'
+            })
+        
+        if not ai_predictor:
+            return jsonify({
+                'success': False,
+                'message': 'AI预测器未初始化'
+            })
+        
+        # 记录用户输入
+        log_user_prediction(matches)
+        
+        # 使用AI分析比赛
+        ai_analyses = []
+        for match in matches:
+            analysis = ai_predictor.analyze_match(match)
+            
+            # 转换为可序列化的字典
+            analysis_dict = {
+                'match_id': analysis.match_id,
+                'home_team': analysis.home_team,
+                'away_team': analysis.away_team,
+                'league_name': analysis.league_name,
+                'win_draw_loss': analysis.win_draw_loss,
+                'confidence_level': analysis.confidence_level,
+                'half_full_time': analysis.half_full_time,
+                'total_goals': analysis.total_goals,
+                'exact_scores': analysis.exact_scores,
+                'analysis_reason': analysis.analysis_reason,
+                'recommended_bets': analysis.recommended_bets
+            }
+            
+            # 寻找价值投注
+            if 'odds' in match:
+                value_bets = ai_predictor.get_value_bets(analysis, match['odds'])
+                analysis_dict['value_bets'] = value_bets
+            
+            ai_analyses.append(analysis_dict)
+        
+        # 生成组合预测
+        combination_predictions = generate_ai_combinations(ai_analyses)
+        
+        return jsonify({
+            'success': True,
+            'ai_analyses': ai_analyses,
+            'combination_predictions': combination_predictions
+        })
+        
+    except Exception as e:
+        app.logger.error(f"AI预测错误: {str(e)}")
+        return jsonify({
+            'success': False,
+            'message': f'AI预测过程中发生错误: {str(e)}'
+        })
+
 @app.route('/api/predict', methods=['POST'])
 def predict():
-    """预测比赛结果"""
+    """原有的预测比赛结果接口（兼容性保持）"""
     try:
         data = request.json
         matches = data.get('matches', [])
@@ -76,7 +194,7 @@ def predict():
         individual_predictions = []
         for match in matches:
             prediction = predict_match(
-                match['league_code'],
+                match.get('league_code', ''),
                 match['home_team'],
                 match['away_team'],
                 match['home_odds'],
@@ -108,8 +226,76 @@ def predict():
             'message': f'预测过程中发生错误: {str(e)}'
         })
 
+def generate_ai_combinations(ai_analyses):
+    """基于AI分析生成组合预测"""
+    combinations = []
+    
+    # 胜平负最佳组合
+    best_wdl_combo = []
+    total_confidence = 1.0
+    
+    for analysis in ai_analyses:
+        wdl = analysis['win_draw_loss']
+        best_outcome = max(wdl, key=wdl.get)
+        
+        best_wdl_combo.append({
+            'match': f"{analysis['home_team']} vs {analysis['away_team']}",
+            'prediction': best_outcome,
+            'probability': wdl[best_outcome],
+            'confidence': analysis['confidence_level']
+        })
+        
+        total_confidence *= analysis['confidence_level']
+    
+    combinations.append({
+        'type': '胜平负最佳组合',
+        'selections': best_wdl_combo,
+        'total_confidence': total_confidence,
+        'description': '基于AI分析的最高概率胜平负组合'
+    })
+    
+    # 半全场推荐组合
+    best_hf_combo = []
+    for analysis in ai_analyses:
+        hf = analysis['half_full_time']
+        if hf:
+            best_hf_outcome = max(hf, key=hf.get)
+            best_hf_combo.append({
+                'match': f"{analysis['home_team']} vs {analysis['away_team']}",
+                'prediction': best_hf_outcome,
+                'probability': hf[best_hf_outcome]
+            })
+    
+    if best_hf_combo:
+        combinations.append({
+            'type': '半全场推荐组合',
+            'selections': best_hf_combo,
+            'description': 'AI推荐的半全场投注组合'
+        })
+    
+    # 进球数推荐组合
+    best_goals_combo = []
+    for analysis in ai_analyses:
+        goals = analysis['total_goals']
+        if goals:
+            best_goals_outcome = max(goals, key=goals.get)
+            best_goals_combo.append({
+                'match': f"{analysis['home_team']} vs {analysis['away_team']}",
+                'prediction': best_goals_outcome,
+                'probability': goals[best_goals_outcome]
+            })
+    
+    if best_goals_combo:
+        combinations.append({
+            'type': '进球数推荐组合',
+            'selections': best_goals_combo,
+            'description': 'AI推荐的进球数投注组合'
+        })
+    
+    return combinations
+
 def predict_match(league_code, home_team, away_team, home_odds, draw_odds, away_odds):
-    """预测单场比赛结果"""
+    """预测单场比赛结果（原有函数保持不变）"""
     # 获取球队特征
     home_features = get_team_features(home_team, league_code)
     away_features = get_team_features(away_team, league_code)
@@ -176,7 +362,7 @@ def get_team_features(team_name, league_code=None):
     return None
 
 def generate_parlays(predictions):
-    """生成所有可能的串关组合"""
+    """生成所有可能的串关组合（原有函数保持不变）"""
     # 为每场比赛创建所有可能的选择
     all_selections = []
     for pred in predictions:
@@ -232,6 +418,84 @@ def log_user_prediction(matches):
     }
     
     logging.info(json.dumps(log_entry))
+
+# 新增API端点
+
+@app.route('/api/lottery/refresh', methods=['POST'])
+def refresh_lottery_data():
+    """刷新彩票数据"""
+    try:
+        days_ahead = request.json.get('days', 3)
+        matches = lottery_api.get_formatted_matches(days_ahead)
+        
+        # 保存到文件
+        filename = f"data/lottery_matches_{datetime.now().strftime('%Y%m%d')}.json"
+        lottery_api.save_matches_to_json(matches, filename)
+        
+        return jsonify({
+            'success': True,
+            'message': f'已刷新 {len(matches)} 场比赛数据',
+            'matches_count': len(matches)
+        })
+        
+    except Exception as e:
+        app.logger.error(f"刷新彩票数据失败: {str(e)}")
+        return jsonify({
+            'success': False,
+            'message': f'刷新数据失败: {str(e)}'
+        })
+
+@app.route('/api/ai/batch-predict', methods=['POST'])
+def ai_batch_predict():
+    """批量AI预测"""
+    try:
+        data = request.json
+        match_ids = data.get('match_ids', [])
+        
+        if not match_ids:
+            return jsonify({
+                'success': False,
+                'message': '未提供比赛ID'
+            })
+        
+        # 获取比赛数据
+        all_analyses = []
+        for match_id in match_ids:
+            # 这里需要根据match_id获取比赛详细信息
+            # 暂时使用示例数据
+            match_data = {
+                'match_id': match_id,
+                'home_team': '示例主队',
+                'away_team': '示例客队',
+                'league_name': '示例联赛'
+            }
+            
+            analysis = ai_predictor.analyze_match(match_data)
+            all_analyses.append({
+                'match_id': analysis.match_id,
+                'home_team': analysis.home_team,
+                'away_team': analysis.away_team,
+                'league_name': analysis.league_name,
+                'win_draw_loss': analysis.win_draw_loss,
+                'confidence_level': analysis.confidence_level,
+                'half_full_time': analysis.half_full_time,
+                'total_goals': analysis.total_goals,
+                'exact_scores': analysis.exact_scores,
+                'analysis_reason': analysis.analysis_reason,
+                'recommended_bets': analysis.recommended_bets
+            })
+        
+        return jsonify({
+            'success': True,
+            'analyses': all_analyses
+        })
+        
+    except Exception as e:
+        app.logger.error(f"批量AI预测失败: {str(e)}")
+        return jsonify({
+            'success': False,
+            'message': f'批量预测失败: {str(e)}'
+        })
 
 if __name__ == '__main__':
     app.run(debug=True) 

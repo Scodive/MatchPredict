@@ -672,3 +672,506 @@ footer {
         min-width: 900px;
     }
 }
+
+/* 新增样式 - 模式选择 */
+.mode-selection {
+    margin-bottom: 30px;
+    padding: 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 15px;
+    color: white;
+}
+
+.mode-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.mode-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    min-width: 150px;
+    text-align: center;
+}
+
+.mode-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: translateY(-2px);
+}
+
+.mode-btn.active {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: #ffffff;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.mode-btn i {
+    font-size: 24px;
+    margin-bottom: 8px;
+}
+
+.mode-btn span {
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.mode-btn small {
+    font-size: 12px;
+    opacity: 0.8;
+}
+
+/* 彩票模式样式 */
+.lottery-controls {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.filter-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.lottery-matches {
+    max-height: 600px;
+    overflow-y: auto;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.league-section {
+    margin-bottom: 25px;
+}
+
+.league-title {
+    color: #2c3e50;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 8px;
+    margin-bottom: 15px;
+}
+
+.lottery-match-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.lottery-match-card:hover {
+    border-color: #3498db;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.lottery-match-card.selected {
+    border-color: #27ae60;
+    background-color: #f8fff8;
+    box-shadow: 0 2px 8px rgba(39, 174, 96, 0.2);
+}
+
+.match-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.match-time {
+    font-size: 12px;
+    color: #666;
+}
+
+.match-status {
+    font-size: 12px;
+    padding: 2px 8px;
+    border-radius: 4px;
+    background-color: #f8f9fa;
+    color: #495057;
+}
+
+.match-teams {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 15px 0;
+}
+
+.team {
+    flex: 1;
+    text-align: center;
+}
+
+.team-name {
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.vs {
+    margin: 0 15px;
+    color: #7f8c8d;
+    font-weight: bold;
+}
+
+.odds-section {
+    margin: 15px 0;
+}
+
+.odds-group {
+    margin-bottom: 8px;
+}
+
+.odds-title {
+    font-weight: 600;
+    color: #34495e;
+    margin-bottom: 5px;
+}
+
+.odds-values {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.odds-item {
+    background: #f8f9fa;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    color: #495057;
+}
+
+.select-match-btn {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.select-match-btn.selected {
+    background: #27ae60;
+    color: white;
+    border-color: #27ae60;
+}
+
+/* AI分析结果样式 */
+.ai-analysis-container {
+    display: grid;
+    gap: 20px;
+}
+
+.analysis-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    padding: 20px;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.analysis-card .match-header h3 {
+    color: #2c3e50;
+    margin: 0;
+    margin-bottom: 10px;
+}
+
+.league {
+    color: #7f8c8d;
+    font-size: 14px;
+    margin-right: 15px;
+}
+
+.confidence {
+    color: #27ae60;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+.prediction-section h4 {
+    color: #34495e;
+    margin: 15px 0 10px 0;
+}
+
+.wdl-predictions {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.wdl-item {
+    flex: 1;
+    text-align: center;
+    padding: 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.wdl-item.best {
+    border-color: #27ae60;
+    background-color: #f8fff8;
+    box-shadow: 0 2px 8px rgba(39, 174, 96, 0.2);
+}
+
+.wdl-item .label {
+    display: block;
+    font-weight: 600;
+    color: #2c3e50;
+    margin-bottom: 5px;
+}
+
+.wdl-item .probability {
+    display: block;
+    font-size: 18px;
+    font-weight: bold;
+    color: #27ae60;
+}
+
+.analysis-reason {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    margin: 15px 0;
+}
+
+.analysis-reason h4 {
+    color: #34495e;
+    margin: 0 0 10px 0;
+}
+
+.analysis-reason p {
+    color: #495057;
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* 价值投注样式 */
+.value-bets {
+    margin-top: 15px;
+}
+
+.value-bet-item {
+    padding: 12px;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    margin-bottom: 8px;
+}
+
+.value-bet-item.high-value {
+    border-color: #f39c12;
+    background-color: #fef9e7;
+}
+
+.bet-info {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 5px;
+}
+
+.bet-stats {
+    display: flex;
+    gap: 15px;
+    font-size: 12px;
+    color: #666;
+}
+
+.expected-value {
+    font-weight: bold;
+    color: #27ae60;
+}
+
+/* 组合预测样式 */
+.combination-predictions {
+    margin-top: 30px;
+}
+
+.combination-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.combination-card h4 {
+    color: #2c3e50;
+    margin: 0 0 10px 0;
+}
+
+.combination-desc {
+    color: #7f8c8d;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+.selections {
+    display: grid;
+    gap: 8px;
+}
+
+.selection-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: #f8f9fa;
+    border-radius: 4px;
+}
+
+.combination-confidence {
+    margin-top: 15px;
+    text-align: center;
+    font-weight: 600;
+    color: #27ae60;
+}
+
+/* 半全场、进球数、比分预测样式 */
+.half-full-container,
+.goals-container,
+.scores-container {
+    display: grid;
+    gap: 20px;
+}
+
+.half-full-card,
+.goals-card,
+.scores-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    background: white;
+}
+
+.half-full-predictions,
+.goals-predictions,
+.scores-predictions {
+    display: grid;
+    gap: 8px;
+}
+
+.hf-item,
+.goals-item,
+.score-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+}
+
+.hf-item.best,
+.goals-item.best,
+.score-item.best {
+    border-color: #27ae60;
+    background-color: #f8fff8;
+}
+
+/* 消息提示样式 */
+.message {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 12px 20px;
+    border-radius: 8px;
+    color: white;
+    font-weight: 600;
+    z-index: 1000;
+    animation: slideIn 0.3s ease;
+}
+
+.message.success {
+    background-color: #27ae60;
+}
+
+.message.error {
+    background-color: #e74c3c;
+}
+
+.message.info {
+    background-color: #3498db;
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+/* AI介绍样式 */
+.ai-intro {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.ai-intro p {
+    margin: 0;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+.ai-intro i {
+    font-size: 24px;
+    margin-right: 10px;
+}
+
+/* 额外的响应式样式 */
+@media (max-width: 768px) {
+    .mode-buttons {
+        flex-direction: column;
+    }
+    
+    .mode-btn {
+        min-width: unset;
+        width: 100%;
+    }
+    
+    .lottery-controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .wdl-predictions {
+        flex-direction: column;
+    }
+    
+    .bet-info,
+    .bet-stats {
+        flex-direction: column;
+        gap: 5px;
+    }
+    
+    .match-teams {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .vs {
+        margin: 10px 0;
+    }
+}
