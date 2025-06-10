@@ -1,5 +1,34 @@
 # 更新日志
 
+## v2.2.0 - 2024-12-19
+
+### 🚀 Vercel部署优化
+- **轻量化架构**: 移除pandas、numpy、scipy等大型科学计算包
+- **包大小优化**: 从250MB+降低到50MB以下，符合Vercel限制
+- **核心功能保留**: 
+  - ✅ AI智能预测（Gemini API）
+  - ✅ 中国体育彩票数据
+  - ✅ 简化统计预测
+  - ❌ 复杂统计模型（暂时移除）
+
+### 📱 前端架构（保持不变）
+- **模块化设计**: 三种预测模式完整保留
+- **响应式界面**: 适配移动端和桌面端
+- **实时交互**: AJAX + RESTful API
+
+### 🔧 技术栈简化
+```
+前端: HTML5 + CSS3 + 原生JavaScript
+后端: Flask 3.0 + Requests + Python-dotenv
+AI: Google Gemini 2.0 Flash Experimental
+部署: Vercel Serverless Functions
+```
+
+### 🎯 部署友好
+- **依赖最小化**: 仅3个核心包
+- **启动优化**: 移除数据文件加载
+- **API精简**: 保留核心预测功能
+
 ## v2.1.0 - 2024-12-19
 
 ### 🚀 重大更新
