@@ -184,7 +184,10 @@ class AIFootballPredictor:
     def _call_ai_model(self, prompt: str) -> str:
         """调用AI模型"""
         try:
-            if self.gemini_api_key:
+            if self.gemini_api_key and self.gemini_api_key != 'YOUR_GEMINI_API_KEY':
+                self.logger.info(f"正在调用Gemini API: {self.model}")
+                self.logger.info(f"API URL: {self.api_url}")
+                
                 # 使用Gemini API
                 headers = {
                     'Content-Type': 'application/json',
@@ -208,6 +211,7 @@ class AIFootballPredictor:
                     }
                 }
                 
+                self.logger.info("发送请求到Gemini API...")
                 response = requests.post(
                     self.api_url,
                     headers=headers,
@@ -215,23 +219,31 @@ class AIFootballPredictor:
                     timeout=30
                 )
                 
+                self.logger.info(f"Gemini API响应状态码: {response.status_code}")
+                
                 if response.status_code == 200:
                     result = response.json()
+                    self.logger.info("Gemini API调用成功")
                     if 'candidates' in result and len(result['candidates']) > 0:
                         content = result['candidates'][0]['content']['parts'][0]['text']
+                        self.logger.info(f"获得AI响应，长度: {len(content)}")
                         return content
                     else:
-                        self.logger.error("Gemini API响应格式异常")
+                        self.logger.error(f"Gemini API响应格式异常: {result}")
                         return self._get_mock_ai_response()
                 else:
-                    self.logger.error(f"Gemini API调用失败: {response.status_code}, {response.text}")
+                    self.logger.error(f"Gemini API调用失败: {response.status_code}")
+                    self.logger.error(f"错误详情: {response.text}")
                     return self._get_mock_ai_response()
             else:
                 # 如果没有API密钥，返回模拟响应
+                self.logger.warning(f"没有有效的Gemini API密钥，使用模拟响应。当前密钥: {self.gemini_api_key}")
                 return self._get_mock_ai_response()
                 
         except Exception as e:
             self.logger.error(f"调用AI模型失败: {e}")
+            import traceback
+            self.logger.error(f"错误堆栈: {traceback.format_exc()}")
             return self._get_mock_ai_response()
     
     def _get_mock_ai_response(self) -> str:

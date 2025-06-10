@@ -26,33 +26,65 @@ class LotteryManager {
     }
 
     async refreshMatches(days = 3) {
-        const refreshBtn = document.getElementById('refresh-lottery-btn');
         const container = document.getElementById('lottery-matches');
-        
+        const refreshBtn = document.getElementById('refresh-lottery-btn');
+
         try {
             // 显示加载状态
+            container.innerHTML = '<div class="loading-message"><i class="fas fa-spinner fa-spin"></i> 正在获取比赛数据...</div>';
+            
             if (refreshBtn) {
                 refreshBtn.disabled = true;
-                refreshBtn.innerHTML = '<i class="fas fa-spin fa-spinner"></i> 获取中...';
+                refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 获取中...';
             }
-            
-            container.innerHTML = '<div class="loading-message"><i class="fas fa-spin fa-spinner"></i> 正在获取最新比赛数据...</div>';
 
             // 调用API获取比赛数据
             const response = await fetch(`/api/lottery/matches?days=${days}`);
-            const data = await response.json();
+            
+            // 检查HTTP状态
+            if (!response.ok) {
+                if (response.status === 504) {
+                    throw new Error('服务器响应超时，请稍后重试');
+                } else if (response.status === 500) {
+                    throw new Error('服务器内部错误，请联系管理员');
+                } else {
+                    throw new Error(`请求失败 (${response.status})`);
+                }
+            }
+
+            // 尝试解析JSON
+            let data;
+            try {
+                const responseText = await response.text();
+                if (!responseText.trim()) {
+                    throw new Error('服务器返回空响应');
+                }
+                data = JSON.parse(responseText);
+            } catch (jsonError) {
+                console.error('JSON解析错误:', jsonError);
+                throw new Error('服务器响应格式错误，请刷新页面重试');
+            }
 
             if (data.success) {
-                this.matches = data.matches;
+                this.matches = data.matches || [];
                 this.renderMatches();
-                this.showMessage(`成功获取 ${data.count} 场比赛`, 'success');
+                this.showMessage(`成功获取 ${data.count || this.matches.length} 场比赛`, 'success');
             } else {
                 throw new Error(data.message || '获取比赛数据失败');
             }
 
         } catch (error) {
             console.error('获取彩票数据失败:', error);
-            container.innerHTML = '<div class="error-message">获取比赛数据失败，请稍后重试</div>';
+            container.innerHTML = `
+                <div class="error-message">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <h3>获取比赛数据失败</h3>
+                    <p>${error.message}</p>
+                    <button onclick="lotteryManager.refreshMatches()" class="retry-btn">
+                        <i class="fas fa-redo"></i> 重试
+                    </button>
+                </div>
+            `;
             this.showMessage('获取数据失败: ' + error.message, 'error');
         } finally {
             // 恢复按钮状态

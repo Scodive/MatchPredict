@@ -59,18 +59,17 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // 如果数据已加载，填充球队选择框
         if (featuresData[leagueCode]) {
-            populateTeamSelects(leagueCode, Object.keys(featuresData[leagueCode]));
+            // 检查数据格式：如果是数组直接使用，如果是对象则提取键名
+            const teamsList = Array.isArray(featuresData[leagueCode]) 
+                ? featuresData[leagueCode] 
+                : Object.keys(featuresData[leagueCode]);
+            populateTeamSelects(leagueCode, teamsList);
         } else {
-            // 否则加载数据
-
-            loadLeagueData(leagueCode)
-                .then(() => {
-                    loadingOverlay.classList.add('hidden');
-                })
-                .catch(error => {
-                   
-                    alert(`加载 ${LEAGUES[leagueCode]} 数据失败: ${error.message}`);
-                });
+            // 如果没有数据，显示加载中状态
+            homeTeamSelect.innerHTML = '<option value="">加载中...</option>';
+            awayTeamSelect.innerHTML = '<option value="">加载中...</option>';
+            homeTeamSelect.disabled = true;
+            awayTeamSelect.disabled = true;
         }
     }
     
