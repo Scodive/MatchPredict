@@ -111,7 +111,7 @@
    cp config_example.py config_local.py
    
    # 编辑config_local.py，填入您的Gemini API密钥
-   GEMINI_API_KEY = "AIzaSyDy9pYAEW7e2Ewk__9TCHAD5X_G1VhCtVw"
+   GEMINI_API_KEY = "AIpYA7e2Ewk__9TCHAD5X_G1VhCtVw"
    GEMINI_MODEL = "gemini-2.0-flash-exp"
    ```
 
