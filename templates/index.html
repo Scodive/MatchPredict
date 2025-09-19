@@ -20,15 +20,15 @@
                 <span>AI足球预测</span>
             </div>
             <div class="nav-menu">
-                <button id="classic-mode-btn" class="nav-btn active" data-mode="classic">
+                <button type="button" id="classic-mode-btn" class="nav-btn active" data-mode="classic">
                     <i class="fas fa-chart-bar"></i>
                     <span>经典模式</span>
                 </button>
-                <button id="lottery-mode-btn" class="nav-btn" data-mode="lottery">
+                <button type="button" id="lottery-mode-btn" class="nav-btn" data-mode="lottery">
                     <i class="fas fa-ticket-alt"></i>
                     <span>彩票模式</span>
                 </button>
-                <button id="ai-mode-btn" class="nav-btn" data-mode="ai">
+                <button type="button" id="ai-mode-btn" class="nav-btn" data-mode="ai">
                     <i class="fas fa-brain"></i>
                     <span>AI智能模式</span>
                 </button>
@@ -391,5 +391,6 @@
     <script src="{{ url_for('static', filename='js/lottery.js') }}"></script>
     <script src="{{ url_for('static', filename='js/ai-prediction.js') }}"></script>
     <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/nav-fix.js') }}"></script>
 </body>
 </html> 

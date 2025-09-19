@@ -56,9 +56,15 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 初始化模式选择
     function initModeSelection() {
+        console.log('开始初始化模式选择');
         const modeButtons = document.querySelectorAll('.nav-btn');
-        modeButtons.forEach(btn => {
-            btn.addEventListener('click', function() {
+        console.log('找到导航按钮数量:', modeButtons.length);
+        
+        modeButtons.forEach((btn, index) => {
+            console.log(`绑定按钮 ${index + 1}:`, btn.id, btn.getAttribute('data-mode'));
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                console.log('按钮被点击:', this.id, this.getAttribute('data-mode'));
                 const mode = this.getAttribute('data-mode');
                 switchMode(mode);
             });
@@ -773,3 +779,55 @@ document.addEventListener('DOMContentLoaded', function() {
     window.removeMatch = removeMatch;
     window.clearMatches = clearMatches;
 });
+
+// 确保导航按钮功能正常工作
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM完全加载，开始绑定导航按钮');
+    
+    // 延迟一点确保所有元素都已渲染
+    setTimeout(function() {
+        const navButtons = document.querySelectorAll('.nav-btn');
+        console.log('重新检查导航按钮:', navButtons.length);
+        
+        navButtons.forEach(btn => {
+            // 移除可能的旧事件监听器
+            btn.removeEventListener('click', handleNavClick);
+            // 添加新的事件监听器
+            btn.addEventListener('click', handleNavClick);
+        });
+    }, 100);
+});
+
+// 导航按钮点击处理函数
+function handleNavClick(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    console.log('导航按钮被点击:', this.id);
+    const mode = this.getAttribute('data-mode');
+    console.log('切换到模式:', mode);
+    
+    if (mode) {
+        // 更新按钮状态
+        document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+        this.classList.add('active');
+        
+        // 隐藏所有模式区域
+        document.querySelectorAll('.match-input-section').forEach(section => {
+            section.classList.add('hidden');
+        });
+        
+        // 显示目标模式
+        const targetSection = document.getElementById(mode + '-mode');
+        if (targetSection) {
+            targetSection.classList.remove('hidden');
+            console.log('成功切换到模式:', mode);
+        }
+        
+        // 隐藏结果区域
+        const resultsSection = document.getElementById('results-section');
+        if (resultsSection) {
+            resultsSection.classList.add('hidden');
+        }
+    }
+}
