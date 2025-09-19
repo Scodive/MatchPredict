@@ -369,7 +369,7 @@ class AIPredictionManager {
             }
 
             if (predictions.length > 0) {
-                this.aiResults = { predictions: predictions };
+                this.aiResults = predictions; // 直接存储预测数组
                 this.displayAIResults();
                 this.showMessage(`AI预测完成，成功分析了 ${predictions.length}/${matchesToPredict.length} 场比赛`, 'success');
                 
@@ -453,7 +453,7 @@ class AIPredictionManager {
     }
 
     displayAIResults() {
-        if (!this.aiResults || this.aiResults.length === 0) {
+        if (!this.aiResults || !Array.isArray(this.aiResults) || this.aiResults.length === 0) {
             this.showMessage('没有AI分析结果', 'error');
             return;
         }
@@ -469,29 +469,39 @@ class AIPredictionManager {
             return;
         }
 
+        console.log('开始渲染AI结果，数据:', this.aiResults);
+        console.log('数据类型:', typeof this.aiResults, '是否为数组:', Array.isArray(this.aiResults));
+
         let html = '<div class="simple-ai-results">';
         
         this.aiResults.forEach((result, index) => {
+            // 安全地获取数据，提供默认值
+            const homeTeam = result.home_team || '未知主队';
+            const awayTeam = result.away_team || '未知客队';
+            const leagueName = result.league_name || '未知联赛';
+            const odds = result.odds || { home: '2.00', draw: '3.20', away: '2.80' };
+            const analysis = result.ai_analysis || '暂无AI分析';
+            
             html += `
                 <div class="ai-result-card">
                     <div class="match-header">
                         <h3 class="match-title">
-                            <span class="home-team">${result.home_team}</span>
+                            <span class="home-team">${homeTeam}</span>
                             <span class="vs">VS</span>
-                            <span class="away-team">${result.away_team}</span>
+                            <span class="away-team">${awayTeam}</span>
                         </h3>
-                        <div class="league-info">${result.league_name}</div>
+                        <div class="league-info">${leagueName}</div>
                     </div>
                     
                     <div class="odds-display">
-                        <span class="odds-item">主胜: ${result.odds.home}</span>
-                        <span class="odds-item">平局: ${result.odds.draw}</span>
-                        <span class="odds-item">客胜: ${result.odds.away}</span>
+                        <span class="odds-item">主胜: ${odds.home}</span>
+                        <span class="odds-item">平局: ${odds.draw}</span>
+                        <span class="odds-item">客胜: ${odds.away}</span>
                     </div>
                     
                     <div class="ai-analysis-content">
                         <h4><i class="fas fa-brain"></i> AI智能分析</h4>
-                        <div class="analysis-text">${this.formatAnalysisText(result.ai_analysis)}</div>
+                        <div class="analysis-text">${this.formatAnalysisText(analysis)}</div>
                     </div>
                 </div>
             `;
