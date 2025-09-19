@@ -8,7 +8,7 @@
 import psycopg2
 import psycopg2.extras
 import logging
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Dict, Any, Optional, List
 import json
 
@@ -46,7 +46,7 @@ class PredictionDatabase:
             cursor = conn.cursor()
             
             # 创建预测记录表
-            create_table_sql = """
+            create_predictions_table = """
             CREATE TABLE IF NOT EXISTS match_predictions (
                 id SERIAL PRIMARY KEY,
                 prediction_id VARCHAR(100) UNIQUE NOT NULL,
@@ -70,14 +70,48 @@ class PredictionDatabase:
             );
             """
             
-            cursor.execute(create_table_sql)
+            # 创建每日比赛表
+            create_daily_matches_table = """
+            CREATE TABLE IF NOT EXISTS daily_matches (
+                id SERIAL PRIMARY KEY,
+                match_id VARCHAR(100) UNIQUE NOT NULL,
+                home_team VARCHAR(100) NOT NULL,
+                away_team VARCHAR(100) NOT NULL,
+                league_name VARCHAR(100),
+                match_date DATE NOT NULL,
+                match_time TIME,
+                match_datetime TIMESTAMP,
+                match_num VARCHAR(20),
+                match_status VARCHAR(20),
+                home_odds DECIMAL(6,2),
+                draw_odds DECIMAL(6,2),
+                away_odds DECIMAL(6,2),
+                goal_line VARCHAR(10),
+                data_source VARCHAR(50) DEFAULT 'china_lottery',
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                is_active BOOLEAN DEFAULT TRUE
+            );
+            """
+            
+            cursor.execute(create_predictions_table)
+            cursor.execute(create_daily_matches_table)
             
             # 创建索引
             create_index_sql = [
+                # 预测表索引
                 "CREATE INDEX IF NOT EXISTS idx_predictions_mode ON match_predictions(prediction_mode);",
                 "CREATE INDEX IF NOT EXISTS idx_predictions_created ON match_predictions(created_at);",
                 "CREATE INDEX IF NOT EXISTS idx_predictions_teams ON match_predictions(home_team, away_team);",
-                "CREATE INDEX IF NOT EXISTS idx_predictions_result ON match_predictions(is_correct);"
+                "CREATE INDEX IF NOT EXISTS idx_predictions_result ON match_predictions(is_correct);",
+                
+                # 每日比赛表索引
+                "CREATE INDEX IF NOT EXISTS idx_daily_matches_date ON daily_matches(match_date);",
+                "CREATE INDEX IF NOT EXISTS idx_daily_matches_teams ON daily_matches(home_team, away_team);",
+                "CREATE INDEX IF NOT EXISTS idx_daily_matches_league ON daily_matches(league_name);",
+                "CREATE INDEX IF NOT EXISTS idx_daily_matches_status ON daily_matches(match_status);",
+                "CREATE INDEX IF NOT EXISTS idx_daily_matches_active ON daily_matches(is_active);",
+                "CREATE INDEX IF NOT EXISTS idx_daily_matches_datetime ON daily_matches(match_datetime);"
             ]
             
             for sql in create_index_sql:
@@ -333,6 +367,248 @@ class PredictionDatabase:
         except Exception as e:
             logger.error(f"获取统计信息失败: {e}")
             return {'mode_stats': [], 'recent_predictions': []}
+    
+    def save_daily_matches(self, matches_data: List[Dict[str, Any]]) -> Dict[str, int]:
+        """
+        保存每日比赛数据到数据库
+        
+        Args:
+            matches_data: 比赛数据列表
+            
+        Returns:
+            统计信息字典 {'inserted': 插入数量, 'updated': 更新数量, 'skipped': 跳过数量}
+        """
+        stats = {'inserted': 0, 'updated': 0, 'skipped': 0}
+        
+        try:
+            conn = self.connect_to_database()
+            cursor = conn.cursor()
+            
+            for match in matches_data:
+                try:
+                    # 解析比赛时间
+                    match_datetime = None
+                    match_date = None
+                    match_time = None
+                    
+                    if match.get('match_time'):
+                        try:
+                            match_datetime = datetime.strptime(match['match_time'], '%Y-%m-%d %H:%M:%S')
+                            match_date = match_datetime.date()
+                            match_time = match_datetime.time()
+                        except:
+                            try:
+                                match_datetime = datetime.strptime(match['match_time'], '%Y-%m-%d %H:%M')
+                                match_date = match_datetime.date()
+                                match_time = match_datetime.time()
+                            except:
+                                if match.get('match_date'):
+                                    match_date = datetime.strptime(match['match_date'], '%Y-%m-%d').date()
+                    
+                    # 提取赔率
+                    odds = match.get('odds', {})
+                    hhad_odds = odds.get('hhad', {})
+                    
+                    # 检查是否已存在
+                    check_sql = "SELECT id FROM daily_matches WHERE match_id = %s"
+                    cursor.execute(check_sql, (match.get('match_id'),))
+                    existing = cursor.fetchone()
+                    
+                    if existing:
+                        # 更新现有记录
+                        update_sql = """
+                        UPDATE daily_matches SET
+                            home_team = %s,
+                            away_team = %s,
+                            league_name = %s,
+                            match_date = %s,
+                            match_time = %s,
+                            match_datetime = %s,
+                            match_num = %s,
+                            match_status = %s,
+                            home_odds = %s,
+                            draw_odds = %s,
+                            away_odds = %s,
+                            goal_line = %s,
+                            data_source = %s,
+                            updated_at = CURRENT_TIMESTAMP
+                        WHERE match_id = %s
+                        """
+                        
+                        cursor.execute(update_sql, (
+                            match.get('home_team', ''),
+                            match.get('away_team', ''),
+                            match.get('league_name', ''),
+                            match_date,
+                            match_time,
+                            match_datetime,
+                            match.get('match_num', ''),
+                            match.get('status', ''),
+                            float(hhad_odds.get('h', 0)) if hhad_odds.get('h') else None,
+                            float(hhad_odds.get('d', 0)) if hhad_odds.get('d') else None,
+                            float(hhad_odds.get('a', 0)) if hhad_odds.get('a') else None,
+                            odds.get('goal_line', ''),
+                            match.get('source', 'china_lottery'),
+                            match.get('match_id')
+                        ))
+                        stats['updated'] += 1
+                        
+                    else:
+                        # 插入新记录
+                        insert_sql = """
+                        INSERT INTO daily_matches (
+                            match_id, home_team, away_team, league_name,
+                            match_date, match_time, match_datetime, match_num,
+                            match_status, home_odds, draw_odds, away_odds,
+                            goal_line, data_source
+                        ) VALUES (
+                            %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s
+                        )
+                        """
+                        
+                        cursor.execute(insert_sql, (
+                            match.get('match_id', ''),
+                            match.get('home_team', ''),
+                            match.get('away_team', ''),
+                            match.get('league_name', ''),
+                            match_date,
+                            match_time,
+                            match_datetime,
+                            match.get('match_num', ''),
+                            match.get('status', ''),
+                            float(hhad_odds.get('h', 0)) if hhad_odds.get('h') else None,
+                            float(hhad_odds.get('d', 0)) if hhad_odds.get('d') else None,
+                            float(hhad_odds.get('a', 0)) if hhad_odds.get('a') else None,
+                            odds.get('goal_line', ''),
+                            match.get('source', 'china_lottery')
+                        ))
+                        stats['inserted'] += 1
+                        
+                except Exception as match_error:
+                    logger.warning(f"保存单场比赛失败: {match_error}")
+                    stats['skipped'] += 1
+                    continue
+            
+            conn.commit()
+            cursor.close()
+            conn.close()
+            
+            logger.info(f"每日比赛数据保存完成 - 新增:{stats['inserted']}, 更新:{stats['updated']}, 跳过:{stats['skipped']}")
+            return stats
+            
+        except Exception as e:
+            logger.error(f"保存每日比赛数据失败: {e}")
+            return stats
+    
+    def get_daily_matches(self, days_ahead: int = 7) -> List[Dict[str, Any]]:
+        """
+        从数据库获取每日比赛数据
+        
+        Args:
+            days_ahead: 未来天数
+            
+        Returns:
+            比赛数据列表
+        """
+        try:
+            conn = self.connect_to_database()
+            cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+            
+            # 计算日期范围
+            today = datetime.now().date()
+            end_date = today + timedelta(days=days_ahead)
+            
+            query_sql = """
+            SELECT 
+                match_id, home_team, away_team, league_name,
+                match_date, match_time, match_datetime, match_num,
+                match_status, home_odds, draw_odds, away_odds,
+                goal_line, data_source, updated_at
+            FROM daily_matches 
+            WHERE match_date >= %s AND match_date <= %s 
+            AND is_active = TRUE
+            ORDER BY match_datetime ASC, match_date ASC, match_time ASC
+            """
+            
+            cursor.execute(query_sql, (today, end_date))
+            results = cursor.fetchall()
+            
+            # 转换为标准格式
+            matches = []
+            for row in results:
+                match_time_str = ''
+                if row['match_datetime']:
+                    match_time_str = row['match_datetime'].strftime('%Y-%m-%d %H:%M:%S')
+                elif row['match_date'] and row['match_time']:
+                    match_time_str = f"{row['match_date']} {row['match_time']}"
+                elif row['match_date']:
+                    match_time_str = str(row['match_date'])
+                
+                match_data = {
+                    'match_id': row['match_id'],
+                    'home_team': row['home_team'],
+                    'away_team': row['away_team'],
+                    'league_name': row['league_name'],
+                    'match_time': match_time_str,
+                    'match_date': str(row['match_date']) if row['match_date'] else '',
+                    'match_num': row['match_num'],
+                    'status': row['match_status'],
+                    'source': 'database',
+                    'odds': {
+                        'hhad': {
+                            'h': str(row['home_odds']) if row['home_odds'] else '0',
+                            'd': str(row['draw_odds']) if row['draw_odds'] else '0',
+                            'a': str(row['away_odds']) if row['away_odds'] else '0'
+                        },
+                        'goal_line': row['goal_line']
+                    }
+                }
+                matches.append(match_data)
+            
+            cursor.close()
+            conn.close()
+            
+            logger.info(f"从数据库获取 {len(matches)} 场比赛")
+            return matches
+            
+        except Exception as e:
+            logger.error(f"从数据库获取比赛数据失败: {e}")
+            return []
+    
+    def cleanup_old_matches(self, days_to_keep: int = 30) -> int:
+        """
+        清理旧的比赛数据
+        
+        Args:
+            days_to_keep: 保留天数
+            
+        Returns:
+            删除的记录数
+        """
+        try:
+            conn = self.connect_to_database()
+            cursor = conn.cursor()
+            
+            cutoff_date = datetime.now().date() - timedelta(days=days_to_keep)
+            
+            delete_sql = """
+            DELETE FROM daily_matches 
+            WHERE match_date < %s
+            """
+            
+            cursor.execute(delete_sql, (cutoff_date,))
+            deleted_count = cursor.rowcount
+            
+            conn.commit()
+            cursor.close()
+            conn.close()
+            
+            logger.info(f"清理了 {deleted_count} 条旧比赛记录")
+            return deleted_count
+            
+        except Exception as e:
+            logger.error(f"清理旧比赛数据失败: {e}")
+            return 0
 
 
 # 创建全局数据库实例

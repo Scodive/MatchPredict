@@ -143,99 +143,55 @@ def get_teams():
 
 @app.route('/api/lottery/matches')
 def get_lottery_matches():
-    """获取中国体育彩票比赛数据"""
+    """获取中国体育彩票比赛数据 - 仅从数据库获取"""
     try:
         days = request.args.get('days', 3, type=int)
         days = min(max(days, 1), 7)  # 限制在1-7天之间
         
-        app.logger.info(f"开始爬取体彩官网数据，天数: {days}")
+        app.logger.info(f"📊 从数据库获取体彩数据 - 天数: {days}")
         
-        # 方法1: 尝试使用爬虫
-        try:
-            from scripts.china_lottery_spider import ChinaLotterySpider
-            lottery_spider = ChinaLotterySpider()
-            matches = lottery_spider.get_formatted_matches(days_ahead=days)
-            
-            app.logger.info(f"✅ 爬虫成功获取 {len(matches)} 场比赛")
-            
+        if not prediction_db:
+            app.logger.error("❌ 数据库未初始化")
             return jsonify({
-                'success': True,
-                'matches': matches,
-                'count': len(matches),
-                'message': f'数据爬取成功，获取 {len(matches)} 场比赛'
-            })
+                'success': False,
+                'error': '数据库未配置',
+                'message': '数据库连接失败，请联系管理员'
+            }), 500
+        
+        try:
+            # 仅从数据库获取
+            db_matches = prediction_db.get_daily_matches(days_ahead=days)
             
-        except Exception as spider_error:
-            app.logger.warning(f"⚠️ 爬虫失败，尝试直接API调用: {spider_error}")
-            
-            # 方法2: 直接API调用 (适用于Vercel)
-            try:
-                api_url = "https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry"
-                params = {"poolCode": "hhad", "channel": "c"}
-                headers = {
-                    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
-                    "Accept": "application/json, text/plain, */*",
-                    "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8",
-                    "Referer": "https://www.lottery.gov.cn/",
-                    "Origin": "https://www.lottery.gov.cn"
-                }
+            if db_matches and len(db_matches) > 0:
+                app.logger.info(f"✅ 从数据库获取到 {len(db_matches)} 场比赛")
                 
-                response = requests.get(api_url, params=params, headers=headers, timeout=15)
-                response.raise_for_status()
-                
-                data = response.json()
-                if data.get('success'):
-                    # 简化数据处理
-                    matches = []
-                    value = data.get('value', {})
-                    match_info_list = value.get('matchInfoList', [])
-                    
-                    for date_info in match_info_list:
-                        sub_match_list = date_info.get('subMatchList', [])
-                        for match_data in sub_match_list:
-                            if match_data.get('hhad'):
-                                hhad = match_data['hhad']
-                                match_info = {
-                                    'match_id': f"lottery_{match_data.get('matchId', '')}",
-                                    'home_team': match_data.get('homeTeamAbbName', ''),
-                                    'away_team': match_data.get('awayTeamAbbName', ''),
-                                    'league_name': match_data.get('leagueAbbName', ''),
-                                    'match_time': f"{match_data.get('matchDate', '')} {match_data.get('matchTime', '')}",
-                                    'match_date': match_data.get('matchDate', ''),
-                                    'status': match_data.get('matchStatus', 'Unknown'),
-                                    'source': 'china_lottery_api',
-                                    'odds': {
-                                        'hhad': {
-                                            'h': str(hhad.get('h', '')),
-                                            'd': str(hhad.get('d', '')),
-                                            'a': str(hhad.get('a', ''))
-                                        }
-                                    }
-                                }
-                                matches.append(match_info)
-                    
-                    app.logger.info(f"✅ 直接API成功获取 {len(matches)} 场比赛")
-                    
-                    return jsonify({
-                        'success': True,
-                        'matches': matches,
-                        'count': len(matches),
-                        'message': f'API调用成功，获取 {len(matches)} 场比赛'
-                    })
-                else:
-                    raise Exception(f"API返回错误: {data.get('errorMessage', '未知错误')}")
-                    
-            except Exception as api_error:
-                app.logger.error(f"❌ 直接API调用也失败: {api_error}")
+                return jsonify({
+                    'success': True,
+                    'matches': db_matches,
+                    'count': len(db_matches),
+                    'message': f'从数据库获取 {len(db_matches)} 场比赛',
+                    'source': 'database'
+                })
+            else:
+                app.logger.warning("⚠️ 数据库中没有找到比赛数据")
                 
                 return jsonify({
                     'success': False,
-                    'error': str(api_error),
-                    'message': '暂时无法获取体彩数据，请稍后重试'
-                }), 503
+                    'error': '暂无比赛数据',
+                    'message': '数据库中暂无比赛数据，请运行同步脚本更新数据：python scripts/sync_daily_matches.py --days 7'
+                }), 404
+                
+        except Exception as db_error:
+            app.logger.error(f"❌ 数据库获取失败: {db_error}")
+            
+            return jsonify({
+                'success': False,
+                'error': str(db_error),
+                'message': '数据库查询失败，请稍后重试'
+            }), 500
             
     except Exception as e:
-        app.logger.error(f"获取体彩数据失败: {e}")
+        app.logger.error(f"❌ 获取体彩数据失败: {e}")
         
         return jsonify({
             'success': False,

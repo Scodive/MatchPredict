@@ -20,6 +20,14 @@ class LotteryManager {
             });
         }
 
+        // 强制刷新按钮 (提示用户运行同步脚本)
+        const forceRefreshBtn = document.getElementById('force-refresh-lottery-btn');
+        if (forceRefreshBtn) {
+            forceRefreshBtn.addEventListener('click', () => {
+                this.showForceRefreshModal();
+            });
+        }
+
         // 天数筛选
         const daysFilter = document.getElementById('days-filter');
         if (daysFilter) {
@@ -58,7 +66,7 @@ class LotteryManager {
                 refreshBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 获取中...';
             }
 
-            // 调用API获取比赛数据
+            // 从数据库获取比赛数据
             const response = await fetch(`/api/lottery/matches?days=${days}`);
             
             // 检查HTTP状态
@@ -88,7 +96,9 @@ class LotteryManager {
             if (data.success) {
                 this.matches = data.matches || [];
                 this.renderMatches();
-                this.showMessage(`成功获取 ${data.count || this.matches.length} 场比赛`, 'success');
+                
+                // 显示数据来源信息
+                this.showMessage(`💾 成功从数据库获取 ${data.count || this.matches.length} 场比赛`, 'success');
             } else {
                 throw new Error(data.message || '获取比赛数据失败');
             }
@@ -624,6 +634,52 @@ class LotteryManager {
         formatted = formatted.replace(/(<\/ul>)\s*(<ul>)/g, '');
         
         return formatted;
+    }
+
+    // 显示强制刷新模态框
+    showForceRefreshModal() {
+        const modal = document.createElement('div');
+        modal.className = 'modal-overlay';
+        modal.innerHTML = `
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3><i class="fas fa-download"></i> 更新比赛数据</h3>
+                    <button class="modal-close" onclick="this.closest('.modal-overlay').remove()">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p><strong>当前数据来源：</strong>数据库缓存</p>
+                    <p><strong>如需获取最新数据，请在服务器上运行以下命令：</strong></p>
+                    <div class="code-block">
+                        <code>python scripts/sync_daily_matches.py --days 7</code>
+                        <button class="copy-btn" onclick="navigator.clipboard.writeText('python scripts/sync_daily_matches.py --days 7')">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                    <p class="help-text">
+                        <i class="fas fa-info-circle"></i>
+                        该命令将从体彩官网获取最新7天的比赛数据并更新数据库
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn secondary-btn" onclick="this.closest('.modal-overlay').remove()">
+                        <i class="fas fa-times"></i> 关闭
+                    </button>
+                    <button class="btn primary-btn" onclick="this.closest('.modal-overlay').remove(); lotteryManager.refreshMatches();">
+                        <i class="fas fa-sync"></i> 刷新当前数据
+                    </button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+        
+        // 点击背景关闭模态框
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.remove();
+            }
+        });
     }
 
     // 保存预测结果到数据库

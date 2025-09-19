@@ -264,6 +264,9 @@ async function predictClassicMatches() {
         displayClassicPredictions(predictions);
         displayClassicParlays(parlayPredictions);
         
+        // 保存预测结果到数据库
+        saveClassicPredictionsToDatabase(predictions);
+        
         // 显示结果区域
         const resultsSection = document.getElementById('results-section');
         resultsSection.classList.remove('hidden');
@@ -716,6 +719,58 @@ window.getClassicMatches = () => classicMatches;
 window.setClassicMatches = (matches) => { classicMatches = matches; };
 window.updateClassicMatchesDisplay = updateClassicMatchesDisplay;
 window.clearClassicMatches = clearClassicMatches;
+
+// 保存经典预测结果到数据库
+async function saveClassicPredictionsToDatabase(predictions) {
+    try {
+        for (const prediction of predictions) {
+            // 确定预测结果
+            let predictedResult = '主胜';
+            let confidence = prediction.home_win_prob * 10; // 转换为0-10分
+            
+            // 选择概率最高的结果
+            if (prediction.draw_prob > prediction.home_win_prob && prediction.draw_prob > prediction.away_win_prob) {
+                predictedResult = '平局';
+                confidence = prediction.draw_prob * 10;
+            } else if (prediction.away_win_prob > prediction.home_win_prob) {
+                predictedResult = '客胜';
+                confidence = prediction.away_win_prob * 10;
+            }
+            
+            const saveData = {
+                mode: 'classic',
+                match_data: {
+                    home_team: prediction.home_team,
+                    away_team: prediction.away_team,
+                    league_name: prediction.league_code,
+                    home_odds: prediction.home_odds,
+                    draw_odds: prediction.draw_odds,
+                    away_odds: prediction.away_odds
+                },
+                prediction_result: predictedResult,
+                confidence: Math.round(confidence * 100) / 100, // 保留2位小数
+                ai_analysis: `经典模式预测 - 主胜概率:${(prediction.home_win_prob*100).toFixed(1)}% 平局概率:${(prediction.draw_prob*100).toFixed(1)}% 客胜概率:${(prediction.away_win_prob*100).toFixed(1)}%`
+            };
+            
+            // 发送到后端保存
+            const response = await fetch('/api/save-prediction', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(saveData)
+            });
+            
+            if (response.ok) {
+                console.log(`✅ 经典预测结果已保存: ${prediction.home_team} vs ${prediction.away_team}`);
+            } else {
+                console.warn(`⚠️ 经典预测结果保存失败: ${prediction.home_team} vs ${prediction.away_team}`);
+            }
+        }
+    } catch (error) {
+        console.error('保存经典预测结果到数据库失败:', error);
+    }
+}
 
 // 页面加载完成后初始化
 document.addEventListener('DOMContentLoaded', function() {
