@@ -504,8 +504,38 @@ class AIPredictionManager {
     formatAnalysisText(text) {
         if (!text) return '暂无分析';
         
-        // 将换行符转换为HTML换行
-        return text.replace(/\n/g, '<br>').replace(/\r/g, '');
+        // 处理markdown格式并转换为HTML
+        let formatted = text
+            // 处理标题
+            .replace(/\*\*([^*]+)\*\*/g, '<h5>$1</h5>')
+            // 处理粗体
+            .replace(/\*([^*]+)\*/g, '<strong>$1</strong>')
+            // 处理列表项
+            .replace(/^\s*[\*\-]\s+(.+)$/gm, '<li>$1</li>')
+            // 处理数字列表
+            .replace(/^\s*(\d+)\.\s+(.+)$/gm, '<li>$2</li>')
+            // 处理换行
+            .replace(/\n\n/g, '</p><p>')
+            .replace(/\n/g, '<br>');
+        
+        // 包装在段落中
+        if (!formatted.includes('<p>')) {
+            formatted = '<p>' + formatted + '</p>';
+        }
+        
+        // 处理列表包装
+        formatted = formatted.replace(/(<li>.*?<\/li>)/gs, function(match) {
+            if (!match.includes('<ul>')) {
+                return '<ul>' + match + '</ul>';
+            }
+            return match;
+        });
+        
+        // 处理连续的列表项
+        formatted = formatted.replace(/(<\/li>)\s*(<li>)/g, '$1$2');
+        formatted = formatted.replace(/(<\/ul>)\s*(<ul>)/g, '');
+        
+        return formatted;
     }
 
     switchTab(tabName) {

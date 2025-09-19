@@ -100,23 +100,9 @@ document.addEventListener('DOMContentLoaded', function() {
             console.log('显示模式区域:', mode);
         }
         
-        // 为AI模式绑定按钮事件
-        if (mode === 'ai') {
-            const aiAddMatchBtn = document.getElementById('add-ai-match-btn');
-            const aiPredictBtn = document.getElementById('ai-predict-btn');
-            
-            if (aiAddMatchBtn && !aiAddMatchBtn.hasAttribute('data-bound')) {
-                aiAddMatchBtn.addEventListener('click', addAIMatch);
-                aiAddMatchBtn.setAttribute('data-bound', 'true');
-            }
-            
-            if (aiPredictBtn && !aiPredictBtn.hasAttribute('data-bound')) {
-                aiPredictBtn.addEventListener('click', function() {
-                    console.log('AI预测按钮点击');
-                    // 这里可以添加AI预测逻辑
-                });
-                aiPredictBtn.setAttribute('data-bound', 'true');
-            }
+        // 通知AI预测管理器切换模式
+        if (window.aiPredictionManager) {
+            window.aiPredictionManager.switchMode(mode);
         }
         
         // 清空所有数据和结果
@@ -220,68 +206,6 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     // 添加AI模式比赛
-    function addAIMatch() {
-        const homeTeam = document.getElementById('ai-home-team').value.trim();
-        const awayTeam = document.getElementById('ai-away-team').value.trim();
-        const league = document.getElementById('ai-league').value.trim();
-        const homeOdds = document.getElementById('ai-home-odds').value;
-        const drawOdds = document.getElementById('ai-draw-odds').value;
-        const awayOdds = document.getElementById('ai-away-odds').value;
-        
-        // 验证输入
-        if (!homeTeam || !awayTeam || !league) {
-            showMessage('请填写完整的比赛信息', 'error');
-            return;
-        }
-        
-        if (homeTeam === awayTeam) {
-            showMessage('主队和客队不能相同', 'error');
-            return;
-        }
-        
-        if (!homeOdds || !drawOdds || !awayOdds) {
-            showMessage('请填写完整的赔率信息', 'error');
-            return;
-        }
-        
-        // 检查是否已存在相同比赛
-        const existingMatch = matches.find(match => 
-            match.home_team === homeTeam && match.away_team === awayTeam && match.league === league
-        );
-        
-        if (existingMatch) {
-            showMessage('该比赛已存在', 'error');
-            return;
-        }
-        
-        // 创建比赛对象
-        const match = {
-            id: Date.now(),
-            home_team: homeTeam,
-            away_team: awayTeam,
-            league: league,
-            home_odds: parseFloat(homeOdds),
-            draw_odds: parseFloat(drawOdds),
-            away_odds: parseFloat(awayOdds),
-            source: 'ai'
-        };
-        
-        // 添加到数组
-        matches.push(match);
-        
-        // 更新显示
-        updateMatchesDisplay();
-        
-        // 清空表单
-        document.getElementById('ai-home-team').value = '';
-        document.getElementById('ai-away-team').value = '';
-        document.getElementById('ai-league').value = '';
-        document.getElementById('ai-home-odds').value = '';
-        document.getElementById('ai-draw-odds').value = '';
-        document.getElementById('ai-away-odds').value = '';
-        
-        showMessage('比赛已添加', 'success');
-    }
 
     // 添加比赛
     function addMatch() {

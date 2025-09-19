@@ -830,6 +830,61 @@ main {
     color: var(--secondary-color);
 }
 
+.ai-analysis-content h5 {
+    color: var(--primary-color);
+    font-size: 1.1rem;
+    margin: 1.2rem 0 0.8rem 0;
+    font-weight: 600;
+    border-bottom: 2px solid var(--secondary-color);
+    padding-bottom: 0.3rem;
+}
+
+.ai-analysis-content ul {
+    margin: 0.8rem 0;
+    padding-left: 1.5rem;
+}
+
+.ai-analysis-content li {
+    margin: 0.5rem 0;
+    line-height: 1.6;
+    color: var(--text-primary);
+}
+
+.ai-analysis-content strong {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.ai-analysis-content p {
+    margin: 0.8rem 0;
+    line-height: 1.6;
+    color: var(--text-primary);
+}
+
+.analysis-text {
+    max-height: 500px;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+}
+
+.analysis-text::-webkit-scrollbar {
+    width: 6px;
+}
+
+.analysis-text::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+    border-radius: 3px;
+}
+
+.analysis-text::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 3px;
+}
+
+.analysis-text::-webkit-scrollbar-thumb:hover {
+    background: var(--secondary-color);
+}
+
 .analysis-text {
     line-height: 1.8;
     color: var(--text-primary);
