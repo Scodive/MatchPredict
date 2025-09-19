@@ -192,7 +192,8 @@ class PredictionDatabase:
             return False
     
     def save_ai_prediction(self, match_data: Dict[str, Any], prediction_result: str, 
-                          confidence: float, ai_analysis: str, user_ip: str = None) -> bool:
+                          confidence: float, ai_analysis: str, user_ip: str = None,
+                          user_id: int = None, username: str = None) -> bool:
         """
         保存AI模式预测结果
         
@@ -227,6 +228,8 @@ class PredictionDatabase:
             prediction_data = {
                 'prediction_id': prediction_id,
                 'prediction_mode': 'AI',
+                'user_id': user_id,
+                'username': username,
                 'home_team': match_data.get('home_team', ''),
                 'away_team': match_data.get('away_team', ''),
                 'league_name': match_data.get('league_name', ''),
@@ -247,7 +250,8 @@ class PredictionDatabase:
             return False
     
     def save_classic_prediction(self, match_data: Dict[str, Any], prediction_result: str, 
-                               confidence: float, user_ip: str = None) -> bool:
+                               confidence: float, user_ip: str = None,
+                               user_id: int = None, username: str = None) -> bool:
         """
         保存经典模式预测结果
         
@@ -266,6 +270,8 @@ class PredictionDatabase:
             prediction_data = {
                 'prediction_id': prediction_id,
                 'prediction_mode': 'Classic',
+                'user_id': user_id,
+                'username': username,
                 'home_team': match_data.get('home_team', ''),
                 'away_team': match_data.get('away_team', ''),
                 'league_name': match_data.get('league_name', ''),
@@ -286,7 +292,8 @@ class PredictionDatabase:
             return False
     
     def save_lottery_prediction(self, match_data: Dict[str, Any], prediction_result: str, 
-                               confidence: float, ai_analysis: str, user_ip: str = None) -> bool:
+                               confidence: float, ai_analysis: str, user_ip: str = None,
+                               user_id: int = None, username: str = None) -> bool:
         """
         保存彩票模式预测结果
         
@@ -321,6 +328,8 @@ class PredictionDatabase:
             prediction_data = {
                 'prediction_id': prediction_id,
                 'prediction_mode': 'Lottery',
+                'user_id': user_id,
+                'username': username,
                 'home_team': match_data.get('home_team', ''),
                 'away_team': match_data.get('away_team', ''),
                 'league_name': match_data.get('league_name', ''),

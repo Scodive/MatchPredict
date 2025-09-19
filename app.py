@@ -230,6 +230,27 @@ def save_prediction():
                 'message': '数据库未配置'
             }), 500
         
+        # 检查用户登录状态
+        current_user = get_current_user()
+        if not current_user:
+            return jsonify({
+                'success': False,
+                'message': '请先登录再进行预测'
+            }), 401
+        
+        # 检查用户预测权限
+        can_predict = prediction_db.can_user_predict(
+            current_user['id'], 
+            current_user['user_type'], 
+            current_user['daily_predictions_used']
+        )
+        
+        if not can_predict:
+            return jsonify({
+                'success': False,
+                'message': '今日免费预测次数已用完，请升级会员'
+            }), 403
+
         data = request.get_json()
         if not data:
             return jsonify({
@@ -252,14 +273,18 @@ def save_prediction():
                 prediction_result=prediction_result,
                 confidence=confidence,
                 ai_analysis=ai_analysis,
-                user_ip=user_ip
+                user_ip=user_ip,
+                user_id=current_user['id'],
+                username=current_user['username']
             )
         elif prediction_mode == 'classic':
             success = prediction_db.save_classic_prediction(
                 match_data=match_data,
                 prediction_result=prediction_result,
                 confidence=confidence,
-                user_ip=user_ip
+                user_ip=user_ip,
+                user_id=current_user['id'],
+                username=current_user['username']
             )
         elif prediction_mode == 'lottery':
             success = prediction_db.save_lottery_prediction(
@@ -267,7 +292,9 @@ def save_prediction():
                 prediction_result=prediction_result,
                 confidence=confidence,
                 ai_analysis=ai_analysis,
-                user_ip=user_ip
+                user_ip=user_ip,
+                user_id=current_user['id'],
+                username=current_user['username']
             )
         else:
             return jsonify({
@@ -276,6 +303,9 @@ def save_prediction():
             }), 400
         
         if success:
+            # 增加用户预测次数
+            prediction_db.increment_user_predictions(current_user['id'])
+            
             return jsonify({
                 'success': True,
                 'message': '预测结果保存成功'
