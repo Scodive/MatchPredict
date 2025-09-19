@@ -24,9 +24,15 @@ document.addEventListener('DOMContentLoaded', function() {
         loadAllLeaguesData();
         
         // 事件监听器
-        leagueSelect.addEventListener('change', handleLeagueChange);
-        clearMatchesBtn.addEventListener('click', clearMatches);
-        predictBtn.addEventListener('click', predictMatches);
+        if (leagueSelect) {
+            leagueSelect.addEventListener('change', handleLeagueChange);
+        }
+        if (clearMatchesBtn) {
+            clearMatchesBtn.addEventListener('click', clearMatches);
+        }
+        if (predictBtn) {
+            predictBtn.addEventListener('click', predictMatches);
+        }
         
         // 模式切换
         initModeSelection();

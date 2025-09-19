@@ -40,9 +40,7 @@ class LotteryManager {
         const predictBtn = document.getElementById('lottery-ai-predict-btn');
         if (predictBtn) {
             predictBtn.addEventListener('click', () => {
-                if (window.aiPredictionManager) {
-                    window.aiPredictionManager.startAIPrediction();
-                }
+                this.startLotteryAIPrediction();
             });
         }
     }
@@ -455,6 +453,125 @@ class LotteryManager {
         setTimeout(() => {
             messageDiv.remove();
         }, 3000);
+    }
+
+    // 开始彩票AI预测
+    async startLotteryAIPrediction() {
+        const selectedMatches = this.getSelectedMatches();
+        
+        if (selectedMatches.length === 0) {
+            this.showMessage('请先选择比赛', 'error');
+            return;
+        }
+
+        console.log('开始彩票AI预测，选中比赛:', selectedMatches.length);
+        
+        try {
+            // 显示加载状态
+            const loadingOverlay = document.getElementById('loading-overlay');
+            if (loadingOverlay) {
+                loadingOverlay.classList.remove('hidden');
+            }
+
+            // 转换数据格式为AI预测需要的格式
+            const aiMatches = selectedMatches.map(match => ({
+                match_id: match.match_id,
+                home_team: match.home_team,
+                away_team: match.away_team,
+                league_name: match.league_name,
+                home_odds: parseFloat(match.odds.hhad.h),
+                draw_odds: parseFloat(match.odds.hhad.d),
+                away_odds: parseFloat(match.odds.hhad.a),
+                source: 'lottery'
+            }));
+
+            // 调用AI预测API
+            const response = await fetch('/api/ai/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    matches: aiMatches
+                })
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                console.log('AI预测成功:', result.predictions);
+                this.displayAIPredictionResults(result.predictions);
+            } else {
+                throw new Error(result.error || 'AI预测失败');
+            }
+
+        } catch (error) {
+            console.error('AI预测错误:', error);
+            this.showMessage('AI预测失败: ' + error.message, 'error');
+        } finally {
+            // 隐藏加载状态
+            const loadingOverlay = document.getElementById('loading-overlay');
+            if (loadingOverlay) {
+                loadingOverlay.classList.add('hidden');
+            }
+        }
+    }
+
+    // 显示AI预测结果
+    displayAIPredictionResults(predictions) {
+        // 显示结果区域
+        const resultsSection = document.getElementById('results-section');
+        if (resultsSection) {
+            resultsSection.classList.remove('hidden');
+            
+            // 显示AI分析标签
+            const aiTab = document.querySelector('[data-tab="ai-analysis"]');
+            if (aiTab) {
+                aiTab.classList.remove('hidden');
+                aiTab.click(); // 切换到AI分析标签
+            }
+            
+            // 渲染AI结果
+            const aiResultsContainer = document.getElementById('ai-analysis-results');
+            if (aiResultsContainer) {
+                let html = '<div class="simple-ai-results">';
+                
+                predictions.forEach(prediction => {
+                    html += `
+                        <div class="ai-result-card lottery-selected-card">
+                            <div class="match-header">
+                                <div class="match-title">
+                                    <span>${prediction.home_team}</span>
+                                    <span> vs </span>
+                                    <span>${prediction.away_team}</span>
+                                </div>
+                                <div class="league-info">${prediction.league_name}</div>
+                            </div>
+                            
+                            <div class="odds-display">
+                                <div class="odds-item">主胜: ${prediction.odds.home}</div>
+                                <div class="odds-item">平局: ${prediction.odds.draw}</div>
+                                <div class="odds-item">客胜: ${prediction.odds.away}</div>
+                            </div>
+                            
+                            <div class="ai-analysis-content">
+                                <h4><i class="fas fa-brain"></i> AI智能分析</h4>
+                                <div class="analysis-text">${prediction.ai_analysis}</div>
+                            </div>
+                            
+                            <div class="match-source">
+                                <span class="source-tag">体彩数据</span>
+                            </div>
+                        </div>
+                    `;
+                });
+                
+                html += '</div>';
+                aiResultsContainer.innerHTML = html;
+            }
+        }
+        
+        this.showMessage(`AI预测完成，分析了 ${predictions.length} 场比赛`, 'success');
     }
 }
 

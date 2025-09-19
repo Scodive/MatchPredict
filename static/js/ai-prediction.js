@@ -241,6 +241,11 @@ class AIPredictionManager {
     renderAIMatches() {
         const container = document.getElementById('matches-container');
         
+        if (!container) {
+            console.warn('找不到matches-container元素');
+            return;
+        }
+        
         if (this.aiMatches.length === 0) {
             container.innerHTML = '<div class="empty-message">尚未添加任何比赛</div>';
             return;
