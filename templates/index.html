@@ -39,97 +39,100 @@
     <div class="container">
         <!-- 主页面头部 -->
         <header class="main-header">
-            <div class="hero-section">
-                <h1>AI足球预测</h1>
-                <p class="subtitle">基于大语言模型的智能足球比赛分析平台</p>
+            <div class="header-layout">
+                <!-- 左侧：标题和介绍 -->
+                <div class="hero-section">
+                    <h1>AI足球预测</h1>
+                    <p class="subtitle">基于大语言模型的智能足球比赛分析平台</p>
+                </div>
+                
+                <!-- 右侧：预测成功案例 -->
+                <div class="success-cases">
+                    <h2><i class="fas fa-trophy"></i> 预测成功案例</h2>
+                    <div class="cases-table-container">
+                        <table class="cases-table">
+                            <thead>
+                                <tr>
+                                    <th>准确率</th>
+                                    <th>日期</th>
+                                    <th>场次</th>
+                                    <th>预测结果</th>
+                                    <th>比分结果</th>
+                                    <th>赔率</th>
+                                    <th>场次</th>
+                                    <th>预测结果</th>
+                                    <th>比分结果</th>
+                                    <th>赔率</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr class="success-row">
+                                    <td class="accuracy">100%</td>
+                                    <td>2025-03-02</td>
+                                    <td class="match-code">周日008</td>
+                                    <td class="prediction win">胜</td>
+                                    <td class="score">1-0</td>
+                                    <td class="odds">@2.900</td>
+                                    <td class="match-code">周日011</td>
+                                    <td class="prediction win">胜</td>
+                                    <td class="score">2-1</td>
+                                    <td class="odds">@1.430</td>
+                                </tr>
+                                <tr class="success-row">
+                                    <td class="accuracy">100%</td>
+                                    <td>2025-03-03</td>
+                                    <td class="match-code">周日019</td>
+                                    <td class="prediction lose">负</td>
+                                    <td class="score">1-2</td>
+                                    <td class="odds">@3.40</td>
+                                    <td class="match-code">周日021</td>
+                                    <td class="prediction draw">平</td>
+                                    <td class="score">3-3</td>
+                                    <td class="odds">@2.83</td>
+                                </tr>
+                                <tr class="success-row">
+                                    <td class="accuracy">90%</td>
+                                    <td>2025-03-01</td>
+                                    <td class="match-code">周六012</td>
+                                    <td class="prediction win">胜</td>
+                                    <td class="score">3-1</td>
+                                    <td class="odds">@2.15</td>
+                                    <td class="match-code">周六015</td>
+                                    <td class="prediction draw">平</td>
+                                    <td class="score">1-1</td>
+                                    <td class="odds">@3.20</td>
+                                </tr>
+                                <tr class="success-row">
+                                    <td class="accuracy">100%</td>
+                                    <td>2025-02-28</td>
+                                    <td class="match-code">周五007</td>
+                                    <td class="prediction lose">负</td>
+                                    <td class="score">0-2</td>
+                                    <td class="odds">@4.20</td>
+                                    <td class="match-code">周五009</td>
+                                    <td class="prediction win">胜</td>
+                                    <td class="score">2-0</td>
+                                    <td class="odds">@1.85</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="cases-stats">
+                        <div class="stat-item">
+                            <div class="stat-number">97.5%</div>
+                            <div class="stat-label">平均准确率</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">128</div>
+                            <div class="stat-label">成功预测场次</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-number">+245%</div>
+                            <div class="stat-label">投注回报率</div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            
-            <!-- 预测成功案例展示 -->
-            <section class="success-cases">
-                <h2><i class="fas fa-trophy"></i> 预测成功案例</h2>
-                <div class="cases-table-container">
-                    <table class="cases-table">
-                        <thead>
-                            <tr>
-                                <th>准确率</th>
-                                <th>日期</th>
-                                <th>场次</th>
-                                <th>预测结果</th>
-                                <th>比分结果</th>
-                                <th>赔率</th>
-                                <th>场次</th>
-                                <th>预测结果</th>
-                                <th>比分结果</th>
-                                <th>赔率</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="success-row">
-                                <td class="accuracy">100%</td>
-                                <td>2025-03-02</td>
-                                <td class="match-code">周日008</td>
-                                <td class="prediction win">胜</td>
-                                <td class="score">1-0</td>
-                                <td class="odds">@2.900</td>
-                                <td class="match-code">周日011</td>
-                                <td class="prediction win">胜</td>
-                                <td class="score">2-1</td>
-                                <td class="odds">@1.430</td>
-                            </tr>
-                            <tr class="success-row">
-                                <td class="accuracy">100%</td>
-                                <td>2025-03-03</td>
-                                <td class="match-code">周日019</td>
-                                <td class="prediction lose">负</td>
-                                <td class="score">1-2</td>
-                                <td class="odds">@3.40</td>
-                                <td class="match-code">周日021</td>
-                                <td class="prediction draw">平</td>
-                                <td class="score">3-3</td>
-                                <td class="odds">@2.83</td>
-                            </tr>
-                            <tr class="success-row">
-                                <td class="accuracy">90%</td>
-                                <td>2025-03-01</td>
-                                <td class="match-code">周六012</td>
-                                <td class="prediction win">胜</td>
-                                <td class="score">3-1</td>
-                                <td class="odds">@2.15</td>
-                                <td class="match-code">周六015</td>
-                                <td class="prediction draw">平</td>
-                                <td class="score">1-1</td>
-                                <td class="odds">@3.20</td>
-                            </tr>
-                            <tr class="success-row">
-                                <td class="accuracy">100%</td>
-                                <td>2025-02-28</td>
-                                <td class="match-code">周五007</td>
-                                <td class="prediction lose">负</td>
-                                <td class="score">0-2</td>
-                                <td class="odds">@4.20</td>
-                                <td class="match-code">周五009</td>
-                                <td class="prediction win">胜</td>
-                                <td class="score">2-0</td>
-                                <td class="odds">@1.85</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="cases-stats">
-                    <div class="stat-item">
-                        <div class="stat-number">97.5%</div>
-                        <div class="stat-label">平均准确率</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number">128</div>
-                        <div class="stat-label">成功预测场次</div>
-                    </div>
-                    <div class="stat-item">
-                        <div class="stat-number">+245%</div>
-                        <div class="stat-label">投注回报率</div>
-                    </div>
-                </div>
-            </section>
         </header>
 
         <main>
@@ -314,32 +317,18 @@
                         </div>
                     </div>
 
-                    <button id="add-ai-match-btn" class="btn primary-btn">
-                        <i class="fas fa-plus"></i> 添加AI分析比赛
-                    </button>
+                    <div class="ai-actions">
+                        <button id="add-ai-match-btn" class="btn primary-btn">
+                            <i class="fas fa-plus"></i> 添加AI分析比赛
+                        </button>
+                        
+                        <button id="ai-predict-btn" class="btn secondary-btn" disabled>
+                            <i class="fas fa-brain"></i> AI智能预测
+                        </button>
+                    </div>
                 </div>
             </section>
 
-            <!-- AI模式已添加比赛区域 -->
-            <section id="ai-matches-section" class="matches-section hidden">
-                <h2><i class="fas fa-list"></i> 已添加比赛 <span id="match-count">(0)</span></h2>
-                <div id="matches-container" class="matches-container">
-                    <div class="empty-message">
-                        <i class="fas fa-futbol"></i>
-                        <p>尚未添加任何比赛</p>
-                    </div>
-                </div>
-                
-                <div class="action-buttons">
-                    <button id="clear-matches-btn" class="btn secondary-btn" disabled>
-                        <i class="fas fa-trash"></i> 清空比赛
-                    </button>
-                    
-                    <button id="ai-predict-btn" class="btn primary-btn" disabled>
-                        <i class="fas fa-brain"></i> AI智能预测
-                    </button>
-                </div>
-            </section>
 
             <section id="results-section" class="results-section hidden">
                 <h2><i class="fas fa-trophy"></i> 预测结果</h2>

@@ -131,17 +131,29 @@ body {
     margin-bottom: 2rem;
 }
 
-.hero-section {
-    text-align: center;
-    padding: 3rem 0 2rem 0;
-    background: linear-gradient(135deg, rgba(30, 64, 175, 0.05) 0%, rgba(14, 165, 233, 0.05) 100%);
+.header-layout {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 2rem;
+    align-items: start;
+    padding: 2rem;
+    background: var(--card-bg);
     border-radius: 20px;
-    margin-bottom: 2rem;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-light);
+}
+
+.hero-section {
+    text-align: left;
+    padding: 2rem 0;
+    background: linear-gradient(135deg, rgba(30, 64, 175, 0.05) 0%, rgba(14, 165, 233, 0.05) 100%);
+    border-radius: 16px;
+    padding: 2rem;
     border: 1px solid var(--border-color);
 }
 
 .hero-section h1 {
-    font-size: 3rem;
+    font-size: 2.5rem;
     font-weight: 700;
     margin: 0 0 1rem 0;
     background: var(--gradient-primary);
@@ -151,20 +163,19 @@ body {
 }
 
 .hero-section .subtitle {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     color: var(--text-secondary);
     margin: 0;
     font-weight: 400;
+    line-height: 1.6;
 }
 
 /* 预测成功案例 */
 .success-cases {
-    background: var(--card-bg);
+    background: var(--bg-secondary);
     border-radius: 16px;
-    padding: 2rem;
-    box-shadow: var(--shadow-medium);
+    padding: 1.5rem;
     border: 1px solid var(--border-color);
-    margin-bottom: 2rem;
 }
 
 .success-cases h2 {
@@ -728,6 +739,14 @@ main {
     display: none;
 }
 
+.tab-content {
+    display: none;
+}
+
+.tab-content.active {
+    display: block;
+}
+
 /* AI Result Cards */
 .simple-ai-results {
     display: flex;
@@ -997,6 +1016,20 @@ footer {
     .cases-table th,
     .cases-table td {
         padding: 0.5rem 0.25rem;
+    }
+    
+    .header-layout {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .hero-section h1 {
+        font-size: 2rem;
+    }
+    
+    /* 响应式预测结果布局 */
+    .individual-results {
+        grid-template-columns: 1fr;
     }
     
     /* 响应式经典模式布局 */
@@ -1319,102 +1352,116 @@ footer {
     gap: 0.3rem;
 }
 
-/* 经典预测结果样式 */
+/* 预测结果网格布局 */
+.individual-results {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+/* 经典预测结果样式 - 紧凑版 */
 .classic-prediction {
     background: var(--card-bg);
     border-radius: 12px;
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
+    padding: 1rem;
     border: 1px solid var(--border-color);
     box-shadow: var(--shadow-light);
+    min-height: 280px;
+    display: flex;
+    flex-direction: column;
 }
 
 .classic-prediction .match-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1.5rem;
-    padding-bottom: 1rem;
+    margin-bottom: 0.8rem;
+    padding-bottom: 0.8rem;
     border-bottom: 1px solid var(--border-color);
 }
 
 .classic-prediction .match-header h3 {
     margin: 0;
     color: var(--text-primary);
-    font-size: 1.2rem;
+    font-size: 1rem;
+    font-weight: 600;
 }
 
 .league-badge {
     background: var(--primary-color);
     color: white;
-    padding: 0.3rem 0.8rem;
-    border-radius: 20px;
-    font-size: 0.8rem;
+    padding: 0.2rem 0.6rem;
+    border-radius: 12px;
+    font-size: 0.7rem;
     font-weight: 600;
 }
 
 .probabilities-section {
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.8rem;
+    flex: 1;
 }
 
 .probabilities-section h4 {
-    margin-bottom: 1rem;
+    margin-bottom: 0.6rem;
     color: var(--text-primary);
-    font-size: 1rem;
+    font-size: 0.85rem;
+    font-weight: 600;
 }
 
 .probability-bars {
     display: flex;
     flex-direction: column;
-    gap: 0.8rem;
+    gap: 0.4rem;
 }
 
 .prob-bar {
     display: flex;
     align-items: center;
-    gap: 1rem;
+    gap: 0.5rem;
 }
 
 .prob-label {
-    width: 60px;
+    width: 40px;
     font-weight: 500;
     color: var(--text-secondary);
-    font-size: 0.9rem;
+    font-size: 0.75rem;
 }
 
 .prob-value {
-    width: 60px;
+    width: 45px;
     font-weight: 600;
     color: var(--text-primary);
     text-align: right;
+    font-size: 0.8rem;
 }
 
 .prob-visual {
     flex: 1;
-    height: 8px;
+    height: 6px;
     background: var(--bg-secondary);
-    border-radius: 4px;
+    border-radius: 3px;
     overflow: hidden;
 }
 
 .prob-fill {
     height: 100%;
     background: var(--gradient-primary);
-    border-radius: 4px;
+    border-radius: 3px;
     transition: width 0.3s ease;
 }
 
 .prediction-details {
-    margin-bottom: 1.5rem;
+    margin-bottom: 0.8rem;
     background: var(--bg-secondary);
-    padding: 1rem;
-    border-radius: 8px;
+    padding: 0.8rem;
+    border-radius: 6px;
 }
 
 .detail-item {
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.3rem;
     color: var(--text-primary);
-    font-size: 0.9rem;
+    font-size: 0.75rem;
+    line-height: 1.4;
 }
 
 .detail-item:last-child {
@@ -1424,27 +1471,30 @@ footer {
 .recommendation {
     background: var(--accent-color);
     color: white;
-    padding: 0.5rem;
-    border-radius: 6px;
-    margin-top: 0.5rem;
+    padding: 0.4rem;
+    border-radius: 4px;
+    margin-top: 0.3rem;
+    font-size: 0.75rem;
 }
 
 .odds-comparison {
     background: var(--bg-secondary);
-    padding: 1rem;
-    border-radius: 8px;
+    padding: 0.8rem;
+    border-radius: 6px;
+    margin-top: auto;
 }
 
 .odds-comparison h4 {
-    margin-bottom: 0.8rem;
+    margin-bottom: 0.5rem;
     color: var(--text-primary);
-    font-size: 0.9rem;
+    font-size: 0.8rem;
+    font-weight: 600;
 }
 
 .odds-row {
     display: flex;
     justify-content: space-between;
-    gap: 1rem;
+    gap: 0.5rem;
     font-weight: 600;
     color: var(--text-primary);
 }
@@ -1452,10 +1502,11 @@ footer {
 .odds-row span {
     flex: 1;
     text-align: center;
-    padding: 0.4rem;
+    padding: 0.3rem;
     background: var(--card-bg);
     border-radius: 4px;
     border: 1px solid var(--border-color);
+    font-size: 0.75rem;
 }
 
 /* 串关结果样式 */

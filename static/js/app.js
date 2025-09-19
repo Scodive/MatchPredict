@@ -34,6 +34,8 @@ document.addEventListener('DOMContentLoaded', function() {
         // 标签切换
         document.querySelectorAll('.tab-btn').forEach(btn => {
             btn.addEventListener('click', function() {
+                console.log('标签切换:', this.getAttribute('data-tab'));
+                
                 // 移除所有标签的活动状态
                 document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
                 document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
@@ -41,7 +43,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 // 添加当前标签的活动状态
                 this.classList.add('active');
                 const tabId = this.getAttribute('data-tab') + '-tab';
-                document.getElementById(tabId).classList.add('active');
+                const targetTab = document.getElementById(tabId);
+                if (targetTab) {
+                    targetTab.classList.add('active');
+                    console.log('显示标签页:', tabId);
+                } else {
+                    console.error('找不到标签页:', tabId);
+                }
             });
         });
     }
@@ -59,9 +67,14 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 切换模式
     function switchMode(mode) {
+        console.log('切换到模式:', mode);
+        
         // 更新导航按钮状态
         document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-        document.getElementById(mode + '-mode-btn').classList.add('active');
+        const targetBtn = document.getElementById(mode + '-mode-btn');
+        if (targetBtn) {
+            targetBtn.classList.add('active');
+        }
         
         // 隐藏所有模式区域
         document.querySelectorAll('.match-input-section').forEach(section => {
@@ -69,20 +82,29 @@ document.addEventListener('DOMContentLoaded', function() {
         });
         
         // 显示选中的模式
-        document.getElementById(mode + '-mode').classList.remove('hidden');
+        const targetSection = document.getElementById(mode + '-mode');
+        if (targetSection) {
+            targetSection.classList.remove('hidden');
+            console.log('显示模式区域:', mode);
+        }
         
-        // 根据模式显示或隐藏AI比赛区域
-        const aiMatchesSection = document.getElementById('ai-matches-section');
+        // 为AI模式绑定按钮事件
         if (mode === 'ai') {
-            aiMatchesSection.classList.remove('hidden');
-            // 为AI模式绑定添加比赛按钮
             const aiAddMatchBtn = document.getElementById('add-ai-match-btn');
+            const aiPredictBtn = document.getElementById('ai-predict-btn');
+            
             if (aiAddMatchBtn && !aiAddMatchBtn.hasAttribute('data-bound')) {
                 aiAddMatchBtn.addEventListener('click', addAIMatch);
                 aiAddMatchBtn.setAttribute('data-bound', 'true');
             }
-        } else {
-            aiMatchesSection.classList.add('hidden');
+            
+            if (aiPredictBtn && !aiPredictBtn.hasAttribute('data-bound')) {
+                aiPredictBtn.addEventListener('click', function() {
+                    console.log('AI预测按钮点击');
+                    // 这里可以添加AI预测逻辑
+                });
+                aiPredictBtn.setAttribute('data-bound', 'true');
+            }
         }
         
         // 清空所有数据和结果
@@ -90,7 +112,9 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // 隐藏结果区域
         const resultsSection = document.getElementById('results-section');
-        resultsSection.classList.add('hidden');
+        if (resultsSection) {
+            resultsSection.classList.add('hidden');
+        }
     }
     
     // 清空所有数据和结果
