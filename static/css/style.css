@@ -2630,3 +2630,19 @@ footer {
     gap: 0.5rem;
 }
 
+
+/* 禁用按钮样式 */
+.btn.disabled,
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+    background: #666;
+}
+
+.btn.disabled:hover,
+.btn:disabled:hover {
+    background: #666;
+    transform: none;
+}
+

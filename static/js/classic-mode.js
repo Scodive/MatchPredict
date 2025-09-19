@@ -244,6 +244,11 @@ function clearClassicMatches() {
 
 // 预测经典模式比赛
 async function predictClassicMatches() {
+    // 检查登录状态和预测权限
+    if (!await window.authManager.checkPredictionLimit()) {
+        return;
+    }
+    
     if (classicMatches.length === 0) {
         showMessage('请先添加比赛', 'error');
         return;

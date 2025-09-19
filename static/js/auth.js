@@ -56,11 +56,17 @@ class AuthManager {
                 if (data.success) {
                     this.currentUser = data.user;
                     this.updateUserInterface();
+                    this.enableAllPredictionButtons();
+                    return;
                 }
             }
         } catch (error) {
             console.log('用户未登录或检查登录状态失败');
         }
+        
+        // 未登录时禁用所有预测按钮
+        this.currentUser = null;
+        this.disableAllPredictionButtons();
     }
 
     showLoginModal() {
@@ -117,6 +123,7 @@ class AuthManager {
                 this.showMessage('登录成功！', 'success');
                 this.closeModal('login-modal');
                 this.updateUserInterface();
+                this.enableAllPredictionButtons();
                 
                 // 重新加载页面以更新服务器端状态
                 setTimeout(() => {
@@ -263,12 +270,55 @@ class AuthManager {
     }
 
     async checkPredictionLimit() {
+        // 首先检查是否登录
+        if (!await this.requireLogin()) {
+            return false;
+        }
+        
         const canPredict = await this.checkCanPredict();
         if (!canPredict) {
             this.showMessage('今日免费预测次数已用完，请升级到会员版本', 'warning');
             return false;
         }
         return true;
+    }
+
+    // 禁用所有预测按钮
+    disableAllPredictionButtons() {
+        const buttons = [
+            'classic-predict-btn',
+            'lottery-ai-predict-btn', 
+            'ai-prediction-btn',
+            'generate-parlay-btn'
+        ];
+        
+        buttons.forEach(btnId => {
+            const btn = document.getElementById(btnId);
+            if (btn) {
+                btn.disabled = true;
+                btn.classList.add('disabled');
+                btn.title = '请先登录';
+            }
+        });
+    }
+
+    // 启用所有预测按钮  
+    enableAllPredictionButtons() {
+        const buttons = [
+            'classic-predict-btn',
+            'lottery-ai-predict-btn',
+            'ai-prediction-btn', 
+            'generate-parlay-btn'
+        ];
+        
+        buttons.forEach(btnId => {
+            const btn = document.getElementById(btnId);
+            if (btn) {
+                btn.disabled = false;
+                btn.classList.remove('disabled');
+                btn.title = '';
+            }
+        });
     }
 
     showMessage(message, type = 'info') {

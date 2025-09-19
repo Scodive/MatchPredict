@@ -504,6 +504,11 @@ class LotteryManager {
 
     // 开始彩票AI预测
     async startLotteryAIPrediction() {
+        // 检查登录状态和预测权限
+        if (!await window.authManager.checkPredictionLimit()) {
+            return;
+        }
+        
         const selectedMatches = this.getSelectedMatches();
         
         if (selectedMatches.length === 0) {
@@ -832,6 +837,11 @@ class LotteryManager {
 
     // 最佳串关推荐
     async generateBestParlay() {
+        // 检查登录状态和预测权限
+        if (!await window.authManager.checkPredictionLimit()) {
+            return;
+        }
+        
         const selectedMatchesArray = Array.from(this.selectedMatches).map(id => 
             this.matches.find(match => match.match_id === id)
         ).filter(Boolean);

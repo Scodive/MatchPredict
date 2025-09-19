@@ -310,6 +310,11 @@ class AIPredictionManager {
     }
 
     async startAIPrediction() {
+        // 检查登录状态和预测权限
+        if (!await window.authManager.checkPredictionLimit()) {
+            return;
+        }
+        
         try {
             // 获取要预测的比赛数据
             let matchesToPredict = [];
