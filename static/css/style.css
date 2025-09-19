@@ -2022,3 +2022,228 @@ footer {
     }
 }
 
+/* 彩票模式折叠功能 */
+.matches-summary {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 1rem;
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    margin-top: 1rem;
+    border: 1px solid var(--border-color);
+}
+
+.matches-count {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+
+.matches-count span {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.matches-separator {
+    margin: 0 0.5rem;
+    color: var(--border-color);
+}
+
+.compact-btn {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+/* 比赛卡片折叠状态 */
+.lottery-matches-list.collapsed .lottery-match-card:nth-child(n+11) {
+    display: none;
+}
+
+.lottery-matches-list .lottery-match-card {
+    display: block;
+}
+
+/* 最佳串关推荐 */
+.best-parlay-section {
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    border: 2px solid var(--primary-color);
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+    animation: parlaySlideIn 0.3s ease-out;
+}
+
+@keyframes parlaySlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.parlay-header {
+    background: var(--primary-color);
+    color: white;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.parlay-header h4 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.parlay-header .compact-btn {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.parlay-header .compact-btn:hover {
+    background: rgba(255, 255, 255, 0.3);
+    transform: scale(1.05);
+}
+
+.parlay-content {
+    padding: 1rem;
+    min-height: 80px;
+    background: white;
+}
+
+.parlay-loading {
+    text-align: center;
+    color: var(--text-secondary);
+    padding: 1rem;
+}
+
+.parlay-loading i {
+    color: var(--primary-color);
+    margin-right: 0.5rem;
+}
+
+.parlay-recommendation {
+    background: white;
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+.parlay-title {
+    color: var(--primary-color);
+    font-weight: 600;
+    margin-bottom: 0.8rem;
+    font-size: 0.9rem;
+}
+
+.parlay-matches {
+    margin-bottom: 1rem;
+}
+
+.parlay-match-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.6rem;
+    background: var(--bg-secondary);
+    border-radius: 6px;
+    margin-bottom: 0.5rem;
+    font-size: 0.85rem;
+}
+
+.parlay-match-info {
+    flex: 1;
+}
+
+.parlay-prediction {
+    background: var(--primary-color);
+    color: white;
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.parlay-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.8rem;
+    margin-top: 1rem;
+}
+
+.parlay-stat {
+    text-align: center;
+    padding: 0.6rem;
+    background: var(--bg-secondary);
+    border-radius: 6px;
+}
+
+.parlay-stat-value {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--primary-color);
+    display: block;
+}
+
+.parlay-stat-label {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-top: 0.2rem;
+}
+
+.parlay-reasoning {
+    background: rgba(59, 130, 246, 0.05);
+    border-left: 3px solid var(--primary-color);
+    padding: 0.8rem;
+    margin-top: 1rem;
+    border-radius: 0 6px 6px 0;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: var(--text-secondary);
+}
+
+/* 比赛展开/折叠动画 */
+.lottery-matches-list {
+    transition: max-height 0.3s ease-out;
+    overflow: hidden;
+}
+
+.matches-fade-indicator {
+    background: linear-gradient(transparent, var(--card-bg));
+    height: 40px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    pointer-events: none;
+    border-radius: 0 0 8px 8px;
+}
+
+/* 响应式串关推荐 */
+@media (max-width: 768px) {
+    .parlay-header {
+        flex-direction: column;
+        gap: 0.8rem;
+        text-align: center;
+    }
+    
+    .parlay-stats {
+        grid-template-columns: 1fr;
+    }
+    
+    .matches-summary {
+        flex-direction: column;
+        gap: 0.8rem;
+        text-align: center;
+    }
+}
+

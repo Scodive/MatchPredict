@@ -6,6 +6,8 @@ class LotteryManager {
     constructor() {
         this.matches = [];
         this.selectedMatches = new Set();
+        this.isCollapsed = true; // 默认折叠状态
+        this.defaultShowCount = 10; // 默认显示的比赛数量
         this.initializeEventListeners();
     }
 
@@ -33,6 +35,22 @@ class LotteryManager {
         if (daysFilter) {
             daysFilter.addEventListener('change', (e) => {
                 this.refreshMatches(parseInt(e.target.value));
+            });
+        }
+
+        // 折叠/展开切换按钮
+        const toggleBtn = document.getElementById('toggle-matches-btn');
+        if (toggleBtn) {
+            toggleBtn.addEventListener('click', () => {
+                this.toggleMatchesDisplay();
+            });
+        }
+
+        // 生成最佳串关按钮
+        const generateParlayBtn = document.getElementById('generate-parlay-btn');
+        if (generateParlayBtn) {
+            generateParlayBtn.addEventListener('click', () => {
+                this.generateBestParlay();
             });
         }
 
@@ -130,6 +148,7 @@ class LotteryManager {
         
         if (!this.matches || this.matches.length === 0) {
             container.innerHTML = '<div class="empty-message">暂无比赛数据</div>';
+            this.updateMatchesCount(0, 0);
             return;
         }
 
@@ -137,11 +156,19 @@ class LotteryManager {
         const matchesByLeague = this.groupMatchesByLeague(this.matches);
         
         let html = '';
+        let cardIndex = 0;
         for (const [leagueName, matches] of Object.entries(matchesByLeague)) {
-            html += this.renderLeagueSection(leagueName, matches);
+            html += this.renderLeagueSection(leagueName, matches, cardIndex);
+            cardIndex += matches.length;
         }
 
         container.innerHTML = html;
+        
+        // 应用折叠状态
+        this.applyCollapseState();
+        
+        // 更新统计信息
+        this.updateMatchesCount(this.matches.length, this.getVisibleMatchesCount());
         
         // 绑定事件
         this.bindMatchEvents();
@@ -159,7 +186,7 @@ class LotteryManager {
         return grouped;
     }
 
-    renderLeagueSection(leagueName, matches) {
+    renderLeagueSection(leagueName, matches, startIndex = 0) {
         let html = `
             <div class="league-section">
                 <h3 class="league-title">
@@ -169,21 +196,23 @@ class LotteryManager {
                 <div class="league-matches">
         `;
 
-        matches.forEach(match => {
-            html += this.renderMatchCard(match);
+        matches.forEach((match, index) => {
+            const cardIndex = startIndex + index;
+            html += this.renderMatchCard(match, cardIndex);
         });
 
         html += `
                 </div>
             </div>
         `;
-
+        
         return html;
     }
 
-    renderMatchCard(match) {
+    renderMatchCard(match, cardIndex) {
         const isSelected = this.selectedMatches.has(match.match_id);
         const matchTime = this.formatMatchTime(match.match_time, match.match_date);
+        const collapseClass = cardIndex >= this.defaultShowCount ? 'collapsed' : 'show-first-few';
         
         // 获取赔率信息
         const odds = match.odds || {};
@@ -319,6 +348,9 @@ class LotteryManager {
         this.updateMatchCardSelection(matchId);
         this.updateSelectionInfo();
         this.updateSelectedMatchesDisplay();
+        
+        // 检查是否显示串关推荐
+        this.checkParlayRecommendation();
         
         // 如果当前是体彩模式，立即更新AI模式的显示
         if (window.aiPredictionManager && window.aiPredictionManager.currentMode === 'lottery') {
@@ -731,6 +763,218 @@ class LotteryManager {
             }
         } catch (error) {
             console.error('保存彩票预测结果到数据库失败:', error);
+        }
+    }
+
+    // 折叠/展开功能
+    toggleMatchesDisplay() {
+        this.isCollapsed = !this.isCollapsed;
+        this.applyCollapseState();
+        this.updateMatchesCount(this.matches.length, this.getVisibleMatchesCount());
+        this.updateToggleButton();
+    }
+
+    applyCollapseState() {
+        const container = document.getElementById('lottery-matches');
+        if (!container) return;
+
+        if (this.isCollapsed) {
+            container.classList.add('collapsed');
+        } else {
+            container.classList.remove('collapsed');
+        }
+    }
+
+    getVisibleMatchesCount() {
+        if (this.isCollapsed) {
+            return Math.min(this.matches.length, this.defaultShowCount);
+        }
+        return this.matches.length;
+    }
+
+    updateMatchesCount(total, visible) {
+        const totalElement = document.getElementById('total-matches-count');
+        const visibleElement = document.getElementById('visible-matches-count');
+        
+        if (totalElement) totalElement.textContent = total;
+        if (visibleElement) visibleElement.textContent = visible;
+    }
+
+    updateToggleButton() {
+        const toggleBtn = document.getElementById('toggle-matches-btn');
+        if (!toggleBtn) return;
+
+        if (this.isCollapsed) {
+            toggleBtn.innerHTML = '<i class="fas fa-eye"></i> 显示全部';
+        } else {
+            toggleBtn.innerHTML = '<i class="fas fa-eye-slash"></i> 收起';
+        }
+    }
+
+    // 最佳串关推荐
+    async generateBestParlay() {
+        const selectedMatchesArray = Array.from(this.selectedMatches).map(id => 
+            this.matches.find(match => match.match_id === id)
+        ).filter(Boolean);
+
+        if (selectedMatchesArray.length < 2) {
+            this.showMessage('请至少选择2场比赛才能生成串关推荐', 'warning');
+            return;
+        }
+
+        const parlaySection = document.getElementById('best-parlay-recommendation');
+        const parlayContent = document.getElementById('parlay-content');
+        const generateBtn = document.getElementById('generate-parlay-btn');
+        
+        if (!parlaySection || !parlayContent) return;
+
+        // 显示推荐区域
+        parlaySection.classList.remove('hidden');
+        
+        // 显示加载状态
+        parlayContent.innerHTML = '<div class="parlay-loading"><i class="fas fa-spinner fa-spin"></i> AI正在分析最佳组合...</div>';
+        
+        if (generateBtn) {
+            generateBtn.disabled = true;
+            generateBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 分析中';
+        }
+
+        try {
+            // 构建AI分析提示词
+            const prompt = this.buildParlayPrompt(selectedMatchesArray);
+            
+            // 调用AI分析
+            const aiResponse = await this.callGeminiForParlay(prompt);
+            
+            // 显示推荐结果
+            this.displayParlayRecommendation(aiResponse, selectedMatchesArray);
+            
+        } catch (error) {
+            console.error('生成串关推荐失败:', error);
+            parlayContent.innerHTML = `
+                <div class="parlay-error">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <p>AI分析失败: ${error.message}</p>
+                    <button class="btn compact-btn" onclick="lotteryManager.generateBestParlay()">
+                        <i class="fas fa-refresh"></i> 重试
+                    </button>
+                </div>
+            `;
+        } finally {
+            if (generateBtn) {
+                generateBtn.disabled = false;
+                generateBtn.innerHTML = '<i class="fas fa-magic"></i> 重新生成';
+            }
+        }
+    }
+
+    buildParlayPrompt(matches) {
+        let prompt = `作为专业的足球分析师，请为以下${matches.length}场比赛提供最佳串关推荐：\n\n`;
+        
+        matches.forEach((match, index) => {
+            const odds = match.odds?.hhad || {};
+            prompt += `比赛${index + 1}: ${match.home_team} vs ${match.away_team}\n`;
+            prompt += `联赛: ${match.league_name}\n`;
+            prompt += `时间: ${match.match_time}\n`;
+            prompt += `赔率: 主胜${odds.h || 'N/A'} 平局${odds.d || 'N/A'} 客胜${odds.a || 'N/A'}\n\n`;
+        });
+
+        prompt += `请提供：
+1. **推荐串关组合**: 每场比赛的推荐结果(主胜/平局/客胜)
+2. **组合赔率**: 计算总赔率
+3. **信心指数**: 1-10分评分
+4. **分析理由**: 每场比赛的简要分析(球队实力、近期状态、历史对战等)
+5. **风险评估**: 指出潜在风险点
+
+要求：
+- 格式简洁明了
+- 突出重点信息
+- 控制在300字以内`;
+
+        return prompt;
+    }
+
+    async callGeminiForParlay(prompt) {
+        // 获取API密钥
+        const apiKey = window.GEMINI_API_KEY || localStorage.getItem('GEMINI_API_KEY');
+        if (!apiKey) {
+            throw new Error('未配置Gemini API密钥');
+        }
+
+        const model = window.GEMINI_MODEL || 'gemini-2.5-flash-lite-preview-06-17';
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+
+        const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                contents: [{
+                    parts: [{ text: prompt }]
+                }],
+                generationConfig: {
+                    temperature: 0.7,
+                    topK: 40,
+                    topP: 0.95,
+                    maxOutputTokens: 1024
+                }
+            })
+        });
+
+        if (!response.ok) {
+            throw new Error(`API调用失败: ${response.status}`);
+        }
+
+        const data = await response.json();
+        if (!data.candidates || !data.candidates[0] || !data.candidates[0].content) {
+            throw new Error('AI响应格式异常');
+        }
+
+        return data.candidates[0].content.parts[0].text;
+    }
+
+    displayParlayRecommendation(aiResponse, matches) {
+        const parlayContent = document.getElementById('parlay-content');
+        if (!parlayContent) return;
+
+        // 计算总赔率 (简单估算)
+        let totalOdds = 1;
+        matches.forEach(match => {
+            const odds = match.odds?.hhad || {};
+            const avgOdds = (parseFloat(odds.h || 0) + parseFloat(odds.d || 0) + parseFloat(odds.a || 0)) / 3;
+            totalOdds *= (avgOdds || 2.5);
+        });
+
+        parlayContent.innerHTML = `
+            <div class="parlay-recommendation">
+                <div class="parlay-stats">
+                    <div class="parlay-stat">
+                        <span class="parlay-stat-value">${matches.length}</span>
+                        <span class="parlay-stat-label">场比赛</span>
+                    </div>
+                    <div class="parlay-stat">
+                        <span class="parlay-stat-value">${totalOdds.toFixed(2)}</span>
+                        <span class="parlay-stat-label">预估赔率</span>
+                    </div>
+                </div>
+                
+                <div class="parlay-analysis">
+                    ${this.formatAnalysisText(aiResponse)}
+                </div>
+            </div>
+        `;
+    }
+
+    // 检查是否显示串关推荐
+    checkParlayRecommendation() {
+        const parlaySection = document.getElementById('best-parlay-recommendation');
+        if (!parlaySection) return;
+
+        if (this.selectedMatches.size >= 2) {
+            parlaySection.classList.remove('hidden');
+        } else {
+            parlaySection.classList.add('hidden');
         }
     }
 }

@@ -244,6 +244,18 @@
                                     </select>
                                 </div>
                             </div>
+                            
+                            <!-- 比赛统计和折叠控制 -->
+                            <div class="matches-summary">
+                                <div class="matches-count">
+                                    <span id="total-matches-count">0</span> 场比赛
+                                    <span class="matches-separator">|</span>
+                                    <span id="visible-matches-count">0</span> 显示
+                                </div>
+                                <button id="toggle-matches-btn" class="btn compact-btn">
+                                    <i class="fas fa-eye"></i> 显示全部
+                                </button>
+                            </div>
                         </div>
                         
                         <div id="lottery-matches" class="lottery-matches-list">
@@ -256,6 +268,21 @@
 
                     <!-- 右侧：购物车 -->
                     <div class="lottery-cart-panel">
+                        <!-- 最佳串关推荐 -->
+                        <div id="best-parlay-recommendation" class="best-parlay-section hidden">
+                            <div class="parlay-header">
+                                <h4><i class="fas fa-star"></i> AI推荐最佳串关</h4>
+                                <button id="generate-parlay-btn" class="btn compact-btn primary-btn">
+                                    <i class="fas fa-magic"></i> 生成推荐
+                                </button>
+                            </div>
+                            <div id="parlay-content" class="parlay-content">
+                                <div class="parlay-loading">
+                                    <i class="fas fa-spinner fa-spin"></i> AI正在分析最佳组合...
+                                </div>
+                            </div>
+                        </div>
+                        
                         <h3><i class="fas fa-shopping-cart"></i> 比赛购物车 <span id="lottery-selected-count">(0)</span></h3>
                         <div id="lottery-selected-matches" class="lottery-cart-container">
                             <div class="empty-cart-message">
