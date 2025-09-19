@@ -1,9 +1,10 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, session
 import os
 import json
 import logging
 import requests
-from datetime import datetime
+import hashlib
+from datetime import datetime, timedelta
 
 # 尝试导入数据库模块
 try:
@@ -27,6 +28,7 @@ except ImportError as e:
     AIFootballPredictor = None
 
 app = Flask(__name__)
+app.secret_key = os.environ.get('SECRET_KEY', 'your-secret-key-change-in-production')
 
 # 配置日志
 logging.basicConfig(level=logging.INFO)
@@ -95,6 +97,21 @@ try:
 except Exception as e:
     app.logger.error(f"服务初始化失败: {e}")
 
+# 用户认证相关辅助函数
+def hash_password(password):
+    """密码哈希"""
+    return hashlib.sha256(password.encode()).hexdigest()
+
+def get_current_user():
+    """获取当前登录用户"""
+    if 'user_id' in session:
+        return prediction_db.get_user_by_username(session['username']) if prediction_db else None
+    return None
+
+def require_login():
+    """检查是否需要登录"""
+    return get_current_user() is None
+
 @app.route('/')
 def index():
     try:
@@ -102,9 +119,13 @@ def index():
         gemini_api_key = os.environ.get('GEMINI_API_KEY', '')
         gemini_model = os.environ.get('GEMINI_MODEL', 'gemini-2.5-flash-lite-preview-06-17')
         
+        # 获取当前用户信息
+        current_user = get_current_user()
+        
         return render_template('index.html', 
                              gemini_api_key=gemini_api_key,
-                             gemini_model=gemini_model)
+                             gemini_model=gemini_model,
+                             current_user=current_user)
     except Exception as e:
         app.logger.error(f"渲染主页失败: {e}")
         return f"页面加载错误: {str(e)}", 500
@@ -559,6 +580,146 @@ def serve_data_files(filename):
     except Exception as e:
         app.logger.error(f"提供数据文件失败: {e}")
         return jsonify({'error': '文件未找到'}), 404
+
+# 用户认证路由
+@app.route('/api/register', methods=['POST'])
+def register():
+    """用户注册"""
+    try:
+        if not prediction_db:
+            return jsonify({'success': False, 'message': '数据库未配置'}), 500
+            
+        data = request.get_json()
+        username = data.get('username', '').strip()
+        email = data.get('email', '').strip()
+        password = data.get('password', '')
+        
+        # 验证输入
+        if not username or len(username) < 3:
+            return jsonify({'success': False, 'message': '用户名长度至少3个字符'}), 400
+        if not email or '@' not in email:
+            return jsonify({'success': False, 'message': '请输入有效的邮箱地址'}), 400
+        if not password or len(password) < 6:
+            return jsonify({'success': False, 'message': '密码长度至少6个字符'}), 400
+        
+        # 哈希密码
+        password_hash = hash_password(password)
+        
+        # 创建用户
+        success = prediction_db.create_user(username, email, password_hash)
+        
+        if success:
+            return jsonify({'success': True, 'message': '注册成功，请登录'})
+        else:
+            return jsonify({'success': False, 'message': '用户名或邮箱已存在'}), 409
+            
+    except Exception as e:
+        app.logger.error(f"用户注册失败: {e}")
+        return jsonify({'success': False, 'message': '注册失败，请稍后重试'}), 500
+
+@app.route('/api/login', methods=['POST'])
+def login():
+    """用户登录"""
+    try:
+        if not prediction_db:
+            return jsonify({'success': False, 'message': '数据库未配置'}), 500
+            
+        data = request.get_json()
+        username = data.get('username', '').strip()
+        password = data.get('password', '')
+        
+        if not username or not password:
+            return jsonify({'success': False, 'message': '请输入用户名和密码'}), 400
+        
+        # 哈希密码
+        password_hash = hash_password(password)
+        
+        # 验证用户
+        user = prediction_db.authenticate_user(username, password_hash)
+        
+        if user:
+            # 设置session
+            session['user_id'] = user['id']
+            session['username'] = user['username']
+            session.permanent = True
+            app.permanent_session_lifetime = timedelta(days=7)
+            
+            return jsonify({
+                'success': True, 
+                'message': '登录成功',
+                'user': {
+                    'username': user['username'],
+                    'user_type': user['user_type'],
+                    'daily_predictions_used': user['daily_predictions_used'],
+                    'total_predictions': user['total_predictions']
+                }
+            })
+        else:
+            return jsonify({'success': False, 'message': '用户名或密码错误'}), 401
+            
+    except Exception as e:
+        app.logger.error(f"用户登录失败: {e}")
+        return jsonify({'success': False, 'message': '登录失败，请稍后重试'}), 500
+
+@app.route('/api/logout', methods=['POST'])
+def logout():
+    """用户登出"""
+    session.clear()
+    return jsonify({'success': True, 'message': '已安全退出'})
+
+@app.route('/api/user/info', methods=['GET'])
+def get_user_info():
+    """获取用户信息"""
+    try:
+        current_user = get_current_user()
+        if not current_user:
+            return jsonify({'success': False, 'message': '未登录'}), 401
+        
+        return jsonify({
+            'success': True,
+            'user': {
+                'username': current_user['username'],
+                'email': current_user['email'],
+                'user_type': current_user['user_type'],
+                'daily_predictions_used': current_user['daily_predictions_used'],
+                'total_predictions': current_user['total_predictions'],
+                'membership_expires': current_user['membership_expires'].isoformat() if current_user['membership_expires'] else None
+            }
+        })
+        
+    except Exception as e:
+        app.logger.error(f"获取用户信息失败: {e}")
+        return jsonify({'success': False, 'message': '获取用户信息失败'}), 500
+
+@app.route('/api/user/can-predict', methods=['GET'])
+def can_user_predict_api():
+    """检查用户是否可以预测"""
+    try:
+        current_user = get_current_user()
+        if not current_user:
+            return jsonify({'success': False, 'message': '未登录', 'can_predict': False}), 401
+        
+        can_predict = prediction_db.can_user_predict(
+            current_user['id'], 
+            current_user['user_type'], 
+            current_user['daily_predictions_used']
+        )
+        
+        remaining = 0
+        if current_user['user_type'] == 'free':
+            remaining = max(0, 3 - current_user['daily_predictions_used'])
+        
+        return jsonify({
+            'success': True,
+            'can_predict': can_predict,
+            'user_type': current_user['user_type'],
+            'daily_used': current_user['daily_predictions_used'],
+            'remaining': remaining
+        })
+        
+    except Exception as e:
+        app.logger.error(f"检查预测权限失败: {e}")
+        return jsonify({'success': False, 'message': '检查失败'}), 500
 
 if __name__ == '__main__':
     app.run(debug=True) 

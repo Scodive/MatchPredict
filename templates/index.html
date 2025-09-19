@@ -33,6 +33,44 @@
                     <span>AI智能模式</span>
                 </button>
             </div>
+            
+            <!-- 用户区域 -->
+            <div class="nav-user">
+                {% if current_user %}
+                <!-- 已登录用户信息 -->
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="user-details">
+                        <span class="username">{{ current_user.username }}</span>
+                        <span class="user-type-badge {{ 'premium' if current_user.user_type == 'premium' else 'free' }}">
+                            {{ '会员' if current_user.user_type == 'premium' else '免费' }}
+                        </span>
+                        {% if current_user.user_type == 'free' %}
+                        <span class="predictions-remaining">
+                            今日剩余: <span id="predictions-remaining">{{ 3 - current_user.daily_predictions_used }}</span>/3
+                        </span>
+                        {% else %}
+                        <span class="predictions-remaining">无限制预测</span>
+                        {% endif %}
+                    </div>
+                    <button id="logout-btn" class="btn compact-btn secondary-btn">
+                        <i class="fas fa-sign-out-alt"></i> 退出
+                    </button>
+                </div>
+                {% else %}
+                <!-- 未登录状态 -->
+                <div class="auth-buttons">
+                    <button id="login-btn" class="btn compact-btn primary-btn">
+                        <i class="fas fa-sign-in-alt"></i> 登录
+                    </button>
+                    <button id="register-btn" class="btn compact-btn secondary-btn">
+                        <i class="fas fa-user-plus"></i> 注册
+                    </button>
+                </div>
+                {% endif %}
+            </div>
         </div>
     </nav>
 
@@ -44,6 +82,66 @@
                 <div class="hero-section">
                     <h1>AI足球预测</h1>
                     <p class="subtitle">基于大语言模型的智能足球比赛分析平台</p>
+                    
+                    <!-- 使用指南 -->
+                    <div class="usage-guide">
+                        <h3><i class="fas fa-compass"></i> 使用指南</h3>
+                        <div class="guide-steps">
+                            <div class="step-item">
+                                <div class="step-number">1</div>
+                                <div class="step-content">
+                                    <h4>选择预测模式</h4>
+                                    <p>在顶部导航栏选择适合的预测模式：<br>
+                                    <strong>经典模式</strong> - 五大联赛数据分析<br>
+                                    <strong>彩票模式</strong> - 体彩实时比赛预测<br>
+                                    <strong>AI智能模式</strong> - 自定义比赛AI分析</p>
+                                </div>
+                            </div>
+                            
+                            <div class="step-item">
+                                <div class="step-number">2</div>
+                                <div class="step-content">
+                                    <h4>添加比赛到购物车</h4>
+                                    <p>在左侧比赛列表中选择感兴趣的比赛，点击"选择"按钮添加到右侧购物车。支持多场比赛组合分析。</p>
+                                </div>
+                            </div>
+                            
+                            <div class="step-item">
+                                <div class="step-number">3</div>
+                                <div class="step-content">
+                                    <h4>获取AI预测分析</h4>
+                                    <p>点击"开始预测"按钮，AI将基于球队实力、历史对战、近期状态等多维度数据，提供专业的比赛分析和预测建议。</p>
+                                </div>
+                            </div>
+                            
+                            <div class="step-item">
+                                <div class="step-number">4</div>
+                                <div class="step-content">
+                                    <h4>查看串关推荐</h4>
+                                    <p>选择2场以上比赛时，系统将自动生成最佳串关组合推荐，包含风险评估和预期收益分析。</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="features-highlight">
+                            <div class="feature-item">
+                                <i class="fas fa-database"></i>
+                                <span>实时数据</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-brain"></i>
+                                <span>AI分析</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-chart-line"></i>
+                                <span>多维预测</span>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>专业建议</span>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 
                 <!-- 右侧：预测成功案例 -->
@@ -460,5 +558,85 @@
               <script src="{{ url_for('static', filename='js/ai-prediction.js') }}"></script>
               <script src="{{ url_for('static', filename='js/app.js') }}"></script>
               <script src="{{ url_for('static', filename='js/nav-fix.js') }}"></script>
+              <script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+
+    <!-- 登录弹窗 -->
+    <div id="login-modal" class="auth-modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-sign-in-alt"></i> 用户登录</h3>
+                <button class="modal-close" onclick="closeModal('login-modal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="login-form" class="auth-form">
+                    <div class="form-group">
+                        <label for="login-username">用户名</label>
+                        <input type="text" id="login-username" name="username" required 
+                               placeholder="请输入用户名">
+                    </div>
+                    <div class="form-group">
+                        <label for="login-password">密码</label>
+                        <input type="password" id="login-password" name="password" required 
+                               placeholder="请输入密码">
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn primary-btn full-width">
+                            <i class="fas fa-sign-in-alt"></i> 登录
+                        </button>
+                    </div>
+                </form>
+                <div class="auth-switch">
+                    还没有账号？<a href="#" onclick="switchToRegister()">立即注册</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 注册弹窗 -->
+    <div id="register-modal" class="auth-modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fas fa-user-plus"></i> 用户注册</h3>
+                <button class="modal-close" onclick="closeModal('register-modal')">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="register-form" class="auth-form">
+                    <div class="form-group">
+                        <label for="register-username">用户名</label>
+                        <input type="text" id="register-username" name="username" required 
+                               placeholder="请输入用户名（至少3个字符）">
+                    </div>
+                    <div class="form-group">
+                        <label for="register-email">邮箱</label>
+                        <input type="email" id="register-email" name="email" required 
+                               placeholder="请输入邮箱地址">
+                    </div>
+                    <div class="form-group">
+                        <label for="register-password">密码</label>
+                        <input type="password" id="register-password" name="password" required 
+                               placeholder="请输入密码（至少6个字符）">
+                    </div>
+                    <div class="form-group">
+                        <label for="register-confirm-password">确认密码</label>
+                        <input type="password" id="register-confirm-password" name="confirm-password" required 
+                               placeholder="请再次输入密码">
+                    </div>
+                    <div class="form-actions">
+                        <button type="submit" class="btn primary-btn full-width">
+                            <i class="fas fa-user-plus"></i> 注册
+                        </button>
+                    </div>
+                </form>
+                <div class="auth-switch">
+                    已有账号？<a href="#" onclick="switchToLogin()">立即登录</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html> 

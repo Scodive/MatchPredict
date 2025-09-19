@@ -45,11 +45,31 @@ class PredictionDatabase:
             conn = self.connect_to_database()
             cursor = conn.cursor()
             
+            # 创建用户表
+            create_users_table = """
+            CREATE TABLE IF NOT EXISTS users (
+                id SERIAL PRIMARY KEY,
+                username VARCHAR(50) UNIQUE NOT NULL,
+                email VARCHAR(100) UNIQUE NOT NULL,
+                password_hash VARCHAR(255) NOT NULL,
+                user_type VARCHAR(20) DEFAULT 'free',
+                membership_expires DATE,
+                daily_predictions_used INTEGER DEFAULT 0,
+                last_prediction_date DATE DEFAULT CURRENT_DATE,
+                total_predictions INTEGER DEFAULT 0,
+                created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                last_login TIMESTAMP,
+                is_active BOOLEAN DEFAULT TRUE
+            );
+            """
+            
             # 创建预测记录表
             create_predictions_table = """
             CREATE TABLE IF NOT EXISTS match_predictions (
                 id SERIAL PRIMARY KEY,
                 prediction_id VARCHAR(100) UNIQUE NOT NULL,
+                user_id INTEGER REFERENCES users(id),
+                username VARCHAR(50),
                 prediction_mode VARCHAR(20) NOT NULL,
                 home_team VARCHAR(100) NOT NULL,
                 away_team VARCHAR(100) NOT NULL,
@@ -94,6 +114,7 @@ class PredictionDatabase:
             );
             """
             
+            cursor.execute(create_users_table)
             cursor.execute(create_predictions_table)
             cursor.execute(create_daily_matches_table)
             
@@ -609,6 +630,155 @@ class PredictionDatabase:
         except Exception as e:
             logger.error(f"清理旧比赛数据失败: {e}")
             return 0
+    
+    # 用户管理方法
+    def create_user(self, username: str, email: str, password_hash: str, user_type: str = 'free') -> bool:
+        """创建新用户"""
+        try:
+            conn = self.connect_to_database()
+            cursor = conn.cursor()
+            
+            insert_sql = """
+            INSERT INTO users (username, email, password_hash, user_type)
+            VALUES (%s, %s, %s, %s)
+            """
+            cursor.execute(insert_sql, (username, email, password_hash, user_type))
+            conn.commit()
+            
+            logger.info(f"用户创建成功: {username}")
+            return True
+            
+        except psycopg2.IntegrityError as e:
+            logger.warning(f"用户创建失败，用户名或邮箱已存在: {e}")
+            return False
+        except Exception as e:
+            logger.error(f"创建用户失败: {e}")
+            return False
+        finally:
+            if 'conn' in locals():
+                conn.close()
+    
+    def authenticate_user(self, username: str, password_hash: str) -> dict:
+        """用户认证"""
+        try:
+            conn = self.connect_to_database()
+            cursor = conn.cursor()
+            
+            select_sql = """
+            SELECT id, username, email, user_type, membership_expires, 
+                   daily_predictions_used, last_prediction_date, total_predictions
+            FROM users 
+            WHERE username = %s AND password_hash = %s AND is_active = TRUE
+            """
+            cursor.execute(select_sql, (username, password_hash))
+            user_data = cursor.fetchone()
+            
+            if user_data:
+                # 更新最后登录时间
+                update_sql = "UPDATE users SET last_login = CURRENT_TIMESTAMP WHERE id = %s"
+                cursor.execute(update_sql, (user_data[0],))
+                conn.commit()
+                
+                # 检查是否需要重置每日使用次数
+                today = datetime.now().date()
+                last_prediction_date = user_data[6]
+                
+                if last_prediction_date != today:
+                    reset_sql = """
+                    UPDATE users SET daily_predictions_used = 0, last_prediction_date = %s 
+                    WHERE id = %s
+                    """
+                    cursor.execute(reset_sql, (today, user_data[0]))
+                    conn.commit()
+                    daily_used = 0
+                else:
+                    daily_used = user_data[5]
+                
+                return {
+                    'id': user_data[0],
+                    'username': user_data[1],
+                    'email': user_data[2],
+                    'user_type': user_data[3],
+                    'membership_expires': user_data[4],
+                    'daily_predictions_used': daily_used,
+                    'total_predictions': user_data[7]
+                }
+            else:
+                return None
+                
+        except Exception as e:
+            logger.error(f"用户认证失败: {e}")
+            return None
+        finally:
+            if 'conn' in locals():
+                conn.close()
+    
+    def get_user_by_username(self, username: str) -> dict:
+        """根据用户名获取用户信息"""
+        try:
+            conn = self.connect_to_database()
+            cursor = conn.cursor()
+            
+            select_sql = """
+            SELECT id, username, email, user_type, membership_expires, 
+                   daily_predictions_used, last_prediction_date, total_predictions
+            FROM users 
+            WHERE username = %s AND is_active = TRUE
+            """
+            cursor.execute(select_sql, (username,))
+            user_data = cursor.fetchone()
+            
+            if user_data:
+                return {
+                    'id': user_data[0],
+                    'username': user_data[1],
+                    'email': user_data[2],
+                    'user_type': user_data[3],
+                    'membership_expires': user_data[4],
+                    'daily_predictions_used': user_data[5],
+                    'total_predictions': user_data[7]
+                }
+            return None
+            
+        except Exception as e:
+            logger.error(f"获取用户信息失败: {e}")
+            return None
+        finally:
+            if 'conn' in locals():
+                conn.close()
+    
+    def increment_user_predictions(self, user_id: int) -> bool:
+        """增加用户预测次数"""
+        try:
+            conn = self.connect_to_database()
+            cursor = conn.cursor()
+            
+            today = datetime.now().date()
+            update_sql = """
+            UPDATE users SET 
+                daily_predictions_used = daily_predictions_used + 1,
+                total_predictions = total_predictions + 1,
+                last_prediction_date = %s
+            WHERE id = %s
+            """
+            cursor.execute(update_sql, (today, user_id))
+            conn.commit()
+            
+            return True
+            
+        except Exception as e:
+            logger.error(f"更新用户预测次数失败: {e}")
+            return False
+        finally:
+            if 'conn' in locals():
+                conn.close()
+    
+    def can_user_predict(self, user_id: int, user_type: str, daily_used: int) -> bool:
+        """检查用户是否可以进行预测"""
+        if user_type == 'premium':
+            return True
+        else:
+            return daily_used < 3
 
 
 # 创建全局数据库实例

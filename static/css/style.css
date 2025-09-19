@@ -2275,3 +2275,138 @@ footer {
     }
 }
 
+/* 使用指南样式 */
+.usage-guide {
+    margin-top: 2rem;
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 1.5rem;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-light);
+}
+
+.usage-guide h3 {
+    color: var(--primary-color);
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.usage-guide h3 i {
+    color: var(--secondary-color);
+}
+
+.guide-steps {
+    margin-bottom: 2rem;
+}
+
+.step-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    border-left: 4px solid var(--primary-color);
+    transition: all 0.3s ease;
+}
+
+.step-item:hover {
+    background: rgba(59, 130, 246, 0.05);
+    transform: translateX(5px);
+}
+
+.step-number {
+    background: var(--primary-color);
+    color: white;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.9rem;
+    flex-shrink: 0;
+}
+
+.step-content h4 {
+    color: var(--text-primary);
+    font-size: 1rem;
+    margin: 0 0 0.5rem 0;
+    font-weight: 600;
+}
+
+.step-content p {
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+.step-content strong {
+    color: var(--primary-color);
+    font-weight: 600;
+}
+
+.features-highlight {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.feature-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.8rem;
+    background: rgba(59, 130, 246, 0.1);
+    border-radius: 6px;
+    color: var(--primary-color);
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+}
+
+.feature-item:hover {
+    background: rgba(59, 130, 246, 0.15);
+    transform: scale(1.02);
+}
+
+.feature-item i {
+    font-size: 1.1rem;
+    color: var(--secondary-color);
+}
+
+/* 响应式使用指南 */
+@media (max-width: 768px) {
+    .usage-guide {
+        margin-top: 1rem;
+        padding: 1rem;
+    }
+    
+    .step-item {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.8rem;
+    }
+    
+    .step-number {
+        align-self: center;
+    }
+    
+    .features-highlight {
+        grid-template-columns: 1fr;
+    }
+    
+    .usage-guide h3 {
+        font-size: 1.1rem;
+    }
+}
+
