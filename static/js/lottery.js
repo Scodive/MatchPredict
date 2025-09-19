@@ -485,24 +485,33 @@ class LotteryManager {
                 source: 'lottery'
             }));
 
-            // 调用AI预测API
-            const response = await fetch('/api/ai/predict', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    matches: aiMatches
-                })
-            });
+            // 直接调用Gemini API进行预测
+            const predictions = [];
+            for (const match of aiMatches) {
+                try {
+                    console.log(`开始预测彩票比赛: ${match.home_team} vs ${match.away_team}`);
+                    
+                    // 使用AI预测管理器的方法
+                    if (window.aiPredictionManager) {
+                        const prediction = await window.aiPredictionManager.predictMatchWithGemini(match);
+                        if (prediction) {
+                            predictions.push(prediction);
+                            console.log(`彩票比赛预测成功: ${match.home_team} vs ${match.away_team}`);
+                        }
+                    } else {
+                        throw new Error('AI预测管理器未初始化');
+                    }
+                } catch (error) {
+                    console.error(`预测彩票比赛失败 ${match.home_team} vs ${match.away_team}:`, error);
+                    // 继续处理其他比赛
+                }
+            }
 
-            const result = await response.json();
-
-            if (result.success) {
-                console.log('AI预测成功:', result.predictions);
-                this.displayAIPredictionResults(result.predictions);
+            if (predictions.length > 0) {
+                console.log('彩票AI预测成功:', predictions);
+                this.displayAIPredictionResults(predictions);
             } else {
-                throw new Error(result.error || 'AI预测失败');
+                throw new Error('所有彩票比赛预测都失败了，请检查网络连接或API配置');
             }
 
         } catch (error) {

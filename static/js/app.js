@@ -135,6 +135,11 @@ document.addEventListener('DOMContentLoaded', function() {
         matches = [];
         updateMatchesDisplay();
         
+        // 清空AI购物车
+        if (window.aiPredictionManager) {
+            window.aiPredictionManager.clearAISelection();
+        }
+        
         // 清空经典模式比赛
         if (window.clearClassicMatches) {
             window.clearClassicMatches();

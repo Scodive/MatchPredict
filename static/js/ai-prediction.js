@@ -218,15 +218,14 @@ class AIPredictionManager {
         };
 
         this.aiMatches.push(match);
-        this.renderAIMatches();
+        this.updateAICartDisplay();
         this.clearAIForm();
         
-        // 强制更新按钮状态
-        setTimeout(() => {
-            this.updateAIPredictButtonText();
-        }, 50);
+        // 更新按钮状态和计数
+        this.updateAIMatchCount();
+        this.updateAIPredictButtonText();
 
-        this.showMessage('比赛添加成功', 'success');
+        this.showMessage('比赛已添加到购物车', 'success');
     }
 
     clearAIForm() {
@@ -239,25 +238,8 @@ class AIPredictionManager {
     }
 
     renderAIMatches() {
-        const container = document.getElementById('matches-container');
-        
-        if (!container) {
-            console.warn('找不到matches-container元素');
-            return;
-        }
-        
-        if (this.aiMatches.length === 0) {
-            container.innerHTML = '<div class="empty-message">尚未添加任何比赛</div>';
-            return;
-        }
-
-        let html = '';
-        this.aiMatches.forEach((match, index) => {
-            html += this.renderAIMatchCard(match, index);
-        });
-
-        container.innerHTML = html;
-        this.bindAIMatchEvents();
+        // 使用新的购物车显示方法
+        this.updateAICartDisplay();
     }
 
     renderAIMatchCard(match, index) {
@@ -370,27 +352,26 @@ class AIPredictionManager {
                 aiPredictBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> AI分析中...';
             }
 
-            // 发送预测请求
-            const response = await fetch('/api/ai/predict', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    matches: matchesToPredict
-                })
-            });
-
-            if (!response.ok) {
-                throw new Error(`网络错误: ${response.status}`);
+            // 直接调用Gemini API进行预测
+            const predictions = [];
+            for (const match of matchesToPredict) {
+                try {
+                    console.log(`开始预测比赛: ${match.home_team} vs ${match.away_team}`);
+                    const prediction = await this.predictMatchWithGemini(match);
+                    if (prediction) {
+                        predictions.push(prediction);
+                        console.log(`比赛预测成功: ${match.home_team} vs ${match.away_team}`);
+                    }
+                } catch (error) {
+                    console.error(`预测比赛失败 ${match.home_team} vs ${match.away_team}:`, error);
+                    // 继续处理其他比赛，不中断整个流程
+                }
             }
 
-            const result = await response.json();
-            
-            if (result.success) {
-                this.aiResults = result.predictions;
+            if (predictions.length > 0) {
+                this.aiResults = { predictions: predictions };
                 this.displayAIResults();
-                this.showMessage('AI预测完成', 'success');
+                this.showMessage(`AI预测完成，成功分析了 ${predictions.length}/${matchesToPredict.length} 场比赛`, 'success');
                 
                 // 显示结果区域并切换到AI分析标签页
                 const resultsSection = document.getElementById('results-section');
@@ -399,7 +380,7 @@ class AIPredictionManager {
                 }
                 this.switchTab('ai-analysis');
             } else {
-                throw new Error(result.error || '预测失败');
+                throw new Error('所有比赛预测都失败了，请检查网络连接或API配置');
             }
 
         } catch (error) {
@@ -563,6 +544,269 @@ class AIPredictionManager {
         setTimeout(() => {
             messageDiv.remove();
         }, 3000);
+    }
+
+    // 直接调用Gemini API预测单场比赛
+    async predictMatchWithGemini(match) {
+        // 从环境变量或配置中获取API密钥
+        const GEMINI_API_KEY = this.getGeminiApiKey();
+        if (!GEMINI_API_KEY) {
+            throw new Error('请先配置GEMINI_API_KEY。在浏览器控制台中输入: localStorage.setItem("GEMINI_API_KEY", "your_api_key_here")');
+        }
+
+        const GEMINI_MODEL = 'gemini-2.0-flash-exp';
+        const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
+
+        // 构建详细的提示词
+        const prompt = this.buildPrompt(match);
+
+        const requestBody = {
+            contents: [
+                {
+                    parts: [
+                        {
+                            text: prompt
+                        }
+                    ]
+                }
+            ],
+            generationConfig: {
+                temperature: 0.7,
+                topK: 40,
+                topP: 0.95,
+                maxOutputTokens: 2000
+            }
+        };
+
+        try {
+            const response = await fetch(`${API_URL}?key=${GEMINI_API_KEY}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(requestBody)
+            });
+
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`Gemini API调用失败: ${response.status} - ${errorText}`);
+            }
+
+            const data = await response.json();
+            
+            if (data.candidates && data.candidates.length > 0) {
+                const aiAnalysis = data.candidates[0].content.parts[0].text;
+                
+                return {
+                    match_id: match.match_id || `match_${Date.now()}`,
+                    home_team: match.home_team,
+                    away_team: match.away_team,
+                    league_name: match.league_name || '未知联赛',
+                    ai_analysis: aiAnalysis,
+                    odds: {
+                        home: match.home_odds || match.odds?.hhad?.h || '2.00',
+                        draw: match.draw_odds || match.odds?.hhad?.d || '3.20',
+                        away: match.away_odds || match.odds?.hhad?.a || '2.80'
+                    }
+                };
+            } else {
+                throw new Error('Gemini API返回数据格式错误');
+            }
+
+        } catch (error) {
+            console.error('Gemini API调用失败:', error);
+            throw error;
+        }
+    }
+
+    // 构建提示词
+    buildPrompt(match) {
+        const home_team = match.home_team || '主队';
+        const away_team = match.away_team || '客队';
+        const league_name = match.league_name || '未知联赛';
+        
+        // 获取赔率
+        let home_odds, draw_odds, away_odds;
+        if (match.odds && match.odds.hhad) {
+            home_odds = match.odds.hhad.h;
+            draw_odds = match.odds.hhad.d;
+            away_odds = match.odds.hhad.a;
+        } else {
+            home_odds = match.home_odds || '2.00';
+            draw_odds = match.draw_odds || '3.20';
+            away_odds = match.away_odds || '2.80';
+        }
+
+        return `请详细分析这场足球比赛并给出完整预测：
+
+比赛：${home_team} vs ${away_team}
+联赛：${league_name}
+赔率：主胜 ${home_odds} | 平局 ${draw_odds} | 客胜 ${away_odds}
+
+请按以下格式提供详细预测：
+
+**一、比赛分析**
+（考虑两队实力、近期状态、历史对战、主客场优势等因素）
+
+**二、胜平负预测**
+推荐结果：[主胜/平局/客胜]
+推荐理由：
+信心指数：[1-10]
+
+**三、比分预测**
+最可能比分：
+其他可能比分：
+
+**四、半场胜平负预测**
+半场结果：[主胜/平局/客胜]
+全场结果：[主胜/平局/客胜]
+半全场组合：
+
+**五、进球数预测**
+总进球数：[0-1球/2-3球/4球以上]
+主队进球：
+客队进球：
+
+**六、其他分析**
+- 大小球分析
+- 亚盘分析
+- 风险提示
+
+请用中文回答，保持专业分析水准。`;
+    }
+
+    // 获取Gemini API密钥
+    getGeminiApiKey() {
+        // 首先尝试从环境变量获取 (Vercel配置)
+        if (typeof process !== 'undefined' && process.env && process.env.GEMINI_API_KEY) {
+            return process.env.GEMINI_API_KEY;
+        }
+        
+        // 然后尝试从全局变量获取 (环境变量注入)
+        if (window.GEMINI_API_KEY) {
+            return window.GEMINI_API_KEY;
+        }
+        
+        // 最后尝试从localStorage获取 (用户手动设置)
+        const localKey = localStorage.getItem('GEMINI_API_KEY');
+        if (localKey) {
+            return localKey;
+        }
+        
+        // 如果都没有，提示用户设置
+        console.warn('未找到GEMINI_API_KEY，请通过以下方式之一配置：');
+        console.warn('1. 在Vercel中配置环境变量 GEMINI_API_KEY');
+        console.warn('2. 在控制台中设置: localStorage.setItem("GEMINI_API_KEY", "your_api_key_here")');
+        console.warn('3. 定义全局变量: window.GEMINI_API_KEY = "your_api_key_here"');
+        
+        return null;
+    }
+
+    // 设置API密钥的便捷方法
+    setGeminiApiKey(apiKey) {
+        localStorage.setItem('GEMINI_API_KEY', apiKey);
+        console.log('GEMINI_API_KEY已保存到localStorage');
+    }
+
+    // 更新AI购物车显示
+    updateAICartDisplay() {
+        const container = document.getElementById('ai-selected-matches');
+        if (!container) return;
+
+        if (this.aiMatches.length === 0) {
+            container.innerHTML = `
+                <div class="empty-cart-message">
+                    <i class="fas fa-shopping-cart"></i>
+                    <p>购物车为空</p>
+                    <small>请在左侧添加比赛</small>
+                </div>
+            `;
+        } else {
+            let html = '';
+            this.aiMatches.forEach((match, index) => {
+                html += this.renderAICartItem(match, index);
+            });
+            container.innerHTML = html;
+            
+            // 绑定删除按钮事件
+            this.bindAICartEvents();
+        }
+        
+        // 更新按钮状态
+        const clearBtn = document.getElementById('clear-ai-selection-btn');
+        const predictBtn = document.getElementById('ai-predict-btn');
+        
+        if (clearBtn) {
+            clearBtn.disabled = this.aiMatches.length === 0;
+        }
+        if (predictBtn) {
+            predictBtn.disabled = this.aiMatches.length === 0;
+        }
+    }
+
+    // 渲染单个购物车项目
+    renderAICartItem(match, index) {
+        const odds = match.odds.hhad;
+        return `
+            <div class="ai-selected-card" data-index="${index}">
+                <div class="match-header">
+                    <div class="match-title">${match.home_team} vs ${match.away_team}</div>
+                    <button class="remove-btn" onclick="window.aiPredictionManager.removeAIMatch(${index})">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <div class="match-info">
+                    <span><i class="fas fa-trophy"></i> ${match.league_name}</span>
+                    <span><i class="fas fa-clock"></i> 待预测</span>
+                </div>
+                <div class="odds-info">
+                    <span>主胜: ${odds.h}</span>
+                    <span>平局: ${odds.d}</span>
+                    <span>客胜: ${odds.a}</span>
+                </div>
+            </div>
+        `;
+    }
+
+    // 绑定购物车事件
+    bindAICartEvents() {
+        // 清空购物车按钮
+        const clearBtn = document.getElementById('clear-ai-selection-btn');
+        if (clearBtn && !clearBtn.hasAttribute('data-bound')) {
+            clearBtn.addEventListener('click', () => {
+                this.clearAISelection();
+            });
+            clearBtn.setAttribute('data-bound', 'true');
+        }
+    }
+
+    // 移除AI比赛
+    removeAIMatch(index) {
+        if (index >= 0 && index < this.aiMatches.length) {
+            const match = this.aiMatches[index];
+            this.aiMatches.splice(index, 1);
+            this.updateAICartDisplay();
+            this.updateAIMatchCount();
+            this.updateAIPredictButtonText();
+            this.showMessage(`已移除 ${match.home_team} vs ${match.away_team}`, 'info');
+        }
+    }
+
+    // 清空AI选择
+    clearAISelection() {
+        this.aiMatches = [];
+        this.updateAICartDisplay();
+        this.updateAIMatchCount();
+        this.updateAIPredictButtonText();
+        this.showMessage('购物车已清空', 'info');
+    }
+
+    // 更新AI比赛计数
+    updateAIMatchCount() {
+        const countElement = document.getElementById('ai-match-count');
+        if (countElement) {
+            countElement.textContent = `(${this.aiMatches.length})`;
+        }
     }
 }
 

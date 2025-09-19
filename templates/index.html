@@ -282,49 +282,71 @@
                     <p><i class="fas fa-lightbulb"></i> 使用先进的大语言模型进行智能分析，提供专业的比赛预测建议</p>
                 </div>
                 
-                <div class="ai-match-form">
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="ai-home-team">主队:</label>
-                            <input type="text" id="ai-home-team" placeholder="请输入主队名称">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="ai-away-team">客队:</label>
-                            <input type="text" id="ai-away-team" placeholder="请输入客队名称">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="ai-league">联赛:</label>
-                            <input type="text" id="ai-league" placeholder="请输入联赛名称">
-                        </div>
-                    </div>
-                    
-                    <div class="form-row odds-row">
-                        <div class="form-group">
-                            <label for="ai-home-odds">主胜赔率:</label>
-                            <input type="number" id="ai-home-odds" step="0.01" min="1.01" placeholder="例如: 2.10">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="ai-draw-odds">平局赔率:</label>
-                            <input type="number" id="ai-draw-odds" step="0.01" min="1.01" placeholder="例如: 3.50">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="ai-away-odds">客胜赔率:</label>
-                            <input type="number" id="ai-away-odds" step="0.01" min="1.01" placeholder="例如: 2.80">
+                <div class="ai-layout">
+                    <!-- 左侧：比赛添加 -->
+                    <div class="ai-input-panel">
+                        <h3><i class="fas fa-plus-circle"></i> 添加比赛</h3>
+                        <div class="ai-match-form">
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="ai-home-team">主队:</label>
+                                    <input type="text" id="ai-home-team" placeholder="请输入主队名称">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="ai-away-team">客队:</label>
+                                    <input type="text" id="ai-away-team" placeholder="请输入客队名称">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="ai-league">联赛:</label>
+                                    <input type="text" id="ai-league" placeholder="请输入联赛名称">
+                                </div>
+                            </div>
+                            
+                            <div class="form-row odds-row">
+                                <div class="form-group">
+                                    <label for="ai-home-odds">主胜赔率:</label>
+                                    <input type="number" id="ai-home-odds" step="0.01" min="1.01" placeholder="例如: 2.10">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="ai-draw-odds">平局赔率:</label>
+                                    <input type="number" id="ai-draw-odds" step="0.01" min="1.01" placeholder="例如: 3.50">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="ai-away-odds">客胜赔率:</label>
+                                    <input type="number" id="ai-away-odds" step="0.01" min="1.01" placeholder="例如: 2.80">
+                                </div>
+                            </div>
+
+                            <button id="add-ai-match-btn" class="btn primary-btn">
+                                <i class="fas fa-plus"></i> 添加到购物车
+                            </button>
                         </div>
                     </div>
 
-                    <div class="ai-actions">
-                        <button id="add-ai-match-btn" class="btn primary-btn">
-                            <i class="fas fa-plus"></i> 添加AI分析比赛
-                        </button>
+                    <!-- 右侧：已选择的比赛 -->
+                    <div class="ai-cart-panel">
+                        <h3><i class="fas fa-shopping-cart"></i> AI分析购物车 <span id="ai-match-count">(0)</span></h3>
+                        <div id="ai-selected-matches" class="ai-cart-container">
+                            <div class="empty-cart-message">
+                                <i class="fas fa-shopping-cart"></i>
+                                <p>购物车为空</p>
+                                <small>请在左侧添加比赛</small>
+                            </div>
+                        </div>
                         
-                        <button id="ai-predict-btn" class="btn secondary-btn" disabled>
-                            <i class="fas fa-brain"></i> AI智能预测
-                        </button>
+                        <div class="ai-actions">
+                            <button id="clear-ai-selection-btn" class="btn secondary-btn" disabled>
+                                <i class="fas fa-trash"></i> 清空购物车
+                            </button>
+                            
+                            <button id="ai-predict-btn" class="btn primary-btn" disabled>
+                                <i class="fas fa-brain"></i> AI智能预测
+                            </button>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -385,12 +407,13 @@
         <div class="loading-spinner"></div>
     </div>
 
-    <script src="{{ url_for('static', filename='js/data.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/prediction.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/classic-mode.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/lottery.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/ai-prediction.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/nav-fix.js') }}"></script>
+              <script src="{{ url_for('static', filename='js/api-config.js') }}"></script>
+              <script src="{{ url_for('static', filename='js/data.js') }}"></script>
+              <script src="{{ url_for('static', filename='js/prediction.js') }}"></script>
+              <script src="{{ url_for('static', filename='js/classic-mode.js') }}"></script>
+              <script src="{{ url_for('static', filename='js/lottery.js') }}"></script>
+              <script src="{{ url_for('static', filename='js/ai-prediction.js') }}"></script>
+              <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+              <script src="{{ url_for('static', filename='js/nav-fix.js') }}"></script>
 </body>
 </html> 
