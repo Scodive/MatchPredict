@@ -44,39 +44,260 @@ body {
     color: var(--text-primary);
     line-height: 1.6;
     font-size: 14px;
+    padding-top: 80px; /* 为固定导航栏留出空间 */
+}
+
+/* 导航栏样式 */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    background: var(--card-bg);
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: var(--shadow-light);
+    z-index: 1000;
+    height: 80px;
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+.nav-brand i {
+    font-size: 1.8rem;
+}
+
+.nav-menu {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.nav-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    background: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--text-secondary);
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+}
+
+.nav-btn:hover {
+    background: var(--bg-secondary);
+    border-color: var(--primary-color);
+    color: var(--text-primary);
+}
+
+.nav-btn.active {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+    color: white;
+}
+
+.nav-btn i {
+    font-size: 1rem;
 }
 
 .container {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 1rem;
-    min-height: 100vh;
+    min-height: calc(100vh - 80px);
 }
 
-/* Header */
-header {
-    text-align: center;
-    padding: 2rem 0;
-    background: var(--card-bg);
+/* 主页面头部 */
+.main-header {
     margin-bottom: 2rem;
-    border-bottom: 1px solid var(--border-color);
 }
 
-header h1 {
-    font-size: 2rem;
+.hero-section {
+    text-align: center;
+    padding: 3rem 0 2rem 0;
+    background: linear-gradient(135deg, rgba(30, 64, 175, 0.05) 0%, rgba(14, 165, 233, 0.05) 100%);
+    border-radius: 20px;
+    margin-bottom: 2rem;
+    border: 1px solid var(--border-color);
+}
+
+.hero-section h1 {
+    font-size: 3rem;
     font-weight: 700;
-    margin: 0 0 0.5rem 0;
+    margin: 0 0 1rem 0;
     background: var(--gradient-primary);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
 }
 
-header .subtitle {
-    font-size: 1rem;
+.hero-section .subtitle {
+    font-size: 1.2rem;
     color: var(--text-secondary);
     margin: 0;
     font-weight: 400;
+}
+
+/* 预测成功案例 */
+.success-cases {
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: var(--shadow-medium);
+    border: 1px solid var(--border-color);
+    margin-bottom: 2rem;
+}
+
+.success-cases h2 {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: var(--text-primary);
+    font-size: 1.5rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+}
+
+.success-cases h2 i {
+    color: #ffd700;
+    font-size: 1.8rem;
+}
+
+.cases-table-container {
+    overflow-x: auto;
+    margin-bottom: 2rem;
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+}
+
+.cases-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--card-bg);
+    font-size: 0.9rem;
+}
+
+.cases-table th {
+    background: var(--bg-secondary);
+    padding: 1rem 0.75rem;
+    text-align: center;
+    font-weight: 600;
+    color: var(--text-primary);
+    border-bottom: 2px solid var(--border-color);
+    font-size: 0.85rem;
+}
+
+.cases-table td {
+    padding: 1rem 0.75rem;
+    text-align: center;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.success-row:hover {
+    background: var(--bg-secondary);
+}
+
+.accuracy {
+    font-weight: 700;
+    color: var(--success-color);
+    font-size: 1rem;
+}
+
+.match-code {
+    background: var(--primary-color);
+    color: white;
+    padding: 0.3rem 0.6rem;
+    border-radius: 6px;
+    font-weight: 500;
+    font-size: 0.8rem;
+}
+
+.prediction {
+    font-weight: 600;
+    padding: 0.3rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+}
+
+.prediction.win {
+    background: rgba(5, 150, 105, 0.1);
+    color: var(--success-color);
+}
+
+.prediction.draw {
+    background: rgba(245, 158, 11, 0.1);
+    color: var(--warning-color);
+}
+
+.prediction.lose {
+    background: rgba(220, 38, 38, 0.1);
+    color: var(--danger-color);
+}
+
+.score {
+    font-weight: 600;
+    color: var(--text-primary);
+    background: var(--bg-secondary);
+    padding: 0.3rem 0.6rem;
+    border-radius: 6px;
+}
+
+.odds {
+    font-weight: 600;
+    color: var(--accent-color);
+    background: rgba(16, 185, 129, 0.1);
+    padding: 0.3rem 0.6rem;
+    border-radius: 6px;
+}
+
+/* 统计数据 */
+.cases-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.stat-item {
+    text-align: center;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(34, 197, 94, 0.1) 100%);
+    border-radius: 12px;
+    border: 1px solid rgba(16, 185, 129, 0.2);
+}
+
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--accent-color);
+    margin-bottom: 0.5rem;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    font-weight: 500;
 }
 
 /* Main Content */
@@ -85,74 +306,6 @@ main {
     max-width: 100%;
 }
 
-/* Mode Selection */
-.mode-selection {
-    background: var(--card-bg);
-    border-radius: 12px;
-    padding: 1.5rem;
-    margin-bottom: 2rem;
-    box-shadow: var(--shadow-light);
-    border: 1px solid var(--border-color);
-}
-
-.mode-selection h2 {
-    text-align: center;
-    margin-bottom: 1.5rem;
-    color: var(--text-primary);
-    font-size: 1.25rem;
-    font-weight: 600;
-}
-
-.mode-buttons {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1rem;
-    max-width: 800px;
-    margin: 0 auto;
-}
-
-.mode-btn {
-    background: var(--card-bg);
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    padding: 1rem;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-}
-
-.mode-btn:hover {
-    border-color: var(--primary-color);
-    box-shadow: var(--shadow-medium);
-    transform: translateY(-1px);
-}
-
-.mode-btn.active {
-    border-color: var(--primary-color);
-    background: var(--primary-color);
-    color: white;
-    box-shadow: var(--shadow-medium);
-}
-
-.mode-btn i {
-    font-size: 1.5rem;
-    margin-bottom: 0.5rem;
-    display: block;
-}
-
-.mode-btn span {
-    font-size: 0.9rem;
-    font-weight: 600;
-    display: block;
-    margin-bottom: 0.25rem;
-}
-
-.mode-btn small {
-    font-size: 0.75rem;
-    opacity: 0.8;
-}
 
 /* Input Sections */
 .match-input-section {
@@ -317,12 +470,43 @@ main {
     border-color: var(--primary-color);
 }
 
+/* 彩票模式布局 */
+.lottery-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin-top: 1rem;
+}
+
+.lottery-matches-panel,
+.lottery-cart-panel {
+    background: var(--bg-secondary);
+    border-radius: 12px;
+    padding: 1.5rem;
+    border: 1px solid var(--border-color);
+}
+
+.lottery-matches-panel h3,
+.lottery-cart-panel h3 {
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+    font-size: 1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
 /* Lottery Controls */
 .lottery-controls {
+    margin-bottom: 1.5rem;
+}
+
+.controls-row {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 2rem;
+    margin-top: 1rem;
     flex-wrap: wrap;
     gap: 1rem;
 }
@@ -744,21 +928,75 @@ footer {
 
 /* Responsive Design */
 @media (max-width: 768px) {
+    body {
+        padding-top: 120px; /* 增加移动端导航栏高度 */
+    }
+    
+    .navbar {
+        height: 120px;
+    }
+    
+    .nav-container {
+        flex-direction: column;
+        justify-content: center;
+        gap: 1rem;
+    }
+    
+    .nav-brand {
+        font-size: 1.25rem;
+    }
+    
+    .nav-menu {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .nav-btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.8rem;
+        flex: 1;
+        justify-content: center;
+    }
+    
     .container {
         padding: 0 1rem;
+        min-height: calc(100vh - 120px);
     }
     
-    header h1 {
-        font-size: 1.5rem;
+    .hero-section h1 {
+        font-size: 2rem;
     }
     
-    header .subtitle {
-        font-size: 0.9rem;
+    .hero-section .subtitle {
+        font-size: 1rem;
     }
     
-    .mode-buttons {
+    .success-cases {
+        padding: 1rem;
+    }
+    
+    .success-cases h2 {
+        font-size: 1.2rem;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .cases-stats {
         grid-template-columns: 1fr;
-        gap: 0.75rem;
+        gap: 1rem;
+    }
+    
+    .stat-number {
+        font-size: 2rem;
+    }
+    
+    .cases-table {
+        font-size: 0.8rem;
+    }
+    
+    .cases-table th,
+    .cases-table td {
+        padding: 0.5rem 0.25rem;
     }
     
     /* 响应式经典模式布局 */
@@ -769,6 +1007,17 @@ footer {
     
     .match-selection-panel,
     .selected-matches-panel {
+        padding: 1rem;
+    }
+    
+    /* 响应式彩票模式布局 */
+    .lottery-layout {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .lottery-matches-panel,
+    .lottery-cart-panel {
         padding: 1rem;
     }
     
@@ -892,14 +1141,22 @@ footer {
 }
 
 /* Lottery Matches Container */
-.lottery-matches {
-    max-height: 400px;
-    overflow-y: auto;
-    margin-bottom: 1rem;
+.lottery-matches-list {
     background: var(--card-bg);
     border-radius: 8px;
     border: 1px solid var(--border-color);
-    padding: 0.5rem;
+    padding: 1rem;
+    min-height: 300px;
+}
+
+.lottery-cart-container {
+    background: var(--card-bg);
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    padding: 1rem;
+    min-height: 300px;
+    max-height: 400px;
+    overflow-y: auto;
 }
 
 /* Lottery Match Cards - Compact Style */
@@ -1198,5 +1455,151 @@ footer {
     padding: 0.4rem;
     background: var(--card-bg);
     border-radius: 4px;
+    border: 1px solid var(--border-color);
+}
+
+/* 串关结果样式 */
+.best-parlay-card {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(34, 197, 94, 0.1) 100%);
+    border: 2px solid var(--accent-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.best-parlay-card h3 {
+    color: var(--accent-color);
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
+
+.parlay-details {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.parlay-info {
+    display: flex;
+    gap: 1rem;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    background: var(--card-bg);
+    border-radius: 8px;
+    flex-wrap: wrap;
+}
+
+.parlay-odds, .parlay-prob {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.parlay-ev {
+    font-weight: 600;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+}
+
+.parlay-ev.positive {
+    background: var(--success-color);
+    color: white;
+}
+
+.parlay-ev.negative {
+    background: var(--danger-color);
+    color: white;
+}
+
+.parlay-selections {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.selection-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem;
+    background: var(--card-bg);
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+}
+
+.match-name {
+    flex: 1;
+    font-weight: 500;
+    color: var(--text-primary);
+}
+
+.pick-type {
+    background: var(--primary-color);
+    color: white;
+    padding: 0.2rem 0.6rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.pick-odds {
+    font-weight: 600;
+    color: var(--accent-color);
+    margin-left: 0.5rem;
+}
+
+/* 其他串关组合 */
+.parlays-list h3 {
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+    font-size: 1.1rem;
+}
+
+.parlay-item {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 0.8rem;
+    transition: all 0.2s ease;
+}
+
+.parlay-item:hover {
+    border-color: var(--primary-color);
+    box-shadow: var(--shadow-light);
+}
+
+.parlay-header {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 0.8rem;
+    flex-wrap: wrap;
+}
+
+.parlay-rank {
+    background: var(--text-secondary);
+    color: white;
+    padding: 0.2rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    min-width: 30px;
+    text-align: center;
+}
+
+.parlay-picks {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.pick-chip {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    padding: 0.3rem 0.6rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
     border: 1px solid var(--border-color);
 } 

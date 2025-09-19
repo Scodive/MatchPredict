@@ -5,9 +5,9 @@
 ## 🌟 新功能亮点
 
 ### 三种预测模式
-- **经典模式**: 基于五大联赛历史数据的统计分析
+- **经典模式**: 基于五大联赛历史数据的统计分析（左右分栏设计，类似购物车体验）
 - **彩票模式**: 接入中国体育彩票实时比赛数据和赔率
-- **AI智能模式**: 集成大模型进行智能分析预测
+- **AI智能模式**: 集成大模型进行智能分析预测（支持环境变量安全配置）
 
 ### 全方位预测类型
 - ✅ **胜平负**: 主胜、平局、客胜概率预测
@@ -110,9 +110,11 @@
    # 复制配置文件
    cp config_example.py config_local.py
    
-   # 编辑config_local.py，填入您的Gemini API密钥
-   GEMINI_API_KEY = "AIpYA7e2Ewk__9TCHAD5X_G1VhCtVw"
-   GEMINI_MODEL = "gemini-2.0-flash-exp"
+   # 设置环境变量（推荐方式）
+   export GEMINI_API_KEY="your_api_key_here"
+   export GEMINI_MODEL="gemini-2.0-flash-exp"
+   
+   # 或者编辑config_local.py（已弃用，建议使用环境变量）
    ```
 
 5. 运行应用:

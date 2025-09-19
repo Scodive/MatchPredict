@@ -257,8 +257,12 @@ async function predictClassicMatches() {
             return predictMatchLocally(match);
         });
         
+        // 生成串关组合
+        const parlayPredictions = generateClassicParlays(predictions);
+        
         // 显示结果
         displayClassicPredictions(predictions);
+        displayClassicParlays(parlayPredictions);
         
         // 显示结果区域
         const resultsSection = document.getElementById('results-section');
@@ -572,6 +576,146 @@ function showLoading(show) {
         overlay.classList.toggle('hidden', !show);
     }
 }
+
+// 生成经典模式串关组合
+function generateClassicParlays(predictions) {
+    if (predictions.length < 2) {
+        return { best: null, all: [] };
+    }
+    
+    const allCombinations = [];
+    
+    // 为每场比赛创建所有可能的选择
+    const allSelections = predictions.map(pred => [
+        { type: 'home', odds: pred.home_odds, prob: pred.home_win_prob, ev: (pred.home_win_prob * pred.home_odds) - 1 },
+        { type: 'draw', odds: pred.draw_odds, prob: pred.draw_prob, ev: (pred.draw_prob * pred.draw_odds) - 1 },
+        { type: 'away', odds: pred.away_odds, prob: pred.away_win_prob, ev: (pred.away_win_prob * pred.away_odds) - 1 }
+    ]);
+    
+    // 生成所有可能的组合（笛卡尔积）
+    function generateCombinations(index, currentCombo) {
+        if (index === allSelections.length) {
+            const combo = {
+                selections: currentCombo.map((sel, i) => ({
+                    match: `${predictions[i].home_team} vs ${predictions[i].away_team}`,
+                    pick: sel.type,
+                    odds: sel.odds,
+                    prob: sel.prob
+                })),
+                totalOdds: currentCombo.reduce((acc, sel) => acc * sel.odds, 1),
+                totalProb: currentCombo.reduce((acc, sel) => acc * sel.prob, 1),
+                avgEV: currentCombo.reduce((acc, sel) => acc + sel.ev, 0) / currentCombo.length
+            };
+            combo.expectedValue = (combo.totalProb * combo.totalOdds) - 1;
+            allCombinations.push(combo);
+            return;
+        }
+        
+        for (const selection of allSelections[index]) {
+            currentCombo.push(selection);
+            generateCombinations(index + 1, currentCombo);
+            currentCombo.pop();
+        }
+    }
+    
+    generateCombinations(0, []);
+    
+    // 按期望值排序
+    allCombinations.sort((a, b) => b.expectedValue - a.expectedValue);
+    
+    return {
+        best: allCombinations[0],
+        all: allCombinations.slice(0, 10) // 只取前10个最佳组合
+    };
+}
+
+// 显示经典模式串关结果
+function displayClassicParlays(parlayPredictions) {
+    // 显示最佳串关
+    const bestParlayContainer = document.getElementById('best-parlay-results');
+    if (parlayPredictions.best) {
+        bestParlayContainer.innerHTML = `
+            <div class="best-parlay-card">
+                <h3><i class="fas fa-star"></i> 最佳串关组合</h3>
+                <div class="parlay-details">
+                    <div class="parlay-info">
+                        <span class="parlay-odds">总赔率: ${parlayPredictions.best.totalOdds.toFixed(2)}</span>
+                        <span class="parlay-prob">成功概率: ${(parlayPredictions.best.totalProb * 100).toFixed(1)}%</span>
+                        <span class="parlay-ev ${parlayPredictions.best.expectedValue > 0 ? 'positive' : 'negative'}">
+                            期望值: ${(parlayPredictions.best.expectedValue * 100).toFixed(1)}%
+                        </span>
+                    </div>
+                    <div class="parlay-selections">
+                        ${parlayPredictions.best.selections.map(sel => `
+                            <div class="selection-item">
+                                <span class="match-name">${sel.match}</span>
+                                <span class="pick-type">${getPickDisplayName(sel.pick)}</span>
+                                <span class="pick-odds">@${sel.odds}</span>
+                            </div>
+                        `).join('')}
+                    </div>
+                </div>
+            </div>
+        `;
+    } else {
+        bestParlayContainer.innerHTML = `
+            <div class="empty-message">
+                <i class="fas fa-info-circle"></i>
+                <p>需要至少2场比赛才能生成串关</p>
+            </div>
+        `;
+    }
+    
+    // 显示其他组合
+    const allParlaysContainer = document.getElementById('all-parlays-results');
+    if (parlayPredictions.all.length > 1) {
+        allParlaysContainer.innerHTML = `
+            <div class="parlays-list">
+                <h3><i class="fas fa-layer-group"></i> 其他推荐组合</h3>
+                ${parlayPredictions.all.slice(1).map((parlay, index) => `
+                    <div class="parlay-item">
+                        <div class="parlay-header">
+                            <span class="parlay-rank">#${index + 2}</span>
+                            <span class="parlay-odds">@${parlay.totalOdds.toFixed(2)}</span>
+                            <span class="parlay-prob">${(parlay.totalProb * 100).toFixed(1)}%</span>
+                            <span class="parlay-ev ${parlay.expectedValue > 0 ? 'positive' : 'negative'}">
+                                ${(parlay.expectedValue * 100).toFixed(1)}%
+                            </span>
+                        </div>
+                        <div class="parlay-picks">
+                            ${parlay.selections.map(sel => `
+                                <span class="pick-chip">${getPickDisplayName(sel.pick)}</span>
+                            `).join('')}
+                        </div>
+                    </div>
+                `).join('')}
+            </div>
+        `;
+    } else {
+        allParlaysContainer.innerHTML = `
+            <div class="empty-message">
+                <i class="fas fa-info-circle"></i>
+                <p>暂无其他组合可显示</p>
+            </div>
+        `;
+    }
+}
+
+// 获取投注类型显示名称
+function getPickDisplayName(pick) {
+    const names = {
+        'home': '主胜',
+        'draw': '平局',
+        'away': '客胜'
+    };
+    return names[pick] || pick;
+}
+
+// 暴露给全局使用的函数和变量
+window.getClassicMatches = () => classicMatches;
+window.setClassicMatches = (matches) => { classicMatches = matches; };
+window.updateClassicMatchesDisplay = updateClassicMatchesDisplay;
+window.clearClassicMatches = clearClassicMatches;
 
 // 页面加载完成后初始化
 document.addEventListener('DOMContentLoaded', function() {

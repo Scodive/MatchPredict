@@ -48,10 +48,10 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 初始化模式选择
     function initModeSelection() {
-        const modeButtons = document.querySelectorAll('.mode-btn');
+        const modeButtons = document.querySelectorAll('.nav-btn');
         modeButtons.forEach(btn => {
             btn.addEventListener('click', function() {
-                const mode = this.id.replace('-mode-btn', '');
+                const mode = this.getAttribute('data-mode');
                 switchMode(mode);
             });
         });
@@ -59,8 +59,8 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 切换模式
     function switchMode(mode) {
-        // 更新按钮状态
-        document.querySelectorAll('.mode-btn').forEach(btn => btn.classList.remove('active'));
+        // 更新导航按钮状态
+        document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
         document.getElementById(mode + '-mode-btn').classList.add('active');
         
         // 隐藏所有模式区域
@@ -85,9 +85,46 @@ document.addEventListener('DOMContentLoaded', function() {
             aiMatchesSection.classList.add('hidden');
         }
         
+        // 清空所有数据和结果
+        clearAllDataAndResults();
+        
         // 隐藏结果区域
         const resultsSection = document.getElementById('results-section');
         resultsSection.classList.add('hidden');
+    }
+    
+    // 清空所有数据和结果
+    function clearAllDataAndResults() {
+        // 清空AI模式比赛
+        matches = [];
+        updateMatchesDisplay();
+        
+        // 清空经典模式比赛
+        if (window.clearClassicMatches) {
+            window.clearClassicMatches();
+        }
+        
+        // 清空彩票模式选择
+        if (window.lotteryManager) {
+            window.lotteryManager.clearSelection();
+        }
+        
+        // 清空所有结果区域
+        const containers = [
+            'individual-results',
+            'best-parlay-results', 
+            'all-parlays-results',
+            'ai-analysis-results'
+        ];
+        
+        containers.forEach(containerId => {
+            const container = document.getElementById(containerId);
+            if (container) {
+                container.innerHTML = '';
+            }
+        });
+        
+        console.log('已清空所有数据和预测结果');
     }
     
     // 处理联赛选择变化
