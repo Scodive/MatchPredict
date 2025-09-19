@@ -267,7 +267,9 @@ class LotteryManager {
             'PENDING': '未开始',
             'LIVE': '进行中',
             'FINISHED': '已结束',
-            'CANCELLED': '已取消'
+            'CANCELLED': '已取消',
+            'Selling': '销售中',
+            'Unknown': '未知'
         };
         return statusMap[status] || '未知';
     }
@@ -565,7 +567,7 @@ class LotteryManager {
                             
                             <div class="ai-analysis-content">
                                 <h4><i class="fas fa-brain"></i> AI智能分析</h4>
-                                <div class="analysis-text">${prediction.ai_analysis}</div>
+                                <div class="analysis-text">${this.formatAnalysisText(prediction.ai_analysis)}</div>
                             </div>
                             
                             <div class="match-source">
@@ -581,6 +583,44 @@ class LotteryManager {
         }
         
         this.showMessage(`AI预测完成，分析了 ${predictions.length} 场比赛`, 'success');
+    }
+
+    // 格式化AI分析文本（与AI模式保持一致）
+    formatAnalysisText(text) {
+        if (!text) return '暂无分析';
+        
+        // 处理markdown格式并转换为HTML
+        let formatted = text
+            // 处理标题
+            .replace(/\*\*([^*]+)\*\*/g, '<h5>$1</h5>')
+            // 处理粗体
+            .replace(/\*([^*]+)\*/g, '<strong>$1</strong>')
+            // 处理列表项
+            .replace(/^\s*[\*\-]\s+(.+)$/gm, '<li>$1</li>')
+            // 处理数字列表
+            .replace(/^\s*(\d+)\.\s+(.+)$/gm, '<li>$2</li>')
+            // 处理换行
+            .replace(/\n\n/g, '</p><p>')
+            .replace(/\n/g, '<br>');
+        
+        // 包装在段落中
+        if (!formatted.includes('<p>')) {
+            formatted = '<p>' + formatted + '</p>';
+        }
+        
+        // 处理列表包装
+        formatted = formatted.replace(/(<li>.*?<\/li>)/gs, function(match) {
+            if (!match.includes('<ul>')) {
+                return '<ul>' + match + '</ul>';
+            }
+            return match;
+        });
+        
+        // 处理连续的列表项
+        formatted = formatted.replace(/(<\/li>)\s*(<li>)/g, '$1$2');
+        formatted = formatted.replace(/(<\/ul>)\s*(<ul>)/g, '');
+        
+        return formatted;
     }
 }
 

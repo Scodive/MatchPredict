@@ -142,7 +142,8 @@ def get_lottery_matches():
         app.logger.info(f"开始爬取体彩官网数据，天数: {days}")
         
         try:
-            lottery_spider = ChinaSportsLotterySpider()
+            from scripts.china_lottery_spider import ChinaLotterySpider
+            lottery_spider = ChinaLotterySpider()
             matches = lottery_spider.get_formatted_matches(days_ahead=days)
             
             app.logger.info(f"成功爬取 {len(matches)} 场比赛")
@@ -155,57 +156,22 @@ def get_lottery_matches():
             })
             
         except Exception as api_error:
-            app.logger.warning(f"体彩官网爬取失败: {api_error}，返回模拟数据")
-            
-            # 返回模拟数据
-            lottery_spider = ChinaSportsLotterySpider()
-            mock_matches = lottery_spider._get_mock_matches(days)
-            formatted_matches = lottery_spider._format_matches(mock_matches)
+            app.logger.error(f"体彩官网爬取失败: {api_error}")
             
             return jsonify({
-                'success': True,
-                'matches': formatted_matches,
-                'count': len(formatted_matches),
-                'message': '官网爬取失败，返回模拟数据'
-            })
+                'success': False,
+                'error': str(api_error),
+                'message': '暂时无法获取体彩数据，请稍后重试'
+            }), 503
             
     except Exception as e:
         app.logger.error(f"获取体彩数据失败: {e}")
         
-        # 返回基本的模拟数据
-        mock_matches = [
-            {
-                'match_id': 'mock_001',
-                'league_name': '英超',
-                'home_team': '曼彻斯特城',
-                'away_team': '利物浦',
-                'match_time': '2024-12-20 21:00:00',
-                'match_date': '2024-12-20',
-                'odds': {
-                    'hhad': {'h': '2.10', 'd': '3.20', 'a': '3.40'}
-                },
-                'status': 'PENDING'
-            },
-            {
-                'match_id': 'mock_002',
-                'league_name': '西甲',
-                'home_team': '皇家马德里',
-                'away_team': '巴塞罗那',
-                'match_time': '2024-12-21 20:00:00',
-                'match_date': '2024-12-21',
-                'odds': {
-                    'hhad': {'h': '1.95', 'd': '3.50', 'a': '3.80'}
-                },
-                'status': 'PENDING'
-            }
-        ]
-        
         return jsonify({
-            'success': True,
-            'matches': mock_matches,
-            'count': len(mock_matches),
-            'message': '系统错误，返回示例数据'
-        })
+            'success': False,
+            'error': str(e),
+            'message': '系统错误，暂时无法获取数据'
+        }), 500
 
 @app.route('/api/ai/predict', methods=['POST'])
 def ai_predict():
