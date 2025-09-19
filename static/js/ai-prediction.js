@@ -551,10 +551,10 @@ class AIPredictionManager {
         // 从环境变量或配置中获取API密钥
         const GEMINI_API_KEY = this.getGeminiApiKey();
         if (!GEMINI_API_KEY) {
-            throw new Error('请先配置GEMINI_API_KEY。在浏览器控制台中输入: localStorage.setItem("GEMINI_API_KEY", "your_api_key_here")');
+            throw new Error('未找到GEMINI_API_KEY。请确保在Vercel中配置了环境变量，或在控制台中设置: localStorage.setItem("GEMINI_API_KEY", "your_api_key_here")');
         }
 
-        const GEMINI_MODEL = 'gemini-2.0-flash-exp';
+        const GEMINI_MODEL = window.GEMINI_MODEL || 'gemini-2.5-flash-lite-preview-06-17';
         const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/${GEMINI_MODEL}:generateContent`;
 
         // 构建详细的提示词

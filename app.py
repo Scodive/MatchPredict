@@ -63,7 +63,7 @@ def initialize_services():
         # 初始化AI预测器
         if AIFootballPredictor:
             gemini_api_key = os.environ.get('GEMINI_API_KEY')
-            gemini_model = os.environ.get('GEMINI_MODEL', 'gemini-2.0-flash-exp')
+            gemini_model = os.environ.get('GEMINI_MODEL', 'gemini-2.5-flash-lite-preview-06-17')
             
             if not gemini_api_key:
                 app.logger.warning("GEMINI_API_KEY环境变量未设置，AI预测器将不可用")
@@ -89,7 +89,13 @@ except Exception as e:
 @app.route('/')
 def index():
     try:
-        return render_template('index.html')
+        # 将环境变量传递给前端
+        gemini_api_key = os.environ.get('GEMINI_API_KEY', '')
+        gemini_model = os.environ.get('GEMINI_MODEL', 'gemini-2.5-flash-lite-preview-06-17')
+        
+        return render_template('index.html', 
+                             gemini_api_key=gemini_api_key,
+                             gemini_model=gemini_model)
     except Exception as e:
         app.logger.error(f"渲染主页失败: {e}")
         return f"页面加载错误: {str(e)}", 500
@@ -221,7 +227,7 @@ def ai_predict():
         if not current_predictor:
             try:
                 gemini_api_key = os.environ.get('GEMINI_API_KEY')
-                gemini_model = os.environ.get('GEMINI_MODEL', 'gemini-2.0-flash-exp')
+                gemini_model = os.environ.get('GEMINI_MODEL', 'gemini-2.5-flash-lite-preview-06-17')
                 
                 if not gemini_api_key:
                     return jsonify({

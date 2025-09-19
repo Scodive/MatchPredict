@@ -407,6 +407,22 @@
         <div class="loading-spinner"></div>
     </div>
 
+              <!-- 环境变量注入 -->
+              <script>
+                  // 将后端环境变量注入到前端
+                  {% if gemini_api_key %}
+                  window.GEMINI_API_KEY = "{{ gemini_api_key }}";
+                  console.log('✅ Gemini API密钥已从环境变量加载，长度:', "{{ gemini_api_key }}".length);
+                  {% else %}
+                  console.warn('❌ 未检测到GEMINI_API_KEY环境变量');
+                  {% endif %}
+                  {% if gemini_model %}
+                  window.GEMINI_MODEL = "{{ gemini_model }}";
+                  console.log('✅ Gemini模型设置为:', "{{ gemini_model }}");
+                  {% else %}
+                  console.warn('❌ 未检测到GEMINI_MODEL环境变量');
+                  {% endif %}
+              </script>
               <script src="{{ url_for('static', filename='js/data.js') }}"></script>
               <script src="{{ url_for('static', filename='js/prediction.js') }}"></script>
               <script src="{{ url_for('static', filename='js/classic-mode.js') }}"></script>
