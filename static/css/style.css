@@ -832,39 +832,47 @@ main {
 
 .ai-analysis-content h5 {
     color: var(--primary-color);
-    font-size: 1.1rem;
-    margin: 1.2rem 0 0.8rem 0;
+    font-size: 0.9rem;
+    margin: 0.6rem 0 0.3rem 0;
     font-weight: 600;
-    border-bottom: 2px solid var(--secondary-color);
-    padding-bottom: 0.3rem;
+    border-left: 3px solid var(--primary-color);
+    padding-left: 0.6rem;
+    line-height: 1.3;
 }
 
 .ai-analysis-content ul {
-    margin: 0.8rem 0;
-    padding-left: 1.5rem;
+    margin: 0.3rem 0;
+    padding-left: 1rem;
 }
 
 .ai-analysis-content li {
-    margin: 0.5rem 0;
-    line-height: 1.6;
+    margin: 0.2rem 0;
+    line-height: 1.3;
     color: var(--text-primary);
+    font-size: 0.8rem;
 }
 
 .ai-analysis-content strong {
     color: var(--primary-color);
     font-weight: 600;
+    font-size: 0.8rem;
 }
 
 .ai-analysis-content p {
-    margin: 0.8rem 0;
-    line-height: 1.6;
+    margin: 0.3rem 0;
+    line-height: 1.3;
     color: var(--text-primary);
+    font-size: 0.8rem;
 }
 
 .analysis-text {
-    max-height: 500px;
+    max-height: 250px;
     overflow-y: auto;
-    padding-right: 0.5rem;
+    padding: 0.6rem;
+    background: var(--bg-secondary);
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    font-size: 0.8rem;
 }
 
 .analysis-text::-webkit-scrollbar {
@@ -1414,32 +1422,34 @@ footer {
     gap: 1rem;
 }
 
-/* 经典预测结果样式 - 紧凑版 */
+/* 经典预测结果样式 - 更紧凑版 */
 .classic-prediction {
     background: var(--card-bg);
-    border-radius: 12px;
-    padding: 1rem;
+    border-radius: 8px;
+    padding: 0.8rem;
     border: 1px solid var(--border-color);
     box-shadow: var(--shadow-light);
-    min-height: 280px;
+    min-height: 200px;
     display: flex;
     flex-direction: column;
+    font-size: 0.85rem;
 }
 
 .classic-prediction .match-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 0.8rem;
-    padding-bottom: 0.8rem;
+    margin-bottom: 0.6rem;
+    padding-bottom: 0.6rem;
     border-bottom: 1px solid var(--border-color);
 }
 
 .classic-prediction .match-header h3 {
     margin: 0;
     color: var(--text-primary);
-    font-size: 1rem;
+    font-size: 0.9rem;
     font-weight: 600;
+    line-height: 1.2;
 }
 
 .league-badge {
@@ -1452,49 +1462,49 @@ footer {
 }
 
 .probabilities-section {
-    margin-bottom: 0.8rem;
+    margin-bottom: 0.6rem;
     flex: 1;
 }
 
 .probabilities-section h4 {
-    margin-bottom: 0.6rem;
+    margin-bottom: 0.4rem;
     color: var(--text-primary);
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     font-weight: 600;
 }
 
 .probability-bars {
     display: flex;
     flex-direction: column;
-    gap: 0.4rem;
+    gap: 0.3rem;
 }
 
 .prob-bar {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
+    gap: 0.4rem;
 }
 
 .prob-label {
-    width: 40px;
+    width: 35px;
     font-weight: 500;
     color: var(--text-secondary);
-    font-size: 0.75rem;
+    font-size: 0.7rem;
 }
 
 .prob-value {
-    width: 45px;
+    width: 40px;
     font-weight: 600;
     color: var(--text-primary);
     text-align: right;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
 }
 
 .prob-visual {
     flex: 1;
-    height: 6px;
+    height: 4px;
     background: var(--bg-secondary);
-    border-radius: 3px;
+    border-radius: 2px;
     overflow: hidden;
 }
 
@@ -1549,7 +1559,7 @@ footer {
 .odds-row {
     display: flex;
     justify-content: space-between;
-    gap: 0.5rem;
+    gap: 0.3rem;
     font-weight: 600;
     color: var(--text-primary);
 }
@@ -1557,11 +1567,11 @@ footer {
 .odds-row span {
     flex: 1;
     text-align: center;
-    padding: 0.3rem;
+    padding: 0.25rem;
     background: var(--card-bg);
-    border-radius: 4px;
+    border-radius: 3px;
     border: 1px solid var(--border-color);
-    font-size: 0.75rem;
+    font-size: 0.7rem;
 }
 
 /* 串关结果样式 */
@@ -2058,13 +2068,30 @@ footer {
     transition: all 0.2s ease;
 }
 
-/* 比赛卡片折叠状态 */
-.lottery-matches-list.collapsed .lottery-match-card:nth-child(n+11) {
-    display: none;
+/* 比赛卡片基础样式 */
+.lottery-match-card {
+    display: block;
+    transition: all 0.3s ease;
 }
 
-.lottery-matches-list .lottery-match-card {
-    display: block;
+/* 隐藏的比赛卡片 */
+.lottery-match-card.hidden-match {
+    display: none !important;
+}
+
+/* 折叠状态指示器 */
+.matches-fade-overlay {
+    position: relative;
+    background: linear-gradient(to bottom, transparent 0%, rgba(255, 255, 255, 0.9) 100%);
+    height: 80px;
+    margin-top: -80px;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    font-weight: 500;
 }
 
 /* 最佳串关推荐 */
@@ -2116,9 +2143,10 @@ footer {
 }
 
 .parlay-content {
-    padding: 1rem;
-    min-height: 80px;
+    padding: 0.8rem;
+    min-height: 60px;
     background: white;
+    font-size: 0.85rem;
 }
 
 .parlay-loading {
@@ -2134,15 +2162,15 @@ footer {
 
 .parlay-recommendation {
     background: white;
-    border-radius: 8px;
-    padding: 1rem;
+    border-radius: 6px;
+    padding: 0.8rem;
 }
 
 .parlay-title {
     color: var(--primary-color);
     font-weight: 600;
-    margin-bottom: 0.8rem;
-    font-size: 0.9rem;
+    margin-bottom: 0.6rem;
+    font-size: 0.85rem;
 }
 
 .parlay-matches {
@@ -2176,28 +2204,28 @@ footer {
 .parlay-stats {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 0.8rem;
-    margin-top: 1rem;
+    gap: 0.5rem;
+    margin-top: 0.6rem;
 }
 
 .parlay-stat {
     text-align: center;
-    padding: 0.6rem;
+    padding: 0.4rem;
     background: var(--bg-secondary);
-    border-radius: 6px;
+    border-radius: 4px;
 }
 
 .parlay-stat-value {
-    font-size: 1.1rem;
+    font-size: 0.95rem;
     font-weight: 600;
     color: var(--primary-color);
     display: block;
 }
 
 .parlay-stat-label {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     color: var(--text-secondary);
-    margin-top: 0.2rem;
+    margin-top: 0.1rem;
 }
 
 .parlay-reasoning {

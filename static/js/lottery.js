@@ -170,6 +170,9 @@ class LotteryManager {
         // 更新统计信息
         this.updateMatchesCount(this.matches.length, this.getVisibleMatchesCount());
         
+        // 更新按钮文字
+        this.updateToggleButton();
+        
         // 绑定事件
         this.bindMatchEvents();
     }
@@ -775,13 +778,29 @@ class LotteryManager {
     }
 
     applyCollapseState() {
+        const cards = document.querySelectorAll('#lottery-matches .lottery-match-card');
         const container = document.getElementById('lottery-matches');
-        if (!container) return;
-
-        if (this.isCollapsed) {
-            container.classList.add('collapsed');
-        } else {
-            container.classList.remove('collapsed');
+        
+        // 清除现有的折叠指示器
+        const existingOverlay = container.querySelector('.matches-fade-overlay');
+        if (existingOverlay) {
+            existingOverlay.remove();
+        }
+        
+        cards.forEach((card, index) => {
+            if (this.isCollapsed && index >= this.defaultShowCount) {
+                card.classList.add('hidden-match');
+            } else {
+                card.classList.remove('hidden-match');
+            }
+        });
+        
+        // 如果是折叠状态且有超过10场比赛，添加渐变指示器
+        if (this.isCollapsed && cards.length > this.defaultShowCount) {
+            const overlay = document.createElement('div');
+            overlay.className = 'matches-fade-overlay';
+            overlay.innerHTML = `还有 ${cards.length - this.defaultShowCount} 场比赛...`;
+            container.appendChild(overlay);
         }
     }
 
