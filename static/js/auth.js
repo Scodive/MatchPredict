@@ -270,8 +270,10 @@ class AuthManager {
     }
 
     async checkPredictionLimit() {
-        // 首先检查是否登录
-        if (!await this.requireLogin()) {
+        // 检查是否需要登录
+        if (!this.currentUser) {
+            this.showMessage('请先登录后使用预测功能', 'warning');
+            this.showLoginModal();
             return false;
         }
         
@@ -295,9 +297,9 @@ class AuthManager {
         buttons.forEach(btnId => {
             const btn = document.getElementById(btnId);
             if (btn) {
-                btn.disabled = true;
                 btn.classList.add('disabled');
                 btn.title = '请先登录';
+                btn.dataset.loginRequired = 'true';
             }
         });
     }
@@ -314,9 +316,9 @@ class AuthManager {
         buttons.forEach(btnId => {
             const btn = document.getElementById(btnId);
             if (btn) {
-                btn.disabled = false;
                 btn.classList.remove('disabled');
                 btn.title = '';
+                btn.dataset.loginRequired = 'false';
             }
         });
     }
