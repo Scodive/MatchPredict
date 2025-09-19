@@ -42,56 +42,84 @@
 
             <!-- 经典模式 -->
             <section id="classic-mode" class="match-input-section active">
-                <h2><i class="fas fa-plus-circle"></i> 添加比赛 - 经典模式</h2>
-                <div class="match-form">
-                    <div class="form-group">
-                        <label for="league-select">选择联赛:</label>
-                        <select id="league-select">
-                            <option value="">请选择联赛</option>
-                            <option value="PL">英超 Premier League</option>
-                            <option value="PD">西甲 La Liga</option>
-                            <option value="SA">意甲 Serie A</option>
-                            <option value="BL1">德甲 Bundesliga</option>
-                            <option value="FL1">法甲 Ligue 1</option>
-                        </select>
+                <h2><i class="fas fa-plus-circle"></i> 五大联赛分析 - 经典模式</h2>
+                <div class="classic-layout">
+                    <!-- 左侧：比赛添加 -->
+                    <div class="match-selection-panel">
+                        <h3><i class="fas fa-list"></i> 添加比赛</h3>
+                        <div class="match-form">
+                            <div class="form-group">
+                                <label for="league-select">选择联赛:</label>
+                                <select id="league-select">
+                                    <option value="">请选择联赛</option>
+                                    <option value="PL">英超 Premier League</option>
+                                    <option value="PD">西甲 La Liga</option>
+                                    <option value="SA">意甲 Serie A</option>
+                                    <option value="BL1">德甲 Bundesliga</option>
+                                    <option value="FL1">法甲 Ligue 1</option>
+                                </select>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="home-team-select">主队:</label>
+                                    <select id="home-team-select" disabled>
+                                        <option value="">请选择主队</option>
+                                    </select>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="away-team-select">客队:</label>
+                                    <select id="away-team-select" disabled>
+                                        <option value="">请选择客队</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-row odds-row">
+                                <div class="form-group">
+                                    <label for="home-odds">主胜赔率:</label>
+                                    <input type="number" id="home-odds" step="0.01" min="1.01" placeholder="例如: 2.10">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="draw-odds">平局赔率:</label>
+                                    <input type="number" id="draw-odds" step="0.01" min="1.01" placeholder="例如: 3.50">
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="away-odds">客胜赔率:</label>
+                                    <input type="number" id="away-odds" step="0.01" min="1.01" placeholder="例如: 2.80">
+                                </div>
+                            </div>
+
+                            <button id="add-match-btn" class="btn primary-btn">
+                                <i class="fas fa-plus"></i> 添加到购物车
+                            </button>
+                        </div>
                     </div>
 
-                    <div class="form-row">
-                        <div class="form-group">
-                            <label for="home-team-select">主队:</label>
-                            <select id="home-team-select" disabled>
-                                <option value="">请选择主队</option>
-                            </select>
+                    <!-- 右侧：已选择的比赛 -->
+                    <div class="selected-matches-panel">
+                        <h3><i class="fas fa-shopping-cart"></i> 已选择比赛 <span id="classic-match-count">(0)</span></h3>
+                        <div id="classic-selected-matches" class="selected-matches-container">
+                            <div class="empty-cart-message">
+                                <i class="fas fa-shopping-cart"></i>
+                                <p>购物车为空</p>
+                                <small>请在左侧添加比赛</small>
+                            </div>
                         </div>
                         
-                        <div class="form-group">
-                            <label for="away-team-select">客队:</label>
-                            <select id="away-team-select" disabled>
-                                <option value="">请选择客队</option>
-                            </select>
+                        <div class="classic-actions">
+                            <button id="clear-classic-selection-btn" class="btn secondary-btn" disabled>
+                                <i class="fas fa-trash"></i> 清空购物车
+                            </button>
+                            
+                            <button id="classic-predict-btn" class="btn primary-btn" disabled>
+                                <i class="fas fa-chart-line"></i> 开始预测分析
+                            </button>
                         </div>
                     </div>
-
-                    <div class="form-row odds-row">
-                        <div class="form-group">
-                            <label for="home-odds">主胜赔率:</label>
-                            <input type="number" id="home-odds" step="0.01" min="1.01" placeholder="例如: 2.10">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="draw-odds">平局赔率:</label>
-                            <input type="number" id="draw-odds" step="0.01" min="1.01" placeholder="例如: 3.50">
-                        </div>
-                        
-                        <div class="form-group">
-                            <label for="away-odds">客胜赔率:</label>
-                            <input type="number" id="away-odds" step="0.01" min="1.01" placeholder="例如: 2.80">
-                        </div>
-                    </div>
-
-                    <button id="add-match-btn" class="btn primary-btn">
-                        <i class="fas fa-plus"></i> 添加比赛
-                    </button>
                 </div>
             </section>
 
@@ -189,7 +217,8 @@
                 </div>
             </section>
 
-            <section class="matches-section">
+            <!-- 通用已添加比赛区域 - 用于AI模式 -->
+            <section id="ai-matches-section" class="matches-section hidden">
                 <h2><i class="fas fa-list"></i> 已添加比赛 <span id="match-count">(0)</span></h2>
                 <div id="matches-container" class="matches-container">
                     <div class="empty-message">
@@ -201,10 +230,6 @@
                 <div class="action-buttons">
                     <button id="clear-matches-btn" class="btn secondary-btn" disabled>
                         <i class="fas fa-trash"></i> 清空比赛
-                    </button>
-                    
-                    <button id="predict-btn" class="btn primary-btn hidden" disabled>
-                        <i class="fas fa-chart-line"></i> 开始预测
                     </button>
                     
                     <button id="ai-predict-btn" class="btn primary-btn" disabled>
@@ -270,6 +295,7 @@
 
     <script src="{{ url_for('static', filename='js/data.js') }}"></script>
     <script src="{{ url_for('static', filename='js/prediction.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/classic-mode.js') }}"></script>
     <script src="{{ url_for('static', filename='js/lottery.js') }}"></script>
     <script src="{{ url_for('static', filename='js/ai-prediction.js') }}"></script>
     <script src="{{ url_for('static', filename='js/app.js') }}"></script>

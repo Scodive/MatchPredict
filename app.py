@@ -62,11 +62,18 @@ def initialize_services():
     try:
         # 初始化AI预测器
         if AIFootballPredictor:
-            ai_predictor = AIFootballPredictor(
-                api_key='AIzaSyDy9pYAEW7e2Ewk__9TCHAD5X_G1VhCtVw',
-                model_name='gemini-2.0-flash-exp'
-            )
-            app.logger.info("AI预测器初始化成功")
+            gemini_api_key = os.environ.get('GEMINI_API_KEY')
+            gemini_model = os.environ.get('GEMINI_MODEL', 'gemini-2.0-flash-exp')
+            
+            if not gemini_api_key:
+                app.logger.warning("GEMINI_API_KEY环境变量未设置，AI预测器将不可用")
+                ai_predictor = None
+            else:
+                ai_predictor = AIFootballPredictor(
+                    api_key=gemini_api_key,
+                    model_name=gemini_model
+                )
+                app.logger.info("AI预测器初始化成功")
         else:
             app.logger.warning("AI预测器类未加载")
     except Exception as e:
@@ -213,9 +220,18 @@ def ai_predict():
         current_predictor = ai_predictor
         if not current_predictor:
             try:
+                gemini_api_key = os.environ.get('GEMINI_API_KEY')
+                gemini_model = os.environ.get('GEMINI_MODEL', 'gemini-2.0-flash-exp')
+                
+                if not gemini_api_key:
+                    return jsonify({
+                        'success': False,
+                        'error': 'GEMINI_API_KEY环境变量未设置'
+                    }), 500
+                    
                 current_predictor = AIFootballPredictor(
-                    api_key='AIzaSyDy9pYAEW7e2Ewk__9TCHAD5X_G1VhCtVw',
-                    model_name='gemini-2.0-flash-exp'
+                    api_key=gemini_api_key,
+                    model_name=gemini_model
                 )
                 app.logger.info("临时创建AI预测器")
             except Exception as e:
@@ -439,6 +455,16 @@ def test():
 def health():
     """健康检查"""
     return "OK", 200
+
+@app.route('/data/<filename>')
+def serve_data_files(filename):
+    """提供数据文件访问"""
+    try:
+        from flask import send_from_directory
+        return send_from_directory('data', filename)
+    except Exception as e:
+        app.logger.error(f"提供数据文件失败: {e}")
+        return jsonify({'error': '文件未找到'}), 404
 
 if __name__ == '__main__':
     app.run(debug=True) 

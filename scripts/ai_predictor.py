@@ -219,7 +219,12 @@ class AIFootballPredictor:
 # 使用示例
 if __name__ == "__main__":
     # 初始化预测器
-    predictor = AIFootballPredictor("YOUR_GEMINI_API_KEY")
+    import os
+    api_key = os.environ.get('GEMINI_API_KEY')
+    if not api_key:
+        print("请设置GEMINI_API_KEY环境变量")
+        exit(1)
+    predictor = AIFootballPredictor(api_key)
     
     # 示例比赛数据
     sample_match = {

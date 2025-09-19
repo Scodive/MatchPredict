@@ -16,7 +16,6 @@
     }
   ],
   "env": {
-    "GEMINI_API_KEY": "AIzaSyDy9pYAEW7e2Ewk__9TCHAD5X_G1VhCtVw",
     "GEMINI_MODEL": "gemini-2.0-flash-exp"
   }
 } 
