@@ -373,6 +373,9 @@ class AIPredictionManager {
                 this.displayAIResults();
                 this.showMessage(`AI预测完成，成功分析了 ${predictions.length}/${matchesToPredict.length} 场比赛`, 'success');
                 
+                // 保存预测结果到数据库
+                this.savePredictionsToDatabase(predictions);
+                
                 // 显示结果区域并切换到AI分析标签页
                 const resultsSection = document.getElementById('results-section');
                 if (resultsSection) {
@@ -846,6 +849,64 @@ class AIPredictionManager {
         const countElement = document.getElementById('ai-match-count');
         if (countElement) {
             countElement.textContent = `(${this.aiMatches.length})`;
+        }
+    }
+
+    // 保存预测结果到数据库
+    async savePredictionsToDatabase(predictions) {
+        try {
+            for (const prediction of predictions) {
+                // 提取预测结果和信心指数
+                const aiAnalysis = prediction.ai_analysis || '';
+                let predictedResult = '未知';
+                let confidence = 5.0;
+
+                // 从AI分析中提取预测结果
+                if (aiAnalysis.includes('主胜') || aiAnalysis.includes('主队')) {
+                    predictedResult = '主胜';
+                } else if (aiAnalysis.includes('客胜') || aiAnalysis.includes('客队')) {
+                    predictedResult = '客胜';
+                } else if (aiAnalysis.includes('平局') || aiAnalysis.includes('平')) {
+                    predictedResult = '平局';
+                }
+
+                // 从AI分析中提取信心指数
+                const confidenceMatch = aiAnalysis.match(/信心指数[：:]?\s*(\d+(?:\.\d+)?)/);
+                if (confidenceMatch) {
+                    confidence = parseFloat(confidenceMatch[1]);
+                }
+
+                const saveData = {
+                    mode: 'ai',
+                    match_data: {
+                        home_team: prediction.home_team,
+                        away_team: prediction.away_team,
+                        league_name: prediction.league_name,
+                        match_time: prediction.match_time,
+                        odds: prediction.odds
+                    },
+                    prediction_result: predictedResult,
+                    confidence: confidence,
+                    ai_analysis: aiAnalysis
+                };
+
+                // 发送到后端保存
+                const response = await fetch('/api/save-prediction', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(saveData)
+                });
+
+                if (response.ok) {
+                    console.log(`✅ 预测结果已保存: ${prediction.home_team} vs ${prediction.away_team}`);
+                } else {
+                    console.warn(`⚠️ 预测结果保存失败: ${prediction.home_team} vs ${prediction.away_team}`);
+                }
+            }
+        } catch (error) {
+            console.error('保存预测结果到数据库失败:', error);
         }
     }
 }

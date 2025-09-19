@@ -512,6 +512,9 @@ class LotteryManager {
             if (predictions.length > 0) {
                 console.log('彩票AI预测成功:', predictions);
                 this.displayAIPredictionResults(predictions);
+                
+                // 保存预测结果到数据库
+                this.savePredictionsToDatabase(predictions);
             } else {
                 throw new Error('所有彩票比赛预测都失败了，请检查网络连接或API配置');
             }
@@ -621,6 +624,58 @@ class LotteryManager {
         formatted = formatted.replace(/(<\/ul>)\s*(<ul>)/g, '');
         
         return formatted;
+    }
+
+    // 保存预测结果到数据库
+    async savePredictionsToDatabase(predictions) {
+        try {
+            for (const prediction of predictions) {
+                // 提取预测结果和信心指数
+                const aiAnalysis = prediction.ai_analysis || '';
+                let predictedResult = '未知';
+                let confidence = 5.0;
+
+                // 从AI分析中提取预测结果
+                if (aiAnalysis.includes('主胜') || aiAnalysis.includes('主队')) {
+                    predictedResult = '主胜';
+                } else if (aiAnalysis.includes('客胜') || aiAnalysis.includes('客队')) {
+                    predictedResult = '客胜';
+                } else if (aiAnalysis.includes('平局') || aiAnalysis.includes('平')) {
+                    predictedResult = '平局';
+                }
+
+                // 从AI分析中提取信心指数
+                const confidenceMatch = aiAnalysis.match(/信心指数[：:]?\s*(\d+(?:\.\d+)?)/);
+                if (confidenceMatch) {
+                    confidence = parseFloat(confidenceMatch[1]);
+                }
+
+                const saveData = {
+                    mode: 'lottery',
+                    match_data: prediction,
+                    prediction_result: predictedResult,
+                    confidence: confidence,
+                    ai_analysis: aiAnalysis
+                };
+
+                // 发送到后端保存
+                const response = await fetch('/api/save-prediction', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(saveData)
+                });
+
+                if (response.ok) {
+                    console.log(`✅ 彩票预测结果已保存: ${prediction.home_team} vs ${prediction.away_team}`);
+                } else {
+                    console.warn(`⚠️ 彩票预测结果保存失败: ${prediction.home_team} vs ${prediction.away_team}`);
+                }
+            }
+        } catch (error) {
+            console.error('保存彩票预测结果到数据库失败:', error);
+        }
     }
 }
 

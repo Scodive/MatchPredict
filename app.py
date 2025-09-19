@@ -2,7 +2,16 @@ from flask import Flask, request, jsonify, render_template
 import os
 import json
 import logging
+import requests
 from datetime import datetime
+
+# 尝试导入数据库模块
+try:
+    from scripts.database import prediction_db
+    print("✅ 数据库模块导入成功")
+except ImportError as e:
+    print(f"⚠️ 数据库模块导入失败: {e}")
+    prediction_db = None
 
 # 延迟导入，避免在Vercel环境中的问题
 try:
@@ -141,28 +150,89 @@ def get_lottery_matches():
         
         app.logger.info(f"开始爬取体彩官网数据，天数: {days}")
         
+        # 方法1: 尝试使用爬虫
         try:
             from scripts.china_lottery_spider import ChinaLotterySpider
             lottery_spider = ChinaLotterySpider()
             matches = lottery_spider.get_formatted_matches(days_ahead=days)
             
-            app.logger.info(f"成功爬取 {len(matches)} 场比赛")
+            app.logger.info(f"✅ 爬虫成功获取 {len(matches)} 场比赛")
             
             return jsonify({
                 'success': True,
                 'matches': matches,
                 'count': len(matches),
-                'message': '数据爬取成功'
+                'message': f'数据爬取成功，获取 {len(matches)} 场比赛'
             })
             
-        except Exception as api_error:
-            app.logger.error(f"体彩官网爬取失败: {api_error}")
+        except Exception as spider_error:
+            app.logger.warning(f"⚠️ 爬虫失败，尝试直接API调用: {spider_error}")
             
-            return jsonify({
-                'success': False,
-                'error': str(api_error),
-                'message': '暂时无法获取体彩数据，请稍后重试'
-            }), 503
+            # 方法2: 直接API调用 (适用于Vercel)
+            try:
+                api_url = "https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry"
+                params = {"poolCode": "hhad", "channel": "c"}
+                headers = {
+                    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
+                    "Accept": "application/json, text/plain, */*",
+                    "Accept-Language": "zh-CN,zh;q=0.9,en;q=0.8",
+                    "Referer": "https://www.lottery.gov.cn/",
+                    "Origin": "https://www.lottery.gov.cn"
+                }
+                
+                response = requests.get(api_url, params=params, headers=headers, timeout=15)
+                response.raise_for_status()
+                
+                data = response.json()
+                if data.get('success'):
+                    # 简化数据处理
+                    matches = []
+                    value = data.get('value', {})
+                    match_info_list = value.get('matchInfoList', [])
+                    
+                    for date_info in match_info_list:
+                        sub_match_list = date_info.get('subMatchList', [])
+                        for match_data in sub_match_list:
+                            if match_data.get('hhad'):
+                                hhad = match_data['hhad']
+                                match_info = {
+                                    'match_id': f"lottery_{match_data.get('matchId', '')}",
+                                    'home_team': match_data.get('homeTeamAbbName', ''),
+                                    'away_team': match_data.get('awayTeamAbbName', ''),
+                                    'league_name': match_data.get('leagueAbbName', ''),
+                                    'match_time': f"{match_data.get('matchDate', '')} {match_data.get('matchTime', '')}",
+                                    'match_date': match_data.get('matchDate', ''),
+                                    'status': match_data.get('matchStatus', 'Unknown'),
+                                    'source': 'china_lottery_api',
+                                    'odds': {
+                                        'hhad': {
+                                            'h': str(hhad.get('h', '')),
+                                            'd': str(hhad.get('d', '')),
+                                            'a': str(hhad.get('a', ''))
+                                        }
+                                    }
+                                }
+                                matches.append(match_info)
+                    
+                    app.logger.info(f"✅ 直接API成功获取 {len(matches)} 场比赛")
+                    
+                    return jsonify({
+                        'success': True,
+                        'matches': matches,
+                        'count': len(matches),
+                        'message': f'API调用成功，获取 {len(matches)} 场比赛'
+                    })
+                else:
+                    raise Exception(f"API返回错误: {data.get('errorMessage', '未知错误')}")
+                    
+            except Exception as api_error:
+                app.logger.error(f"❌ 直接API调用也失败: {api_error}")
+                
+                return jsonify({
+                    'success': False,
+                    'error': str(api_error),
+                    'message': '暂时无法获取体彩数据，请稍后重试'
+                }), 503
             
     except Exception as e:
         app.logger.error(f"获取体彩数据失败: {e}")
@@ -171,6 +241,102 @@ def get_lottery_matches():
             'success': False,
             'error': str(e),
             'message': '系统错误，暂时无法获取数据'
+        }), 500
+
+@app.route('/api/save-prediction', methods=['POST'])
+def save_prediction():
+    """保存预测结果到数据库"""
+    try:
+        if not prediction_db:
+            return jsonify({
+                'success': False,
+                'message': '数据库未配置'
+            }), 500
+        
+        data = request.get_json()
+        if not data:
+            return jsonify({
+                'success': False,
+                'message': '请求数据为空'
+            }), 400
+        
+        prediction_mode = data.get('mode', '').lower()
+        match_data = data.get('match_data', {})
+        prediction_result = data.get('prediction_result', '')
+        confidence = data.get('confidence', 0)
+        ai_analysis = data.get('ai_analysis', '')
+        user_ip = request.remote_addr
+        
+        success = False
+        
+        if prediction_mode == 'ai':
+            success = prediction_db.save_ai_prediction(
+                match_data=match_data,
+                prediction_result=prediction_result,
+                confidence=confidence,
+                ai_analysis=ai_analysis,
+                user_ip=user_ip
+            )
+        elif prediction_mode == 'classic':
+            success = prediction_db.save_classic_prediction(
+                match_data=match_data,
+                prediction_result=prediction_result,
+                confidence=confidence,
+                user_ip=user_ip
+            )
+        elif prediction_mode == 'lottery':
+            success = prediction_db.save_lottery_prediction(
+                match_data=match_data,
+                prediction_result=prediction_result,
+                confidence=confidence,
+                ai_analysis=ai_analysis,
+                user_ip=user_ip
+            )
+        else:
+            return jsonify({
+                'success': False,
+                'message': '未知的预测模式'
+            }), 400
+        
+        if success:
+            return jsonify({
+                'success': True,
+                'message': '预测结果保存成功'
+            })
+        else:
+            return jsonify({
+                'success': False,
+                'message': '预测结果保存失败'
+            }), 500
+            
+    except Exception as e:
+        app.logger.error(f"保存预测结果失败: {e}")
+        return jsonify({
+            'success': False,
+            'message': f'服务器错误: {str(e)}'
+        }), 500
+
+@app.route('/api/prediction-stats', methods=['GET'])
+def get_prediction_stats():
+    """获取预测统计信息"""
+    try:
+        if not prediction_db:
+            return jsonify({
+                'success': False,
+                'message': '数据库未配置'
+            }), 500
+            
+        stats = prediction_db.get_prediction_stats()
+        return jsonify({
+            'success': True,
+            'data': stats
+        })
+        
+    except Exception as e:
+        app.logger.error(f"获取统计信息失败: {e}")
+        return jsonify({
+            'success': False,
+            'message': f'获取统计信息失败: {str(e)}'
         }), 500
 
 @app.route('/api/ai/predict', methods=['POST'])

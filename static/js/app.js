@@ -119,7 +119,9 @@ document.addEventListener('DOMContentLoaded', function() {
     function clearAllDataAndResults() {
         // 清空AI模式比赛
         matches = [];
-        updateMatchesDisplay();
+        if (typeof updateMatchesDisplay === 'function') {
+            updateMatchesDisplay();
+        }
         
         // 清空AI购物车
         if (window.aiPredictionManager) {
