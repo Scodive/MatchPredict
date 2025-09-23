@@ -61,6 +61,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // 默认激活第一个模式或从URL中读取
         const urlParams = new URLSearchParams(window.location.search);
+        const modeButtons = document.querySelectorAll('.nav-btn'); // 重新获取 modeButtons
         const initialMode = urlParams.get('mode') || (modeButtons.length > 0 ? modeButtons[0].getAttribute('data-mode') : null);
         if (initialMode) {
             switchMode(initialMode);
