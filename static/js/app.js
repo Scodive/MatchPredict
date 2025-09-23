@@ -665,35 +665,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
     
-    // 添加欧冠模拟导航功能
-    const championsLeagueBtn = document.getElementById('champions-league-btn');
-    const championsLeagueSection = document.getElementById('champions-league-section');
     
-    // 如果没有这个按钮，创建一个
-    if (!championsLeagueBtn) {
-        // 创建欧冠模拟按钮
-        const navContainer = document.querySelector('header .container') || document.querySelector('header');
-        if (navContainer) {
-            const clBtn = document.createElement('button');
-            clBtn.id = 'champions-league-btn';
-            clBtn.className = 'btn secondary-btn';
-            clBtn.innerHTML = '<i class="fas fa-trophy"></i> 欧冠模拟';
-            clBtn.style.marginLeft = '10px';
-            
-            // 找到合适的位置插入按钮
-            const existingBtn = document.querySelector('header button') || document.querySelector('header h1');
-            if (existingBtn) {
-                existingBtn.parentNode.insertBefore(clBtn, existingBtn.nextSibling);
-            } else {
-                navContainer.appendChild(clBtn);
-            }
-            
-            // 绑定点击事件
-            clBtn.addEventListener('click', showChampionsLeagueSection);
-        }
-    } else {
-        championsLeagueBtn.addEventListener('click', showChampionsLeagueSection);
-    }
     
     // 显示欧冠模拟部分
     function showChampionsLeagueSection() {

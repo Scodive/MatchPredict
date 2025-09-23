@@ -678,7 +678,18 @@ def register():
         
         if success:
             app.logger.info(f"用户注册成功: {username}")
-            return jsonify({'success': True, 'message': '注册成功，请登录'})
+            resp = jsonify({'success': True, 'message': '注册成功，请登录'})
+            # 调试用：设置一个临时测试 Cookie，帮助判断浏览器是否接受 SameSite=None; Secure
+            try:
+                resp.set_cookie(app.config.get('SESSION_COOKIE_NAME', 'mp_session') + '_test', '1',
+                                samesite=os.environ.get('SESSION_COOKIE_SAMESITE', 'None'),
+                                secure=True,
+                                httponly=False,
+                                domain=app.config.get('SESSION_COOKIE_DOMAIN'))
+            except Exception:
+                # 忽略设置 Cookie 时的任何异常
+                pass
+            return resp
         else:
             # create_user 内部已处理 UniqueViolation，这里捕获通用失败
             app.logger.warning(f"用户注册失败: 用户名或邮箱已存在 - {username}, {email}")
@@ -718,8 +729,8 @@ def login():
             # app.permanent_session_lifetime = timedelta(days=7) # 已在 app.config.update 中配置
             
             app.logger.info(f"用户登录成功，设置会话: {username}")
-            return jsonify({
-                'success': True, 
+            resp = jsonify({
+                'success': True,
                 'message': '登录成功',
                 'user': {
                     'username': user['username'],
@@ -728,6 +739,16 @@ def login():
                     'total_predictions': user['total_predictions']
                 }
             })
+            # 设置调试 Cookie，确认浏览器是否接收 SameSite=None; Secure
+            try:
+                resp.set_cookie(app.config.get('SESSION_COOKIE_NAME', 'mp_session') + '_test', '1',
+                                samesite=os.environ.get('SESSION_COOKIE_SAMESITE', 'None'),
+                                secure=True,
+                                httponly=False,
+                                domain=app.config.get('SESSION_COOKIE_DOMAIN'))
+            except Exception:
+                pass
+            return resp
         else:
             app.logger.warning(f"用户登录失败: 用户名或密码错误 - {username}")
             return jsonify({'success': False, 'message': '用户名或密码错误'}), 401
