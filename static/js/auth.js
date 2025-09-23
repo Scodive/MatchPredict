@@ -480,7 +480,15 @@ function switchToLogin() {
 }
 
 // 创建全局认证管理器实例
-const authManager = new AuthManager();
+// const authManager = new AuthManager(); // 移动到 DOMContentLoaded 内部
 
 // 暴露到全局作用域
-window.authManager = authManager;
+// window.authManager = authManager; // 移动到 DOMContentLoaded 内部
+
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🏁 DOMContentLoaded 事件触发，初始化 AuthManager...');
+    // 创建全局认证管理器实例
+    const authManager = new AuthManager();
+    // 暴露到全局作用域
+    window.authManager = authManager;
+});
