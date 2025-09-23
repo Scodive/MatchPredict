@@ -4,6 +4,7 @@ import json
 import logging
 import requests
 import hashlib
+import psycopg2
 from datetime import datetime, timedelta
 
 # 尝试导入数据库模块
@@ -101,6 +102,38 @@ except Exception as e:
 def hash_password(password):
     """密码哈希"""
     return hashlib.sha256(password.encode()).hexdigest()
+
+def simple_create_user_db(username: str, email: str, password_hash: str) -> (bool, str):
+    """使用最直接的方式插入用户（绕过封装），便于快速落库。
+    Returns: (success, message)
+    """
+    try:
+        if not prediction_db:
+            return False, '数据库未配置'
+        conn = prediction_db.connect_to_database()
+        cursor = conn.cursor()
+        insert_sql = """
+        INSERT INTO users (username, email, password_hash, user_type)
+        VALUES (%s, %s, %s, %s)
+        """
+        cursor.execute(insert_sql, (username, email, password_hash, 'free'))
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return True, 'OK'
+    except psycopg2.errors.UniqueViolation:
+        # 唯一键冲突
+        try:
+            conn.rollback()
+        except Exception:
+            pass
+        return False, '用户名或邮箱已存在'
+    except Exception as e:
+        try:
+            conn.rollback()
+        except Exception:
+            pass
+        return False, f'数据库错误: {e}'
 
 def get_current_user():
     """获取当前登录用户"""
@@ -635,18 +668,21 @@ def register():
         # 哈希密码
         password_hash = hash_password(password)
         
-        # 创建用户
-        try:
-            success = prediction_db.create_user(username, email, password_hash)
-        except Exception as e:
-            app.logger.error(f"用户注册数据库异常: {e}")
-            return jsonify({'success': False, 'message': f'注册失败: {str(e)}'}), 500
-        
-        if success:
+        # 简单直连插入（优先使用最直接方式）
+        ok, msg = simple_create_user_db(username, email, password_hash)
+        if ok:
             return jsonify({'success': True, 'message': '注册成功，请登录'})
-        else:
-            # 既可能是唯一约束冲突，也可能是数据库网络不可达导致失败
-            return jsonify({'success': False, 'message': '注册失败：用户名或邮箱已存在，或数据库不可用'}), 409
+        # 若直连失败，再尝试封装的方法一遍（提升兼容性）
+        try:
+            fallback_ok = prediction_db.create_user(username, email, password_hash)
+            if fallback_ok:
+                return jsonify({'success': True, 'message': '注册成功，请登录'})
+        except Exception as e:
+            app.logger.error(f"用户注册数据库异常(回退): {e}")
+            return jsonify({'success': False, 'message': f'注册失败: {str(e)}'}), 500
+        # 仍失败
+        status_code = 409 if '已存在' in msg else 500
+        return jsonify({'success': False, 'message': f'注册失败：{msg}'}), status_code
             
     except Exception as e:
         app.logger.error(f"用户注册失败: {e}")
