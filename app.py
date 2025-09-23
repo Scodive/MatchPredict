@@ -636,12 +636,17 @@ def register():
         password_hash = hash_password(password)
         
         # 创建用户
-        success = prediction_db.create_user(username, email, password_hash)
+        try:
+            success = prediction_db.create_user(username, email, password_hash)
+        except Exception as e:
+            app.logger.error(f"用户注册数据库异常: {e}")
+            return jsonify({'success': False, 'message': f'注册失败: {str(e)}'}), 500
         
         if success:
             return jsonify({'success': True, 'message': '注册成功，请登录'})
         else:
-            return jsonify({'success': False, 'message': '用户名或邮箱已存在'}), 409
+            # 既可能是唯一约束冲突，也可能是数据库网络不可达导致失败
+            return jsonify({'success': False, 'message': '注册失败：用户名或邮箱已存在，或数据库不可用'}), 409
             
     except Exception as e:
         app.logger.error(f"用户注册失败: {e}")
