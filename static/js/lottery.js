@@ -11,6 +11,29 @@ class LotteryManager {
         this.initializeEventListeners();
     }
 
+    // 统一获取胜平负赔率，兼容 had/hhad/wdl 等不同结构
+    getWdlOdds(odds) {
+        const empty = {};
+        if (!odds || typeof odds !== 'object') return empty;
+
+        // 优先使用不让球胜平负(had)
+        if (odds.had && (odds.had.h || odds.had.d || odds.had.a)) {
+            return odds.had;
+        }
+        // 兼容旧结构：让球胜平负(hhad) 用作回退
+        if (odds.hhad && (odds.hhad.h || odds.hhad.d || odds.hhad.a)) {
+            return odds.hhad;
+        }
+        // 其他可能命名
+        if (odds.wdl && (odds.wdl.home || odds.wdl.draw || odds.wdl.away)) {
+            return { h: odds.wdl.home, d: odds.wdl.draw, a: odds.wdl.away };
+        }
+        if (typeof odds.home !== 'undefined' && typeof odds.draw !== 'undefined' && typeof odds.away !== 'undefined') {
+            return { h: odds.home, d: odds.draw, a: odds.away };
+        }
+        return empty;
+    }
+
     initializeEventListeners() {
         // 刷新比赛数据按钮
         const refreshBtn = document.getElementById('refresh-lottery-btn');
@@ -219,7 +242,6 @@ class LotteryManager {
         
         // 获取赔率信息
         const odds = match.odds || {};
-        const hadOdds = odds.had || {};
         
         return `
             <div class="lottery-match-card ${isSelected ? 'selected' : ''}" 
@@ -253,7 +275,7 @@ class LotteryManager {
     }
 
     renderOddsSection(odds) {
-        const hadOdds = odds.had || {};
+        const wdlOdds = this.getWdlOdds(odds);
         const scoreOdds = odds.score || {};
         const goalOdds = odds.goal || {};
         const halfFullOdds = odds.half_full || {};
@@ -261,14 +283,14 @@ class LotteryManager {
         let html = '<div class="odds-section">';
 
         // 胜平负赔率
-        if (hhadOdds.h || hhadOdds.d || hhadOdds.a) {
+        if (wdlOdds.h || wdlOdds.d || wdlOdds.a) {
             html += `
                 <div class="odds-group">
                     <div class="odds-title">胜平负</div>
                     <div class="odds-values">
-                        <span class="odds-item">主胜: ${hhadOdds.h || 'N/A'}</span>
-                        <span class="odds-item">平局: ${hhadOdds.d || 'N/A'}</span>
-                        <span class="odds-item">客胜: ${hhadOdds.a || 'N/A'}</span>
+                        <span class="odds-item">主胜: ${wdlOdds.h || 'N/A'}</span>
+                        <span class="odds-item">平局: ${wdlOdds.d || 'N/A'}</span>
+                        <span class="odds-item">客胜: ${wdlOdds.a || 'N/A'}</span>
                     </div>
                 </div>
             `;
@@ -433,7 +455,7 @@ class LotteryManager {
     }
 
     renderSelectedMatchCard(match, index) {
-        const odds = match.odds?.hhad || {};
+        const odds = this.getWdlOdds(match.odds);
         return `
             <div class="match-card lottery-selected-card" data-match-id="${match.match_id}">
                 <div class="match-info">
@@ -526,16 +548,19 @@ class LotteryManager {
             }
 
             // 转换数据格式为AI预测需要的格式
-            const aiMatches = selectedMatches.map(match => ({
+            const aiMatches = selectedMatches.map(match => {
+                const wdl = this.getWdlOdds(match.odds);
+                return ({
                 match_id: match.match_id,
                 home_team: match.home_team,
                 away_team: match.away_team,
                 league_name: match.league_name,
-                home_odds: parseFloat(match.odds.hhad.h),
-                draw_odds: parseFloat(match.odds.hhad.d),
-                away_odds: parseFloat(match.odds.hhad.a),
+                home_odds: parseFloat(wdl.h),
+                draw_odds: parseFloat(wdl.d),
+                away_odds: parseFloat(wdl.a),
                 source: 'lottery'
-            }));
+            });
+            });
 
             // 直接调用Gemini API进行预测
             const predictions = [];
@@ -901,7 +926,7 @@ class LotteryManager {
         let prompt = `作为专业的足球分析师，请为以下${matches.length}场比赛提供最佳串关推荐：\n\n`;
         
         matches.forEach((match, index) => {
-            const odds = match.odds?.hhad || {};
+            const odds = this.getWdlOdds(match.odds);
             prompt += `比赛${index + 1}: ${match.home_team} vs ${match.away_team}\n`;
             prompt += `联赛: ${match.league_name}\n`;
             prompt += `时间: ${match.match_time}\n`;
@@ -970,7 +995,7 @@ class LotteryManager {
         // 计算总赔率 (简单估算)
         let totalOdds = 1;
         matches.forEach(match => {
-            const odds = match.odds?.hhad || {};
+            const odds = this.getWdlOdds(match.odds);
             const avgOdds = (parseFloat(odds.h || 0) + parseFloat(odds.d || 0) + parseFloat(odds.a || 0)) / 3;
             totalOdds *= (avgOdds || 2.5);
         });
