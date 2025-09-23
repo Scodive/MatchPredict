@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template, session
+from flask import Flask, request, jsonify, render_template, session, make_response
 import os
 import json
 import logging
@@ -30,6 +30,13 @@ except ImportError as e:
 
 app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY', 'your-secret-key-change-in-production')
+# Session/Cookie 配置，确保登录态可用
+app.config.update(
+    SESSION_COOKIE_NAME='mp_session',
+    SESSION_COOKIE_SAMESITE=os.environ.get('SESSION_COOKIE_SAMESITE', 'Lax'),  # 跨域用 'None'
+    SESSION_COOKIE_SECURE=True,  # 仅 https 传输
+    PERMANENT_SESSION_LIFETIME=timedelta(days=7)
+)
 
 # 配置日志
 logging.basicConfig(level=logging.INFO)
@@ -144,6 +151,29 @@ def get_current_user():
 def require_login():
     """检查是否需要登录"""
     return get_current_user() is None
+
+@app.after_request
+def add_cors_headers(response):
+    """为需要的接口添加基础CORS支持，避免OPTIONS 405。"""
+    origin = request.headers.get('Origin')
+    if origin:
+        response.headers['Access-Control-Allow-Origin'] = origin
+        response.headers['Vary'] = 'Origin'
+        response.headers['Access-Control-Allow-Credentials'] = 'true'
+        response.headers['Access-Control-Allow-Methods'] = 'GET,POST,OPTIONS'
+        response.headers['Access-Control-Allow-Headers'] = 'Content-Type,Authorization'
+    if request.method == 'OPTIONS':
+        response.status_code = 204
+    return response
+
+@app.route('/api/session/debug')
+def session_debug():
+    """调试用：查看当前会话是否存在。上线可移除。"""
+    return jsonify({
+        'logged_in': 'user_id' in session,
+        'user_id': session.get('user_id'),
+        'username': session.get('username')
+    })
 
 @app.route('/')
 def index():
@@ -645,7 +675,7 @@ def serve_data_files(filename):
         return jsonify({'error': '文件未找到'}), 404
 
 # 用户认证路由
-@app.route('/api/register', methods=['POST'])
+@app.route('/api/register', methods=['POST', 'OPTIONS'])
 def register():
     """用户注册"""
     try:
@@ -688,7 +718,7 @@ def register():
         app.logger.error(f"用户注册失败: {e}")
         return jsonify({'success': False, 'message': '注册失败，请稍后重试'}), 500
 
-@app.route('/api/login', methods=['POST'])
+@app.route('/api/login', methods=['POST', 'OPTIONS'])
 def login():
     """用户登录"""
     try:
@@ -732,7 +762,7 @@ def login():
         app.logger.error(f"用户登录失败: {e}")
         return jsonify({'success': False, 'message': '登录失败，请稍后重试'}), 500
 
-@app.route('/api/logout', methods=['POST'])
+@app.route('/api/logout', methods=['POST', 'OPTIONS'])
 def logout():
     """用户登出"""
     session.clear()
