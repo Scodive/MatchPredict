@@ -219,7 +219,7 @@ class LotteryManager {
         
         // 获取赔率信息
         const odds = match.odds || {};
-        const hhadOdds = odds.hhad || {};
+        const hadOdds = odds.had || {};
         
         return `
             <div class="lottery-match-card ${isSelected ? 'selected' : ''}" 
@@ -253,7 +253,7 @@ class LotteryManager {
     }
 
     renderOddsSection(odds) {
-        const hhadOdds = odds.hhad || {};
+        const hadOdds = odds.had || {};
         const scoreOdds = odds.score || {};
         const goalOdds = odds.goal || {};
         const halfFullOdds = odds.half_full || {};

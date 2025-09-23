@@ -51,21 +51,24 @@ class AuthManager {
     async checkLoginStatus() {
         try {
             const response = await fetch('/api/user/info');
-            if (response.ok) {
-                const data = await response.json();
-                if (data.success) {
-                    this.currentUser = data.user;
-                    this.updateUserInterface();
-                    this.enableAllPredictionButtons();
-                    return;
-                }
+            const data = await response.json();
+            
+            if (response.ok && data.success) {
+                this.currentUser = data.user;
+                console.log('✅ 用户已登录:', this.currentUser);
+                this.updateUserInterface();
+                this.enableAllPredictionButtons();
+                return;
+            } else {
+                console.log('ℹ️ 用户未登录:', data.message);
             }
         } catch (error) {
-            console.log('用户未登录或检查登录状态失败');
+            console.log('⚠️ 检查登录状态失败:', error);
         }
         
-        // 未登录时禁用所有预测按钮
+        // 未登录时禁用所有预测按钮并更新界面
         this.currentUser = null;
+        this.updateUserInterface();
         this.disableAllPredictionButtons();
     }
 

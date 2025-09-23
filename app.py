@@ -752,4 +752,4 @@ def can_user_predict_api():
         return jsonify({'success': False, 'message': '检查失败'}), 500
 
 if __name__ == '__main__':
-    app.run(debug=True) 
+    app.run(debug=True, host='0.0.0.0', port=8000) 

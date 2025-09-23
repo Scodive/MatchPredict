@@ -46,3 +46,142 @@
 2025-09-19 17:36:30,200 - ERROR - 从数据库获取比赛数据失败: name 'timedelta' is not defined
 2025-09-19 17:37:19,051 - INFO - 数据库连接成功
 2025-09-19 17:37:19,229 - INFO - 从数据库获取 65 场比赛
+2025-09-19 20:32:58,217 - INFO - 正在获取体彩数据 (尝试 1/3): https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry
+2025-09-19 20:32:58,953 - INFO - ✅ 成功获取API数据: 处理成功
+2025-09-19 20:32:58,953 - INFO - 📊 开始解析 3 个日期的比赛
+2025-09-19 20:32:58,953 - INFO - 📅 处理 2025-09-19 的 16 场比赛
+2025-09-19 20:32:58,954 - INFO - 📅 处理 2025-09-20 的 29 场比赛
+2025-09-19 20:32:58,954 - INFO - 📅 处理 2025-09-21 的 19 场比赛
+2025-09-19 20:32:58,954 - INFO - 📈 成功解析 64 场有效比赛
+2025-09-19 20:32:58,957 - INFO - 📅 日期过滤: 64 -> 64 场比赛 (未来7天)
+2025-09-19 20:32:58,957 - INFO - ✅ 成功获取 64 场比赛数据
+2025-09-19 20:34:53,855 - INFO - 🔄 开始同步未来 7 天的比赛数据...
+2025-09-19 20:34:53,855 - INFO - 📡 正在从体彩官网获取数据...
+2025-09-19 20:34:53,855 - INFO - 正在获取体彩数据 (尝试 1/3): https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry
+2025-09-19 20:34:54,022 - INFO - ✅ 成功获取API数据: 处理成功
+2025-09-19 20:34:54,023 - INFO - 📊 开始解析 3 个日期的比赛
+2025-09-19 20:34:54,023 - INFO - 📅 处理 2025-09-19 的 16 场比赛
+2025-09-19 20:34:54,023 - INFO - 📅 处理 2025-09-20 的 29 场比赛
+2025-09-19 20:34:54,023 - INFO - 📅 处理 2025-09-21 的 19 场比赛
+2025-09-19 20:34:54,023 - INFO - 📈 成功解析 64 场有效比赛
+2025-09-19 20:34:54,025 - INFO - 📅 日期过滤: 64 -> 64 场比赛 (未来7天)
+2025-09-19 20:34:54,025 - INFO - ✅ 成功获取 64 场比赛数据
+2025-09-19 20:34:54,025 - INFO - ✅ 成功获取 64 场比赛数据
+2025-09-19 20:34:54,026 - INFO - 💾 正在保存到数据库...
+2025-09-19 20:34:54,680 - INFO - 数据库连接成功
+2025-09-19 20:35:04,128 - INFO - 每日比赛数据保存完成 - 新增:0, 更新:64, 跳过:0
+2025-09-19 20:35:04,128 - INFO - 📊 同步完成 - 新增: 0, 更新: 64, 跳过: 0
+2025-09-19 20:40:27,863 - INFO - 🔄 开始同步未来 7 天的比赛数据...
+2025-09-19 20:40:27,863 - INFO - 📡 正在从体彩官网获取数据...
+2025-09-19 20:40:27,863 - INFO - 🎯 尝试获取不让球胜平负(HAD)数据...
+2025-09-19 20:40:27,863 - INFO - 正在获取体彩数据 (尝试 1/3): https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry
+2025-09-19 20:40:28,405 - INFO - ✅ 成功获取API数据: 处理成功
+2025-09-19 20:40:28,406 - INFO - ✅ 成功获取HAD数据
+2025-09-19 20:40:28,406 - INFO - 🎯 获取让球胜平负(HHAD)数据作为补充...
+2025-09-19 20:40:28,406 - INFO - 正在获取体彩数据 (尝试 1/3): https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry
+2025-09-19 20:40:28,871 - INFO - ✅ 成功获取API数据: 处理成功
+2025-09-19 20:40:28,871 - INFO - 📊 开始解析比赛数据 (HAD映射: 64 场)
+2025-09-19 20:40:28,871 - INFO - 📅 处理 2025-09-19 的 16 场比赛
+2025-09-19 20:40:28,871 - INFO - 📅 处理 2025-09-20 的 30 场比赛
+2025-09-19 20:40:28,871 - INFO - 📅 处理 2025-09-21 的 19 场比赛
+2025-09-19 20:40:28,871 - INFO - 📈 成功解析 65 场有效比赛
+2025-09-19 20:40:28,873 - INFO - 📅 日期过滤: 65 -> 65 场比赛 (未来7天)
+2025-09-19 20:40:28,873 - INFO - 📊 赔率统计: 不让球64场, 让球1场
+2025-09-19 20:40:28,873 - INFO - ✅ 成功获取 65 场比赛数据
+2025-09-19 20:40:28,873 - INFO - ✅ 成功获取 65 场比赛数据
+2025-09-19 20:40:28,873 - INFO - 💾 正在保存到数据库...
+2025-09-19 20:40:31,804 - INFO - 数据库连接成功
+2025-09-19 20:41:15,175 - INFO - 每日比赛数据保存完成 - 新增:0, 更新:65, 跳过:0
+2025-09-19 20:41:15,178 - INFO - 📊 同步完成 - 新增: 0, 更新: 65, 跳过: 0
+2025-09-20 12:44:16,018 - INFO - 🔄 开始同步未来 7 天的比赛数据...
+2025-09-20 12:44:16,018 - INFO - 📡 正在从体彩官网获取数据...
+2025-09-20 12:44:16,018 - INFO - 🎯 尝试获取不让球胜平负(HAD)数据...
+2025-09-20 12:44:16,018 - INFO - 正在获取体彩数据 (尝试 1/3): https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry
+2025-09-20 12:44:16,293 - INFO - ✅ 成功获取API数据: 处理成功
+2025-09-20 12:44:16,293 - INFO - ✅ 成功获取HAD数据
+2025-09-20 12:44:16,293 - INFO - 🎯 获取让球胜平负(HHAD)数据作为补充...
+2025-09-20 12:44:16,293 - INFO - 正在获取体彩数据 (尝试 1/3): https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry
+2025-09-20 12:44:16,732 - INFO - ✅ 成功获取API数据: 处理成功
+2025-09-20 12:44:16,732 - INFO - 📊 开始解析比赛数据 (HAD映射: 69 场)
+2025-09-20 12:44:16,732 - INFO - 📅 处理 2025-09-20 的 36 场比赛
+2025-09-20 12:44:16,733 - INFO - 📅 处理 2025-09-21 的 30 场比赛
+2025-09-20 12:44:16,733 - INFO - 📅 处理 2025-09-22 的 5 场比赛
+2025-09-20 12:44:16,733 - INFO - 📈 成功解析 71 场有效比赛
+2025-09-20 12:44:16,734 - INFO - 📅 日期过滤: 71 -> 71 场比赛 (未来7天)
+2025-09-20 12:44:16,734 - INFO - 📊 赔率统计: 不让球69场, 让球2场
+2025-09-20 12:44:16,734 - INFO - ✅ 成功获取 71 场比赛数据
+2025-09-20 12:44:16,735 - INFO - ✅ 成功获取 71 场比赛数据
+2025-09-20 12:44:16,735 - INFO - 💾 正在保存到数据库...
+2025-09-20 12:44:17,157 - INFO - 数据库连接成功
+2025-09-20 12:44:26,576 - INFO - 每日比赛数据保存完成 - 新增:22, 更新:49, 跳过:0
+2025-09-20 12:44:26,576 - INFO - 📊 同步完成 - 新增: 22, 更新: 49, 跳过: 0
+2025-09-23 10:47:41,614 - INFO - 🔄 开始同步未来 7 天的比赛数据...
+2025-09-23 10:47:41,615 - INFO - 📡 正在从体彩官网获取数据...
+2025-09-23 10:47:41,615 - INFO - 🎯 尝试获取不让球胜平负(HAD)数据...
+2025-09-23 10:47:41,615 - INFO - 正在获取体彩数据 (尝试 1/3): https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry
+2025-09-23 10:47:41,965 - INFO - ✅ 成功获取API数据: 处理成功
+2025-09-23 10:47:41,965 - INFO - ✅ 成功获取HAD数据
+2025-09-23 10:47:41,965 - INFO - 🎯 获取让球胜平负(HHAD)数据作为补充...
+2025-09-23 10:47:41,965 - INFO - 正在获取体彩数据 (尝试 1/3): https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry
+2025-09-23 10:47:42,140 - INFO - ✅ 成功获取API数据: 处理成功
+2025-09-23 10:47:42,140 - INFO - 📊 开始解析比赛数据 (HAD映射: 0 场)
+2025-09-23 10:47:42,140 - INFO - 📈 成功解析 0 场有效比赛
+2025-09-23 10:47:42,140 - ERROR - ❌ 获取格式化比赛数据失败: 未能解析到有效的比赛数据
+2025-09-23 10:47:42,140 - ERROR - ❌ 同步失败: 暂时无法获取体彩数据: 未能解析到有效的比赛数据
+2025-09-23 10:48:01,098 - INFO - 🔄 开始同步未来 7 天的比赛数据...
+2025-09-23 10:48:01,099 - INFO - 📡 正在从体彩官网获取数据...
+2025-09-23 10:48:01,099 - INFO - 🎯 尝试获取不让球胜平负(HAD)数据...
+2025-09-23 10:48:01,099 - INFO - 正在获取体彩数据 (尝试 1/3): https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry
+2025-09-23 10:48:01,322 - INFO - ✅ 成功获取API数据: 处理成功
+2025-09-23 10:48:01,323 - INFO - ✅ 成功获取HAD数据
+2025-09-23 10:48:01,323 - INFO - 🎯 获取让球胜平负(HHAD)数据作为补充...
+2025-09-23 10:48:01,323 - INFO - 正在获取体彩数据 (尝试 1/3): https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry
+2025-09-23 10:48:01,365 - INFO - ✅ 成功获取API数据: 处理成功
+2025-09-23 10:48:01,365 - INFO - 📊 开始解析比赛数据 (HAD映射: 0 场)
+2025-09-23 10:48:01,365 - INFO - 📈 成功解析 0 场有效比赛
+2025-09-23 10:48:01,366 - ERROR - ❌ 获取格式化比赛数据失败: 未能解析到有效的比赛数据
+2025-09-23 10:48:01,366 - ERROR - ❌ 同步失败: 暂时无法获取体彩数据: 未能解析到有效的比赛数据
+2025-09-23 15:13:53,475 - INFO - 🔄 开始同步未来 7 天的比赛数据...
+2025-09-23 15:13:53,476 - INFO - 📡 正在从体彩官网获取数据...
+2025-09-23 15:13:53,476 - INFO - 🎯 尝试获取不让球胜平负(HAD)数据...
+2025-09-23 15:13:53,476 - INFO - 正在获取体彩数据 (尝试 1/3): https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry
+2025-09-23 15:13:55,507 - WARNING - ❌ 网络请求失败 (尝试 1/3): 567 Server Error: Unknown Status for url: https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry?poolCode=had&channel=c
+2025-09-23 15:13:55,507 - INFO - ⏳ 等待 1.7 秒后重试...
+2025-09-23 15:13:57,210 - INFO - 正在获取体彩数据 (尝试 2/3): https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry
+2025-09-23 15:13:57,376 - WARNING - ❌ 网络请求失败 (尝试 2/3): HTTPSConnectionPool(host='webapi.sporttery.cn', port=443): Max retries exceeded with url: /gateway/uniform/football/getMatchCalculatorV1.qry?poolCode=had&channel=c (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000)')))
+2025-09-23 15:13:57,377 - INFO - ⏳ 等待 3.0 秒后重试...
+2025-09-23 15:14:00,332 - INFO - 正在获取体彩数据 (尝试 3/3): https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry
+2025-09-23 15:14:01,556 - WARNING - ❌ 网络请求失败 (尝试 3/3): 567 Server Error: Unknown Status for url: https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry?poolCode=had&channel=c
+2025-09-23 15:14:01,556 - WARNING - ⚠️ 获取HAD数据失败: 网络请求失败: 567 Server Error: Unknown Status for url: https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry?poolCode=had&channel=c
+2025-09-23 15:14:01,556 - INFO - 🎯 获取让球胜平负(HHAD)数据作为补充...
+2025-09-23 15:14:01,556 - INFO - 正在获取体彩数据 (尝试 1/3): https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry
+2025-09-23 15:14:01,716 - WARNING - ❌ 网络请求失败 (尝试 1/3): HTTPSConnectionPool(host='webapi.sporttery.cn', port=443): Max retries exceeded with url: /gateway/uniform/football/getMatchCalculatorV1.qry?poolCode=hhad&channel=c (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000)')))
+2025-09-23 15:14:01,717 - INFO - ⏳ 等待 1.2 秒后重试...
+2025-09-23 15:14:02,945 - INFO - 正在获取体彩数据 (尝试 2/3): https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry
+2025-09-23 15:14:03,097 - WARNING - ❌ 网络请求失败 (尝试 2/3): HTTPSConnectionPool(host='webapi.sporttery.cn', port=443): Max retries exceeded with url: /gateway/uniform/football/getMatchCalculatorV1.qry?poolCode=hhad&channel=c (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000)')))
+2025-09-23 15:14:03,098 - INFO - ⏳ 等待 1.9 秒后重试...
+2025-09-23 15:14:05,042 - INFO - 正在获取体彩数据 (尝试 3/3): https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry
+2025-09-23 15:14:05,254 - WARNING - ❌ 网络请求失败 (尝试 3/3): HTTPSConnectionPool(host='webapi.sporttery.cn', port=443): Max retries exceeded with url: /gateway/uniform/football/getMatchCalculatorV1.qry?poolCode=hhad&channel=c (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000)')))
+2025-09-23 15:14:05,254 - ERROR - ❌ 获取格式化比赛数据失败: 网络请求失败: HTTPSConnectionPool(host='webapi.sporttery.cn', port=443): Max retries exceeded with url: /gateway/uniform/football/getMatchCalculatorV1.qry?poolCode=hhad&channel=c (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000)')))
+2025-09-23 15:14:05,254 - ERROR - ❌ 同步失败: 暂时无法获取体彩数据: 网络请求失败: HTTPSConnectionPool(host='webapi.sporttery.cn', port=443): Max retries exceeded with url: /gateway/uniform/football/getMatchCalculatorV1.qry?poolCode=hhad&channel=c (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000)')))
+2025-09-23 15:28:53,640 - INFO - 🔄 开始同步未来 7 天的比赛数据...
+2025-09-23 15:28:53,640 - INFO - 📡 正在从体彩官网获取数据...
+2025-09-23 15:28:53,641 - INFO - 🎯 尝试获取不让球胜平负(HAD)数据...
+2025-09-23 15:28:53,641 - INFO - 正在获取体彩数据 (尝试 1/3): https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry
+2025-09-23 15:28:53,954 - INFO - ✅ 成功获取API数据: 处理成功
+2025-09-23 15:28:53,954 - INFO - ✅ 成功获取HAD数据
+2025-09-23 15:28:53,954 - INFO - 🎯 获取让球胜平负(HHAD)数据作为补充...
+2025-09-23 15:28:53,954 - INFO - 正在获取体彩数据 (尝试 1/3): https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry
+2025-09-23 15:28:54,117 - INFO - ✅ 成功获取API数据: 处理成功
+2025-09-23 15:28:54,118 - INFO - 📊 开始解析比赛数据 (HAD映射: 17 场)
+2025-09-23 15:28:54,118 - INFO - 📅 处理 2025-09-23 的 17 场比赛
+2025-09-23 15:28:54,120 - INFO - 📅 处理 2025-09-24 的 2 场比赛
+2025-09-23 15:28:54,120 - INFO - 📈 成功解析 19 场有效比赛
+2025-09-23 15:28:54,124 - INFO - 📅 日期过滤: 19 -> 19 场比赛 (未来7天)
+2025-09-23 15:28:54,124 - INFO - 📊 赔率统计: 不让球17场, 让球2场
+2025-09-23 15:28:54,125 - INFO - ✅ 成功获取 19 场比赛数据
+2025-09-23 15:28:54,125 - INFO - ✅ 成功获取 19 场比赛数据
+2025-09-23 15:28:54,125 - INFO - 💾 正在保存到数据库...
+2025-09-23 15:28:54,968 - INFO - 数据库连接成功
+2025-09-23 15:28:59,687 - INFO - 每日比赛数据保存完成 - 新增:19, 更新:0, 跳过:0
+2025-09-23 15:28:59,688 - INFO - 📊 同步完成 - 新增: 19, 更新: 0, 跳过: 0
