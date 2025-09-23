@@ -50,7 +50,7 @@ class AuthManager {
 
     async checkLoginStatus() {
         try {
-            const response = await fetch('/api/user/info');
+            const response = await fetch('/api/user/info', { credentials: 'include' });
             const data = await response.json();
             
             if (response.ok && data.success) {
@@ -116,6 +116,7 @@ class AuthManager {
                 headers: {
                     'Content-Type': 'application/json',
                 },
+                credentials: 'include',
                 body: JSON.stringify(loginData)
             });
 
@@ -177,6 +178,7 @@ class AuthManager {
                 headers: {
                     'Content-Type': 'application/json',
                 },
+                credentials: 'include',
                 body: JSON.stringify(registerData)
             });
 
@@ -208,7 +210,8 @@ class AuthManager {
     async logout() {
         try {
             const response = await fetch('/api/logout', {
-                method: 'POST'
+                method: 'POST',
+                credentials: 'include'
             });
 
             if (response.ok) {
@@ -234,7 +237,7 @@ class AuthManager {
 
     async updatePredictionCount() {
         try {
-            const response = await fetch('/api/user/can-predict');
+            const response = await fetch('/api/user/can-predict', { credentials: 'include' });
             if (response.ok) {
                 const data = await response.json();
                 if (data.success) {
@@ -251,7 +254,7 @@ class AuthManager {
 
     async checkCanPredict() {
         try {
-            const response = await fetch('/api/user/can-predict');
+            const response = await fetch('/api/user/can-predict', { credentials: 'include' });
             if (response.ok) {
                 const data = await response.json();
                 return data.can_predict;
