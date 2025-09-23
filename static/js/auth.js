@@ -172,6 +172,7 @@ class AuthManager {
 
     async handleLogin(event) {
         event.preventDefault();
+        console.log('💡 handleLogin 被调用，阻止了默认事件。');
         
         const form = event.target;
         const formData = new FormData(form);
@@ -179,12 +180,14 @@ class AuthManager {
             username: formData.get('username'),
             password: formData.get('password')
         };
+        console.log('💡 尝试登录数据:', loginData);
 
         try {
             const submitBtn = form.querySelector('button[type="submit"]');
             const originalText = submitBtn.innerHTML;
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 登录中...';
             submitBtn.disabled = true;
+            console.log('💡 正在发送登录请求...');
 
             const response = await fetch('/api/login', {
                 method: 'POST',
@@ -194,8 +197,10 @@ class AuthManager {
                 credentials: 'include',
                 body: JSON.stringify(loginData)
             });
+            console.log('💡 收到登录响应:', response.status);
 
             const data = await response.json();
+            console.log('💡 登录响应数据:', data);
 
             if (data.success) {
                 this.currentUser = data.user;
@@ -203,6 +208,7 @@ class AuthManager {
                 this.closeModal('login-modal');
                 this.updateUserInterface();
                 this.enableAllPredictionButtons();
+                console.log('✅ 登录成功，正在刷新页面...');
                 
                 // 重新加载页面以更新服务器端状态
                 setTimeout(() => {
@@ -210,6 +216,7 @@ class AuthManager {
                 }, 1000);
             } else {
                 this.showMessage(data.message || '登录失败', 'error');
+                console.warn('⚠️ 登录失败:', data.message);
             }
 
         } catch (error) {
@@ -219,6 +226,7 @@ class AuthManager {
             const submitBtn = form.querySelector('button[type="submit"]');
             submitBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> 登录';
             submitBtn.disabled = false;
+            console.log('💡 登录过程结束，按钮状态已恢复。');
         }
     }
 
