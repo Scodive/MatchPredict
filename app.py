@@ -113,37 +113,7 @@ def hash_password(password):
     """密码哈希"""
     return hashlib.sha256(password.encode()).hexdigest()
 
-def simple_create_user_db(username: str, email: str, password_hash: str) -> (bool, str):
-    """使用最直接的方式插入用户（绕过封装），便于快速落库。
-    Returns: (success, message)
-    """
-    try:
-        if not prediction_db:
-            return False, '数据库未配置'
-        conn = prediction_db.connect_to_database()
-        cursor = conn.cursor()
-        insert_sql = """
-        INSERT INTO users (username, email, password_hash, user_type)
-        VALUES (%s, %s, %s, %s)
-        """
-        cursor.execute(insert_sql, (username, email, password_hash, 'free'))
-        conn.commit()
-        cursor.close()
-        conn.close()
-        return True, 'OK'
-    except psycopg2.errors.UniqueViolation:
-        # 唯一键冲突
-        try:
-            conn.rollback()
-        except Exception:
-            pass
-        return False, '用户名或邮箱已存在'
-    except Exception as e:
-        try:
-            conn.rollback()
-        except Exception:
-            pass
-        return False, f'数据库错误: {e}'
+# 移除了 simple_create_user_db 函数，因为 prediction_db.create_user 已经足够健壮。
 
 def get_current_user():
     """获取当前登录用户"""
@@ -683,9 +653,11 @@ def register():
     """用户注册"""
     try:
         if not prediction_db:
-            return jsonify({'success': False, 'message': '数据库未配置'}), 500
+            app.logger.error("注册失败: 数据库未配置")
+            return jsonify({'success': False, 'message': '注册失败：数据库未配置'}), 500
             
         data = request.get_json()
+        app.logger.info(f"收到注册请求: {data}")
         username = data.get('username', '').strip()
         email = data.get('email', '').strip()
         password = data.get('password', '')
@@ -701,24 +673,19 @@ def register():
         # 哈希密码
         password_hash = hash_password(password)
         
-        # 简单直连插入（优先使用最直接方式）
-        ok, msg = simple_create_user_db(username, email, password_hash)
-        if ok:
+        # 创建用户
+        success = prediction_db.create_user(username, email, password_hash)
+        
+        if success:
+            app.logger.info(f"用户注册成功: {username}")
             return jsonify({'success': True, 'message': '注册成功，请登录'})
-        # 若直连失败，再尝试封装的方法一遍（提升兼容性）
-        try:
-            fallback_ok = prediction_db.create_user(username, email, password_hash)
-            if fallback_ok:
-                return jsonify({'success': True, 'message': '注册成功，请登录'})
-        except Exception as e:
-            app.logger.error(f"用户注册数据库异常(回退): {e}")
-            return jsonify({'success': False, 'message': f'注册失败: {str(e)}'}), 500
-        # 仍失败
-        status_code = 409 if '已存在' in msg else 500
-        return jsonify({'success': False, 'message': f'注册失败：{msg}'}), status_code
+        else:
+            # create_user 内部已处理 UniqueViolation，这里捕获通用失败
+            app.logger.warning(f"用户注册失败: 用户名或邮箱已存在 - {username}, {email}")
+            return jsonify({'success': False, 'message': '注册失败：用户名或邮箱已存在，或数据库不可用'}), 409
             
     except Exception as e:
-        app.logger.error(f"用户注册失败: {e}")
+        app.logger.error(f"用户注册失败（捕获到异常）: {e}", exc_info=True) # 打印完整堆栈
         return jsonify({'success': False, 'message': '注册失败，请稍后重试'}), 500
 
 @app.route('/api/login', methods=['POST', 'OPTIONS'])
@@ -726,9 +693,11 @@ def login():
     """用户登录"""
     try:
         if not prediction_db:
-            return jsonify({'success': False, 'message': '数据库未配置'}), 500
+            app.logger.error("登录失败: 数据库未配置")
+            return jsonify({'success': False, 'message': '登录失败：数据库未配置'}), 500
             
         data = request.get_json()
+        app.logger.info(f"收到登录请求: {data}")
         username = data.get('username', '').strip()
         password = data.get('password', '')
         
@@ -746,8 +715,9 @@ def login():
             session['user_id'] = user['id']
             session['username'] = user['username']
             session.permanent = True
-            app.permanent_session_lifetime = timedelta(days=7)
+            # app.permanent_session_lifetime = timedelta(days=7) # 已在 app.config.update 中配置
             
+            app.logger.info(f"用户登录成功，设置会话: {username}")
             return jsonify({
                 'success': True, 
                 'message': '登录成功',
@@ -759,10 +729,11 @@ def login():
                 }
             })
         else:
+            app.logger.warning(f"用户登录失败: 用户名或密码错误 - {username}")
             return jsonify({'success': False, 'message': '用户名或密码错误'}), 401
             
     except Exception as e:
-        app.logger.error(f"用户登录失败: {e}")
+        app.logger.error(f"用户登录失败（捕获到异常）: {e}", exc_info=True) # 打印完整堆栈
         return jsonify({'success': False, 'message': '登录失败，请稍后重试'}), 500
 
 @app.route('/api/logout', methods=['POST', 'OPTIONS'])

@@ -8,6 +8,7 @@
 import psycopg2
 import psycopg2.extras
 import logging
+import os
 from datetime import datetime, timedelta
 from typing import Dict, Any, Optional, List
 import json
@@ -19,28 +20,33 @@ class PredictionDatabase:
     """预测结果数据库管理"""
     
     def __init__(self):
+        logger.info("正在初始化数据库连接参数...")
         self.connection_params = {
-            "host": "dbprovider.ap-southeast-1.clawcloudrun.com",
-            "port": 49674,
-            "database": "postgres",
-            "user": "postgres",
-            "password": "sbdx497p",
+            "host": os.getenv("DB_HOST", "dbprovider.ap-southeast-1.clawcloudrun.com"),
+            "port": int(os.getenv("DB_PORT", "49674")),
+            "database": os.getenv("DB_NAME", "postgres"),
+            "user": os.getenv("DB_USER", "postgres"),
+            "password": os.getenv("DB_PASS", "sbdx497p"), # 请务必在线上环境中设置此环境变量
             "sslmode": "prefer"
         }
         self.init_tables()
     
     def connect_to_database(self):
         """连接到PostgreSQL数据库"""
+        conn = None # 初始化 conn 为 None
         try:
             conn = psycopg2.connect(**self.connection_params)
             logger.info("数据库连接成功")
             return conn
         except Exception as e:
-            logger.error(f"数据库连接失败: {e}")
+            logger.error(f"数据库连接失败: {e}，参数: {self.connection_params.get('host')}:{self.connection_params.get('port')}/{self.connection_params.get('database')}")
+            if conn: # 只有当 conn 已经被赋值才尝试关闭
+                conn.close()
             raise Exception(f"数据库连接失败: {e}")
     
     def init_tables(self):
         """初始化数据库表"""
+        conn = None # 初始化 conn 为 None
         try:
             conn = self.connect_to_database()
             cursor = conn.cursor()
@@ -146,6 +152,8 @@ class PredictionDatabase:
             
         except Exception as e:
             logger.error(f"数据库表初始化失败: {e}")
+            if conn: # 只有当 conn 已经被赋值才尝试关闭
+                conn.close()
             raise Exception(f"数据库初始化失败: {e}")
     
     def save_prediction(self, prediction_data: Dict[str, Any]) -> bool:
@@ -158,6 +166,7 @@ class PredictionDatabase:
         Returns:
             保存是否成功
         """
+        conn = None # 初始化 conn 为 None
         try:
             conn = self.connect_to_database()
             cursor = conn.cursor()
@@ -189,6 +198,9 @@ class PredictionDatabase:
             
         except Exception as e:
             logger.error(f"保存预测结果失败: {e}")
+            if conn: # 只有当 conn 已经被赋值才尝试关闭
+                conn.rollback() # 确保事务回滚
+                conn.close()
             return False
     
     def save_ai_prediction(self, match_data: Dict[str, Any], prediction_result: str, 
@@ -409,7 +421,7 @@ class PredictionDatabase:
             统计信息字典 {'inserted': 插入数量, 'updated': 更新数量, 'skipped': 跳过数量}
         """
         stats = {'inserted': 0, 'updated': 0, 'skipped': 0}
-        
+        conn = None # 初始化 conn 为 None
         try:
             conn = self.connect_to_database()
             cursor = conn.cursor()
@@ -528,6 +540,9 @@ class PredictionDatabase:
             
         except Exception as e:
             logger.error(f"保存每日比赛数据失败: {e}")
+            if conn: # 只有当 conn 已经被赋值才尝试关闭
+                conn.rollback()
+                conn.close()
             return stats
     
     def get_daily_matches(self, days_ahead: int = 7) -> List[Dict[str, Any]]:
@@ -540,6 +555,7 @@ class PredictionDatabase:
         Returns:
             比赛数据列表
         """
+        conn = None # 初始化 conn 为 None
         try:
             conn = self.connect_to_database()
             cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
@@ -603,6 +619,8 @@ class PredictionDatabase:
             
         except Exception as e:
             logger.error(f"从数据库获取比赛数据失败: {e}")
+            if conn: # 只有当 conn 已经被赋值才尝试关闭
+                conn.close()
             return []
     
     def cleanup_old_matches(self, days_to_keep: int = 30) -> int:
@@ -615,6 +633,7 @@ class PredictionDatabase:
         Returns:
             删除的记录数
         """
+        conn = None # 初始化 conn 为 None
         try:
             conn = self.connect_to_database()
             cursor = conn.cursor()
@@ -638,11 +657,14 @@ class PredictionDatabase:
             
         except Exception as e:
             logger.error(f"清理旧比赛数据失败: {e}")
+            if conn: # 只有当 conn 已经被赋值才尝试关闭
+                conn.close()
             return 0
     
     # 用户管理方法
     def create_user(self, username: str, email: str, password_hash: str, user_type: str = 'free') -> bool:
         """创建新用户"""
+        conn = None # 初始化 conn 为 None
         try:
             conn = self.connect_to_database()
             cursor = conn.cursor()
@@ -658,17 +680,21 @@ class PredictionDatabase:
             return True
             
         except psycopg2.IntegrityError as e:
-            logger.warning(f"用户创建失败，用户名或邮箱已存在: {e}")
+            logger.warning(f"用户创建失败，用户名或邮箱已存在: {username}, {email}")
+            if conn: # 只有当 conn 已经被赋值才尝试关闭
+                conn.rollback() # 确保事务回滚
+                conn.close()
             return False
         except Exception as e:
             logger.error(f"创建用户失败: {e}")
-            return False
-        finally:
-            if 'conn' in locals():
+            if conn: # 只有当 conn 已经被赋值才尝试关闭
+                conn.rollback() # 确保事务回滚
                 conn.close()
+            return False
     
     def authenticate_user(self, username: str, password_hash: str) -> dict:
         """用户认证"""
+        conn = None # 初始化 conn 为 None
         try:
             conn = self.connect_to_database()
             cursor = conn.cursor()
@@ -703,6 +729,7 @@ class PredictionDatabase:
                 else:
                     daily_used = user_data[5]
                 
+                logger.info(f"用户认证成功: {username}")
                 return {
                     'id': user_data[0],
                     'username': user_data[1],
@@ -713,17 +740,18 @@ class PredictionDatabase:
                     'total_predictions': user_data[7]
                 }
             else:
+                logger.warning(f"用户认证失败: 用户名或密码错误 - {username}")
                 return None
                 
         except Exception as e:
             logger.error(f"用户认证失败: {e}")
-            return None
-        finally:
-            if 'conn' in locals():
+            if conn: # 只有当 conn 已经被赋值才尝试关闭
                 conn.close()
+            return None
     
     def get_user_by_username(self, username: str) -> dict:
         """根据用户名获取用户信息"""
+        conn = None # 初始化 conn 为 None
         try:
             conn = self.connect_to_database()
             cursor = conn.cursor()
@@ -751,13 +779,13 @@ class PredictionDatabase:
             
         except Exception as e:
             logger.error(f"获取用户信息失败: {e}")
-            return None
-        finally:
-            if 'conn' in locals():
+            if conn: # 只有当 conn 已经被赋值才尝试关闭
                 conn.close()
+            return None
     
     def increment_user_predictions(self, user_id: int) -> bool:
         """增加用户预测次数"""
+        conn = None # 初始化 conn 为 None
         try:
             conn = self.connect_to_database()
             cursor = conn.cursor()
@@ -777,10 +805,10 @@ class PredictionDatabase:
             
         except Exception as e:
             logger.error(f"更新用户预测次数失败: {e}")
-            return False
-        finally:
-            if 'conn' in locals():
+            if conn: # 只有当 conn 已经被赋值才尝试关闭
+                conn.rollback()
                 conn.close()
+            return False
     
     def can_user_predict(self, user_id: int, user_type: str, daily_used: int) -> bool:
         """检查用户是否可以进行预测"""
