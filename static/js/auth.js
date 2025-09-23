@@ -149,7 +149,7 @@ class AuthManager {
     showLoginModal() {
         const modal = document.getElementById('login-modal');
         if (modal) {
-            modal.classList.remove('hidden');
+            modal.classList.add('active');
             document.getElementById('login-username').focus();
         }
     }
@@ -157,7 +157,8 @@ class AuthManager {
     showRegisterModal() {
         const modal = document.getElementById('register-modal');
         if (modal) {
-            modal.classList.remove('hidden');
+            console.log('💡 showRegisterModal 被调用');
+            modal.classList.add('active');
             document.getElementById('register-username').focus();
         }
     }
