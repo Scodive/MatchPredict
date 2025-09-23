@@ -86,6 +86,7 @@ body {
 .nav-menu {
     display: flex;
     gap: 0.5rem;
+    justify-content: center; /* 使导航按钮居中 */
 }
 
 .nav-btn {
@@ -2430,12 +2431,12 @@ footer {
 }
 
 .modal-content {
-    background: #1e1e1e;
+    background: var(--card-bg);
     border-radius: 12px;
     width: 90%;
     max-width: 400px;
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-    border: 1px solid #333;
+    border: 1px solid var(--border-color);
 }
 
 .modal-header {
@@ -2443,12 +2444,12 @@ footer {
     justify-content: space-between;
     align-items: center;
     padding: 1.5rem 1.5rem 1rem 1.5rem;
-    border-bottom: 1px solid #333;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .modal-header h3 {
     margin: 0;
-    color: #3b82f6;
+    color: var(--primary-color);
     display: flex;
     align-items: center;
     gap: 0.5rem;
@@ -2458,7 +2459,7 @@ footer {
     background: none;
     border: none;
     font-size: 1.2rem;
-    color: #888;
+    color: var(--text-secondary);
     cursor: pointer;
     padding: 0.5rem;
     border-radius: 50%;
@@ -2466,8 +2467,8 @@ footer {
 }
 
 .modal-close:hover {
-    background: #333;
-    color: #fff;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
 }
 
 .modal-body {
@@ -2488,22 +2489,22 @@ footer {
 
 .form-group label {
     font-weight: 500;
-    color: #fff;
+    color: var(--text-primary);
 }
 
 .form-group input {
     padding: 0.75rem;
-    border: 1px solid #333;
+    border: 1px solid var(--border-color);
     border-radius: 6px;
-    background: #2a2a2a;
-    color: #fff;
+    background: var(--card-bg);
+    color: var(--text-primary);
     font-size: 0.9rem;
     transition: border-color 0.2s ease;
 }
 
 .form-group input:focus {
     outline: none;
-    border-color: #3b82f6;
+    border-color: var(--primary-color);
 }
 
 .form-actions {
@@ -2517,11 +2518,11 @@ footer {
 .auth-switch {
     text-align: center;
     margin-top: 1rem;
-    color: #888;
+    color: var(--text-secondary);
 }
 
 .auth-switch a {
-    color: #3b82f6;
+    color: var(--primary-color);
     text-decoration: none;
     font-weight: 500;
 }
@@ -2541,16 +2542,16 @@ footer {
     display: flex;
     align-items: center;
     gap: 1rem;
-    background: #1e1e1e;
+    background: var(--card-bg);
     padding: 0.5rem 1rem;
     border-radius: 8px;
-    border: 1px solid #333;
+    border: 1px solid var(--border-color);
 }
 
 .user-avatar {
     width: 32px;
     height: 32px;
-    background: #3b82f6;
+    background: var(--primary-color);
     border-radius: 50%;
     display: flex;
     align-items: center;
@@ -2566,7 +2567,7 @@ footer {
 
 .username {
     font-weight: 600;
-    color: #fff;
+    color: var(--text-primary);
 }
 
 .user-type-badge {
@@ -2577,18 +2578,18 @@ footer {
 }
 
 .user-type-badge.free {
-    background: #333;
-    color: #888;
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
 }
 
 .user-type-badge.premium {
-    background: #ffd700;
-    color: #1a1a1a;
+    background: var(--accent-color);
+    color: white; /* 保持白色文字，因为 accent-color 是绿色系 */
 }
 
 .predictions-remaining {
     font-size: 0.8rem;
-    color: #888;
+    color: var(--text-secondary);
 }
 
 .auth-buttons {
@@ -2609,19 +2610,19 @@ footer {
 }
 
 .auth-message.success {
-    background: #22c55e;
+    background: var(--gradient-success);
 }
 
 .auth-message.error {
-    background: #ef4444;
+    background: var(--gradient-danger);
 }
 
 .auth-message.warning {
-    background: #f59e0b;
+    background: var(--warning-color);
 }
 
 .auth-message.info {
-    background: #3b82f6;
+    background: var(--gradient-primary);
 }
 
 .message-content {
@@ -2633,25 +2634,27 @@ footer {
 
 /* 禁用按钮样式 */
 .btn.disabled {
-    opacity: 0.5;
+    opacity: 0.6;
     cursor: not-allowed;
-    background: #666;
+    background: var(--bg-secondary);
+    color: var(--text-light);
 }
 
 .btn.disabled:hover {
-    background: #666;
+    background: var(--bg-secondary);
     transform: none;
 }
 
 .btn:disabled {
-    opacity: 0.5;
+    opacity: 0.6;
     cursor: not-allowed;
-    background: #666;
+    background: var(--bg-secondary);
+    color: var(--text-light);
     pointer-events: none;
 }
 
 .btn:disabled:hover {
-    background: #666;
+    background: var(--bg-secondary);
     transform: none;
 }
 

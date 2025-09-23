@@ -347,10 +347,29 @@ def save_prediction():
             # 增加用户预测次数
             prediction_db.increment_user_predictions(current_user['id'])
             
-            return jsonify({
-                'success': True,
-                'message': '预测结果保存成功'
-            })
+            # 重新从数据库获取最新用户数据，包括更新后的预测次数
+            updated_user = prediction_db.get_user_by_username(current_user['username'])
+
+            # 如果成功获取到更新的用户数据，则更新session并返回
+            if updated_user:
+                session['user_id'] = updated_user['id']
+                session['username'] = updated_user['username']
+                session.permanent = True
+                app.logger.info(f"用户 {updated_user['username']} 预测次数已更新: {updated_user['daily_predictions_used']}")
+                return jsonify({
+                    'success': True,
+                    'message': '预测结果保存成功',
+                    'user': {
+                        'username': updated_user['username'],
+                        'user_type': updated_user['user_type'],
+                        'daily_predictions_used': updated_user['daily_predictions_used'],
+                        'total_predictions': updated_user['total_predictions'],
+                        'membership_expires': updated_user['membership_expires'].isoformat() if updated_user['membership_expires'] else None
+                    }
+                })
+            else:
+                app.logger.error(f"保存预测后无法获取更新后的用户数据: {current_user['username']}", exc_info=True)
+                return jsonify({'success': False, 'message': '预测成功，但获取用户状态失败'}), 500
         else:
             return jsonify({
                 'success': False,

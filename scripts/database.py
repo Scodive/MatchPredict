@@ -722,7 +722,7 @@ class PredictionDatabase:
         """用户认证"""
         try:
             with self.get_db_connection() as conn:
-                cursor = conn.cursor()
+                cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) # 使用 RealDictCursor
                 
                 select_sql = """
             SELECT id, username, email, user_type, membership_expires, 
@@ -736,49 +736,37 @@ class PredictionDatabase:
                 if user_data:
                     # 更新最后登录时间
                     update_sql = "UPDATE users SET last_login = CURRENT_TIMESTAMP WHERE id = %s"
-                    cursor.execute(update_sql, (user_data[0],))
+                    cursor.execute(update_sql, (user_data['id'],))
                     conn.commit()
                     
                     # 检查是否需要重置每日使用次数
                     today = datetime.now().date()
-                    last_prediction_date = user_data[6]
+                    last_prediction_date = user_data['last_prediction_date']
                     
-                    if last_prediction_date != today:
+                    if last_prediction_date and last_prediction_date < today:
                         reset_sql = """
                     UPDATE users SET daily_predictions_used = 0, last_prediction_date = %s 
                     WHERE id = %s
                     """
-                        cursor.execute(reset_sql, (today, user_data[0]))
+                        cursor.execute(reset_sql, (today, user_data['id']))
                         conn.commit()
-                        daily_used = 0
-                    else:
-                        daily_used = user_data[5]
+                        user_data['daily_predictions_used'] = 0 # 更新返回的数据
                     
                     logger.info(f"用户认证成功: {username}")
-                    return {
-                        'id': user_data[0],
-                        'username': user_data[1],
-                        'email': user_data[2],
-                        'user_type': user_data[3],
-                        'membership_expires': user_data[4],
-                        'daily_predictions_used': daily_used,
-                        'total_predictions': user_data[7]
-                    }
+                    return user_data # 直接返回字典格式的用户数据
                 else:
                     logger.warning(f"用户认证失败: 用户名或密码错误 - {username}")
                     return None
                     
         except Exception as e:
-            logger.error(f"用户认证失败: {e}")
-            # if conn: # 只有当 conn 已经被赋值才尝试关闭
-            #     conn.close()
+            logger.error(f"用户认证失败: {e}", exc_info=True)
             return None
     
     def get_user_by_username(self, username: str) -> dict:
         """根据用户名获取用户信息"""
         try:
             with self.get_db_connection() as conn:
-                cursor = conn.cursor()
+                cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) # 使用 RealDictCursor
                 
                 select_sql = """
             SELECT id, username, email, user_type, membership_expires, 
@@ -790,21 +778,21 @@ class PredictionDatabase:
                 user_data = cursor.fetchone()
                 
                 if user_data:
-                    return {
-                        'id': user_data[0],
-                        'username': user_data[1],
-                        'email': user_data[2],
-                        'user_type': user_data[3],
-                        'membership_expires': user_data[4],
-                        'daily_predictions_used': user_data[5],
-                        'total_predictions': user_data[7]
-                    }
+                    # 检查是否需要重置每日使用次数 (这里只在获取时更新数据，不提交)
+                    today = datetime.now().date()
+                    last_prediction_date = user_data['last_prediction_date']
+
+                    if last_prediction_date and last_prediction_date < today:
+                        # 更新 user_data 字典中的值，以便返回最新状态
+                        user_data['daily_predictions_used'] = 0
+                        # 注意：这里不直接提交到数据库，因为 get_user_by_username 应该是一个只读操作
+                        # 重置逻辑已在 authenticate_user 中处理
+                    
+                    return user_data # 直接返回字典格式的用户数据
                 return None
                 
         except Exception as e:
-            logger.error(f"获取用户信息失败: {e}")
-            # if conn: # 只有当 conn 已经被赋值才尝试关闭
-            #     conn.close()
+            logger.error(f"获取用户信息失败: {e}", exc_info=True)
             return None
     
     def increment_user_predictions(self, user_id: int) -> bool:
