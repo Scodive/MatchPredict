@@ -135,7 +135,7 @@ class AuthManager {
             };
         }
         
-        modal.classList.remove('hidden');
+        modal.classList.add('active');
         console.log('✅ 确认模态框已移除 hidden 类，尝试显示。');
     }
 
@@ -165,7 +165,7 @@ class AuthManager {
     closeModal(modalId) {
         const modal = document.getElementById(modalId);
         if (modal) {
-            modal.classList.add('hidden');
+            modal.classList.remove('active');
         }
     }
 
