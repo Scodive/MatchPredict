@@ -220,7 +220,7 @@ class PredictionDatabase:
             
             cursor.execute(insert_sql, prediction_data)
             # conn.commit() # 由上下文管理器处理
-            cursor.close()
+            # cursor.close() # 移除此行，由上下文管理器统一管理连接和光标的生命周期
             # conn.close() # 由上下文管理器处理
             
             logger.info(f"预测结果保存成功: {prediction_data.get('prediction_id')}")
