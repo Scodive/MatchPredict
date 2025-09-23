@@ -227,7 +227,7 @@ class PredictionDatabase:
             return True
             
         except Exception as e:
-            logger.error(f"保存预测结果失败: {e}")
+            logger.exception(f"保存预测结果失败: {e}") # 使用 logger.exception 打印完整堆栈跟踪
             # if conn: # 由上下文管理器处理
             #     conn.rollback() # 确保事务回滚
             #     conn.close()
