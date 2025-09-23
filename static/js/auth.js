@@ -81,6 +81,57 @@ class AuthManager {
         this.disableAllPredictionButtons();
     }
 
+    // 新增：显示确认弹窗的方法
+    showConfirmationModal(title, message, onConfirmCallback, onCancelCallback) {
+        const modal = document.getElementById('confirmation-modal');
+        const titleElement = document.getElementById('confirmation-modal-title');
+        const messageElement = document.getElementById('confirmation-modal-message');
+        const confirmBtn = document.getElementById('confirm-action-btn');
+
+        if (!modal || !titleElement || !messageElement || !confirmBtn) {
+            console.error('确认模态框的HTML元素缺失！');
+            // 如果元素缺失，直接执行确认回调（或默认行为），避免阻塞用户
+            onConfirmCallback();
+            return;
+        }
+
+        titleElement.textContent = title;
+        messageElement.innerHTML = message; // 使用 innerHTML 支持传入带HTML的消息
+
+        // 移除旧的事件监听器以防止重复绑定
+        const newConfirmBtn = confirmBtn.cloneNode(true);
+        confirmBtn.parentNode.replaceChild(newConfirmBtn, confirmBtn);
+        const finalConfirmBtn = document.getElementById('confirm-action-btn');
+
+        finalConfirmBtn.onclick = () => {
+            this.closeModal('confirmation-modal');
+            onConfirmCallback();
+        };
+        
+        // 如果提供了取消回调，则绑定取消按钮
+        const cancelBtn = modal.querySelector('.secondary-btn'); // 假设取消按钮有 secondary-btn 类
+        if (cancelBtn) {
+            // 移除旧的事件监听器以防止重复绑定
+            const newCancelBtn = cancelBtn.cloneNode(true);
+            cancelBtn.parentNode.replaceChild(newCancelBtn, cancelBtn);
+            const finalCancelBtn = modal.querySelector('.secondary-btn');
+
+            finalCancelBtn.onclick = () => {
+                this.closeModal('confirmation-modal');
+                if (onCancelCallback) onCancelCallback();
+            };
+        }
+        
+        modal.classList.remove('hidden');
+    }
+
+    // 新增：取消确认操作（用于模态框内的取消按钮）
+    cancelConfirmation() {
+        this.closeModal('confirmation-modal');
+        // 如果有需要，可以在这里添加默认的取消行为或日志
+        console.log('用户取消了操作');
+    }
+
     showLoginModal() {
         const modal = document.getElementById('login-modal');
         if (modal) {
@@ -251,9 +302,48 @@ class AuthManager {
                 const data = await response.json();
                 if (data.success) {
                     const remainingElement = document.getElementById('predictions-remaining');
-                    if (remainingElement && data.user_type === 'free') {
-                        remainingElement.textContent = data.remaining;
+                    const userTypeText = document.getElementById('user-type-text'); // 获取用户类型元素
+                    const dailyUsedText = document.getElementById('daily-used-text'); // 获取已用次数元素
+                    const predictionLimitHint = document.getElementById('prediction-limit-hint'); // 获取预测限制提示元素
+                    
+                    // 更新 AuthManager 中的 currentUser 对象
+                    if (this.currentUser) {
+                        this.currentUser.user_type = data.user_type;
+                        this.currentUser.daily_predictions_used = data.daily_used;
+                        this.currentUser.remaining = data.remaining;
                     }
+
+                    if (remainingElement) {
+                        if (data.user_type === 'free') {
+                            remainingElement.textContent = data.remaining;
+                            if (predictionLimitHint) {
+                                predictionLimitHint.textContent = `每日剩余 ${data.remaining} 次预测机会`;
+                            }
+                            // 调整剩余次数的颜色
+                            if (data.remaining === 0) {
+                                remainingElement.style.color = 'var(--danger-color)';
+                            } else if (data.remaining === 1) {
+                                remainingElement.style.color = 'var(--warning-color)';
+                            } else {
+                                remainingElement.style.color = 'var(--text-primary)';
+                            }
+                        } else if (data.user_type === 'premium') {
+                            remainingElement.textContent = '无限';
+                            if (predictionLimitHint) {
+                                predictionLimitHint.textContent = '会员用户，无限次预测';
+                            }
+                            remainingElement.style.color = 'var(--success-color)';
+                        }
+                    }
+
+                    if (userTypeText) {
+                        userTypeText.textContent = data.user_type === 'premium' ? '会员' : '免费';
+                        userTypeText.className = `user-type-badge ${data.user_type}`;
+                    }
+                    if (dailyUsedText) {
+                        dailyUsedText.textContent = data.daily_used;
+                    }
+                    
                 }
             }
         } catch (error) {

@@ -244,52 +244,87 @@ function clearClassicMatches() {
 
 // 预测经典模式比赛
 async function predictClassicMatches() {
-    // 检查登录状态和预测权限
-    if (!await window.authManager.checkPredictionLimit()) {
+    // 检查登录状态
+    if (!window.authManager || !window.authManager.currentUser) {
+        window.authManager.showMessage('请先登录才能使用经典模式预测功能', 'warning');
+        window.authManager.showLoginModal();
         return;
     }
-    
+
+    // 获取最新预测次数
+    await window.authManager.updatePredictionCount();
+    const currentUser = window.authManager.currentUser;
+
+    // 检查预测限制
+    if (currentUser.user_type === 'free' && currentUser.daily_predictions_used >= 3) {
+        window.authManager.showMessage('今日免费经典模式预测次数已用完，请升级会员', 'warning');
+        return;
+    }
+
     if (classicMatches.length === 0) {
-        showMessage('请先添加比赛', 'error');
+        window.authManager.showMessage('请先添加比赛', 'error');
         return;
     }
-    
-    showLoading(true);
-    
-    try {
-        // 使用本地预测算法
-        const predictions = classicMatches.map(match => {
-            return predictMatchLocally(match);
-        });
-        
-        // 生成串关组合
-        const parlayPredictions = generateClassicParlays(predictions);
-        
-        // 显示结果
-        displayClassicPredictions(predictions);
-        displayClassicParlays(parlayPredictions);
-        
-        // 保存预测结果到数据库
-        saveClassicPredictionsToDatabase(predictions);
-        
-        // 显示结果区域
-        const resultsSection = document.getElementById('results-section');
-        resultsSection.classList.remove('hidden');
-        
-        // 切换到单场预测标签
-        const individualTab = document.querySelector('[data-tab="individual"]');
-        if (individualTab) {
-            individualTab.click();
-        }
-        
-        showMessage(`成功预测 ${predictions.length} 场比赛`, 'success');
-        
-    } catch (error) {
-        console.error('预测失败:', error);
-        showMessage('预测失败，请稍后重试', 'error');
-    } finally {
-        showLoading(false);
+
+    // 构建确认消息
+    let confirmationMessage = '';
+    if (currentUser.user_type === 'free') {
+        const remaining = Math.max(0, 3 - currentUser.daily_predictions_used);
+        confirmationMessage = `您当前是免费用户。本次预测将消耗一次免费机会。<br>今日剩余次数：<strong>${remaining}</strong> 次。<br>是否确认进行经典模式预测？`;
+    } else {
+        confirmationMessage = `您是会员用户，可无限次进行经典模式预测。<br>是否确认进行经典模式预测？`;
     }
+
+    // 显示确认弹窗
+    window.authManager.showConfirmationModal(
+        '确认经典模式预测',
+        confirmationMessage,
+        async () => { // 用户确认后的回调
+            showLoading(true);
+
+            try {
+                // 使用本地预测算法
+                const predictions = classicMatches.map(match => {
+                    return predictMatchLocally(match);
+                });
+
+                // 生成串关组合
+                const parlayPredictions = generateClassicParlays(predictions);
+
+                // 显示结果
+                displayClassicPredictions(predictions);
+                displayClassicParlays(parlayPredictions);
+
+                // 保存预测结果到数据库
+                await saveClassicPredictionsToDatabase(predictions);
+                // 预测成功后更新UI的预测次数
+                window.authManager.updatePredictionCount();
+
+                // 显示结果区域
+                const resultsSection = document.getElementById('results-section');
+                resultsSection.classList.remove('hidden');
+
+                // 切换到单场预测标签
+                const individualTab = document.querySelector('[data-tab="individual"]');
+                if (individualTab) {
+                    individualTab.click();
+                }
+
+                window.authManager.showMessage(`成功预测 ${predictions.length} 场比赛`, 'success');
+
+            } catch (error) {
+                console.error('预测失败:', error);
+                window.authManager.showMessage('预测失败，请稍后重试', 'error');
+            } finally {
+                showLoading(false);
+            }
+        },
+        () => { // 用户取消后的回调
+            console.log('用户取消了经典模式预测');
+            // 恢复按钮状态（如果需要）
+            // 在经典模式中，按钮通常不会禁用，所以这里不需要特别处理
+        }
+    );
 }
 
 // 本地预测算法

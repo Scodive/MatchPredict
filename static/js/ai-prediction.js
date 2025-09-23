@@ -310,104 +310,136 @@ class AIPredictionManager {
     }
 
     async startAIPrediction() {
-        // 检查登录状态和预测权限
-        if (!await window.authManager.checkPredictionLimit()) {
+        // 检查登录状态
+        if (!window.authManager || !window.authManager.currentUser) {
+            window.authManager.showMessage('请先登录才能使用AI预测功能', 'warning');
+            window.authManager.showLoginModal();
             return;
         }
-        
-        try {
-            // 获取要预测的比赛数据
-            let matchesToPredict = [];
-            
-            if (this.currentMode === 'lottery') {
-                // 体彩模式：获取体彩选中的比赛
-                if (window.lotteryManager && window.lotteryManager.getSelectedMatches) {
-                    const lotteryMatches = window.lotteryManager.getSelectedMatches();
-                    matchesToPredict = lotteryMatches.map(match => this.convertToAIFormat(match));
-                    console.log('体彩模式选中比赛:', lotteryMatches);
-                }
-            } else if (this.currentMode === 'ai') {
-                // AI模式：使用AI模式添加的比赛
-                matchesToPredict = this.aiMatches;
-            } else if (this.currentMode === 'classic') {
-                // 经典模式：使用全局比赛列表
-                if (window.matches && window.matches.length > 0) {
-                    matchesToPredict = window.matches.map(match => this.convertToAIFormat(match));
-                }
+
+        // 获取最新预测次数
+        await window.authManager.updatePredictionCount();
+        const currentUser = window.authManager.currentUser;
+
+        // 检查预测限制
+        if (currentUser.user_type === 'free' && currentUser.daily_predictions_used >= 3) {
+            window.authManager.showMessage('今日免费AI预测次数已用完，请升级会员', 'warning');
+            return;
+        }
+
+        // 获取要预测的比赛数据
+        let matchesToPredict = [];
+        if (this.currentMode === 'lottery') {
+            if (window.lotteryManager && window.lotteryManager.getSelectedMatches) {
+                const lotteryMatches = window.lotteryManager.getSelectedMatches();
+                matchesToPredict = lotteryMatches.map(match => this.convertToAIFormat(match));
             }
-
-            if (!matchesToPredict || matchesToPredict.length === 0) {
-                this.showMessage('请先选择或添加比赛', 'error');
-                return;
-            }
-
-            console.log('开始AI预测，比赛数量:', matchesToPredict.length);
-            console.log('比赛数据:', matchesToPredict);
-
-            // 显示加载状态
-            const loadingElement = document.getElementById('loading-overlay');
-            if (loadingElement) {
-                loadingElement.classList.remove('hidden');
-            }
-
-            // 更新按钮状态
-            const aiPredictBtn = document.getElementById('ai-predict-btn');
-            if (aiPredictBtn) {
-                aiPredictBtn.disabled = true;
-                aiPredictBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> AI分析中...';
-            }
-
-            // 直接调用Gemini API进行预测
-            const predictions = [];
-            for (const match of matchesToPredict) {
-                try {
-                    console.log(`开始预测比赛: ${match.home_team} vs ${match.away_team}`);
-                    const prediction = await this.predictMatchWithGemini(match);
-                    if (prediction) {
-                        predictions.push(prediction);
-                        console.log(`比赛预测成功: ${match.home_team} vs ${match.away_team}`);
-                    }
-                } catch (error) {
-                    console.error(`预测比赛失败 ${match.home_team} vs ${match.away_team}:`, error);
-                    // 继续处理其他比赛，不中断整个流程
-                }
-            }
-
-            if (predictions.length > 0) {
-                this.aiResults = predictions; // 直接存储预测数组
-                this.displayAIResults();
-                this.showMessage(`AI预测完成，成功分析了 ${predictions.length}/${matchesToPredict.length} 场比赛`, 'success');
-                
-                // 保存预测结果到数据库
-                this.savePredictionsToDatabase(predictions);
-                
-                // 显示结果区域并切换到AI分析标签页
-                const resultsSection = document.getElementById('results-section');
-                if (resultsSection) {
-                    resultsSection.classList.remove('hidden');
-                }
-                this.switchTab('ai-analysis');
-            } else {
-                throw new Error('所有比赛预测都失败了，请检查网络连接或API配置');
-            }
-
-        } catch (error) {
-            console.error('AI预测失败:', error);
-            this.showMessage(`AI预测失败: ${error.message}`, 'error');
-        } finally {
-            // 隐藏加载状态
-            const loadingElement = document.getElementById('loading-overlay');
-            if (loadingElement) {
-                loadingElement.classList.add('hidden');
-            }
-
-            // 恢复按钮状态
-            const aiPredictBtn = document.getElementById('ai-predict-btn');
-            if (aiPredictBtn) {
-                aiPredictBtn.disabled = false;
-                this.updateAIPredictButtonText();
+        } else if (this.currentMode === 'ai') {
+            matchesToPredict = this.aiMatches;
+        } else if (this.currentMode === 'classic') {
+            if (window.matches && window.matches.length > 0) {
+                matchesToPredict = window.matches.map(match => this.convertToAIFormat(match));
             }
         }
+
+        if (!matchesToPredict || matchesToPredict.length === 0) {
+            window.authManager.showMessage('请先选择或添加比赛', 'error');
+            return;
+        }
+
+        // 构建确认消息
+        let confirmationMessage = '';
+        if (currentUser.user_type === 'free') {
+            const remaining = Math.max(0, 3 - currentUser.daily_predictions_used);
+            confirmationMessage = `您当前是免费用户。本次预测将消耗一次免费机会。<br>今日剩余次数：<strong>${remaining}</strong> 次。<br>是否确认进行AI预测？`;
+        } else {
+            confirmationMessage = `您是会员用户，可无限次进行AI预测。<br>是否确认进行AI预测？`;
+        }
+
+        // 显示确认弹窗
+        window.authManager.showConfirmationModal(
+            '确认AI预测',
+            confirmationMessage,
+            async () => { // 用户确认后的回调
+                try {
+                    console.log('开始AI预测，比赛数量:', matchesToPredict.length);
+                    console.log('比赛数据:', matchesToPredict);
+
+                    // 显示加载状态
+                    const loadingElement = document.getElementById('loading-overlay');
+                    if (loadingElement) {
+                        loadingElement.classList.remove('hidden');
+                    }
+
+                    // 更新按钮状态
+                    const aiPredictBtn = document.getElementById('ai-predict-btn');
+                    if (aiPredictBtn) {
+                        aiPredictBtn.disabled = true;
+                        aiPredictBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> AI分析中...';
+                    }
+
+                    const predictions = [];
+                    for (const match of matchesToPredict) {
+                        try {
+                            console.log(`开始预测比赛: ${match.home_team} vs ${match.away_team}`);
+                            const prediction = await this.predictMatchWithGemini(match);
+                            if (prediction) {
+                                predictions.push(prediction);
+                                console.log(`比赛预测成功: ${match.home_team} vs ${match.away_team}`);
+                            }
+                        } catch (error) {
+                            console.error(`预测比赛失败 ${match.home_team} vs ${match.away_team}:`, error);
+                        }
+                    }
+
+                    if (predictions.length > 0) {
+                        this.aiResults = predictions;
+                        this.displayAIResults();
+                        window.authManager.showMessage(`AI预测完成，成功分析了 ${predictions.length}/${matchesToPredict.length} 场比赛`, 'success');
+
+                        // 保存预测结果到数据库
+                        await this.savePredictionsToDatabase(predictions);
+                        // 预测成功后更新UI的预测次数
+                        window.authManager.updatePredictionCount();
+
+                        // 显示结果区域并切换到AI分析标签页
+                        const resultsSection = document.getElementById('results-section');
+                        if (resultsSection) {
+                            resultsSection.classList.remove('hidden');
+                        }
+                        this.switchTab('ai-analysis');
+                    } else {
+                        throw new Error('所有比赛预测都失败了，请检查网络连接或API配置');
+                    }
+
+                } catch (error) {
+                    console.error('AI预测失败:', error);
+                    window.authManager.showMessage(`AI预测失败: ${error.message}`, 'error');
+                } finally {
+                    // 隐藏加载状态
+                    const loadingElement = document.getElementById('loading-overlay');
+                    if (loadingElement) {
+                        loadingElement.classList.add('hidden');
+                    }
+
+                    // 恢复按钮状态
+                    const aiPredictBtn = document.getElementById('ai-predict-btn');
+                    if (aiPredictBtn) {
+                        aiPredictBtn.disabled = false;
+                        this.updateAIPredictButtonText();
+                    }
+                }
+            },
+            () => { // 用户取消后的回调
+                console.log('用户取消了AI预测');
+                // 恢复按钮状态（如果需要）
+                const aiPredictBtn = document.getElementById('ai-predict-btn');
+                if (aiPredictBtn) {
+                    aiPredictBtn.disabled = false;
+                    this.updateAIPredictButtonText();
+                }
+            }
+        );
     }
 
     convertToAIFormat(match) {

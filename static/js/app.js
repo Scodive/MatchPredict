@@ -58,6 +58,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             });
         });
+
+        // 默认激活第一个模式或从URL中读取
+        const urlParams = new URLSearchParams(window.location.search);
+        const initialMode = urlParams.get('mode') || (modeButtons.length > 0 ? modeButtons[0].getAttribute('data-mode') : null);
+        if (initialMode) {
+            switchMode(initialMode);
+        }
     }
     
     // 初始化模式选择
@@ -683,6 +690,11 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 调用初始化函数
     init();
+
+    // 确保在页面加载和模式切换后，用户认证状态和预测次数都能及时更新
+    if (window.authManager) {
+        window.authManager.updatePredictionCount();
+    }
     
     // 暴露全局函数
     window.removeMatch = removeMatch;

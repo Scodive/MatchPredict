@@ -204,11 +204,11 @@ class PredictionDatabase:
                 # 准备插入数据
                 insert_sql = """
             INSERT INTO match_predictions (
-                prediction_id, prediction_mode, home_team, away_team, league_name,
+                prediction_id, prediction_mode, user_id, username, home_team, away_team, league_name,
                 match_time, home_odds, draw_odds, away_odds, predicted_result,
                 prediction_confidence, ai_analysis, user_ip
             ) VALUES (
-                %(prediction_id)s, %(prediction_mode)s, %(home_team)s, %(away_team)s, %(league_name)s,
+                %(prediction_id)s, %(prediction_mode)s, %(user_id)s, %(username)s, %(home_team)s, %(away_team)s, %(league_name)s,
                 %(match_time)s, %(home_odds)s, %(draw_odds)s, %(away_odds)s, %(predicted_result)s,
                 %(prediction_confidence)s, %(ai_analysis)s, %(user_ip)s
             ) ON CONFLICT (prediction_id) DO UPDATE SET
@@ -218,6 +218,7 @@ class PredictionDatabase:
                 ai_analysis = EXCLUDED.ai_analysis;
             """
             
+            logger.info(f"尝试保存预测数据，SQL: {insert_sql.strip()}，Data: {prediction_data}")
             cursor.execute(insert_sql, prediction_data)
             # conn.commit() # 由上下文管理器处理
             cursor.close()
@@ -227,7 +228,7 @@ class PredictionDatabase:
             return True
             
         except Exception as e:
-            logger.error(f"保存预测结果失败: {e}")
+            logger.error(f"保存预测结果失败: {e}", exc_info=True)
             # if conn: # 由上下文管理器处理
             #     conn.rollback() # 确保事务回滚
             #     conn.close()
