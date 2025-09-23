@@ -700,7 +700,6 @@ class PredictionDatabase:
             VALUES (%s, %s, %s, %s)
             """
                 cursor.execute(insert_sql, (username, email, password_hash, user_type))
-                conn.commit()
                 
                 logger.info(f"用户创建成功: {username}")
                 return True
@@ -810,7 +809,6 @@ class PredictionDatabase:
             WHERE id = %s
             """
                 cursor.execute(update_sql, (today, user_id))
-                conn.commit()
                 
                 return True
                 
