@@ -517,7 +517,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="login-form" class="auth-form">
+                <form id="login-form" class="auth-form" method="POST">
                     <div class="form-group">
                         <label for="login-username">用户名</label>
                         <input type="text" id="login-username" name="username" required 
@@ -551,7 +551,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form id="register-form" class="auth-form">
+                <form id="register-form" class="auth-form" method="POST">
                     <div class="form-group">
                         <label for="register-username">用户名</label>
                         <input type="text" id="register-username" name="username" required 
@@ -597,22 +597,6 @@
         </div>
         <div class="modal-footer">
             <button class="btn secondary-btn" id="confirmation-cancel-btn">取消</button>
-            <button class="btn primary-btn" id="confirm-action-btn">确认</button>
-        </div>
-    </div>
-</div><div id="confirmation-modal" class="modal-overlay hidden">
-    <div class="modal-content">
-        <div class="modal-header">
-            <h3 id="confirmation-modal-title"></h3>
-            <button class="modal-close" onclick="authManager.closeModal('confirmation-modal')">
-                <i class="fas fa-times"></i>
-            </button>
-        </div>
-        <div class="modal-body">
-            <p id="confirmation-modal-message"></p>
-        </div>
-        <div class="modal-footer">
-            <button class="btn secondary-btn" onclick="authManager.cancelConfirmation()">取消</button>
             <button class="btn primary-btn" id="confirm-action-btn">确认</button>
         </div>
     </div>
