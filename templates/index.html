@@ -512,12 +512,12 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h3><i class="fas fa-sign-in-alt"></i> 用户登录</h3>
-                <button class="modal-close" onclick="authManager.closeModal('login-modal')">
+                <button class="modal-close" onclick="closeModal('login-modal')">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
             <div class="modal-body">
-                <form id="login-form" class="auth-form" method="POST" action="/api/login">
+                <form id="login-form" class="auth-form" method="POST">
                     <div class="form-group">
                         <label for="login-username">用户名</label>
                         <input type="text" id="login-username" name="username" required 
@@ -535,7 +535,7 @@
                     </div>
                 </form>
                 <div class="auth-switch">
-                    还没有账号？<a href="#" onclick="authManager.switchToRegister()">立即注册</a>
+                    还没有账号？<a href="#" onclick="switchToRegister()">立即注册</a>
                 </div>
             </div>
         </div>
@@ -546,12 +546,12 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h3><i class="fas fa-user-plus"></i> 用户注册</h3>
-                <button class="modal-close" onclick="authManager.closeModal('register-modal')">
+                <button class="modal-close" onclick="closeModal('register-modal')">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
             <div class="modal-body">
-                <form id="register-form" class="auth-form" method="POST" action="/api/register">
+                <form id="register-form" class="auth-form" method="POST">
                     <div class="form-group">
                         <label for="register-username">用户名</label>
                         <input type="text" id="register-username" name="username" required 
@@ -579,7 +579,7 @@
                     </div>
                 </form>
                 <div class="auth-switch">
-                    已有账号？<a href="#" onclick="authManager.switchToLogin()">立即登录</a>
+                    已有账号？<a href="#" onclick="switchToLogin()">立即登录</a>
                 </div>
             </div>
         </div>
@@ -588,7 +588,7 @@
     <div class="modal-content">
         <div class="modal-header">
             <h3 id="confirmation-modal-title"></h3>
-            <button class="modal-close" id="confirmation-close-btn">
+            <button class="modal-close" onclick="closeModal('confirmation-modal')" id="confirmation-close-btn">
                 <i class="fas fa-times"></i>
             </button>
         </div>
@@ -596,7 +596,7 @@
             <p id="confirmation-modal-message"></p>
         </div>
         <div class="modal-footer">
-            <button class="btn secondary-btn" id="confirmation-cancel-btn">取消</button>
+            <button class="btn secondary-btn" onclick="cancelConfirmation()" id="confirmation-cancel-btn">取消</button>
             <button class="btn primary-btn" id="confirm-action-btn">确认</button>
         </div>
     </div>

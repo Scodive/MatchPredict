@@ -49,21 +49,9 @@ class AuthManager {
             }
         });
         
-        // 确认模态框的关闭按钮（X）
-        const confirmationCloseBtn = document.getElementById('confirmation-close-btn');
-        if (confirmationCloseBtn) {
-            confirmationCloseBtn.addEventListener('click', () => this.closeModal('confirmation-modal'));
-        }
-
-        // 确认模态框的取消按钮
-        const confirmationCancelBtn = document.getElementById('confirmation-cancel-btn');
-        if (confirmationCancelBtn) {
-            confirmationCancelBtn.addEventListener('click', () => this.cancelConfirmation());
-        }
-        
         // 点击背景关闭弹窗
         document.addEventListener('click', (e) => {
-            if (e.target.classList.contains('auth-modal')) {
+            if (e.target.classList.contains('auth-modal') || e.target.classList.contains('modal-overlay')) {
                 this.closeModal(e.target.id);
             }
         });
@@ -93,63 +81,64 @@ class AuthManager {
         this.disableAllPredictionButtons();
     }
 
-    // 新增：显示确认弹窗的方法
+    // 显示确认弹窗的方法 (兼容旧的 hidden 类)
     showConfirmationModal(title, message, onConfirmCallback, onCancelCallback) {
         console.log(`💡 showConfirmationModal 被调用: 标题 - "${title}", 消息 - "${message}"`);
         const modal = document.getElementById('confirmation-modal');
         const titleElement = document.getElementById('confirmation-modal-title');
         const messageElement = document.getElementById('confirmation-modal-message');
         const confirmBtn = document.getElementById('confirm-action-btn');
+        const closeBtn = document.getElementById('confirmation-close-btn'); // 确保能找到X按钮
+        const cancelBtn = document.getElementById('confirmation-cancel-btn'); // 确保能找到取消按钮
 
-        if (!modal || !titleElement || !messageElement || !confirmBtn) {
+        if (!modal || !titleElement || !messageElement || !confirmBtn || !closeBtn || !cancelBtn) {
             console.error('❌ 确认模态框的HTML元素缺失！');
-            // 如果元素缺失，直接执行确认回调（或默认行为），避免阻塞用户
-            onConfirmCallback();
+            onConfirmCallback(); // 如果元素缺失，直接执行确认回调，避免阻塞用户
             return;
         }
 
         titleElement.textContent = title;
         messageElement.innerHTML = message; // 使用 innerHTML 支持传入带HTML的消息
 
-        // 移除旧的事件监听器以防止重复绑定
-        const newConfirmBtn = confirmBtn.cloneNode(true);
-        confirmBtn.parentNode.replaceChild(newConfirmBtn, confirmBtn);
+        // 清除旧的事件监听器以防止重复绑定
+        const cloneConfirmBtn = confirmBtn.cloneNode(true);
+        confirmBtn.parentNode.replaceChild(cloneConfirmBtn, confirmBtn);
         const finalConfirmBtn = document.getElementById('confirm-action-btn');
+
+        const cloneCloseBtn = closeBtn.cloneNode(true);
+        closeBtn.parentNode.replaceChild(cloneCloseBtn, closeBtn);
+        const finalCloseBtn = document.getElementById('confirmation-close-btn');
+
+        const cloneCancelBtn = cancelBtn.cloneNode(true);
+        cancelBtn.parentNode.replaceChild(cloneCancelBtn, cancelBtn);
+        const finalCancelBtn = document.getElementById('confirmation-cancel-btn');
 
         finalConfirmBtn.onclick = () => {
             this.closeModal('confirmation-modal');
             onConfirmCallback();
         };
+        finalCloseBtn.onclick = () => {
+            this.closeModal('confirmation-modal');
+            if (onCancelCallback) onCancelCallback();
+        };
+        finalCancelBtn.onclick = () => {
+            this.closeModal('confirmation-modal');
+            if (onCancelCallback) onCancelCallback();
+        };
         
-        // 如果提供了取消回调，则绑定取消按钮
-        const cancelBtn = modal.querySelector('.secondary-btn'); // 假设取消按钮有 secondary-btn 类
-        if (cancelBtn) {
-            // 移除旧的事件监听器以防止重复绑定
-            const newCancelBtn = cancelBtn.cloneNode(true);
-            cancelBtn.parentNode.replaceChild(newCancelBtn, cancelBtn);
-            const finalCancelBtn = modal.querySelector('.secondary-btn');
-
-            finalCancelBtn.onclick = () => {
-                this.closeModal('confirmation-modal');
-                if (onCancelCallback) onCancelCallback();
-            };
-        }
-        
-        modal.classList.add('active');
+        modal.classList.remove('hidden');
         console.log('✅ 确认模态框已移除 hidden 类，尝试显示。');
     }
 
-    // 新增：取消确认操作（用于模态框内的取消按钮）
     cancelConfirmation() {
         this.closeModal('confirmation-modal');
-        // 如果有需要，可以在这里添加默认的取消行为或日志
         console.log('用户取消了操作');
     }
 
     showLoginModal() {
         const modal = document.getElementById('login-modal');
         if (modal) {
-            modal.classList.add('active');
+            modal.classList.remove('hidden');
             document.getElementById('login-username').focus();
         }
     }
@@ -157,8 +146,7 @@ class AuthManager {
     showRegisterModal() {
         const modal = document.getElementById('register-modal');
         if (modal) {
-            console.log('💡 showRegisterModal 被调用');
-            modal.classList.add('active');
+            modal.classList.remove('hidden');
             document.getElementById('register-username').focus();
         }
     }
@@ -166,13 +154,12 @@ class AuthManager {
     closeModal(modalId) {
         const modal = document.getElementById(modalId);
         if (modal) {
-            modal.classList.remove('active');
+            modal.classList.add('hidden');
         }
     }
 
     async handleLogin(event) {
         event.preventDefault();
-        console.log('💡 handleLogin 被调用，阻止了默认事件。');
         
         const form = event.target;
         const formData = new FormData(form);
@@ -180,14 +167,12 @@ class AuthManager {
             username: formData.get('username'),
             password: formData.get('password')
         };
-        console.log('💡 尝试登录数据:', loginData);
 
         try {
             const submitBtn = form.querySelector('button[type="submit"]');
             const originalText = submitBtn.innerHTML;
             submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> 登录中...';
             submitBtn.disabled = true;
-            console.log('💡 正在发送登录请求...');
 
             const response = await fetch('/api/login', {
                 method: 'POST',
@@ -197,10 +182,8 @@ class AuthManager {
                 credentials: 'include',
                 body: JSON.stringify(loginData)
             });
-            console.log('💡 收到登录响应:', response.status);
 
             const data = await response.json();
-            console.log('💡 登录响应数据:', data);
 
             if (data.success) {
                 this.currentUser = data.user;
@@ -208,7 +191,6 @@ class AuthManager {
                 this.closeModal('login-modal');
                 this.updateUserInterface();
                 this.enableAllPredictionButtons();
-                console.log('✅ 登录成功，正在刷新页面...');
                 
                 // 重新加载页面以更新服务器端状态
                 setTimeout(() => {
@@ -216,7 +198,6 @@ class AuthManager {
                 }, 1000);
             } else {
                 this.showMessage(data.message || '登录失败', 'error');
-                console.warn('⚠️ 登录失败:', data.message);
             }
 
         } catch (error) {
@@ -226,7 +207,6 @@ class AuthManager {
             const submitBtn = form.querySelector('button[type="submit"]');
             submitBtn.innerHTML = '<i class="fas fa-sign-in-alt"></i> 登录';
             submitBtn.disabled = false;
-            console.log('💡 登录过程结束，按钮状态已恢复。');
         }
     }
 
@@ -313,8 +293,6 @@ class AuthManager {
     }
 
     updateUserInterface() {
-        // 这个方法在页面重新加载时由服务器端模板更新
-        // 客户端主要负责更新剩余次数
         this.updatePredictionCount();
     }
 
@@ -325,11 +303,10 @@ class AuthManager {
                 const data = await response.json();
                 if (data.success) {
                     const remainingElement = document.getElementById('predictions-remaining');
-                    const userTypeText = document.getElementById('user-type-text'); // 获取用户类型元素
-                    const dailyUsedText = document.getElementById('daily-used-text'); // 获取已用次数元素
-                    const predictionLimitHint = document.getElementById('prediction-limit-hint'); // 获取预测限制提示元素
+                    const userTypeText = document.getElementById('user-type-text');
+                    const dailyUsedText = document.getElementById('daily-used-text');
+                    const predictionLimitHint = document.getElementById('prediction-limit-hint');
                     
-                    // 更新 AuthManager 中的 currentUser 对象
                     if (this.currentUser) {
                         this.currentUser.user_type = data.user_type;
                         this.currentUser.daily_predictions_used = data.daily_used;
@@ -342,7 +319,6 @@ class AuthManager {
                             if (predictionLimitHint) {
                                 predictionLimitHint.textContent = `每日剩余 ${data.remaining} 次预测机会`;
                             }
-                            // 调整剩余次数的颜色
                             if (data.remaining === 0) {
                                 remainingElement.style.color = 'var(--danger-color)';
                             } else if (data.remaining === 1) {
@@ -398,7 +374,6 @@ class AuthManager {
     }
 
     async checkPredictionLimit() {
-        // 检查是否需要登录
         if (!this.currentUser) {
             this.showMessage('请先登录后使用预测功能', 'warning');
             this.showLoginModal();
@@ -413,7 +388,6 @@ class AuthManager {
         return true;
     }
 
-    // 禁用所有预测按钮
     disableAllPredictionButtons() {
         const buttons = [
             'classic-predict-btn',
@@ -432,7 +406,6 @@ class AuthManager {
         });
     }
 
-    // 启用所有预测按钮  
     enableAllPredictionButtons() {
         const buttons = [
             'classic-predict-btn',
@@ -452,7 +425,6 @@ class AuthManager {
     }
 
     showMessage(message, type = 'info') {
-        // 创建消息提示
         const messageDiv = document.createElement('div');
         messageDiv.className = `auth-message ${type}`;
         messageDiv.innerHTML = `
@@ -462,10 +434,8 @@ class AuthManager {
             </div>
         `;
 
-        // 添加到页面
         document.body.appendChild(messageDiv);
 
-        // 3秒后自动消失
         setTimeout(() => {
             messageDiv.classList.add('fade-out');
             setTimeout(() => {
@@ -486,31 +456,22 @@ class AuthManager {
     }
 }
 
-// 弹窗相关全局函数
 function closeModal(modalId) {
-    authManager.closeModal(modalId);
+    window.authManager.closeModal(modalId);
 }
 
 function switchToRegister() {
-    authManager.closeModal('login-modal');
-    authManager.showRegisterModal();
+    window.authManager.closeModal('login-modal');
+    window.authManager.showRegisterModal();
 }
 
 function switchToLogin() {
-    authManager.closeModal('register-modal');
-    authManager.showLoginModal();
+    window.authManager.closeModal('register-modal');
+    window.authManager.showLoginModal();
 }
-
-// 创建全局认证管理器实例
-// const authManager = new AuthManager(); // 移动到 DOMContentLoaded 内部
-
-// 暴露到全局作用域
-// window.authManager = authManager; // 移动到 DOMContentLoaded 内部
 
 document.addEventListener('DOMContentLoaded', function() {
     console.log('🏁 DOMContentLoaded 事件触发，初始化 AuthManager...');
-    // 创建全局认证管理器实例
     const authManager = new AuthManager();
-    // 暴露到全局作用域
     window.authManager = authManager;
 });

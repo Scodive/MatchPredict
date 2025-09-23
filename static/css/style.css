@@ -1881,14 +1881,10 @@ footer {
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.6);
-    display: none; /* 默认隐藏 */
+    display: flex;
     justify-content: center;
     align-items: center;
     z-index: 10000;
-}
-
-.modal-overlay.active { /* 激活时显示 */
-    display: flex;
 }
 
 .modal-content {
@@ -2424,14 +2420,14 @@ footer {
     width: 100%;
     height: 100%;
     background: rgba(0, 0, 0, 0.7);
-    display: none; /* 默认隐藏 */
+    display: flex;
     justify-content: center;
     align-items: center;
     z-index: 10000;
 }
 
-.auth-modal.active { /* 激活时显示 */
-    display: flex;
+.auth-modal.hidden {
+    display: none !important;
 }
 
 .modal-content {
