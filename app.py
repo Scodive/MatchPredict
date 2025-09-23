@@ -29,14 +29,17 @@ except ImportError as e:
     AIFootballPredictor = None
 
 app = Flask(__name__)
-app.secret_key = os.environ.get('SECRET_KEY', 'your-secret-key-change-in-production')
+app.secret_key = os.environ.get('SECRET_KEY', 'your-secret-key-change-in-production') # 在生产环境中务必设置一个强随机 SECRET_KEY
 # Session/Cookie 配置，确保登录态可用
 app.config.update(
     SESSION_COOKIE_NAME='mp_session',
-    # 默认 None，保证在可能的跨站场景下也能携带（需 HTTPS）
+    # 'None' 是为了支持跨站点请求（例如前端与后端域名不同），但要求 Secure=True (HTTPS)
+    # 如果前端和后端在同一个主域的不同子域（例如 app.example.com 和 api.example.com），
+    # 并且 SESSION_COOKIE_DOMAIN 设置为 '.example.com'，则 Cookie 会在子域间共享。
     SESSION_COOKIE_SAMESITE=os.environ.get('SESSION_COOKIE_SAMESITE', 'None'),
-    SESSION_COOKIE_SECURE=True,
-    # 可选：通过环境变量设置 Cookie 域名（例如 match-predict.vercel.app）
+    SESSION_COOKIE_SECURE=True, # 必须为 True，因为 SameSite=None
+    # 可选：通过环境变量设置 Cookie 域名（例如 .match-predict.vercel.app，注意开头的点）
+    # 如果不设置，则默认为当前请求的域名。在跨子域共享时才需要设置。
     SESSION_COOKIE_DOMAIN=os.environ.get('SESSION_COOKIE_DOMAIN'),
     PERMANENT_SESSION_LIFETIME=timedelta(days=7)
 )
@@ -135,8 +138,10 @@ def add_cors_headers(response):
         response.headers['Access-Control-Allow-Credentials'] = 'true'
         response.headers['Access-Control-Allow-Methods'] = 'GET,POST,OPTIONS'
         response.headers['Access-Control-Allow-Headers'] = 'Content-Type,Authorization'
+        app.logger.debug(f"为请求 {request.path} 添加了CORS头部，Origin: {origin}")
     if request.method == 'OPTIONS':
         response.status_code = 204
+        app.logger.debug(f"处理OPTIONS请求: {request.path}")
     return response
 
 @app.route('/api/session/debug')
@@ -651,23 +656,26 @@ def serve_data_files(filename):
 @app.route('/api/register', methods=['POST', 'OPTIONS'])
 def register():
     """用户注册"""
+    app.logger.info(f"收到注册请求：{request.json}")
     try:
         if not prediction_db:
-            app.logger.error("注册失败: 数据库未配置")
-            return jsonify({'success': False, 'message': '注册失败：数据库未配置'}), 500
+            app.logger.error("注册失败: 数据库未配置或初始化失败", exc_info=True)
+            return jsonify({'success': False, 'message': '注册失败：数据库服务不可用'}), 500
             
         data = request.get_json()
-        app.logger.info(f"收到注册请求: {data}")
         username = data.get('username', '').strip()
         email = data.get('email', '').strip()
         password = data.get('password', '')
         
         # 验证输入
         if not username or len(username) < 3:
+            app.logger.warning(f"注册失败: 用户名不符合要求 - {username}")
             return jsonify({'success': False, 'message': '用户名长度至少3个字符'}), 400
         if not email or '@' not in email:
+            app.logger.warning(f"注册失败: 邮箱格式无效 - {email}")
             return jsonify({'success': False, 'message': '请输入有效的邮箱地址'}), 400
         if not password or len(password) < 6:
+            app.logger.warning(f"注册失败: 密码不符合要求 - {password}")
             return jsonify({'success': False, 'message': '密码长度至少6个字符'}), 400
         
         # 哈希密码
@@ -681,19 +689,16 @@ def register():
             resp = jsonify({'success': True, 'message': '注册成功，请登录'})
             # 调试用：设置一个临时测试 Cookie，帮助判断浏览器是否接受 SameSite=None; Secure
             try:
-                resp.set_cookie(app.config.get('SESSION_COOKIE_NAME', 'mp_session') + '_test', '1',
-                                samesite=os.environ.get('SESSION_COOKIE_SAMESITE', 'None'),
-                                secure=True,
-                                httponly=False,
-                                domain=app.config.get('SESSION_COOKIE_DOMAIN'))
-            except Exception:
+                pass # 移除调试Cookie设置
+            except Exception as e:
+                app.logger.warning(f"设置测试Cookie失败: {e}", exc_info=True)
                 # 忽略设置 Cookie 时的任何异常
                 pass
             return resp
         else:
             # create_user 内部已处理 UniqueViolation，这里捕获通用失败
-            app.logger.warning(f"用户注册失败: 用户名或邮箱已存在 - {username}, {email}")
-            return jsonify({'success': False, 'message': '注册失败：用户名或邮箱已存在，或数据库不可用'}), 409
+            app.logger.warning(f"用户注册失败: 用户名或邮箱已存在或数据库操作失败 - {username}, {email}")
+            return jsonify({'success': False, 'message': '注册失败：用户名或邮箱已存在，或数据库写入失败'}), 409
             
     except Exception as e:
         app.logger.error(f"用户注册失败（捕获到异常）: {e}", exc_info=True) # 打印完整堆栈
@@ -702,17 +707,18 @@ def register():
 @app.route('/api/login', methods=['POST', 'OPTIONS'])
 def login():
     """用户登录"""
+    app.logger.info(f"收到登录请求: {request.json}")
     try:
         if not prediction_db:
-            app.logger.error("登录失败: 数据库未配置")
-            return jsonify({'success': False, 'message': '登录失败：数据库未配置'}), 500
+            app.logger.error("登录失败: 数据库未配置或初始化失败", exc_info=True)
+            return jsonify({'success': False, 'message': '登录失败：数据库服务不可用'}), 500
             
         data = request.get_json()
-        app.logger.info(f"收到登录请求: {data}")
         username = data.get('username', '').strip()
         password = data.get('password', '')
         
         if not username or not password:
+            app.logger.warning("登录失败: 缺少用户名或密码")
             return jsonify({'success': False, 'message': '请输入用户名和密码'}), 400
         
         # 哈希密码
@@ -726,7 +732,6 @@ def login():
             session['user_id'] = user['id']
             session['username'] = user['username']
             session.permanent = True
-            # app.permanent_session_lifetime = timedelta(days=7) # 已在 app.config.update 中配置
             
             app.logger.info(f"用户登录成功，设置会话: {username}")
             resp = jsonify({
@@ -751,12 +756,9 @@ def login():
                                     httponly=True,
                                     domain=app.config.get('SESSION_COOKIE_DOMAIN'))
                 # 额外设置一个非 HttpOnly 的测试 Cookie 便于调试（可见于 DevTools -> Cookies）
-                resp.set_cookie(app.config.get('SESSION_COOKIE_NAME', 'mp_session') + '_test', '1',
-                                samesite=os.environ.get('SESSION_COOKIE_SAMESITE', 'None'),
-                                secure=True,
-                                httponly=False,
-                                domain=app.config.get('SESSION_COOKIE_DOMAIN'))
-            except Exception:
+                pass # 移除调试Cookie设置
+            except Exception as e:
+                app.logger.warning(f"设置Cookie失败: {e}", exc_info=True)
                 pass
             return resp
         else:
@@ -776,55 +778,85 @@ def logout():
 @app.route('/api/user/info', methods=['GET'])
 def get_user_info():
     """获取用户信息"""
+    app.logger.info("收到获取用户信息请求")
     try:
         current_user = get_current_user()
         if not current_user:
+            app.logger.warning("获取用户信息失败: 用户未登录")
             return jsonify({'success': False, 'message': '未登录'}), 401
         
+        # 确保 prediction_db 可用，get_current_user 已经做了初步检查
+        if not prediction_db:
+            app.logger.error("获取用户信息失败: 数据库未配置或初始化失败", exc_info=True)
+            return jsonify({'success': False, 'message': '获取用户信息失败：数据库服务不可用'}), 500
+
+        # 刷新用户数据以获取最新状态，特别是每日预测次数可能已重置
+        user_data_from_db = prediction_db.get_user_by_username(current_user['username'])
+        if not user_data_from_db:
+            app.logger.error(f"获取用户信息失败: 数据库中未找到用户 {current_user['username']}", exc_info=True)
+            # 用户可能已被删除，清理session
+            session.clear()
+            return jsonify({'success': False, 'message': '用户数据异常，请重新登录'}), 401
+
+        app.logger.info(f"成功获取用户 {user_data_from_db['username']} 信息")
         return jsonify({
             'success': True,
             'user': {
-                'username': current_user['username'],
-                'email': current_user['email'],
-                'user_type': current_user['user_type'],
-                'daily_predictions_used': current_user['daily_predictions_used'],
-                'total_predictions': current_user['total_predictions'],
-                'membership_expires': current_user['membership_expires'].isoformat() if current_user['membership_expires'] else None
+                'username': user_data_from_db['username'],
+                'email': user_data_from_db['email'],
+                'user_type': user_data_from_db['user_type'],
+                'daily_predictions_used': user_data_from_db['daily_predictions_used'],
+                'total_predictions': user_data_from_db['total_predictions'],
+                'membership_expires': user_data_from_db['membership_expires'].isoformat() if user_data_from_db['membership_expires'] else None
             }
         })
         
     except Exception as e:
-        app.logger.error(f"获取用户信息失败: {e}")
+        app.logger.error(f"获取用户信息失败（捕获到异常）: {e}", exc_info=True)
         return jsonify({'success': False, 'message': '获取用户信息失败'}), 500
 
 @app.route('/api/user/can-predict', methods=['GET'])
 def can_user_predict_api():
     """检查用户是否可以预测"""
+    app.logger.info("收到检查用户预测权限请求")
     try:
         current_user = get_current_user()
         if not current_user:
+            app.logger.warning("检查预测权限失败: 用户未登录")
             return jsonify({'success': False, 'message': '未登录', 'can_predict': False}), 401
         
+        if not prediction_db:
+            app.logger.error("检查预测权限失败: 数据库未配置或初始化失败", exc_info=True)
+            return jsonify({'success': False, 'message': '检查失败：数据库服务不可用'}), 500
+
+        # 刷新用户数据以获取最新状态，特别是每日预测次数可能已重置
+        user_data_from_db = prediction_db.get_user_by_username(current_user['username'])
+        if not user_data_from_db:
+            app.logger.error(f"检查预测权限失败: 数据库中未找到用户 {current_user['username']}", exc_info=True)
+            session.clear()
+            return jsonify({'success': False, 'message': '用户数据异常，请重新登录', 'can_predict': False}), 401
+
         can_predict = prediction_db.can_user_predict(
-            current_user['id'], 
-            current_user['user_type'], 
-            current_user['daily_predictions_used']
+            user_data_from_db['id'], 
+            user_data_from_db['user_type'], 
+            user_data_from_db['daily_predictions_used']
         )
         
         remaining = 0
-        if current_user['user_type'] == 'free':
-            remaining = max(0, 3 - current_user['daily_predictions_used'])
+        if user_data_from_db['user_type'] == 'free':
+            remaining = max(0, 3 - user_data_from_db['daily_predictions_used'])
         
+        app.logger.info(f"用户 {user_data_from_db['username']} 预测权限检查结果: can_predict={can_predict}, remaining={remaining}")
         return jsonify({
             'success': True,
             'can_predict': can_predict,
-            'user_type': current_user['user_type'],
-            'daily_used': current_user['daily_predictions_used'],
+            'user_type': user_data_from_db['user_type'],
+            'daily_used': user_data_from_db['daily_predictions_used'],
             'remaining': remaining
         })
         
     except Exception as e:
-        app.logger.error(f"检查预测权限失败: {e}")
+        app.logger.error(f"检查预测权限失败（捕获到异常）: {e}", exc_info=True)
         return jsonify({'success': False, 'message': '检查失败'}), 500
 
 if __name__ == '__main__':

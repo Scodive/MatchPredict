@@ -28,18 +28,27 @@ class AuthManager {
             logoutBtn.addEventListener('click', () => this.logout());
         }
 
-        // 登录表单
-        const loginForm = document.getElementById('login-form');
-        if (loginForm) {
-            loginForm.addEventListener('submit', (e) => this.handleLogin(e));
-        }
+        // 确保DOM完全加载后再绑定表单事件
+        document.addEventListener('DOMContentLoaded', () => {
+            // 登录表单
+            const loginForm = document.getElementById('login-form');
+            if (loginForm) {
+                loginForm.addEventListener('submit', (e) => this.handleLogin(e));
+                console.log('✅ 登录表单事件监听器绑定成功');
+            } else {
+                console.warn('❌ 未找到登录表单 (login-form)');
+            }
 
-        // 注册表单
-        const registerForm = document.getElementById('register-form');
-        if (registerForm) {
-            registerForm.addEventListener('submit', (e) => this.handleRegister(e));
-        }
-
+            // 注册表单
+            const registerForm = document.getElementById('register-form');
+            if (registerForm) {
+                registerForm.addEventListener('submit', (e) => this.handleRegister(e));
+                console.log('✅ 注册表单事件监听器绑定成功');
+            } else {
+                console.warn('❌ 未找到注册表单 (register-form)');
+            }
+        });
+        
         // 点击背景关闭弹窗
         document.addEventListener('click', (e) => {
             if (e.target.classList.contains('auth-modal')) {
