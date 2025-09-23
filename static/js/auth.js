@@ -83,13 +83,14 @@ class AuthManager {
 
     // 新增：显示确认弹窗的方法
     showConfirmationModal(title, message, onConfirmCallback, onCancelCallback) {
+        console.log(`💡 showConfirmationModal 被调用: 标题 - "${title}", 消息 - "${message}"`);
         const modal = document.getElementById('confirmation-modal');
         const titleElement = document.getElementById('confirmation-modal-title');
         const messageElement = document.getElementById('confirmation-modal-message');
         const confirmBtn = document.getElementById('confirm-action-btn');
 
         if (!modal || !titleElement || !messageElement || !confirmBtn) {
-            console.error('确认模态框的HTML元素缺失！');
+            console.error('❌ 确认模态框的HTML元素缺失！');
             // 如果元素缺失，直接执行确认回调（或默认行为），避免阻塞用户
             onConfirmCallback();
             return;
