@@ -739,8 +739,18 @@ def login():
                     'total_predictions': user['total_predictions']
                 }
             })
-            # 设置调试 Cookie，确认浏览器是否接收 SameSite=None; Secure
+            # 显式设置 Flask session cookie 值，确保 Set-Cookie 在响应头中可见
             try:
+                serializer = app.session_interface.get_signing_serializer(app)
+                if serializer:
+                    session_cookie_val = serializer.dumps(dict(session))
+                    resp.set_cookie(app.config.get('SESSION_COOKIE_NAME', 'mp_session'),
+                                    session_cookie_val,
+                                    samesite=os.environ.get('SESSION_COOKIE_SAMESITE', 'None'),
+                                    secure=True,
+                                    httponly=True,
+                                    domain=app.config.get('SESSION_COOKIE_DOMAIN'))
+                # 额外设置一个非 HttpOnly 的测试 Cookie 便于调试（可见于 DevTools -> Cookies）
                 resp.set_cookie(app.config.get('SESSION_COOKIE_NAME', 'mp_session') + '_test', '1',
                                 samesite=os.environ.get('SESSION_COOKIE_SAMESITE', 'None'),
                                 secure=True,
