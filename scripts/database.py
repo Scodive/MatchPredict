@@ -199,10 +199,10 @@ class PredictionDatabase:
         """
         try:
             with self.get_db_connection() as conn:
-                cursor = conn.cursor()
-                
-                # 准备插入数据
-                insert_sql = """
+                # 使用上下文管理器为 cursor，避免手动关闭导致的 cursor already closed
+                with conn.cursor() as cursor:
+                    # 准备插入数据
+                    insert_sql = """
             INSERT INTO match_predictions (
                 prediction_id, prediction_mode, home_team, away_team, league_name,
                 match_time, home_odds, draw_odds, away_odds, predicted_result,
@@ -217,20 +217,16 @@ class PredictionDatabase:
                 prediction_confidence = EXCLUDED.prediction_confidence,
                 ai_analysis = EXCLUDED.ai_analysis;
             """
-            
-            cursor.execute(insert_sql, prediction_data)
-            # conn.commit() # 由上下文管理器处理
-            # cursor.close() # 移除此行，由上下文管理器统一管理连接和光标的生命周期
-            # conn.close() # 由上下文管理器处理
-            
-            logger.info(f"预测结果保存成功: {prediction_data.get('prediction_id')}")
-            return True
-            
+
+                    logger.debug(f"准备执行插入SQL，prediction_id={prediction_data.get('prediction_id')}")
+                    cursor.execute(insert_sql, prediction_data)
+
+                # 由 get_db_connection 管理事务提交与连接关闭
+                logger.info(f"预测结果保存成功: {prediction_data.get('prediction_id')}")
+                return True
+
         except Exception as e:
-            logger.exception(f"保存预测结果失败: {e}") # 使用 logger.exception 打印完整堆栈跟踪
-            # if conn: # 由上下文管理器处理
-            #     conn.rollback() # 确保事务回滚
-            #     conn.close()
+            logger.exception(f"保存预测结果失败: {e}")
             return False
     
     def save_ai_prediction(self, match_data: Dict[str, Any], prediction_result: str, 
