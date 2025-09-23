@@ -512,12 +512,12 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h3><i class="fas fa-sign-in-alt"></i> 用户登录</h3>
-                <button class="modal-close" onclick="closeModal('login-modal')">
+                <button class="modal-close" onclick="authManager.closeModal('login-modal')">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
             <div class="modal-body">
-                <form id="login-form" class="auth-form" method="POST">
+                <form id="login-form" class="auth-form" method="POST" action="/api/login">
                     <div class="form-group">
                         <label for="login-username">用户名</label>
                         <input type="text" id="login-username" name="username" required 
@@ -535,7 +535,7 @@
                     </div>
                 </form>
                 <div class="auth-switch">
-                    还没有账号？<a href="#" onclick="switchToRegister()">立即注册</a>
+                    还没有账号？<a href="#" onclick="authManager.switchToRegister()">立即注册</a>
                 </div>
             </div>
         </div>
@@ -546,12 +546,12 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h3><i class="fas fa-user-plus"></i> 用户注册</h3>
-                <button class="modal-close" onclick="closeModal('register-modal')">
+                <button class="modal-close" onclick="authManager.closeModal('register-modal')">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
             <div class="modal-body">
-                <form id="register-form" class="auth-form" method="POST">
+                <form id="register-form" class="auth-form" method="POST" action="/api/register">
                     <div class="form-group">
                         <label for="register-username">用户名</label>
                         <input type="text" id="register-username" name="username" required 
@@ -579,7 +579,7 @@
                     </div>
                 </form>
                 <div class="auth-switch">
-                    已有账号？<a href="#" onclick="switchToLogin()">立即登录</a>
+                    已有账号？<a href="#" onclick="authManager.switchToLogin()">立即登录</a>
                 </div>
             </div>
         </div>
