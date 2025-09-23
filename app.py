@@ -33,8 +33,11 @@ app.secret_key = os.environ.get('SECRET_KEY', 'your-secret-key-change-in-product
 # Session/Cookie 配置，确保登录态可用
 app.config.update(
     SESSION_COOKIE_NAME='mp_session',
-    SESSION_COOKIE_SAMESITE=os.environ.get('SESSION_COOKIE_SAMESITE', 'Lax'),  # 跨域用 'None'
-    SESSION_COOKIE_SECURE=True,  # 仅 https 传输
+    # 默认 None，保证在可能的跨站场景下也能携带（需 HTTPS）
+    SESSION_COOKIE_SAMESITE=os.environ.get('SESSION_COOKIE_SAMESITE', 'None'),
+    SESSION_COOKIE_SECURE=True,
+    # 可选：通过环境变量设置 Cookie 域名（例如 match-predict.vercel.app）
+    SESSION_COOKIE_DOMAIN=os.environ.get('SESSION_COOKIE_DOMAIN'),
     PERMANENT_SESSION_LIFETIME=timedelta(days=7)
 )
 
