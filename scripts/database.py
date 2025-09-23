@@ -30,7 +30,7 @@ class PredictionDatabase:
             "password": os.getenv("DB_PASS", "sbdx497p"), # 请务必在线上环境中设置此环境变量
             "sslmode": "prefer"
         }
-        self.init_tables()
+        # self.init_tables() # 移除此行，数据库表的初始化应手动触发
     
     @contextlib.contextmanager
     def get_db_connection(self):
@@ -70,13 +70,14 @@ class PredictionDatabase:
             raise Exception(f"数据库连接失败: {e}")
     
     def init_tables(self):
-        """初始化数据库表"""
+        """初始化数据库表 - 应该作为独立的管理任务运行，而非应用启动时自动运行。"""
+        conn = None
         try:
-            with self.get_db_connection() as conn:
-                cursor = conn.cursor()
-                
-                # 创建用户表
-                create_users_table = """
+            conn = self._get_conn() # 使用内部方法获取原始连接
+            cursor = conn.cursor()
+            
+            # 创建用户表
+            create_users_table = """
             CREATE TABLE IF NOT EXISTS users (
                 id SERIAL PRIMARY KEY,
                 username VARCHAR(50) UNIQUE NOT NULL,
@@ -92,9 +93,9 @@ class PredictionDatabase:
                 is_active BOOLEAN DEFAULT TRUE
             );
             """
-                
-                # 创建预测记录表
-                create_predictions_table = """
+            
+            # 创建预测记录表
+            create_predictions_table = """
             CREATE TABLE IF NOT EXISTS match_predictions (
                 id SERIAL PRIMARY KEY,
                 prediction_id VARCHAR(100) UNIQUE NOT NULL,
@@ -119,9 +120,9 @@ class PredictionDatabase:
                 updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             );
             """
-                
-                # 创建每日比赛表
-                create_daily_matches_table = """
+            
+            # 创建每日比赛表
+            create_daily_matches_table = """
             CREATE TABLE IF NOT EXISTS daily_matches (
                 id SERIAL PRIMARY KEY,
                 match_id VARCHAR(100) UNIQUE NOT NULL,
@@ -143,42 +144,48 @@ class PredictionDatabase:
                 is_active BOOLEAN DEFAULT TRUE
             );
             """
+            
+            cursor.execute(create_users_table)
+            cursor.execute(create_predictions_table)
+            cursor.execute(create_daily_matches_table)
+            
+            # 创建索引
+            create_index_sql = [
+                # 预测表索引
+                "CREATE INDEX IF NOT EXISTS idx_predictions_mode ON match_predictions(prediction_mode);",
+                "CREATE INDEX IF NOT EXISTS idx_predictions_created ON match_predictions(created_at);",
+                "CREATE INDEX IF NOT EXISTS idx_predictions_teams ON match_predictions(home_team, away_team);",
+                "CREATE INDEX IF NOT EXISTS idx_predictions_result ON match_predictions(is_correct);",
                 
-                cursor.execute(create_users_table)
-                cursor.execute(create_predictions_table)
-                cursor.execute(create_daily_matches_table)
-                
-                # 创建索引
-                create_index_sql = [
-                    # 预测表索引
-                    "CREATE INDEX IF NOT EXISTS idx_predictions_mode ON match_predictions(prediction_mode);",
-                    "CREATE INDEX IF NOT EXISTS idx_predictions_created ON match_predictions(created_at);",
-                    "CREATE INDEX IF NOT EXISTS idx_predictions_teams ON match_predictions(home_team, away_team);",
-                    "CREATE INDEX IF NOT EXISTS idx_predictions_result ON match_predictions(is_correct);",
-                    
-                    # 每日比赛表索引
-                    "CREATE INDEX IF NOT EXISTS idx_daily_matches_date ON daily_matches(match_date);",
-                    "CREATE INDEX IF NOT EXISTS idx_daily_matches_teams ON daily_matches(home_team, away_team);",
-                    "CREATE INDEX IF NOT EXISTS idx_daily_matches_league ON daily_matches(league_name);",
-                    "CREATE INDEX IF NOT EXISTS idx_daily_matches_status ON daily_matches(match_status);",
-                    "CREATE INDEX IF NOT EXISTS idx_daily_matches_active ON daily_matches(is_active);",
-                    "CREATE INDEX IF NOT EXISTS idx_daily_matches_datetime ON daily_matches(match_datetime);"
-                ]
-                
-                for sql in create_index_sql:
-                    cursor.execute(sql)
-                
-                conn.commit()
-                cursor.close()
-                conn.close()
-                
-                logger.info("数据库表初始化成功")
-                
+                # 每日比赛表索引
+                "CREATE INDEX IF NOT EXISTS idx_daily_matches_date ON daily_matches(match_date);",
+                "CREATE INDEX IF NOT EXISTS idx_daily_matches_teams ON daily_matches(home_team, away_team);",
+                "CREATE INDEX IF NOT EXISTS idx_daily_matches_league ON daily_matches(league_name);",
+                "CREATE INDEX IF NOT EXISTS idx_daily_matches_status ON daily_matches(match_status);",
+                "CREATE INDEX IF NOT EXISTS idx_daily_matches_active ON daily_matches(is_active);",
+                "CREATE INDEX IF NOT EXISTS idx_daily_matches_datetime ON daily_matches(match_datetime);"
+            ]
+            
+            for sql in create_index_sql:
+                cursor.execute(sql)
+            
+            conn.commit()
+            cursor.close()
+            logger.info("数据库表初始化成功")
+            
         except Exception as e:
-            logger.error(f"数据库表初始化失败: {e}")
-            # if conn: # 只有当 conn 已经被赋值才尝试关闭
-            #     conn.close()
-            raise Exception(f"数据库初始化失败: {e}")
+            logger.error(f"数据库表初始化失败: {e}", exc_info=True)
+            if conn:
+                conn.rollback()
+                conn.close()
+            raise Exception(f"数据库初始化失败: {e}") # 重新抛出异常
+        finally:
+            if conn:
+                try:
+                    conn.close()
+                    logger.info("数据库连接已关闭")
+                except Exception as e:
+                    logger.error(f"关闭数据库连接失败: {e}", exc_info=True)
     
     def save_prediction(self, prediction_data: Dict[str, Any]) -> bool:
         """
