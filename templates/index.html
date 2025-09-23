@@ -588,7 +588,7 @@
     <div class="modal-content">
         <div class="modal-header">
             <h3 id="confirmation-modal-title"></h3>
-            <button class="modal-close" onclick="authManager.closeModal('confirmation-modal')">
+            <button class="modal-close" id="confirmation-close-btn">
                 <i class="fas fa-times"></i>
             </button>
         </div>
@@ -596,7 +596,7 @@
             <p id="confirmation-modal-message"></p>
         </div>
         <div class="modal-footer">
-            <button class="btn secondary-btn" onclick="authManager.cancelConfirmation()">取消</button>
+            <button class="btn secondary-btn" id="confirmation-cancel-btn">取消</button>
             <button class="btn primary-btn" id="confirm-action-btn">确认</button>
         </div>
     </div>

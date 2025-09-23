@@ -244,6 +244,7 @@ function clearClassicMatches() {
 
 // 预测经典模式比赛
 async function predictClassicMatches() {
+    console.log('💡 开始执行 predictClassicMatches()');
     // 检查登录状态
     if (!window.authManager || !window.authManager.currentUser) {
         window.authManager.showMessage('请先登录才能使用经典模式预测功能', 'warning');

@@ -526,6 +526,7 @@ class LotteryManager {
 
     // 开始彩票AI预测
     async startLotteryAIPrediction() {
+        console.log('💡 开始执行 startLotteryAIPrediction()');
         // 检查登录状态
         if (!window.authManager || !window.authManager.currentUser) {
             window.authManager.showMessage('请先登录才能使用彩票AI预测功能', 'warning');

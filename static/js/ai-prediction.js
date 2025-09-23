@@ -310,6 +310,7 @@ class AIPredictionManager {
     }
 
     async startAIPrediction() {
+        console.log('💡 开始执行 startAIPrediction()');
         // 检查登录状态
         if (!window.authManager || !window.authManager.currentUser) {
             window.authManager.showMessage('请先登录才能使用AI预测功能', 'warning');

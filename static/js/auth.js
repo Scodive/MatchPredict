@@ -49,6 +49,18 @@ class AuthManager {
             }
         });
         
+        // 确认模态框的关闭按钮（X）
+        const confirmationCloseBtn = document.getElementById('confirmation-close-btn');
+        if (confirmationCloseBtn) {
+            confirmationCloseBtn.addEventListener('click', () => this.closeModal('confirmation-modal'));
+        }
+
+        // 确认模态框的取消按钮
+        const confirmationCancelBtn = document.getElementById('confirmation-cancel-btn');
+        if (confirmationCancelBtn) {
+            confirmationCancelBtn.addEventListener('click', () => this.cancelConfirmation());
+        }
+        
         // 点击背景关闭弹窗
         document.addEventListener('click', (e) => {
             if (e.target.classList.contains('auth-modal')) {
@@ -124,6 +136,7 @@ class AuthManager {
         }
         
         modal.classList.remove('hidden');
+        console.log('✅ 确认模态框已移除 hidden 类，尝试显示。');
     }
 
     // 新增：取消确认操作（用于模态框内的取消按钮）
