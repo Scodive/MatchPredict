@@ -7,12 +7,18 @@ import hashlib
 import psycopg2
 from datetime import datetime, timedelta
 
-# 尝试导入数据库模块
+# 导入数据库模块
 try:
     from scripts.database import prediction_db
     print("✅ 数据库模块导入成功")
-except ImportError as e:
-    print(f"⚠️ 数据库模块导入失败: {e}")
+    if prediction_db:
+        print(f"DEBUG: prediction_db 实例已创建。连接参数示例 (host): {prediction_db.connection_params.get('host')}")
+    else:
+        print("DEBUG: prediction_db 实例为 None，尽管导入成功。")
+except Exception as e: # 将 ImportError 更改为 Exception 以捕获更多可能的初始化错误
+    print(f"⚠️ 数据库模块导入失败或初始化失败: {e}")
+    import traceback
+    traceback.print_exc() # 打印完整的堆栈跟踪
     prediction_db = None
 
 # 延迟导入，避免在Vercel环境中的问题
