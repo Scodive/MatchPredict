@@ -2439,6 +2439,11 @@ footer {
     border: 1px solid var(--border-color);
 }
 
+/* 强制隐藏确认模态框，直到JavaScript明确显示它 */
+#confirmation-modal {
+    display: none !important;
+}
+
 .modal-header {
     display: flex;
     justify-content: space-between;
