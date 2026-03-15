@@ -7,7 +7,7 @@
 ### 1. GEMINI_API_KEY
 - **描述**: Google Gemini API 密钥
 - **必需**: 是（如果使用AI预测功能）
-- **示例**: `GEMINI_API_KEY=AIza9pYAEW7e2Ewk__9TCHAD5X_G1VhCtVw`
+- **示例**: `GEMINI_API_KEY=AIza9pYAEW7e2Ewk__9TCHX_G1VhCtVw`
 
 ### 2. GEMINI_MODEL
 - **描述**: Gemini 模型名称
