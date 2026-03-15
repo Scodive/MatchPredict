@@ -185,3 +185,229 @@
 2025-09-23 15:28:54,968 - INFO - 数据库连接成功
 2025-09-23 15:28:59,687 - INFO - 每日比赛数据保存完成 - 新增:19, 更新:0, 跳过:0
 2025-09-23 15:28:59,688 - INFO - 📊 同步完成 - 新增: 19, 更新: 0, 跳过: 0
+2025-09-24 14:22:12,319 - INFO - 🔄 开始同步未来 7 天的比赛数据...
+2025-09-24 14:22:12,320 - INFO - 📡 正在从体彩官网获取数据...
+2025-09-24 14:22:12,320 - INFO - 🎯 尝试获取不让球胜平负(HAD)数据...
+2025-09-24 14:22:12,320 - INFO - 正在获取体彩数据 (尝试 1/3): https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry
+2025-09-24 14:22:12,571 - INFO - ✅ 成功获取API数据: 处理成功
+2025-09-24 14:22:12,571 - INFO - ✅ 成功获取HAD数据
+2025-09-24 14:22:12,571 - INFO - 🎯 获取让球胜平负(HHAD)数据作为补充...
+2025-09-24 14:22:12,571 - INFO - 正在获取体彩数据 (尝试 1/3): https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry
+2025-09-24 14:22:12,815 - INFO - ✅ 成功获取API数据: 处理成功
+2025-09-24 14:22:12,815 - INFO - 📊 开始解析比赛数据 (HAD映射: 17 场)
+2025-09-24 14:22:12,815 - INFO - 📅 处理 2025-09-24 的 14 场比赛
+2025-09-24 14:22:12,815 - INFO - 📅 处理 2025-09-25 的 3 场比赛
+2025-09-24 14:22:12,816 - INFO - 📈 成功解析 17 场有效比赛
+2025-09-24 14:22:12,819 - INFO - 📅 日期过滤: 17 -> 17 场比赛 (未来7天)
+2025-09-24 14:22:12,819 - INFO - 📊 赔率统计: 不让球17场, 让球0场
+2025-09-24 14:22:12,819 - INFO - ✅ 成功获取 17 场比赛数据
+2025-09-24 14:22:12,819 - INFO - ✅ 成功获取 17 场比赛数据
+2025-09-24 14:22:12,819 - INFO - 💾 正在保存到数据库...
+2025-09-24 14:30:58,304 - ERROR - 数据库连接失败: connection to server at "dbprovider.ap-southeast-1.clawcloudrun.com" (47.79.243.183), port 49674 failed: Operation timed out
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "dbprovider.ap-southeast-1.clawcloudrun.com" (47.79.98.82), port 49674 failed: Operation timed out
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "dbprovider.ap-southeast-1.clawcloudrun.com" (47.79.123.18), port 49674 failed: Operation timed out
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "dbprovider.ap-southeast-1.clawcloudrun.com" (47.79.227.112), port 49674 failed: Operation timed out
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "dbprovider.ap-southeast-1.clawcloudrun.com" (47.79.1.82), port 49674 failed: Operation timed out
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "dbprovider.ap-southeast-1.clawcloudrun.com" (47.79.237.237), port 49674 failed: Operation timed out
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "dbprovider.ap-southeast-1.clawcloudrun.com" (47.79.98.1), port 49674 failed: Operation timed out
+	Is the server running on that host and accepting TCP/IP connections?
+Traceback (most recent call last):
+  File "/Users/sco/Desktop/MatchPredict/scripts/database.py", line 40, in get_db_connection
+    conn = psycopg2.connect(**self.connection_params)
+  File "/Users/sco/miniconda3/lib/python3.10/site-packages/psycopg2/__init__.py", line 122, in connect
+    conn = _connect(dsn, connection_factory=connection_factory, **kwasync)
+psycopg2.OperationalError: connection to server at "dbprovider.ap-southeast-1.clawcloudrun.com" (47.79.243.183), port 49674 failed: Operation timed out
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "dbprovider.ap-southeast-1.clawcloudrun.com" (47.79.98.82), port 49674 failed: Operation timed out
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "dbprovider.ap-southeast-1.clawcloudrun.com" (47.79.123.18), port 49674 failed: Operation timed out
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "dbprovider.ap-southeast-1.clawcloudrun.com" (47.79.227.112), port 49674 failed: Operation timed out
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "dbprovider.ap-southeast-1.clawcloudrun.com" (47.79.1.82), port 49674 failed: Operation timed out
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "dbprovider.ap-southeast-1.clawcloudrun.com" (47.79.237.237), port 49674 failed: Operation timed out
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "dbprovider.ap-southeast-1.clawcloudrun.com" (47.79.98.1), port 49674 failed: Operation timed out
+	Is the server running on that host and accepting TCP/IP connections?
+
+2025-09-24 14:30:58,311 - ERROR - 保存每日比赛数据失败: connection to server at "dbprovider.ap-southeast-1.clawcloudrun.com" (47.79.243.183), port 49674 failed: Operation timed out
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "dbprovider.ap-southeast-1.clawcloudrun.com" (47.79.98.82), port 49674 failed: Operation timed out
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "dbprovider.ap-southeast-1.clawcloudrun.com" (47.79.123.18), port 49674 failed: Operation timed out
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "dbprovider.ap-southeast-1.clawcloudrun.com" (47.79.227.112), port 49674 failed: Operation timed out
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "dbprovider.ap-southeast-1.clawcloudrun.com" (47.79.1.82), port 49674 failed: Operation timed out
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "dbprovider.ap-southeast-1.clawcloudrun.com" (47.79.237.237), port 49674 failed: Operation timed out
+	Is the server running on that host and accepting TCP/IP connections?
+connection to server at "dbprovider.ap-southeast-1.clawcloudrun.com" (47.79.98.1), port 49674 failed: Operation timed out
+	Is the server running on that host and accepting TCP/IP connections?
+
+2025-09-24 14:30:58,311 - INFO - 📊 同步完成 - 新增: 0, 更新: 0, 跳过: 0
+2025-09-27 13:45:22,502 - INFO - 🔄 开始同步未来 7 天的比赛数据...
+2025-09-27 13:45:22,502 - INFO - 📡 正在从体彩官网获取数据...
+2025-09-27 13:45:22,502 - INFO - 🎯 尝试获取不让球胜平负(HAD)数据...
+2025-09-27 13:45:22,502 - INFO - 正在获取体彩数据 (尝试 1/3): https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry
+2025-09-27 13:45:24,104 - WARNING - ❌ 网络请求失败 (尝试 1/3): 567 Server Error: Unknown Status for url: https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry?poolCode=had&channel=c
+2025-09-27 13:45:24,104 - INFO - ⏳ 等待 1.9 秒后重试...
+2025-09-27 13:45:25,988 - INFO - 正在获取体彩数据 (尝试 2/3): https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry
+2025-09-27 13:45:32,718 - WARNING - ❌ 网络请求失败 (尝试 2/3): 567 Server Error: Unknown Status for url: https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry?poolCode=had&channel=c
+2025-09-27 13:45:32,718 - INFO - ⏳ 等待 2.5 秒后重试...
+2025-09-27 13:45:35,184 - INFO - 正在获取体彩数据 (尝试 3/3): https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry
+2025-09-27 13:45:36,554 - WARNING - ❌ 网络请求失败 (尝试 3/3): HTTPSConnectionPool(host='webapi.sporttery.cn', port=443): Max retries exceeded with url: /gateway/uniform/football/getMatchCalculatorV1.qry?poolCode=had&channel=c (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000)')))
+2025-09-27 13:45:36,554 - WARNING - ⚠️ 获取HAD数据失败: 网络请求失败: HTTPSConnectionPool(host='webapi.sporttery.cn', port=443): Max retries exceeded with url: /gateway/uniform/football/getMatchCalculatorV1.qry?poolCode=had&channel=c (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000)')))
+2025-09-27 13:45:36,554 - INFO - 🎯 获取让球胜平负(HHAD)数据作为补充...
+2025-09-27 13:45:36,555 - INFO - 正在获取体彩数据 (尝试 1/3): https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry
+2025-09-27 13:45:37,521 - WARNING - ❌ 网络请求失败 (尝试 1/3): 567 Server Error: Unknown Status for url: https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry?poolCode=hhad&channel=c
+2025-09-27 13:45:37,522 - INFO - ⏳ 等待 2.6 秒后重试...
+2025-09-27 13:45:40,157 - INFO - 正在获取体彩数据 (尝试 2/3): https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry
+2025-09-27 13:45:42,384 - WARNING - ❌ 网络请求失败 (尝试 2/3): 567 Server Error: Unknown Status for url: https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry?poolCode=hhad&channel=c
+2025-09-27 13:45:42,385 - INFO - ⏳ 等待 1.7 秒后重试...
+2025-09-27 13:45:44,045 - INFO - 正在获取体彩数据 (尝试 3/3): https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry
+2025-09-27 13:45:45,937 - WARNING - ❌ 网络请求失败 (尝试 3/3): 567 Server Error: Unknown Status for url: https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry?poolCode=hhad&channel=c
+2025-09-27 13:45:45,937 - ERROR - ❌ 获取格式化比赛数据失败: 网络请求失败: 567 Server Error: Unknown Status for url: https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry?poolCode=hhad&channel=c
+2025-09-27 13:45:45,938 - ERROR - ❌ 同步失败: 暂时无法获取体彩数据: 网络请求失败: 567 Server Error: Unknown Status for url: https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry?poolCode=hhad&channel=c
+2025-09-27 13:45:47,944 - INFO - 🔄 开始同步未来 7 天的比赛数据...
+2025-09-27 13:45:47,944 - INFO - 📡 正在从体彩官网获取数据...
+2025-09-27 13:45:47,944 - INFO - 🎯 尝试获取不让球胜平负(HAD)数据...
+2025-09-27 13:45:47,944 - INFO - 正在获取体彩数据 (尝试 1/3): https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry
+2025-09-27 13:45:55,400 - WARNING - ❌ 网络请求失败 (尝试 1/3): HTTPSConnectionPool(host='webapi.sporttery.cn', port=443): Max retries exceeded with url: /gateway/uniform/football/getMatchCalculatorV1.qry?poolCode=had&channel=c (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000)')))
+2025-09-27 13:45:55,400 - INFO - ⏳ 等待 2.0 秒后重试...
+2025-09-27 13:45:57,359 - INFO - 正在获取体彩数据 (尝试 2/3): https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry
+2025-09-27 13:45:59,232 - WARNING - ❌ 网络请求失败 (尝试 2/3): 567 Server Error: Unknown Status for url: https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry?poolCode=had&channel=c
+2025-09-27 13:45:59,232 - INFO - ⏳ 等待 1.1 秒后重试...
+2025-09-27 13:46:00,326 - INFO - 正在获取体彩数据 (尝试 3/3): https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry
+2025-09-27 13:46:02,720 - WARNING - ❌ 网络请求失败 (尝试 3/3): 567 Server Error: Unknown Status for url: https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry?poolCode=had&channel=c
+2025-09-27 13:46:02,720 - WARNING - ⚠️ 获取HAD数据失败: 网络请求失败: 567 Server Error: Unknown Status for url: https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry?poolCode=had&channel=c
+2025-09-27 13:46:02,720 - INFO - 🎯 获取让球胜平负(HHAD)数据作为补充...
+2025-09-27 13:46:02,720 - INFO - 正在获取体彩数据 (尝试 1/3): https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry
+2025-09-27 13:46:03,036 - INFO - ✅ 成功获取API数据: 处理成功
+2025-09-27 13:46:03,037 - INFO - 📊 开始解析比赛数据 (HAD映射: 0 场)
+2025-09-27 13:46:03,037 - INFO - 📅 处理 2025-09-27 的 37 场比赛
+2025-09-27 13:46:03,038 - INFO - 📅 处理 2025-09-28 的 33 场比赛
+2025-09-27 13:46:03,038 - INFO - 📅 处理 2025-09-29 的 9 场比赛
+2025-09-27 13:46:03,038 - INFO - 📈 成功解析 79 场有效比赛
+2025-09-27 13:46:03,041 - INFO - 📅 日期过滤: 79 -> 79 场比赛 (未来7天)
+2025-09-27 13:46:03,041 - INFO - 📊 赔率统计: 不让球0场, 让球79场
+2025-09-27 13:46:03,041 - INFO - ✅ 成功获取 79 场比赛数据
+2025-09-27 13:46:03,041 - INFO - ✅ 成功获取 79 场比赛数据
+2025-09-27 13:46:03,042 - INFO - 💾 正在保存到数据库...
+2025-09-27 13:46:04,812 - INFO - 数据库连接成功并开始事务管理
+2025-09-27 13:46:41,348 - INFO - 每日比赛数据保存完成 - 新增:79, 更新:0, 跳过:0
+2025-09-27 13:46:41,576 - INFO - 事务提交成功
+2025-09-27 13:46:41,577 - INFO - 数据库连接已关闭
+2025-09-27 13:46:41,577 - INFO - 📊 同步完成 - 新增: 79, 更新: 0, 跳过: 0
+2025-10-08 14:52:47,285 - INFO - 🔄 开始同步未来 7 天的比赛数据...
+2025-10-08 14:52:47,285 - INFO - 📡 正在从体彩官网获取数据...
+2025-10-08 14:52:47,285 - INFO - 🎯 尝试获取不让球胜平负(HAD)数据...
+2025-10-08 14:52:47,285 - INFO - 正在获取体彩数据 (尝试 1/3): https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry
+2025-10-08 14:52:54,853 - WARNING - ❌ 网络请求失败 (尝试 1/3): HTTPSConnectionPool(host='webapi.sporttery.cn', port=443): Max retries exceeded with url: /gateway/uniform/football/getMatchCalculatorV1.qry?poolCode=had&channel=c (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000)')))
+2025-10-08 14:52:54,854 - INFO - ⏳ 等待 2.7 秒后重试...
+2025-10-08 14:52:57,595 - INFO - 正在获取体彩数据 (尝试 2/3): https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry
+2025-10-08 14:52:58,421 - WARNING - ❌ 网络请求失败 (尝试 2/3): 567 Server Error: Unknown Status for url: https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry?poolCode=had&channel=c
+2025-10-08 14:52:58,421 - INFO - ⏳ 等待 2.9 秒后重试...
+2025-10-08 14:53:01,297 - INFO - 正在获取体彩数据 (尝试 3/3): https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry
+2025-10-08 14:53:01,896 - WARNING - ❌ 网络请求失败 (尝试 3/3): 567 Server Error: Unknown Status for url: https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry?poolCode=had&channel=c
+2025-10-08 14:53:01,897 - WARNING - ⚠️ 获取HAD数据失败: 网络请求失败: 567 Server Error: Unknown Status for url: https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry?poolCode=had&channel=c
+2025-10-08 14:53:01,897 - INFO - 🎯 获取让球胜平负(HHAD)数据作为补充...
+2025-10-08 14:53:01,897 - INFO - 正在获取体彩数据 (尝试 1/3): https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry
+2025-10-08 14:53:02,482 - WARNING - ❌ 网络请求失败 (尝试 1/3): 567 Server Error: Unknown Status for url: https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry?poolCode=hhad&channel=c
+2025-10-08 14:53:02,482 - INFO - ⏳ 等待 1.9 秒后重试...
+2025-10-08 14:53:04,336 - INFO - 正在获取体彩数据 (尝试 2/3): https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry
+2025-10-08 14:53:04,939 - WARNING - ❌ 网络请求失败 (尝试 2/3): 567 Server Error: Unknown Status for url: https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry?poolCode=hhad&channel=c
+2025-10-08 14:53:04,939 - INFO - ⏳ 等待 2.9 秒后重试...
+2025-10-08 14:53:07,867 - INFO - 正在获取体彩数据 (尝试 3/3): https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry
+2025-10-08 14:53:08,463 - WARNING - ❌ 网络请求失败 (尝试 3/3): 567 Server Error: Unknown Status for url: https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry?poolCode=hhad&channel=c
+2025-10-08 14:53:08,463 - ERROR - ❌ 获取格式化比赛数据失败: 网络请求失败: 567 Server Error: Unknown Status for url: https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry?poolCode=hhad&channel=c
+2025-10-08 14:53:08,463 - ERROR - ❌ 同步失败: 暂时无法获取体彩数据: 网络请求失败: 567 Server Error: Unknown Status for url: https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry?poolCode=hhad&channel=c
+2025-10-08 14:53:10,899 - INFO - 🔄 开始同步未来 7 天的比赛数据...
+2025-10-08 14:53:10,899 - INFO - 📡 正在从体彩官网获取数据...
+2025-10-08 14:53:10,899 - INFO - 🎯 尝试获取不让球胜平负(HAD)数据...
+2025-10-08 14:53:10,899 - INFO - 正在获取体彩数据 (尝试 1/3): https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry
+2025-10-08 14:53:11,519 - WARNING - ❌ 网络请求失败 (尝试 1/3): 567 Server Error: Unknown Status for url: https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry?poolCode=had&channel=c
+2025-10-08 14:53:11,519 - INFO - ⏳ 等待 2.2 秒后重试...
+2025-10-08 14:53:13,747 - INFO - 正在获取体彩数据 (尝试 2/3): https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry
+2025-10-08 14:53:14,276 - WARNING - ❌ 网络请求失败 (尝试 2/3): 567 Server Error: Unknown Status for url: https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry?poolCode=had&channel=c
+2025-10-08 14:53:14,276 - INFO - ⏳ 等待 2.5 秒后重试...
+2025-10-08 14:53:16,829 - INFO - 正在获取体彩数据 (尝试 3/3): https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry
+2025-10-08 14:53:17,440 - WARNING - ❌ 网络请求失败 (尝试 3/3): 567 Server Error: Unknown Status for url: https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry?poolCode=had&channel=c
+2025-10-08 14:53:17,440 - WARNING - ⚠️ 获取HAD数据失败: 网络请求失败: 567 Server Error: Unknown Status for url: https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry?poolCode=had&channel=c
+2025-10-08 14:53:17,440 - INFO - 🎯 获取让球胜平负(HHAD)数据作为补充...
+2025-10-08 14:53:17,440 - INFO - 正在获取体彩数据 (尝试 1/3): https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry
+2025-10-08 14:53:17,991 - WARNING - ❌ 网络请求失败 (尝试 1/3): 567 Server Error: Unknown Status for url: https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry?poolCode=hhad&channel=c
+2025-10-08 14:53:17,991 - INFO - ⏳ 等待 1.2 秒后重试...
+2025-10-08 14:53:19,225 - INFO - 正在获取体彩数据 (尝试 2/3): https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry
+2025-10-08 14:53:19,743 - WARNING - ❌ 网络请求失败 (尝试 2/3): 567 Server Error: Unknown Status for url: https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry?poolCode=hhad&channel=c
+2025-10-08 14:53:19,743 - INFO - ⏳ 等待 2.1 秒后重试...
+2025-10-08 14:53:21,874 - INFO - 正在获取体彩数据 (尝试 3/3): https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry
+2025-10-08 14:53:22,445 - WARNING - ❌ 网络请求失败 (尝试 3/3): 567 Server Error: Unknown Status for url: https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry?poolCode=hhad&channel=c
+2025-10-08 14:53:22,445 - ERROR - ❌ 获取格式化比赛数据失败: 网络请求失败: 567 Server Error: Unknown Status for url: https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry?poolCode=hhad&channel=c
+2025-10-08 14:53:22,445 - ERROR - ❌ 同步失败: 暂时无法获取体彩数据: 网络请求失败: 567 Server Error: Unknown Status for url: https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry?poolCode=hhad&channel=c
+2025-10-08 14:53:25,038 - INFO - 🔄 开始同步未来 7 天的比赛数据...
+2025-10-08 14:53:25,038 - INFO - 📡 正在从体彩官网获取数据...
+2025-10-08 14:53:25,038 - INFO - 🎯 尝试获取不让球胜平负(HAD)数据...
+2025-10-08 14:53:25,038 - INFO - 正在获取体彩数据 (尝试 1/3): https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry
+2025-10-08 14:53:32,381 - WARNING - ❌ 网络请求失败 (尝试 1/3): HTTPSConnectionPool(host='webapi.sporttery.cn', port=443): Max retries exceeded with url: /gateway/uniform/football/getMatchCalculatorV1.qry?poolCode=had&channel=c (Caused by SSLError(SSLEOFError(8, '[SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000)')))
+2025-10-08 14:53:32,381 - INFO - ⏳ 等待 2.4 秒后重试...
+2025-10-08 14:53:34,775 - INFO - 正在获取体彩数据 (尝试 2/3): https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry
+2025-10-09 12:34:15,808 - INFO - 🔄 开始同步未来 7 天的比赛数据...
+2025-10-09 12:34:15,808 - INFO - 📡 正在从体彩官网获取数据...
+2025-10-09 12:34:15,808 - INFO - 🎯 尝试获取不让球胜平负(HAD)数据...
+2025-10-09 12:34:15,808 - INFO - 正在获取体彩数据 (尝试 1/3): https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry
+2025-10-09 12:34:16,464 - WARNING - ❌ 网络请求失败 (尝试 1/3): 567 Server Error: Unknown Status for url: https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry?poolCode=had&channel=c
+2025-10-09 12:34:16,464 - INFO - ⏳ 等待 2.5 秒后重试...
+2025-10-09 12:34:18,994 - INFO - 正在获取体彩数据 (尝试 2/3): https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry
+2025-10-09 12:34:19,836 - WARNING - ❌ 网络请求失败 (尝试 2/3): 567 Server Error: Unknown Status for url: https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry?poolCode=had&channel=c
+2025-10-09 12:34:19,836 - INFO - ⏳ 等待 2.7 秒后重试...
+2025-10-09 12:34:22,585 - INFO - 正在获取体彩数据 (尝试 3/3): https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry
+2025-10-09 12:34:23,211 - WARNING - ❌ 网络请求失败 (尝试 3/3): 567 Server Error: Unknown Status for url: https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry?poolCode=had&channel=c
+2025-10-09 12:34:23,211 - WARNING - ⚠️ 获取HAD数据失败: 网络请求失败: 567 Server Error: Unknown Status for url: https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry?poolCode=had&channel=c
+2025-10-09 12:34:23,211 - INFO - 🎯 获取让球胜平负(HHAD)数据作为补充...
+2025-10-09 12:34:23,211 - INFO - 正在获取体彩数据 (尝试 1/3): https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry
+2025-10-09 12:34:23,832 - WARNING - ❌ 网络请求失败 (尝试 1/3): 567 Server Error: Unknown Status for url: https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry?poolCode=hhad&channel=c
+2025-10-09 12:34:23,833 - INFO - ⏳ 等待 2.3 秒后重试...
+2025-10-09 12:34:26,142 - INFO - 正在获取体彩数据 (尝试 2/3): https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry
+2025-10-09 12:34:26,728 - WARNING - ❌ 网络请求失败 (尝试 2/3): 567 Server Error: Unknown Status for url: https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry?poolCode=hhad&channel=c
+2025-10-09 12:34:26,729 - INFO - ⏳ 等待 2.0 秒后重试...
+2025-10-09 12:34:28,688 - INFO - 正在获取体彩数据 (尝试 3/3): https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry
+2025-10-09 12:34:29,244 - WARNING - ❌ 网络请求失败 (尝试 3/3): 567 Server Error: Unknown Status for url: https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry?poolCode=hhad&channel=c
+2025-10-09 12:34:29,244 - ERROR - ❌ 获取格式化比赛数据失败: 网络请求失败: 567 Server Error: Unknown Status for url: https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry?poolCode=hhad&channel=c
+2025-10-09 12:34:29,244 - ERROR - ❌ 同步失败: 暂时无法获取体彩数据: 网络请求失败: 567 Server Error: Unknown Status for url: https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry?poolCode=hhad&channel=c
+2025-10-09 19:56:40,695 - INFO - 🔄 开始同步未来 7 天的比赛数据...
+2025-10-09 19:56:40,696 - INFO - 📡 正在从体彩官网获取数据...
+2025-10-09 19:56:40,696 - INFO - 🎯 尝试获取不让球胜平负(HAD)数据...
+2025-10-09 19:56:40,696 - INFO - 正在获取体彩数据 (尝试 1/3): https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry
+2025-10-09 19:56:41,395 - WARNING - ❌ 网络请求失败 (尝试 1/3): 567 Server Error: Unknown Status for url: https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry?poolCode=had&channel=c
+2025-10-09 19:56:41,396 - INFO - ⏳ 等待 2.8 秒后重试...
+2025-10-09 19:56:44,219 - INFO - 正在获取体彩数据 (尝试 2/3): https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry
+2025-10-09 19:56:44,805 - WARNING - ❌ 网络请求失败 (尝试 2/3): 567 Server Error: Unknown Status for url: https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry?poolCode=had&channel=c
+2025-10-09 19:56:44,805 - INFO - ⏳ 等待 2.3 秒后重试...
+2025-10-09 19:56:47,106 - INFO - 正在获取体彩数据 (尝试 3/3): https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry
+2025-10-09 19:56:47,410 - INFO - ✅ 成功获取API数据: 处理成功
+2025-10-09 19:56:47,411 - INFO - ✅ 成功获取HAD数据
+2025-10-09 19:56:47,411 - INFO - 🎯 获取让球胜平负(HHAD)数据作为补充...
+2025-10-09 19:56:47,411 - INFO - 正在获取体彩数据 (尝试 1/3): https://webapi.sporttery.cn/gateway/uniform/football/getMatchCalculatorV1.qry
+2025-10-09 19:56:47,470 - INFO - ✅ 成功获取API数据: 处理成功
+2025-10-09 19:56:47,470 - INFO - 📊 开始解析比赛数据 (HAD映射: 10 场)
+2025-10-09 19:56:47,470 - INFO - 📅 处理 2025-10-09 的 7 场比赛
+2025-10-09 19:56:47,470 - INFO - 📅 处理 2025-10-10 的 7 场比赛
+2025-10-09 19:56:47,471 - INFO - 📈 成功解析 14 场有效比赛
+2025-10-09 19:56:47,472 - INFO - 📅 日期过滤: 14 -> 14 场比赛 (未来7天)
+2025-10-09 19:56:47,472 - INFO - 📊 赔率统计: 不让球10场, 让球4场
+2025-10-09 19:56:47,472 - INFO - ✅ 成功获取 14 场比赛数据
+2025-10-09 19:56:47,472 - INFO - ✅ 成功获取 14 场比赛数据
+2025-10-09 19:56:47,472 - INFO - 💾 正在保存到数据库...
+2025-10-09 19:56:49,217 - INFO - 数据库连接成功并开始事务管理
+2025-10-09 19:56:51,068 - INFO - 每日比赛数据保存完成 - 新增:14, 更新:0, 跳过:0
+2025-10-09 19:56:51,125 - INFO - 事务提交成功
+2025-10-09 19:56:51,126 - INFO - 数据库连接已关闭
+2025-10-09 19:56:51,126 - INFO - 📊 同步完成 - 新增: 14, 更新: 0, 跳过: 0
