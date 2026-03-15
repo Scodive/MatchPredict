@@ -20,9 +20,7 @@ class PredictionDatabase:
     
     def __init__(self):
         logger.info("正在初始化 Supabase 连接参数...")
-        self.url = os.getenv("SUPABASE_URL", "https://tykkdvxmqmyvdxwgtnbv.supabase.co")
-        self.key = os.getenv("SUPABASE_KEY", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InR5a2tkdnhtcW15dmR4d2d0bmJ2Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3MzU2NDI3MSwiZXhwIjoyMDg5MTQwMjcxfQ.mWOMK7YfJ_K6Lb2QACk2wpmFllVKSBoKW3usLtiHxxg")
-        
+
         self.headers = {
             "apikey": self.key,
             "Authorization": f"Bearer {self.key}",
