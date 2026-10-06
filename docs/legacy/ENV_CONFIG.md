@@ -7,13 +7,23 @@
 ### 1. GEMINI_API_KEY
 - **描述**: Google Gemini API 密钥
 - **必需**: 是（如果使用AI预测功能）
-- **示例**: `GEMINI_API_KEY=AIza9pYAEW7e2Ewk__9TCHAD5X_G1VhCtVw`
+- **示例**: `GEMINI_API_KEY=AIza9pYAEW7e2Ewk__9TCHX_G1VhCtVw`
 
 ### 2. GEMINI_MODEL
 - **描述**: Gemini 模型名称
 - **必需**: 否（有默认值）
 - **默认值**: `gemini-2.0-flash-exp`
 - **示例**: `GEMINI_MODEL=gemini-2.0-flash-exp`
+
+### 3. SUPABASE_URL
+- **描述**: Supabase 项目 URL
+- **必需**: 是
+- **示例**: `SUPABASE_URL=https://tykkdvxmqmyvdxwgtnbv.supabase.co`
+
+### 4. SUPABASE_KEY
+- **描述**: Supabase API 密钥 (service_role)
+- **必需**: 是
+- **示例**: `SUPABASE_KEY=your_service_role_key`
 
 ## 本地开发配置
 
@@ -22,6 +32,8 @@
 ```bash
 GEMINI_API_KEY=your_api_key_here
 GEMINI_MODEL=gemini-2.0-flash-exp
+SUPABASE_URL=https://tykkdvxmqmyvdxwgtnbv.supabase.co
+SUPABASE_KEY=your_service_role_key
 ```
 
 ### 方法2: 直接设置环境变量

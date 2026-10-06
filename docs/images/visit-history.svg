@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="210" height="52" viewBox="0 0 210 52" role="img" aria-label="先看公开复盘">
+  <rect x="1" y="1" width="208" height="50" rx="10" fill="#f1f7f3" stroke="#bdd6c7"/>
+  <text x="95" y="32" text-anchor="middle" fill="#356447" font-size="17" font-weight="700" font-family="Arial, PingFang SC, Microsoft YaHei, sans-serif">先看公开复盘</text>
+  <path d="M176 26h13m-5-5 5 5-5 5" fill="none" stroke="#356447" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
