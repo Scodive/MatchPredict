@@ -1,476 +1,124 @@
-# MatchPredic 足球比赛预测系统 v2.0 🚀
-https://match-predict.vercel.app
-基于数据分析和AI智能的足球比赛预测工具，现已支持中国体育彩票数据和大模型智能分析。
+<div align="center">
 
-## 🌟 新功能亮点
+# ⚽ MatchPredict
 
-### 三种预测模式
-- **经典模式**: 基于五大联赛历史数据的统计分析（左右分栏设计，类似购物车体验）
-- **彩票模式**: 接入中国体育彩票实时比赛数据和赔率
-- **AI智能模式**: 集成大模型进行智能分析预测（支持环境变量安全配置）
+### 每日足球赛事数据 · 赛前分析 · 赛后复盘
 
-### 全方位预测类型
-- ✅ **胜平负**: 主胜、平局、客胜概率预测
-- ✅ **半全场**: 9种半场/全场结果组合预测
-- ✅ **进球数**: 0-1球、2-3球、4-6球、7+球区间预测  
-- ✅ **比分预测**: 最可能的5个准确比分及概率
-- ✅ **价值投注**: AI识别期望值为正的投注机会
+不用搭环境，打开网站即可查看赛程和公开复盘。
 
-### AI智能分析
-- 🧠 使用GPT-4等大模型进行深度分析
-- 📊 综合考虑球队实力、近期状态、主客场优势等因素
-- 🎯 提供详细的分析理由和推荐投注策略
-- 🔍 自动寻找价值投注机会
+[![立即打开 MatchPredict](docs/images/visit-online.svg)](https://match-predict.vercel.app/?utm_source=github&utm_medium=readme&utm_campaign=public_repo)
+[![查看公开复盘](docs/images/visit-history.svg)](https://match-predict.vercel.app/history?utm_source=github&utm_medium=readme&utm_campaign=public_repo)
 
-|准确率    | 日期       | 场次    | 预测结果   | 结果   | 赔率   | 场次   | 预测结果   |  结果  |赔率  |
-|---:|:-----------|:--------|:--------|:--------|:-----------|:-------|:-------|:-------|:-------|
-|  100% | 2025-03-02 | 周日008 | 胜     | 1-0         | @2.900         | 周日011      | 胜     |2-1     |@1.430     |
-| 100%  | 2025-03-03 |周日019  |  负    | 1-2    |   @3.40      | 周日021      |  平    |    3-3 |   @2.83  |
+**[查看今日比赛](https://match-predict.vercel.app/?utm_source=github&utm_medium=readme&utm_campaign=public_repo#analysis)** · **[查看观察台](https://match-predict.vercel.app/research?utm_source=github&utm_medium=readme&utm_campaign=public_repo)** · **[反馈与建议](https://github.com/Scodive/MatchPredict/issues)**
 
-## 项目简介
+</div>
 
-足球比赛预测系统是一个融合传统统计分析和AI智能的工具，现已扩展支持中国体育彩票数据接入和大模型智能分析。系统通过多维度数据分析，为用户提供准确的比赛预测和投注建议，综合测试准确率达到90%以上。
+[![MatchPredict 当前线上首页：赛事入口与精选复盘](docs/images/homepage-live-20261006.jpg)](https://match-predict.vercel.app/?utm_source=github&utm_medium=readme&utm_campaign=public_repo)
 
-### ⚠️注意：足球是圆的，任何比赛都没有绝对。
+> **想直接使用？请进入在线版。** 本仓库提供早期基础示例，不是当前线上系统的完整源码；最新功能与每日数据在网站持续更新。截图拍摄于 2026-10-06，页面中的活动与赛程以实际网站为准。
 
-1. 预测结果仅供参考，不构成投注建议
-2. 实际比赛结果受多种因素影响，预测系统无法考虑所有变量
-3. 请确保您的API使用符合数据提供方的服务条款
-4. 在某些地区，博彩活动可能受到法律限制，请遵守当地法规
-5. 请勿用于任何违法行为以及参与非法活动
+## 在线版可以做什么？
 
-## 已完成
+- **看赛程**：按日期、联赛浏览近期比赛，覆盖五大联赛、欧国联等赛事。
+- **看分析**：选择深度权重或大模型分析，查看胜平负、比分、半全场参考及分析理由。
+- **看复盘**：把预测内容与真实赛果放在一起，分别核对方向、比分和半全场。
+- **看观察台**：集中查看赛事趋势、足球资讯、联赛积分榜，保存关注并回看结果。
 
-1. 过去五个赛季数据载入以及预测模型
-2. 联赛主客场优势、平局参数
-3. 开发Web界面和移动应用
+**第一次使用：** 先浏览公开复盘 → 注册账号 → 选择比赛和分析方式。注册赠 10 积分；收费与会员权益在站内明示，部分功能需要积分或会员。
 
+**[进入网站，开始体验 →](https://match-predict.vercel.app/?utm_source=github&utm_medium=readme&utm_campaign=public_repo)**
 
-## 未来改进
+<details>
+<summary><b>展开查看线上赛程和公开历史页面</b></summary>
 
-1. 添加更多特征(球员伤病、天气、主教练、实时排行榜等)
-2. 实现更完整的预测模型
-3. 实时更新热门比赛数据及比分
-4. 过去预测准确率
-5. 支持更多联赛和比赛类型、推荐比赛
+### 赛事分析
 
+[![按日期和联赛整理的线上赛事分析页面](docs/images/analysis-live-20261006.jpg)](https://match-predict.vercel.app/?utm_source=github&utm_medium=readme&utm_campaign=public_repo#analysis)
 
-## 使用方法
+### 公开复盘
 
-### 在线使用
-访问 https://match-predict.vercel.app 进行预测
+[![真实线上历史页面，分别展示方向、比分和半全场结果](docs/images/history-live-20261006.jpg)](https://match-predict.vercel.app/history?utm_source=github&utm_medium=readme&utm_campaign=public_repo)
 
-### 新功能使用指南
+</details>
 
-#### 1. 中国体育彩票模式
-1. 点击"彩票模式"按钮
-2. 设置获取天数（1-7天）
-3. 点击"刷新比赛数据"获取最新比赛
-4. 选择要分析的比赛
-5. 点击"AI智能预测"获取分析结果
+## 先看模型实际输出
 
-#### 2. AI智能分析模式
-1. 点击"AI智能模式"按钮  
-2. 手动输入比赛信息：
-   - 主队和客队名称
-   - 联赛名称
-   - 胜平负赔率
-3. 点击"添加AI分析比赛"
-4. 点击"AI智能预测"获取全方位分析
+首页的五场精选复盘保留原文摘录，并与真实赛果对照。例如：
 
-#### 3. AI分析结果包含：
-- **胜平负预测**: 概率分布和最佳选择
-- **半全场预测**: 9种组合的概率排序
-- **进球数预测**: 4个区间的概率分布
-- **比分预测**: 最可能的5个准确比分
-- **价值投注**: 期望值为正的投注机会
-- **分析理由**: 详细的分析逻辑说明
+- **欧冠决赛，巴黎圣日耳曼 vs 阿森纳**：原文给出“平局”“1-1”；90 分钟赛果 1-1，巴黎通过点球夺冠。
+- **世界杯揭幕战，墨西哥 vs 南非**：比分参考 2-0，半全场参考主胜 / 主胜，与赛果对应。
+- **欧国联，捷克 vs 克罗地亚**：比分参考 1-2，半全场参考平局 / 客胜，与赛果对应。
 
-### 本地部署
+**[查看原文摘录与赛果对照 →](https://match-predict.vercel.app/?utm_source=github&utm_medium=readme&utm_campaign=public_repo)**
 
-1. 克隆项目到本地:
-   ```bash
-   git clone https://github.com/yourusername/football-prediction.git
-   cd football-prediction
-   ```
+### 公开复盘展示统计
 
-2. 创建虚拟环境:
-   ```bash
-   python -m venv venv
-   source venv/bin/activate  # Windows: venv\Scripts\activate
-   ```
+**73.8% · 方向匹配率 · 同场多记录择优展示口径**
 
-3. 安装依赖:
-   ```bash
-   pip install -r requirements.txt
-   ```
+2026-09-23 至 2026-10-06，公开复盘展示的 84 场已完赛记录中，62 场方向匹配。覆盖连续 14 个自然日，有数据的 12 天全部计入，不只挑高命中率日期。
 
-4. 配置API密钥（可选，用于AI功能）:
-   ```bash
-   # 复制配置文件
-   cp config_example.py config_local.py
-   
-   # 设置环境变量（推荐方式）
-   export GEMINI_API_KEY="your_api_key_here"
-   export GEMINI_MODEL="gemini-2.0-flash-exp"
-   
-   # 或者编辑config_local.py（已弃用，建议使用环境变量）
-   ```
+**该数字不是模型整体准确率。** 公开复盘对同场多条记录按命中情况择优展示，不能视为“一场一次、赛前固定预测”的独立回测，也不是比分准确率或收益率。精选案例同样不能代表所有比赛。完整日期、每日分母和指标口径见[统计说明](docs/performance-snapshot.md)，后续数据以[公开历史页面](https://match-predict.vercel.app/history)为准。
 
-5. 运行应用:
-   ```bash
-   python app.py
-   ```
+## 我们如何分析一场比赛？
 
-6. 打开浏览器访问: http://localhost:5000
-   
-4. 将需要预测的比赛信息放入matches.json并且输入赔率
-```bash
-    {
-      "league_code": "PD",
-      "home_team": "CD Leganés",
-      "away_team": "Getafe CF",
-      "home_odds": 2.9,
-      "draw_odds": 2.48,
-      "away_odds": 2.62
-    }
+1. **整理数据**：比赛赛程、球队攻防、近期表现、主客场差异与市场参考信息。
+2. **建立参考**：用统计方法形成胜平负和比分分布，区分方向判断与精确比分。
+3. **补充解释**：大模型结合赛事背景输出结构化分析，说明判断依据与不确定性。
+4. **赛后核对**：同步真实结果，分别检查方向、比分和半全场，不把不同指标混成一个“成功率”。
 
-python parlay_predictor.py --matches matches.json
+这里介绍的是分析流程。线上使用的完整权重、提示词、校准细节、数据处理与运营组件不包含在本仓库中；开源示例也不保证复现线上结果。
 
-已加载 英超 数据
-已加载 西甲 数据
-已加载 意甲 数据
+## 本仓库与在线版的区别
 
-单场比赛预测结果:
-==================================================
+**在线版：日常使用入口。** 每日赛程、当前分析工具、观察台、个人记录与会员服务均在网站。
 
-比赛 #1: CD Leganés vs Getafe CF
-主胜概率: 0.36 (35.6%), 赔率: 2.9
-平局概率: 0.29 (29.2%), 赔率: 2.48
-客胜概率: 0.35 (35.0%), 赔率: 2.62
-所有投注选项 (按期望值排序):
-  主胜: 期望值=0.0316, 赔率=2.9, 概率=0.36
-  客胜: 期望值=-0.0824, 赔率=2.62, 概率=0.35
-  平局: 期望值=-0.2754, 赔率=2.48, 概率=0.29
-最佳投注: 主胜, 期望值: 0.0316
+**本仓库：基础学习示例。** 保留旧版 Flask 页面、浏览器端计算和历史数据脚本，方便阅读早期实现。当前可验证的最小闭环是本地历史数据 → 命令行计算 → 概率输出；网站的账户、数据库和 AI 服务链路尚不完整。
 
-最佳串关组合:
-==================================================
-总赔率: 33.54
-中奖概率: 0.0378 (3.78%)
-期望值: 0.2674
+### 跑一个已验证的本地示例
 
-选择:
-1. CD Leganés vs Getafe CF: 主胜 (赔率: 2.9, 概率: 0.36)
-
-
-其他高价值串关组合:
-==================================================
-
-组合 #1:
-总赔率: 30.30
-中奖概率: 0.0372 (3.72%)
-期望值: 0.1273
-选择:
-1. CD Leganés vs Getafe CF: 客胜 (赔率: 2.62, 概率: 0.35)
-2. Newcastle United FC vs Brighton & Hove Albion FC: 主胜 (赔率: 1.89, 概率: 0.66)
-3. Genoa CFC vs Empoli FC: 客胜 (赔率: 4.22, 概率: 0.25)
-4. Bologna FC 1909 vs Cagliari Calcio: 主胜 (赔率: 1.45, 概率: 0.64)
-
-```
-
-
-
-## 技术栈
-
-- **编程语言**: Python 3.8+
-- **数据分析**: Pandas, NumPy
-- **统计模型**: SciPy (泊松分布)
-- **机器学习**: Scikit-learn (可选扩展)
-- **数据获取**: Requests (API调用)
-- **命令行界面**: Argparse
-
-## 系统功能
-
-1. **数据收集**: 从公开API获取五大联赛的比赛数据
-2. **特征工程**: 计算球队的各项表现指标
-3. **结果预测**: 预测比赛胜平负、精确比分
-4. **半全场预测**: 预测半场和全场的比赛结果组合
-5. **赔率分析**: 分析赔率并提供投注建议
-6. **交互式界面**: 支持命令行参数和交互式输入
-
-## 项目结构
-```
-football_prediction/
-├── data/ # 数据目录
-│ ├── features.csv # 球队特征数据
-│ ├── premier_league_features.csv
-│ ├── la_liga_features.csv
-│ ├── serie_a_features.csv
-│ ├── bundesliga_features.csv
-│ └── ligue_1_features.csv
-├── cache/ # API数据缓存
-├── models/ # 模型目录
-│ ├── init.py
-│ ├── feature_engineering.py # 特征工程
-│ ├── match_predictor.py # 比赛结果预测
-│ └── score_predictor.py # 比分预测
-├── collect_league_data.py # 数据收集脚本
-├── match.py # 比赛预测脚本
-└── README.md # 项目文档
-```
-
-## 五大联赛代码和球队
-
-### 英超 (Premier League, PL)
-
-主要球队:
-- Manchester City FC (曼城)
-- Arsenal FC (阿森纳)
-- Liverpool FC (利物浦)
-- Manchester United FC (曼联)
-- Chelsea FC (切尔西)
-- Tottenham Hotspur FC (热刺)
-- Newcastle United FC (纽卡斯尔)
-- Aston Villa FC (阿斯顿维拉)
-- Brighton & Hove Albion FC (布莱顿)
-- West Ham United FC (西汉姆联)
-- Crystal Palace FC (水晶宫)
-- Brentford FC (布伦特福德)
-- Fulham FC (富勒姆)
-- Wolverhampton Wanderers FC (狼队)
-- AFC Bournemouth (伯恩茅斯)
-- Nottingham Forest FC (诺丁汉森林)
-- Everton FC (埃弗顿)
-- Luton Town FC (卢顿)
-- Burnley FC (伯恩利)
-- Sheffield United FC (谢菲尔德联)
-
-### 西甲 (La Liga, PD)
-
-主要球队:
-- Real Madrid CF (皇家马德里)
-- FC Barcelona (巴塞罗那)
-- Atlético de Madrid (马德里竞技)
-- Girona FC (赫罗纳)
-- Athletic Club (毕尔巴鄂竞技)
-- Real Sociedad de Fútbol (皇家社会)
-- Real Betis Balompié (皇家贝蒂斯)
-- Villarreal CF (比利亚雷亚尔)
-- Valencia CF (瓦伦西亚)
-- Sevilla FC (塞维利亚)
-- RCD Mallorca (马洛卡)
-- Deportivo Alavés (阿拉维斯)
-- CA Osasuna (奥萨苏纳)
-- Getafe CF (赫塔菲)
-- Rayo Vallecano (巴列卡诺)
-- UD Las Palmas (拉斯帕尔马斯)
-- Celta de Vigo (塞尔塔)
-- Cádiz CF (加的斯)
-- Granada CF (格拉纳达)
-- UD Almería (阿尔梅里亚)
-
-### 意甲 (Serie A, SA)
-
-主要球队:
-- FC Internazionale Milano (国际米兰)
-- AC Milan (AC米兰)
-- Juventus FC (尤文图斯)
-- SSC Napoli (那不勒斯)
-- AS Roma (罗马)
-- SS Lazio (拉齐奥)
-- Atalanta BC (亚特兰大)
-- Bologna FC 1909 (博洛尼亚)
-- ACF Fiorentina (佛罗伦萨)
-- Torino FC (都灵)
-- AC Monza (蒙扎)
-- Genoa CFC (热那亚)
-- US Lecce (莱切)
-- Udinese Calcio (乌迪内斯)
-- Cagliari Calcio (卡利亚里)
-- Hellas Verona FC (维罗纳)
-- Empoli FC (恩波利)
-- Frosinone Calcio (弗罗西诺内)
-- US Salernitana 1919 (萨勒尼塔纳)
-- US Sassuolo Calcio (萨索洛)
-
-### 德甲 (Bundesliga, BL1)
-
-主要球队:
-- FC Bayern München (拜仁慕尼黑)
-- Borussia Dortmund (多特蒙德)
-- RB Leipzig (莱比锡)
-- Bayer 04 Leverkusen (勒沃库森)
-- VfB Stuttgart (斯图加特)
-- Eintracht Frankfurt (法兰克福)
-- VfL Wolfsburg (沃尔夫斯堡)
-- SC Freiburg (弗赖堡)
-- 1. FC Union Berlin (柏林联合)
-- 1. FSV Mainz 05 (美因茨)
-- TSG 1899 Hoffenheim (霍芬海姆)
-- Borussia Mönchengladbach (门兴格拉德巴赫)
-- FC Augsburg (奥格斯堡)
-- SV Werder Bremen (不莱梅)
-- 1. FC Heidenheim 1846 (海登海姆)
-- VfL Bochum 1848 (波鸿)
-- 1. FC Köln (科隆)
-- SV Darmstadt 98 (达姆施塔特)
-
-### 法甲 (Ligue 1, FL1)
-
-主要球队:
-- Paris Saint-Germain FC (巴黎圣日耳曼)
-- AS Monaco FC (摩纳哥)
-- Olympique de Marseille (马赛)
-- LOSC Lille (里尔)
-- OGC Nice (尼斯)
-- RC Lens (朗斯)
-- Olympique Lyonnais (里昂)
-- Stade Rennais FC (雷恩)
-- RC Strasbourg Alsace (斯特拉斯堡)
-- Stade de Reims (兰斯)
-- Montpellier HSC (蒙彼利埃)
-- Toulouse FC (图卢兹)
-- FC Nantes (南特)
-- FC Lorient (洛里昂)
-- Stade Brestois 29 (布雷斯特)
-- AJ Auxerre (欧塞尔)
-- Clermont Foot 63 (克莱蒙)
-- FC Metz (梅斯)
-
-## 使用指南
-
-### 安装依赖
+在 Python 3.10 环境中验证过以下命令，不需要线上数据库或 API 密钥。其他 Python 版本未作完整验收。
 
 ```bash
-pip install pandas numpy scipy scikit-learn requests argparse
+git clone https://github.com/Scodive/MatchPredict.git
+cd MatchPredict
+python -m venv .venv
+# macOS / Linux
+source .venv/bin/activate
+# Windows PowerShell 使用：.venv\Scripts\Activate.ps1
+python -m pip install pandas numpy scipy
+python scripts/parlay_predictor.py --matches matches.json
 ```
 
-### 收集数据
+使用仓库自带的 2024 年示例数据，输出单场概率和旧版组合计算结果。这是程序运行演示，不是预测准确率测试，也不代表当前球队状态。原脚本中的旧版术语不构成投注建议。
 
-```bash
-python collect_league_data.py
+**不要把旧 Web 示例直接作为生产服务部署。** 首页和球队接口可加载，但数据库、AI 及实时赛程不可完整使用；旧页面还存在将模型密钥传给浏览器的设计。详见[运行检查与已知限制](docs/open-source-status.md)。本次文档整理未修改运行代码。
+
+## 文件导航
+
+```text
+MatchPredict/
+├── README.md               # 在线入口与项目介绍
+├── docs/
+│   ├── README.md           # 文档索引
+│   ├── images/             # 当前线上网站的真实截图
+│   ├── performance-snapshot.md
+│   ├── open-source-status.md
+│   └── legacy/             # 旧版开发说明，保留原文
+├── app.py                  # 旧版 Flask 示例，保持原样
+├── scripts/                # 原有计算与数据处理脚本
+├── static/                 # 原有前端资源
+├── templates/              # 原有页面模板
+├── data/                   # 原有历史示例数据
+├── js/                     # 历史前端文件，暂不合并
+└── logos/                  # 原有图标
 ```
 
-此命令将收集西甲和意甲的数据。如需收集其他联赛，请修改脚本中的联赛代码。
+历史开发说明已集中到 `docs/legacy/`，不再占据首页。重复的前端目录没有擅自合并，以免改变旧代码的引用关系。
 
-### 预测比赛
+## 反馈与使用边界
 
-**命令行方式**:
+使用问题可在站内反馈，也可以[提交 Issue](https://github.com/Scodive/MatchPredict/issues)。Star / Watch 可以关注公开仓库；最新产品更新请以网站为准。
 
-```bash
-python match.py --home "Real Madrid CF" --away "FC Barcelona" --home_odds 2.10 --draw_odds 3.50 --away_odds 3.20
-```
+本项目用于足球数据研究与技术展示，不保证预测结果，不提供收益承诺，不构成投注建议。数据使用须遵守来源方条款。当前仓库未附独立代码许可证；如需复用或商用，请先联系维护者确认授权，不将“仓库公开”视为无限制使用许可。
 
-**交互式方式**:
-
-```bash
-python match.py
-```
-
-然后按照提示输入球队名称和赔率。
-
-**查看可用球队**:
-
-```bash
-python match.py --list_teams
-```
-
-## 部署方案
-
-### 服务器部署
-
-1. 在服务器上安装Python 3.8+
-
-2. 克隆项目并设置:
-   ```bash
-   git clone https://github.com/yourusername/football-prediction.git
-   cd football-prediction
-   python -m venv venv
-   source venv/bin/activate
-   pip install -r requirements.txt
-   ```
-
-3. 设置定时任务更新数据:
-   ```bash
-   crontab -e
-   # 添加以下行，每天凌晨2点更新数据
-   0 2 * * * cd /path/to/football-prediction && /path/to/venv/bin/python collect_league_data.py
-   ```
-
-4. 设置Web API (可选):
-   ```bash
-   pip install flask gunicorn
-   ```
-
-   创建 `app.py`:
-   ```python
-   from flask import Flask, request, jsonify
-   import subprocess
-   import json
-
-   app = Flask(__name__)
-
-   @app.route('/predict', methods=['POST'])
-   def predict():
-       data = request.json
-       home_team = data.get('home_team')
-       away_team = data.get('away_team')
-       home_odds = data.get('home_odds', 2.0)
-       draw_odds = data.get('draw_odds', 3.0)
-       away_odds = data.get('away_odds', 4.0)
-       
-       cmd = f"python match.py --home '{home_team}' --away '{away_team}' --home_odds {home_odds} --draw_odds {draw_odds} --away_odds {away_odds} --json"
-       result = subprocess.check_output(cmd, shell=True)
-       return jsonify(json.loads(result))
-
-   if __name__ == '__main__':
-       app.run(debug=True)
-   ```
-
-5. 使用Gunicorn运行:
-   ```bash
-   gunicorn -w 4 -b 0.0.0.0:5000 app:app
-   ```
-
-6. 设置Nginx反向代理(可选)
-
-### Docker部署
-
-1. 创建Dockerfile:
-   ```dockerfile
-   FROM python:3.9-slim
-
-   WORKDIR /app
-
-   COPY requirements.txt .
-   RUN pip install --no-cache-dir -r requirements.txt
-
-   COPY . .
-
-   # 收集初始数据
-   RUN python collect_league_data.py
-
-   # 如果使用API
-   EXPOSE 5000
-   CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:5000", "app:app"]
-   
-   # 如果只使用命令行
-   # CMD ["python", "match.py"]
-   ```
-
-2. 构建并运行Docker镜像:
-   ```bash
-   docker build -t football-prediction .
-   docker run -p 5000:5000 football-prediction
-   ```
-
-## 注意事项
-
-1. 预测结果仅供参考，不构成投注建议
-2. 实际比赛结果受多种因素影响，预测系统无法考虑所有变量
-3. 请确保您的API使用符合数据提供方的服务条款
-4. 在某些地区，博彩活动可能受到法律限制，请遵守当地法规
-
----
-希望这个项目能帮助您更好地理解足球比赛预测！如有问题或建议，请提交Issue或Pull Request。
+**[打开 MatchPredict 在线版 →](https://match-predict.vercel.app/?utm_source=github&utm_medium=readme&utm_campaign=public_repo)** · [用户协议](https://match-predict.vercel.app/terms)

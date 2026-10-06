@@ -1,3 +1,17 @@
 config.py
 users.csv
 scripts
+
+# Local artifacts and credentials (documentation-only repository tidy)
+.DS_Store
+__pycache__/
+*.py[cod]
+*.log
+.env
+.env.*
+!.env.example
+!.env.sample
+.venv/
+venv/
+archive/local/
+.pytest_cache/
