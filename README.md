@@ -1,6 +1,54 @@
-# MatchPredic 足球比赛预测系统 v2.0 🚀
-https://match-predict.vercel.app
-基于数据分析和AI智能的足球比赛预测工具，现已支持中国体育彩票数据和大模型智能分析。
+<div align="center">
+
+<img src="https://img.shields.io/badge/MatchPredict-AI足球预测-38c073?style=for-the-badge&logo=futbol&logoColor=white" alt="MatchPredict"/> 
+
+# ⚽ MatchPredict
+
+**融合五大联赛大数据 × AI 大语言模型的足球赛事分析平台**
+
+[🌐 在线体验](https://match-predict.vercel.app) &nbsp;·&nbsp; [🎯 策略推荐](https://match-predict.vercel.app) &nbsp;·&nbsp; [📋 用户协议](https://match-predict.vercel.app/terms)
+
+[![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=flat-square&logo=python&logoColor=white)](https://python.org)
+[![Flask](https://img.shields.io/badge/Flask-3.x-000000?style=flat-square&logo=flask&logoColor=white)](https://flask.palletsprojects.com)
+[![Supabase](https://img.shields.io/badge/Supabase-Database-3ECF8E?style=flat-square&logo=supabase&logoColor=white)](https://supabase.com)
+[![Vercel](https://img.shields.io/badge/Vercel-Deployed-000000?style=flat-square&logo=vercel&logoColor=white)](https://vercel.com)
+[![License](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE)
+
+</div>
+
+---
+
+## 📌 项目简介
+
+MatchPredict 是一个**纯技术研究性质**的足球赛事 AI 分析平台，通过以下方式生成赛事分析：
+
+1. **数据获取**：自动同步英超、西甲、意甲、德甲、法甲五大联赛赛程与实时赔率（Pinnacle 公开接口）
+2. **AI 分析**：调用大语言模型（via OpenRouter）对每场比赛深度分析，输出胜平负预测、比分预测、半全场预测
+3. **历史回测**：对历史预测与真实比分进行对比，统计命中率与各策略 ROI
+4. **串关策略**：基于数学模型提供 5 种串关组合参考方案
+
+> ⚠️ **声明**：本项目仅供学术研究与技术展示，不构成任何形式的投注建议。使用本平台须遵守[用户协议](https://match-predict.vercel.app/terms)。
+
+---
+
+## ✨ 核心功能
+
+| 功能模块 | 描述 |
+|---------|------|
+| 🤖 **AI 赛事分析** | LLM 生成胜平负预测、比分、半全场分析，实时显示置信度 |
+| 📊 **实时赔率** | Pinnacle 公开接口获取五大联赛实时 1X2 赔率，自动过滤 Bookings/Corners 市场 |
+| 🏆 **历史命中率** | 完整回测数据，预测结果 vs 真实比分对比可查，按日期浏览 |
+| 🎯 **串关策略引擎** | 信心稳单 / 博冷出击 / 奖金优化 / 平衡串关 / 价值挖掘 5 种模式 |
+| 📅 **历史记录中心** | 按日期浏览所有历史预测，附日历切换与当日准确率统计 |
+| 👤 **用户积分系统** | 注册 → 每日签到 → 消耗积分查看 AI 分析，VIP 每日 +30 积分 |
+| 🔧 **Admin 后台** | 比赛管理、用户管理、VIP 设置、手动同步、策略回测 |
+
+---
+
+## 🖥️ 界面预览
+<img width="2914" height="2242" alt="71554b2a245d11e0d22786d22e513a95" src="https://github.com/user-attachments/assets/d3e33cff-8aa5-435c-af5f-856310cd03f8" />
+
+
 
 ## 🌟 新功能亮点
 
