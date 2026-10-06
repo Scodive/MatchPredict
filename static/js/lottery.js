@@ -526,84 +526,119 @@ class LotteryManager {
 
     // 开始彩票AI预测
     async startLotteryAIPrediction() {
-        // 检查登录状态和预测权限
-        if (!await window.authManager.checkPredictionLimit()) {
+        console.log('💡 开始执行 startLotteryAIPrediction()');
+        // 检查登录状态
+        if (!window.authManager || !window.authManager.currentUser) {
+            window.authManager.showMessage('请先登录才能使用彩票AI预测功能', 'warning');
+            window.authManager.showLoginModal();
             return;
         }
-        
+
+        // 获取最新预测次数
+        await window.authManager.updatePredictionCount();
+        const currentUser = window.authManager.currentUser;
+
+        // 检查预测限制
+        if (currentUser.user_type === 'free' && currentUser.daily_predictions_used >= 3) {
+            window.authManager.showMessage('今日免费彩票AI预测次数已用完，请升级会员', 'warning');
+            return;
+        }
+
         const selectedMatches = this.getSelectedMatches();
-        
+
         if (selectedMatches.length === 0) {
             this.showMessage('请先选择比赛', 'error');
             return;
         }
 
-        console.log('开始彩票AI预测，选中比赛:', selectedMatches.length);
-        
-        try {
-            // 显示加载状态
-            const loadingOverlay = document.getElementById('loading-overlay');
-            if (loadingOverlay) {
-                loadingOverlay.classList.remove('hidden');
-            }
-
-            // 转换数据格式为AI预测需要的格式
-            const aiMatches = selectedMatches.map(match => {
-                const wdl = this.getWdlOdds(match.odds);
-                return ({
-                match_id: match.match_id,
-                home_team: match.home_team,
-                away_team: match.away_team,
-                league_name: match.league_name,
-                home_odds: parseFloat(wdl.h),
-                draw_odds: parseFloat(wdl.d),
-                away_odds: parseFloat(wdl.a),
-                source: 'lottery'
-            });
-            });
-
-            // 直接调用Gemini API进行预测
-            const predictions = [];
-            for (const match of aiMatches) {
-                try {
-                    console.log(`开始预测彩票比赛: ${match.home_team} vs ${match.away_team}`);
-                    
-                    // 使用AI预测管理器的方法
-                    if (window.aiPredictionManager) {
-                        const prediction = await window.aiPredictionManager.predictMatchWithGemini(match);
-                        if (prediction) {
-                            predictions.push(prediction);
-                            console.log(`彩票比赛预测成功: ${match.home_team} vs ${match.away_team}`);
-                        }
-                    } else {
-                        throw new Error('AI预测管理器未初始化');
-                    }
-                } catch (error) {
-                    console.error(`预测彩票比赛失败 ${match.home_team} vs ${match.away_team}:`, error);
-                    // 继续处理其他比赛
-                }
-            }
-
-            if (predictions.length > 0) {
-                console.log('彩票AI预测成功:', predictions);
-                this.displayAIPredictionResults(predictions);
-                
-                // 保存预测结果到数据库
-                this.savePredictionsToDatabase(predictions);
-            } else {
-                throw new Error('所有彩票比赛预测都失败了，请检查网络连接或API配置');
-            }
-
-        } catch (error) {
-            console.error('AI预测错误:', error);
-            this.showMessage('AI预测失败: ' + error.message, 'error');
-        } finally {
-            // 隐藏加载状态
-            const loadingOverlay = document.getElementById('loading-overlay');
-            if (loadingOverlay) {
-                loadingOverlay.classList.add('hidden');
-            }
+        // 构建确认消息
+        let confirmationMessage = '';
+        if (currentUser.user_type === 'free') {
+            const remaining = Math.max(0, 3 - currentUser.daily_predictions_used);
+            confirmationMessage = `您当前是免费用户。本次预测将消耗一次免费机会。<br>今日剩余次数：<strong>${remaining}</strong> 次。<br>是否确认进行彩票AI预测？`;
+        } else {
+            confirmationMessage = `您是会员用户，可无限次进行彩票AI预测。<br>是否确认进行彩票AI预测？`;
         }
+
+        // 显示确认弹窗
+        window.authManager.showConfirmationModal(
+            '确认彩票AI预测',
+            confirmationMessage,
+            async () => { // 用户确认后的回调
+                console.log('开始彩票AI预测，选中比赛:', selectedMatches.length);
+
+                try {
+                    // 显示加载状态
+                    const loadingOverlay = document.getElementById('loading-overlay');
+                    if (loadingOverlay) {
+                        loadingOverlay.classList.remove('hidden');
+                    }
+
+                    // 转换数据格式为AI预测需要的格式
+                    const aiMatches = selectedMatches.map(match => {
+                        const wdl = this.getWdlOdds(match.odds);
+                        return ({
+                            match_id: match.match_id,
+                            home_team: match.home_team,
+                            away_team: match.away_team,
+                            league_name: match.league_name,
+                            home_odds: parseFloat(wdl.h),
+                            draw_odds: parseFloat(wdl.d),
+                            away_odds: parseFloat(wdl.a),
+                            source: 'lottery'
+                        });
+                    });
+
+                    // 直接调用Gemini API进行预测
+                    const predictions = [];
+                    for (const match of aiMatches) {
+                        try {
+                            console.log(`开始预测彩票比赛: ${match.home_team} vs ${match.away_team}`);
+
+                            // 使用AI预测管理器的方法
+                            if (window.aiPredictionManager) {
+                                const prediction = await window.aiPredictionManager.predictMatchWithGemini(match);
+                                if (prediction) {
+                                    predictions.push(prediction);
+                                    console.log(`彩票比赛预测成功: ${match.home_team} vs ${match.away_team}`);
+                                }
+                            } else {
+                                throw new Error('AI预测管理器未初始化');
+                            }
+                        } catch (error) {
+                            console.error(`预测彩票比赛失败 ${match.home_team} vs ${match.away_team}:`, error);
+                        }
+                    }
+
+                    if (predictions.length > 0) {
+                        console.log('彩票AI预测成功:', predictions);
+                        this.displayAIPredictionResults(predictions);
+
+                        // 保存预测结果到数据库
+                        await this.savePredictionsToDatabase(predictions);
+                        // 预测成功后更新UI的预测次数
+                        window.authManager.updatePredictionCount();
+
+                    } else {
+                        throw new Error('所有彩票比赛预测都失败了，请检查网络连接或API配置');
+                    }
+
+                } catch (error) {
+                    console.error('AI预测错误:', error);
+                    window.authManager.showMessage('AI预测失败: ' + error.message, 'error');
+                } finally {
+                    // 隐藏加载状态
+                    const loadingOverlay = document.getElementById('loading-overlay');
+                    if (loadingOverlay) {
+                        loadingOverlay.classList.add('hidden');
+                    }
+                }
+            },
+            () => { // 用户取消后的回调
+                console.log('用户取消了彩票AI预测');
+                // 如果有需要，可以在这里添加取消后的逻辑
+            }
+        );
     }
 
     // 显示AI预测结果

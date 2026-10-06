@@ -7,18 +7,12 @@ import hashlib
 import psycopg2
 from datetime import datetime, timedelta
 
-# 导入数据库模块
+# 尝试导入数据库模块
 try:
     from scripts.database import prediction_db
     print("✅ 数据库模块导入成功")
-    if prediction_db:
-        print(f"DEBUG: prediction_db 实例已创建。连接参数示例 (host): {prediction_db.connection_params.get('host')}")
-    else:
-        print("DEBUG: prediction_db 实例为 None，尽管导入成功。")
-except Exception as e: # 将 ImportError 更改为 Exception 以捕获更多可能的初始化错误
-    print(f"⚠️ 数据库模块导入失败或初始化失败: {e}")
-    import traceback
-    traceback.print_exc() # 打印完整的堆栈跟踪
+except ImportError as e:
+    print(f"⚠️ 数据库模块导入失败: {e}")
     prediction_db = None
 
 # 延迟导入，避免在Vercel环境中的问题
@@ -272,7 +266,6 @@ def save_prediction():
     """保存预测结果到数据库"""
     try:
         if not prediction_db:
-            print("ERROR: prediction_db 未配置，无法保存预测。") # 添加日志
             return jsonify({
                 'success': False,
                 'message': '数据库未配置'
@@ -316,7 +309,6 @@ def save_prediction():
         success = False
         
         if prediction_mode == 'ai':
-            print("DEBUG: 尝试保存AI预测...") # 添加日志
             success = prediction_db.save_ai_prediction(
                 match_data=match_data,
                 prediction_result=prediction_result,
@@ -327,7 +319,6 @@ def save_prediction():
                 username=current_user['username']
             )
         elif prediction_mode == 'classic':
-            print("DEBUG: 尝试保存经典模式预测...") # 添加日志
             success = prediction_db.save_classic_prediction(
                 match_data=match_data,
                 prediction_result=prediction_result,
@@ -337,7 +328,6 @@ def save_prediction():
                 username=current_user['username']
             )
         elif prediction_mode == 'lottery':
-            print("DEBUG: 尝试保存彩票预测...") # 添加日志
             success = prediction_db.save_lottery_prediction(
                 match_data=match_data,
                 prediction_result=prediction_result,
@@ -356,26 +346,38 @@ def save_prediction():
         if success:
             # 增加用户预测次数
             prediction_db.increment_user_predictions(current_user['id'])
-            # 重新获取用户数据以更新 daily_predictions_used
+            
+            # 重新从数据库获取最新用户数据，包括更新后的预测次数
             updated_user = prediction_db.get_user_by_username(current_user['username'])
-            session['user'] = updated_user # 更新会话中的用户数据
-            print("DEBUG: 预测保存成功，用户预测次数已更新。") # 添加日志
-            return jsonify({
-                'success': True,
-                'message': '预测结果已保存',
-                'user': updated_user
-            }), 200
+
+            # 如果成功获取到更新的用户数据，则更新session并返回
+            if updated_user:
+                session['user_id'] = updated_user['id']
+                session['username'] = updated_user['username']
+                session.permanent = True
+                app.logger.info(f"用户 {updated_user['username']} 预测次数已更新: {updated_user['daily_predictions_used']}")
+                return jsonify({
+                    'success': True,
+                    'message': '预测结果保存成功',
+                    'user': {
+                        'username': updated_user['username'],
+                        'user_type': updated_user['user_type'],
+                        'daily_predictions_used': updated_user['daily_predictions_used'],
+                        'total_predictions': updated_user['total_predictions'],
+                        'membership_expires': updated_user['membership_expires'].isoformat() if updated_user['membership_expires'] else None
+                    }
+                })
+            else:
+                app.logger.error(f"保存预测后无法获取更新后的用户数据: {current_user['username']}", exc_info=True)
+                return jsonify({'success': False, 'message': '预测成功，但获取用户状态失败'}), 500
         else:
-            print("ERROR: 预测保存失败。") # 添加日志
             return jsonify({
                 'success': False,
                 'message': '预测结果保存失败'
             }), 500
             
     except Exception as e:
-        print(f"ERROR: 保存预测时发生未预期错误: {e}") # 添加日志
-        import traceback
-        traceback.print_exc()
+        app.logger.error(f"保存预测结果失败: {e}")
         return jsonify({
             'success': False,
             'message': f'服务器错误: {str(e)}'

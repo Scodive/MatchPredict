@@ -51,7 +51,7 @@ class AuthManager {
         
         // 点击背景关闭弹窗
         document.addEventListener('click', (e) => {
-            if (e.target.classList.contains('auth-modal')) {
+            if (e.target.classList.contains('auth-modal') || e.target.classList.contains('modal-overlay')) {
                 this.closeModal(e.target.id);
             }
         });
@@ -79,6 +79,60 @@ class AuthManager {
         this.currentUser = null;
         this.updateUserInterface();
         this.disableAllPredictionButtons();
+    }
+
+    // 显示确认弹窗的方法 (兼容旧的 hidden 类)
+    showConfirmationModal(title, message, onConfirmCallback, onCancelCallback) {
+        console.log(`💡 showConfirmationModal 被调用: 标题 - "${title}", 消息 - "${message}"`);
+        const modal = document.getElementById('confirmation-modal');
+        const titleElement = document.getElementById('confirmation-modal-title');
+        const messageElement = document.getElementById('confirmation-modal-message');
+        const confirmBtn = document.getElementById('confirm-action-btn');
+        const closeBtn = document.getElementById('confirmation-close-btn'); // 确保能找到X按钮
+        const cancelBtn = document.getElementById('confirmation-cancel-btn'); // 确保能找到取消按钮
+
+        if (!modal || !titleElement || !messageElement || !confirmBtn || !closeBtn || !cancelBtn) {
+            console.error('❌ 确认模态框的HTML元素缺失！');
+            onConfirmCallback(); // 如果元素缺失，直接执行确认回调，避免阻塞用户
+            return;
+        }
+
+        titleElement.textContent = title;
+        messageElement.innerHTML = message; // 使用 innerHTML 支持传入带HTML的消息
+
+        // 清除旧的事件监听器以防止重复绑定
+        const cloneConfirmBtn = confirmBtn.cloneNode(true);
+        confirmBtn.parentNode.replaceChild(cloneConfirmBtn, confirmBtn);
+        const finalConfirmBtn = document.getElementById('confirm-action-btn');
+
+        const cloneCloseBtn = closeBtn.cloneNode(true);
+        closeBtn.parentNode.replaceChild(cloneCloseBtn, closeBtn);
+        const finalCloseBtn = document.getElementById('confirmation-close-btn');
+
+        const cloneCancelBtn = cancelBtn.cloneNode(true);
+        cancelBtn.parentNode.replaceChild(cloneCancelBtn, cancelBtn);
+        const finalCancelBtn = document.getElementById('confirmation-cancel-btn');
+
+        finalConfirmBtn.onclick = () => {
+            this.closeModal('confirmation-modal');
+            onConfirmCallback();
+        };
+        finalCloseBtn.onclick = () => {
+            this.closeModal('confirmation-modal');
+            if (onCancelCallback) onCancelCallback();
+        };
+        finalCancelBtn.onclick = () => {
+            this.closeModal('confirmation-modal');
+            if (onCancelCallback) onCancelCallback();
+        };
+        
+        modal.classList.remove('hidden');
+        console.log('✅ 确认模态框已移除 hidden 类，尝试显示。');
+    }
+
+    cancelConfirmation() {
+        this.closeModal('confirmation-modal');
+        console.log('用户取消了操作');
     }
 
     showLoginModal() {
@@ -239,8 +293,6 @@ class AuthManager {
     }
 
     updateUserInterface() {
-        // 这个方法在页面重新加载时由服务器端模板更新
-        // 客户端主要负责更新剩余次数
         this.updatePredictionCount();
     }
 
@@ -251,9 +303,46 @@ class AuthManager {
                 const data = await response.json();
                 if (data.success) {
                     const remainingElement = document.getElementById('predictions-remaining');
-                    if (remainingElement && data.user_type === 'free') {
-                        remainingElement.textContent = data.remaining;
+                    const userTypeText = document.getElementById('user-type-text');
+                    const dailyUsedText = document.getElementById('daily-used-text');
+                    const predictionLimitHint = document.getElementById('prediction-limit-hint');
+                    
+                    if (this.currentUser) {
+                        this.currentUser.user_type = data.user_type;
+                        this.currentUser.daily_predictions_used = data.daily_used;
+                        this.currentUser.remaining = data.remaining;
                     }
+
+                    if (remainingElement) {
+                        if (data.user_type === 'free') {
+                            remainingElement.textContent = data.remaining;
+                            if (predictionLimitHint) {
+                                predictionLimitHint.textContent = `每日剩余 ${data.remaining} 次预测机会`;
+                            }
+                            if (data.remaining === 0) {
+                                remainingElement.style.color = 'var(--danger-color)';
+                            } else if (data.remaining === 1) {
+                                remainingElement.style.color = 'var(--warning-color)';
+                            } else {
+                                remainingElement.style.color = 'var(--text-primary)';
+                            }
+                        } else if (data.user_type === 'premium') {
+                            remainingElement.textContent = '无限';
+                            if (predictionLimitHint) {
+                                predictionLimitHint.textContent = '会员用户，无限次预测';
+                            }
+                            remainingElement.style.color = 'var(--success-color)';
+                        }
+                    }
+
+                    if (userTypeText) {
+                        userTypeText.textContent = data.user_type === 'premium' ? '会员' : '免费';
+                        userTypeText.className = `user-type-badge ${data.user_type}`;
+                    }
+                    if (dailyUsedText) {
+                        dailyUsedText.textContent = data.daily_used;
+                    }
+                    
                 }
             }
         } catch (error) {
@@ -285,7 +374,6 @@ class AuthManager {
     }
 
     async checkPredictionLimit() {
-        // 检查是否需要登录
         if (!this.currentUser) {
             this.showMessage('请先登录后使用预测功能', 'warning');
             this.showLoginModal();
@@ -300,7 +388,6 @@ class AuthManager {
         return true;
     }
 
-    // 禁用所有预测按钮
     disableAllPredictionButtons() {
         const buttons = [
             'classic-predict-btn',
@@ -319,7 +406,6 @@ class AuthManager {
         });
     }
 
-    // 启用所有预测按钮  
     enableAllPredictionButtons() {
         const buttons = [
             'classic-predict-btn',
@@ -339,7 +425,6 @@ class AuthManager {
     }
 
     showMessage(message, type = 'info') {
-        // 创建消息提示
         const messageDiv = document.createElement('div');
         messageDiv.className = `auth-message ${type}`;
         messageDiv.innerHTML = `
@@ -349,10 +434,8 @@ class AuthManager {
             </div>
         `;
 
-        // 添加到页面
         document.body.appendChild(messageDiv);
 
-        // 3秒后自动消失
         setTimeout(() => {
             messageDiv.classList.add('fade-out');
             setTimeout(() => {
@@ -373,23 +456,22 @@ class AuthManager {
     }
 }
 
-// 弹窗相关全局函数
 function closeModal(modalId) {
-    authManager.closeModal(modalId);
+    window.authManager.closeModal(modalId);
 }
 
 function switchToRegister() {
-    authManager.closeModal('login-modal');
-    authManager.showRegisterModal();
+    window.authManager.closeModal('login-modal');
+    window.authManager.showRegisterModal();
 }
 
 function switchToLogin() {
-    authManager.closeModal('register-modal');
-    authManager.showLoginModal();
+    window.authManager.closeModal('register-modal');
+    window.authManager.showLoginModal();
 }
 
-// 创建全局认证管理器实例
-const authManager = new AuthManager();
-
-// 暴露到全局作用域
-window.authManager = authManager;
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('🏁 DOMContentLoaded 事件触发，初始化 AuthManager...');
+    const authManager = new AuthManager();
+    window.authManager = authManager;
+});
